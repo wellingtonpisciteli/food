@@ -45,7 +45,7 @@ enviarLancheBtns.forEach(btn => {
         const row = document.createElement('tr');
 
         const nomeLancheCell = document.createElement('th');
-        nomeLancheCell.className = 'bg-light text-danger';
+        nomeLancheCell.className = 'bg-light text-primary';
         nomeLancheCell.textContent = nomeLanche;
         row.appendChild(nomeLancheCell);
 
