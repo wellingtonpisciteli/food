@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+  <div>
+    <header>Ultimos pedidos</header>
+    {% for lanche in comanda %}
+      {{lanche.nome}}
+    {% endfor %}
+  </div>
+{% endblock %}

@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<header class="text-center bg-dark" id="adicionarHeader">
+    <h3 class="text-white text-center">
+        Mesa: <input id="nummesa" name="nummesa" type="number" class="fw-bolder bg-light text-center">
+    </h3>
+</header>
+ 
+<div class="w-100 bg-dark" id="adicionarLanches">
+    <div class="table-responsive">       
+        <table class="table" id="adicionarTabela">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">LANCHES</th>
+                    <th scope="col" class="text-center bg-light">PREÇO</th>
+                    <th scope="col" class="text-center bg-light">EDITAR</th>
+                    <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">SELECIONAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cardapio %}
+                <tr>
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <th class="bg-light">
+                        <span>{{ item.lanche }}</span>
+                        <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">
+                    </th>
+                    <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                        <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                        <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
+                    </td>
+                    <td class="text-center align-middle bg-light">
+                        <a href="{{url('busca/'~item.id)}}">
+                            <input id="editarLanche" type="button" class="text-center fw-bolder text-white" value="+-" style="background-color: darkcyan;">
+                        </a>
+                    </td>
+                    <td class="text-center align-middle bg-light">
+                        <div class="enviarLanche">
+                            <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: darkgreen;">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <table class="table" id="adicionarTabela" style="margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light">BEBIDAS</th>
+                    <th scope="col" class="text-center bg-light">TAMANHO</th>
+                    <th scope="col" class="text-center bg-light">SELECIONAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cardapio_bebida %}
+                <tr>
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <th class="bg-light">{{ item.marca }}</th>
+                    <input type="hidden" id="bebida" name="bebida" value="{{ item.marca }}">
+                    <td class="text-center align-middle w-25 bg-light">
+                        <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
+                            {% for tamanho in tamanhoBebida %}
+                            {% if tamanho.marca_bebida_id==item.id %}
+                            <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                                {{ tamanho.tamanho }} -
+                                ${{ tamanho.valor | number_format(2, ',', '.') }}
+                            </option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="text-center align-middle bg-light">
+                        <div class="enviarBebida">
+                            <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: darkgreen;">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 id="comandaMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+            Comanda:
+        </h3>
+
+        <table>
+            <form action="{{ url('cadastrar') }}" method="post" class="bg-light" id="pedidos">
+                <table class="table" id="tabelaPedidos">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">LANCHES</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                            <th scope="col" class="text-center bg-light">DETALHES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos">
+                        <!-- Os itens serão adicionados aqui dinamicamente -->
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">BEBIDAS</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                            <th scope="col" class="text-center bg-light">DETALHES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaBebidas">
+                        <!-- Os itens serão adicionados aqui dinamicamente -->
+                    </tbody>
+                </table>
+                <div class="text-center mt-3">
+                    <input class="btn btn-primary" type="submit" value="Enviar" id="btnDiv" style="margin-bottom: 20px;">
+                    <input class="btn btn-danger" type="button" value="Cancelar" id="btnDivCancelar" style="margin-bottom: 20px;">
+                </div>
+            </form>
+        </table>
+    </div>  
+</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<!-- <header class="text-center bg-dark" id="adicionarHeader">
+    <h1 class="text-white">
+        {{ busca.lanche }}
+    </h1>
+</header> -->
+
+<div class="w-100 bg-dark" id="adicionarLanches">
+    <div class="table-responsive">       
+        <form action="" method="post">
+            <table class="table" id="editar" style="margin-bottom: 30px; margin-top: 50px;">
+                <thead>
+                    <tr>
+                        <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">{{ busca.lanche | upper }}</th>
+                        <th scope="col" class="text-center bg-light">PREÇO</th>
+                        <th scope="col" class="text-center bg-light">ADICIONAR</th>
+                        <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">RETIRAR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for nome in lanche_ingredi %}
+                    {% for ingred in ingredientes %}
+                    {% if nome.ingrediente_id == ingred.id %}
+                    <tr>
+                        <th class="bg-light">
+                            {{ ingred.ingrediente }}
+                        </th>
+                        <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                            ${{ ingred.valor | number_format(2, ',', '.') }}
+                        </td>
+                        <td class="text-center align-middle bg-light">
+                            <input id="editarLanche" type="button" class="text-center fw-bolder text-white" value="+" style="background-color: darkgreen;">
+                        </td>
+                        <td class="text-center align-middle bg-light">
+                            <input id="editarLanche" type="button" class="text-center fw-bolder text-white" value="-" style="background-color: darkred;">
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="text-center" style="margin-bottom: 30px; margin-top: -20px; ">
+                <button type="submit" class="btn btn-primary fw-bold mx-1" style="width: 130px; border-radius: 0px 0px 0px 10px;">CONFIRMAR</button>
+                <button type="submit" class="btn btn-danger fw-bold mx-1" style="width: 130px; border-radius: 0px 10px 0px 0px;">CANCELAR</button>
+            </div>
+        </form>
+    </div>  
+</div>
+
+{% endblock %}
