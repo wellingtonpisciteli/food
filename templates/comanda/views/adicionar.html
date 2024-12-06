@@ -15,7 +15,8 @@
                     <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">LANCHES</th>
                     <th scope="col" class="text-center bg-light">PREÇO</th>
                     <th scope="col" class="text-center bg-light">EDITAR</th>
-                    <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">SELECIONAR</th>
+                    <th scope="col" class="text-center bg-light">OBS</th>
+                    <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">ADD</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,6 +36,9 @@
                             <input id="editarLanche" type="button" class="text-center fw-bolder text-white" value="+-" style="background-color: darkcyan;">
                         </a>
                     </td>
+                    <td class="text-center align-middle bg-light" style="width: 10%;">
+                        <input type="text" id="detalhesLanche" name="detalhesLanche" class="bg-light w-100">
+                    </td>
                     <td class="text-center align-middle bg-light">
                         <div class="enviarLanche">
                             <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: darkgreen;">
@@ -50,16 +54,17 @@
                 <tr>
                     <th scope="col" class="bg-light">BEBIDAS</th>
                     <th scope="col" class="text-center bg-light">TAMANHO</th>
-                    <th scope="col" class="text-center bg-light">SELECIONAR</th>
+                    <th scope="col" class="text-center bg-light">OBS</th>
+                    <th scope="col" class="text-center bg-light">ADD</th>
                 </tr>
             </thead>
             <tbody>
                 {% for item in cardapio_bebida %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
-                    <th class="bg-light">{{ item.marca }}</th>
+                    <th class="bg-light w-25">{{ item.marca }}</th>
                     <input type="hidden" id="bebida" name="bebida" value="{{ item.marca }}">
-                    <td class="text-center align-middle w-25 bg-light">
+                    <td class="text-center align-middle w-50 bg-light">
                         <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
                             {% for tamanho in tamanhoBebida %}
                             {% if tamanho.marca_bebida_id==item.id %}
@@ -71,7 +76,10 @@
                             {% endfor %}
                         </select>
                     </td>
-                    <td class="text-center align-middle bg-light">
+                    <td class="text-center align-middle bg-light" style="width: 10%;">
+                        <input type="text" id="detalhesBebida" name="detalhesBebida" class="bg-light w-100">
+                    </td>
+                    <td class="text-center align-middle bg-light" style="width: 25%;">
                         <div class="enviarBebida">
                             <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: darkgreen;">
                         </div>
@@ -92,7 +100,8 @@
                         <tr>
                             <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">LANCHES</th>
                             <th scope="col" class="text-center bg-light">PREÇO</th>
-                            <th scope="col" class="text-center bg-light">DETALHES</th>
+                            <th scope="col" class="text-center bg-light">OBS</th>
+                            <th scope="col" class="text-center bg-light">EDITAR</th>
                         </tr>
                     </thead>
                     <tbody id="listaPedidos">
@@ -102,7 +111,8 @@
                         <tr>
                             <th scope="col" class="bg-light">BEBIDAS</th>
                             <th scope="col" class="text-center bg-light">PREÇO</th>
-                            <th scope="col" class="text-center bg-light">DETALHES</th>
+                            <th scope="col" class="text-center bg-light">OBS</th>
+                            <th scope="col" class="text-center bg-light">EDITAR</th>
                         </tr>
                     </thead>
                     <tbody id="listaBebidas">

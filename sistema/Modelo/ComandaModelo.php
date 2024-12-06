@@ -43,19 +43,22 @@ class ComandaModelo{
      * @return void
      */
     public function armazenarPedido(array $dados):void{
-        $querry="INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, nome_bebida, tamanho_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?)";
+        $querry="INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, detalhes_lanche, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt=Conexao::getInstancia()->prepare($querry);
 
         foreach($dados['mesa'] as $index=>$mesa){
             $nome_lanche=$dados['nome_lanche'][$index];
             $valor_lanche=$dados['valor_lanche'][$index];
+            $detalhes_lanche=$dados['detalhes_lanche'][$index];
 
             $nome_bebida=$dados['nome_bebida'][$index];
             $tamanho_bebida=$dados['tamanho_bebida'][$index];
             $valor_bebida=$dados['valor_bebida'][$index];
+            $detalhes_bebida=$dados['detalhes_bebida'][$index];
+
 
             if (!empty($nome_lanche) || !empty($nome_bebida)) {
-                $stmt->execute([$mesa, $nome_lanche, $valor_lanche, $nome_bebida, $tamanho_bebida, $valor_bebida]);
+                $stmt->execute([$mesa, $nome_lanche, $valor_lanche, $detalhes_lanche,  $nome_bebida, $tamanho_bebida, $valor_bebida, $detalhes_bebida]);
             }
         }
     }
