@@ -61,6 +61,20 @@ enviarLancheBtns.forEach(btn => {
         detalheLancheCell.textContent = detalhesLanche;
         row.appendChild(detalheLancheCell);
 
+        const obsLancheBtnEditar = document.createElement('button');
+        obsLancheBtnEditar.className = 'text-center align-middle bg-primary text-white me-2 fw-bolder';
+        obsLancheBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>'; 
+        
+        const obsLancheBtnApagar = document.createElement('button');
+        obsLancheBtnApagar.className = 'text-center align-middle bg-danger text-white';
+        obsLancheBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+        const obsLancheCell = document.createElement('td');
+        obsLancheCell.className = 'text-center align-middle bg-light';
+        obsLancheCell.appendChild(obsLancheBtnEditar);
+        obsLancheCell.appendChild(obsLancheBtnApagar);
+        row.appendChild(obsLancheCell);  
+              
         if (cont == 1) {
             const mesaCell = document.createElement('spam');
             mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
@@ -150,6 +164,20 @@ enviarBebidaBtns.forEach(btn => {
         detalheBebidaCell.className = 'text-center align-middle bg-light';
         detalheBebidaCell.textContent = detalhesBebida;
         row.appendChild(detalheBebidaCell);
+
+        const obsBebidaBtnEditar = document.createElement('button');
+        obsBebidaBtnEditar.className = 'text-center align-middle bg-primary text-white me-2 fw-bolder';
+        obsBebidaBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>'; 
+        
+        const obsBebidaBtnApagar = document.createElement('button');
+        obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
+        obsBebidaBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+
+        const obsBebidaCell = document.createElement('td');
+        obsBebidaCell.className = 'text-center align-middle bg-light';
+        obsBebidaCell.appendChild(obsBebidaBtnEditar);
+        obsBebidaCell.appendChild(obsBebidaBtnApagar);
+        row.appendChild(obsBebidaCell);
 
         if (cont == 1) {
             const mesaCell = document.createElement('span');
