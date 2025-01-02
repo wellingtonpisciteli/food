@@ -16,15 +16,19 @@ const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="bu
 const pedidosDiv = document.getElementById('pedidos');
 const listaPedidos = document.getElementById('listaPedidos');
 const comandaMesa = document.getElementById('comandaMesa');
+const totalMesa = document.getElementById('totalMesa');
 const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
 
 let cont = 0
+let total = 0
+let conte = 1
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         event.preventDefault();
         cont += 1
+        conte += 1
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -34,6 +38,7 @@ enviarLancheBtns.forEach(btn => {
         const valorLanche = form.querySelector('input[name="valor_lanche"]').value;
         const detalhesLanche = form.querySelector('input[name="detalhesLanche"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
+        const a_lanche = form.querySelector('a[id="a_lanche"]')
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
@@ -63,11 +68,25 @@ enviarLancheBtns.forEach(btn => {
 
         const obsLancheBtnEditar = document.createElement('button');
         obsLancheBtnEditar.className = 'text-center align-middle bg-primary text-white me-2 fw-bolder';
-        obsLancheBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>'; 
+        obsLancheBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
+        obsLancheBtnEditar.onclick = () => {
+            window.location.href = a_lanche;
+        }; 
         
         const obsLancheBtnApagar = document.createElement('button');
         obsLancheBtnApagar.className = 'text-center align-middle bg-danger text-white';
         obsLancheBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        obsLancheBtnApagar.onclick = () => {
+            row.remove(); // Remove a linha inteira do DOM
+
+            // Coloca os inputs ocultos em um array
+            const hiddenInputs = [nomeLancheInput, valorInput, detalhesLancheInput, mesaInput];
+
+            // Itera sobre o array para remover os inputs
+            hiddenInputs.forEach(function(input){
+                input.remove();
+            });
+        }; 
 
         const obsLancheCell = document.createElement('td');
         obsLancheCell.className = 'text-center align-middle bg-light';
@@ -80,7 +99,7 @@ enviarLancheBtns.forEach(btn => {
             mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
             comandaMesa.appendChild(mesaCell);
         }
-
+    
         // Adiciona a nova linha à tabela
         listaPedidos.appendChild(row);
 
@@ -94,6 +113,15 @@ enviarLancheBtns.forEach(btn => {
         valorInput.type = 'hidden';
         valorInput.name = 'valor_lanche[]';
         valorInput.value = valorLanche;
+
+        const teste = [total += parseFloat(valorInput.value)]
+
+        const totalCell = document.createElement('spam');
+        totalCell.textContent = teste;
+        totalMesa.appendChild(totalCell);
+
+        console.log(total)
+        console.log(teste)
 
         const detalhesLancheInput = document.createElement('input');
         detalhesLancheInput.type = 'hidden';
@@ -164,18 +192,24 @@ enviarBebidaBtns.forEach(btn => {
         detalheBebidaCell.className = 'text-center align-middle bg-light';
         detalheBebidaCell.textContent = detalhesBebida;
         row.appendChild(detalheBebidaCell);
-
-        const obsBebidaBtnEditar = document.createElement('button');
-        obsBebidaBtnEditar.className = 'text-center align-middle bg-primary text-white me-2 fw-bolder';
-        obsBebidaBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>'; 
         
         const obsBebidaBtnApagar = document.createElement('button');
         obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
         obsBebidaBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        obsBebidaBtnApagar.onclick = () => {
+            row.remove(); // Remove a linha inteira do DOM
+
+            // Coloca os inputs ocultos em um array
+            const hiddenInputs = [nomeBebidaInput, valorBebidaInput, tamanhoBebidaInput, detalhesBebidaInput, mesaInput];
+
+            // Itera sobre o array para remover os inputs
+            hiddenInputs.forEach(function(input){
+                input.remove();
+            });
+        }; 
 
         const obsBebidaCell = document.createElement('td');
         obsBebidaCell.className = 'text-center align-middle bg-light';
-        obsBebidaCell.appendChild(obsBebidaBtnEditar);
         obsBebidaCell.appendChild(obsBebidaBtnApagar);
         row.appendChild(obsBebidaCell);
 
@@ -208,7 +242,6 @@ enviarBebidaBtns.forEach(btn => {
         detalhesBebidaInput.type = 'hidden';
         detalhesBebidaInput.name = 'detalhes_bebida[]';
         detalhesBebidaInput.value = detalhesBebida;
-
 
         const mesaInput = document.createElement('input');
         mesaInput.type = 'hidden';

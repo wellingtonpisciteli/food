@@ -23,6 +23,7 @@
                 {% for item in cardapio %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <!-- <input id="total_lanche" name="total_lanche" type="hidden" class="fw-bolder bg-light text-center"> -->
                     <th class="bg-light">
                         <span>{{ item.lanche }}</span>
                         <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">
@@ -32,7 +33,7 @@
                         <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
                     </td>
                     <td class="text-center align-middle bg-light">
-                        <a href="{{url('busca/'~item.id)}}">
+                        <a href="{{url('busca/'~item.id)}}" id="a_lanche">
                             <button class="text-center text-white fw-bolder bg-primary">
                                 <i id="editarLanche" class="fa-solid fa-pen-to-square"></i>
                             </button>
@@ -103,7 +104,7 @@
                             <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">LANCHES</th>
                             <th scope="col" class="text-center bg-light">PREÇO</th>
                             <th scope="col" class="text-center bg-light">OBS</th>
-                            <th scope="col" class="text-center bg-light">EDITAR</th>
+                            <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">EDITAR</th>
                         </tr>
                     </thead>
                     <tbody id="listaPedidos">
@@ -121,9 +122,12 @@
                         <!-- Os itens serão adicionados aqui dinamicamente -->
                     </tbody>
                 </table>
+                <h3 id="totalMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+                    Total:
+                </h3>
                 <div class="text-center mt-3">
-                    <input class="btn btn-primary" type="submit" value="Enviar" id="btnDiv" style="margin-bottom: 20px;">
-                    <input class="btn btn-danger" type="button" value="Cancelar" id="btnDivCancelar" style="margin-bottom: 20px;">
+                    <input class="btn btn-primary" type="submit" value="Enviar" id="btnDiv" style="margin-bottom: 25px;">
+                    <input class="btn btn-danger" type="button" value="Cancelar" id="btnDivCancelar" style="margin-bottom: 25px;">
                 </div>
             </form>
         </table>
