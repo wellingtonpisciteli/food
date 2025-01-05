@@ -23,7 +23,6 @@
                 {% for item in cardapio %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
-                    <!-- <input id="total_lanche" name="total_lanche" type="hidden" class="fw-bolder bg-light text-center"> -->
                     <th class="bg-light">
                         <span>{{ item.lanche }}</span>
                         <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">

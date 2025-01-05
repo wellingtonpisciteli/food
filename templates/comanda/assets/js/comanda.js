@@ -22,13 +22,11 @@ const btnDiv = document.getElementById('btnDiv');
 
 let cont = 0
 let total = 0
-let conte = 1
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         event.preventDefault();
         cont += 1
-        conte += 1
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -61,6 +59,17 @@ enviarLancheBtns.forEach(btn => {
         valorCell.textContent = `$${parseFloat(valorLanche).toFixed(2)}`;
         row.appendChild(valorCell);
 
+        let totalCell = document.querySelector('#totalMesa span'); // Verifica se já existe um <span> no totalMesa
+
+        if (!totalCell) {
+            // Se não existir, cria um novo elemento
+            totalCell = document.createElement('span');
+            totalMesa.appendChild(totalCell);
+        }
+
+        total += parseFloat(valorLanche); 
+        totalCell.textContent = `$${total.toFixed(2)}`;
+
         const detalheLancheCell = document.createElement('td');
         detalheLancheCell.className = 'text-center align-middle bg-light';
         detalheLancheCell.textContent = detalhesLanche;
@@ -86,6 +95,9 @@ enviarLancheBtns.forEach(btn => {
             hiddenInputs.forEach(function(input){
                 input.remove();
             });
+
+            total -= parseFloat(valorLanche); 
+            totalCell.textContent = `$${total.toFixed(2)}`;
         }; 
 
         const obsLancheCell = document.createElement('td');
@@ -95,7 +107,7 @@ enviarLancheBtns.forEach(btn => {
         row.appendChild(obsLancheCell);  
               
         if (cont == 1) {
-            const mesaCell = document.createElement('spam');
+            const mesaCell = document.createElement('span');
             mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
             comandaMesa.appendChild(mesaCell);
         }
@@ -112,17 +124,13 @@ enviarLancheBtns.forEach(btn => {
         const valorInput = document.createElement('input');
         valorInput.type = 'hidden';
         valorInput.name = 'valor_lanche[]';
-        valorInput.value = valorLanche;
+        valorInput.value = valorLanche; 
 
-        const teste = [total += parseFloat(valorInput.value)]
-
-        const totalCell = document.createElement('spam');
-        totalCell.textContent = teste;
-        totalMesa.appendChild(totalCell);
-
-        console.log(total)
-        console.log(teste)
-
+        const totalInput = document.createElement('input');
+        totalInput.type = 'hidden';
+        totalInput.name = 'total_mesa[]';
+        totalInput.value = total;
+        
         const detalhesLancheInput = document.createElement('input');
         detalhesLancheInput.type = 'hidden';
         detalhesLancheInput.name = 'detalhes_lanche[]';
@@ -142,6 +150,7 @@ enviarLancheBtns.forEach(btn => {
 
         pedidosDiv.appendChild(nomeLancheInput);
         pedidosDiv.appendChild(valorInput);
+        pedidosDiv.appendChild(totalInput);
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(detalhesLancheInput);
     });
@@ -187,6 +196,17 @@ enviarBebidaBtns.forEach(btn => {
         valorBebidaCell.style.color = 'blue';
         valorBebidaCell.textContent = `$${parseFloat(valorBebida).toFixed(2)}`;
         row.appendChild(valorBebidaCell);
+    
+        let totalCell = document.querySelector('#totalMesa span'); // Verifica se já existe um <span> no totalMesa
+
+        if (!totalCell) {
+            // Se não existir, cria um novo elemento
+            totalCell = document.createElement('span');
+            totalMesa.appendChild(totalCell);
+        }
+
+        total += parseFloat(valorBebida);
+        totalCell.textContent = `$${total.toFixed(2)}`;
 
         const detalheBebidaCell = document.createElement('td');
         detalheBebidaCell.className = 'text-center align-middle bg-light';
@@ -206,6 +226,9 @@ enviarBebidaBtns.forEach(btn => {
             hiddenInputs.forEach(function(input){
                 input.remove();
             });
+
+            total -= parseFloat(valorBebida); 
+            totalCell.textContent = `$${total.toFixed(2)}`;
         }; 
 
         const obsBebidaCell = document.createElement('td');
@@ -233,6 +256,13 @@ enviarBebidaBtns.forEach(btn => {
         valorBebidaInput.name = 'valor_bebida[]';
         valorBebidaInput.value = valorBebida;
 
+        const totalbebidaInput = document.createElement('input');
+        totalbebidaInput.type = 'hidden';
+        totalbebidaInput.name = 'total_mesa[]';
+        totalbebidaInput.value = total;
+
+        console.log(totalbebidaInput)
+
         const tamanhoBebidaInput = document.createElement('input');
         tamanhoBebidaInput.type = 'hidden';
         tamanhoBebidaInput.name = 'tamanho_bebida[]';
@@ -250,6 +280,7 @@ enviarBebidaBtns.forEach(btn => {
 
         pedidosDiv.appendChild(nomeBebidaInput);
         pedidosDiv.appendChild(valorBebidaInput);
+        pedidosDiv.appendChild(totalbebidaInput);
         pedidosDiv.appendChild(tamanhoBebidaInput);
         pedidosDiv.appendChild(detalhesBebidaInput);
         pedidosDiv.appendChild(mesaInput); 
