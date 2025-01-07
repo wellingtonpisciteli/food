@@ -3,6 +3,7 @@
 namespace sistema\Modelo;
 
 use sistema\Nucleo\Conexao;
+use sistema\Nucleo\Helpers;
 
 class ComandaModelo{
     public function ler(string $tabela, string $nome):array | object
@@ -56,12 +57,13 @@ class ComandaModelo{
             $valor_bebida=$dados['valor_bebida'][$index];
             $detalhes_bebida=$dados['detalhes_bebida'][$index];
 
-            $total=$dados['total_mesa'][$index];
+            $total=$dados['total'][$index];
 
             if (!empty($nome_lanche) || !empty($nome_bebida)) {
                 $stmt->execute([$mesa, $nome_lanche, $valor_lanche, $detalhes_lanche,  $nome_bebida, $tamanho_bebida, $valor_bebida, $detalhes_bebida, $total]);
             }
         }
+
     }
     
 }

@@ -21,6 +21,8 @@ const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
 
 let cont = 0
+let totalLanche = 0
+let totalBebida = 0
 let total = 0
 
 enviarLancheBtns.forEach(btn => {
@@ -67,7 +69,12 @@ enviarLancheBtns.forEach(btn => {
             totalMesa.appendChild(totalCell);
         }
 
-        total += parseFloat(valorLanche); 
+        totalLanche += parseFloat(valorLanche);
+        
+        total = (totalBebida+totalLanche)
+
+        console.log("Total: "+ (total = (totalBebida+totalLanche)))
+
         totalCell.textContent = `$${total.toFixed(2)}`;
 
         const detalheLancheCell = document.createElement('td');
@@ -116,30 +123,35 @@ enviarLancheBtns.forEach(btn => {
         listaPedidos.appendChild(row);
 
         // Cria inputs ocultos para envio no formulário
+        const mesaInput = document.createElement('input');
+        mesaInput.type = 'hidden';
+        mesaInput.name = 'mesa[]';
+        mesaInput.value = mesaPedido;
+
         const nomeLancheInput = document.createElement('input');
         nomeLancheInput.type = 'hidden';
         nomeLancheInput.name = 'nome_lanche[]';
         nomeLancheInput.value = nomeLanche;
-
+        
         const valorInput = document.createElement('input');
         valorInput.type = 'hidden';
         valorInput.name = 'valor_lanche[]';
         valorInput.value = valorLanche; 
-
-        const totalInput = document.createElement('input');
-        totalInput.type = 'hidden';
-        totalInput.name = 'total_mesa[]';
-        totalInput.value = total;
         
         const detalhesLancheInput = document.createElement('input');
         detalhesLancheInput.type = 'hidden';
         detalhesLancheInput.name = 'detalhes_lanche[]';
         detalhesLancheInput.value = detalhesLanche;
 
-        const mesaInput = document.createElement('input');
-        mesaInput.type = 'hidden';
-        mesaInput.name = 'mesa[]';
-        mesaInput.value = mesaPedido;
+        btnDiv.addEventListener("click", ()=>{
+            const totalInput = document.createElement('input');
+            totalInput.type = 'hidden';
+            totalInput.name = 'total[]';
+            totalInput.value = total;
+
+            pedidosDiv.appendChild(totalInput);
+
+        })
         
         btnDivCancelar.addEventListener('click', ()=>{
             let confirma = confirm("Cancelar?")
@@ -148,10 +160,9 @@ enviarLancheBtns.forEach(btn => {
             }
         })
 
+        pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(nomeLancheInput);
         pedidosDiv.appendChild(valorInput);
-        pedidosDiv.appendChild(totalInput);
-        pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(detalhesLancheInput);
     });
 });
@@ -205,7 +216,10 @@ enviarBebidaBtns.forEach(btn => {
             totalMesa.appendChild(totalCell);
         }
 
-        total += parseFloat(valorBebida);
+        totalBebida += parseFloat(valorBebida);
+
+        total = (totalBebida+totalLanche)
+
         totalCell.textContent = `$${total.toFixed(2)}`;
 
         const detalheBebidaCell = document.createElement('td');
@@ -246,44 +260,45 @@ enviarBebidaBtns.forEach(btn => {
         listaBebidas.appendChild(row);
 
         // Cria inputs ocultos para envio no formulário
+        const mesaInput = document.createElement('input');
+        mesaInput.type = 'hidden';
+        mesaInput.name = 'mesa[]';
+        mesaInput.value = mesaPedido;
+
         const nomeBebidaInput = document.createElement('input');
         nomeBebidaInput.type = 'hidden';
         nomeBebidaInput.name = 'nome_bebida[]';
         nomeBebidaInput.value = nomeBebida;
-
-        const valorBebidaInput = document.createElement('input');
-        valorBebidaInput.type = 'hidden';
-        valorBebidaInput.name = 'valor_bebida[]';
-        valorBebidaInput.value = valorBebida;
-
-        const totalbebidaInput = document.createElement('input');
-        totalbebidaInput.type = 'hidden';
-        totalbebidaInput.name = 'total_mesa[]';
-        totalbebidaInput.value = total;
-
-        console.log(totalbebidaInput)
 
         const tamanhoBebidaInput = document.createElement('input');
         tamanhoBebidaInput.type = 'hidden';
         tamanhoBebidaInput.name = 'tamanho_bebida[]';
         tamanhoBebidaInput.value = tamanhoBebida;
 
+        const valorBebidaInput = document.createElement('input');
+        valorBebidaInput.type = 'hidden';
+        valorBebidaInput.name = 'valor_bebida[]';
+        valorBebidaInput.value = valorBebida;
+
         const detalhesBebidaInput = document.createElement('input');
         detalhesBebidaInput.type = 'hidden';
         detalhesBebidaInput.name = 'detalhes_bebida[]';
         detalhesBebidaInput.value = detalhesBebida;
 
-        const mesaInput = document.createElement('input');
-        mesaInput.type = 'hidden';
-        mesaInput.name = 'mesa[]';
-        mesaInput.value = mesaPedido;
+        btnDiv.addEventListener("click", ()=>{
+            const totalbebidaInput = document.createElement('input');
+            totalbebidaInput.type = 'hidden';
+            totalbebidaInput.name = 'total[]';
+            totalbebidaInput.value = total;
 
-        pedidosDiv.appendChild(nomeBebidaInput);
-        pedidosDiv.appendChild(valorBebidaInput);
-        pedidosDiv.appendChild(totalbebidaInput);
-        pedidosDiv.appendChild(tamanhoBebidaInput);
-        pedidosDiv.appendChild(detalhesBebidaInput);
+            pedidosDiv.appendChild(totalbebidaInput);
+        })
+
         pedidosDiv.appendChild(mesaInput); 
+        pedidosDiv.appendChild(nomeBebidaInput);
+        pedidosDiv.appendChild(tamanhoBebidaInput);
+        pedidosDiv.appendChild(valorBebidaInput);
+        pedidosDiv.appendChild(detalhesBebidaInput);
     });
 });
 
