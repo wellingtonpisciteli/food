@@ -56,8 +56,8 @@ enviarLancheBtns.forEach(btn => {
         row.appendChild(nomeLancheCell);
 
         const valorCell = document.createElement('td');
-        valorCell.className = 'text-center align-middle bg-light fw-bold';
-        valorCell.style.color = 'blue';
+        valorCell.className = 'text-center align-middle bg-light fw-bolder';
+        valorCell.style = 'color: blue;'
         valorCell.textContent = `$${parseFloat(valorLanche).toFixed(2)}`;
         row.appendChild(valorCell);
 
@@ -69,11 +69,7 @@ enviarLancheBtns.forEach(btn => {
             totalMesa.appendChild(totalCell);
         }
 
-        totalLanche += parseFloat(valorLanche);
-        
-        total = (totalBebida+totalLanche)
-
-        console.log("Total: "+ (total = (totalBebida+totalLanche)))
+        total += parseFloat(valorLanche);
 
         totalCell.textContent = `$${total.toFixed(2)}`;
 
@@ -83,14 +79,16 @@ enviarLancheBtns.forEach(btn => {
         row.appendChild(detalheLancheCell);
 
         const obsLancheBtnEditar = document.createElement('button');
-        obsLancheBtnEditar.className = 'text-center align-middle bg-primary text-white me-2 fw-bolder';
+        obsLancheBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
+        obsLancheBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
         obsLancheBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
         obsLancheBtnEditar.onclick = () => {
             window.location.href = a_lanche;
         }; 
         
         const obsLancheBtnApagar = document.createElement('button');
-        obsLancheBtnApagar.className = 'text-center align-middle bg-danger text-white';
+        obsLancheBtnApagar.className = 'text-center align-middle text-white';
+        obsLancheBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
         obsLancheBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsLancheBtnApagar.onclick = () => {
             row.remove(); // Remove a linha inteira do DOM
@@ -216,9 +214,7 @@ enviarBebidaBtns.forEach(btn => {
             totalMesa.appendChild(totalCell);
         }
 
-        totalBebida += parseFloat(valorBebida);
-
-        total = (totalBebida+totalLanche)
+        total += parseFloat(valorBebida);
 
         totalCell.textContent = `$${total.toFixed(2)}`;
 
@@ -229,6 +225,7 @@ enviarBebidaBtns.forEach(btn => {
         
         const obsBebidaBtnApagar = document.createElement('button');
         obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
+        obsBebidaBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
         obsBebidaBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsBebidaBtnApagar.onclick = () => {
             row.remove(); // Remove a linha inteira do DOM

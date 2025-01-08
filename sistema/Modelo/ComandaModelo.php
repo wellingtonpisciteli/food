@@ -48,16 +48,16 @@ class ComandaModelo{
         $stmt=Conexao::getInstancia()->prepare($querry);
 
         foreach($dados['mesa'] as $index=>$mesa){
-            $nome_lanche=$dados['nome_lanche'][$index];
-            $valor_lanche=$dados['valor_lanche'][$index];
-            $detalhes_lanche=$dados['detalhes_lanche'][$index];
+            $nome_lanche=$dados['nome_lanche'][$index] ?? null;
+            $valor_lanche=$dados['valor_lanche'][$index] ?? null;
+            $detalhes_lanche=$dados['detalhes_lanche'][$index] ?? null;
 
-            $nome_bebida=$dados['nome_bebida'][$index];
-            $tamanho_bebida=$dados['tamanho_bebida'][$index];
-            $valor_bebida=$dados['valor_bebida'][$index];
-            $detalhes_bebida=$dados['detalhes_bebida'][$index];
+            $nome_bebida=$dados['nome_bebida'][$index] ?? null;
+            $tamanho_bebida=$dados['tamanho_bebida'][$index] ?? null;
+            $valor_bebida=$dados['valor_bebida'][$index] ?? null;
+            $detalhes_bebida=$dados['detalhes_bebida'][$index] ?? null;
 
-            $total=$dados['total'][$index];
+            $total=$dados['total'][$index] ?? null;
 
             if (!empty($nome_lanche) || !empty($nome_bebida)) {
                 $stmt->execute([$mesa, $nome_lanche, $valor_lanche, $detalhes_lanche,  $nome_bebida, $tamanho_bebida, $valor_bebida, $detalhes_bebida, $total]);
