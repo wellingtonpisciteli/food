@@ -2,12 +2,12 @@ const numMesaInput = document.getElementById('nummesa'); // Campo principal da m
 const mesaInputs = document.querySelectorAll('input[name="mesa_pedido"]');
 
 // Atualiza o valor de todos os campos "mesa_pedido" ao digitar no campo "nummesa"
-numMesaInput.addEventListener('input', () => {
-    const numMesaValue = numMesaInput.value;
-    mesaInputs.forEach(mesaInput => {
-        mesaInput.value = numMesaValue; // Atualiza todos os campos "mesa_pedido"
+if (numMesaInput) {
+    numMesaInput.addEventListener('input', () => {
+        console.log('Valor da mesa:', numMesaInput.value);
+        // Insira aqui o código necessário para essa funcionalidade
     });
-});
+}
 
 // Captura o botão para adicionar um lanche
 const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="button"]');
@@ -298,6 +298,25 @@ enviarBebidaBtns.forEach(btn => {
         pedidosDiv.appendChild(detalhesBebidaInput);
     });
 });
+
+const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
+    
+enviarIngrediBtns.forEach(btn => {
+btn.addEventListener('click', (event) => {
+    event.preventDefault();
+
+    const form = btn.closest('tr');
+
+    const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
+    const nomeLanche = form.querySelector('input[name="nome_lanche"]').value;
+
+    console.log(nomeLanche + " + " + nomeIngredi);
+});
+});
+
+
+
+
 
 
 
