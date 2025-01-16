@@ -44,6 +44,7 @@ class SiteControlador extends Controlador{
         $cardapio_bebida=(new ComandaModelo())->ler("marcas_bebida", "marca");
         $tamanho_bebida=(new ComandaModelo())->ler("tamanho_bebida", "tamanho");
         $pedido=(new ComandaModelo())->ler("pedidos", "nome_lanche");
+        $ingredi=(new ComandaModelo())->ler("ingredientes", "ingrediente");
 
         echo($this->template->renderizar('adicionar.html', [
             'titulo'=>'Adicionar',
@@ -51,7 +52,8 @@ class SiteControlador extends Controlador{
             'cardapio_bebida'=>$cardapio_bebida,
             'tamanhoBebida'=>$tamanho_bebida,
             'ingred'=>$ingred,
-            'pedido'=>$pedido
+            'pedido'=>$pedido,
+            'ingredientes'=>$ingredi
         ]));
     }
 
@@ -62,13 +64,11 @@ class SiteControlador extends Controlador{
         $ingred=(new ComandaModelo())->ler("ingredientes", "ingrediente");
         $lanche_ingred=(new ComandaModelo())->lerRelacao("lanche_ingredientes", "lanche_id", $id);
 
-        echo($this->template->renderizar('modal.html', [
-            'busca'=>$buscaId,
+            ['busca'=>$buscaId,
             'cardapio'=>$cardapio,
             'ingredientes'=>$ingred,
-            'lanche_ingredi'=>$lanche_ingred
-        ]));
-
+            'lanche_ingredi'=>$lanche_ingred];
+      
     } 
 
     public function cadastrar():void{

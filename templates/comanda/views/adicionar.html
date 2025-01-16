@@ -32,11 +32,16 @@
                         <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
                     </td>
                     <td class="text-center align-middle bg-light">
-                        <a href="{{url('busca/'~item.id)}}" id="a_lanche">
-                            <button class="text-center text-white fw-bolder" style="border-radius: 4px; background-color:#343aeb; border: #1c1f8f; width: 30px;">
+                        <div class="enviarIngredi">
+                            <button 
+                                type="button"
+                                class="text-center text-white fw-bolder" style="border-radius: 4px; background-color:#343aeb; border: #1c1f8f; width: 30px;"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#lancheModal" 
+                                data-lanche-id="{{ item.id }}">
                                 <i id="editarLanche" class="fa-solid fa-pen-to-square"></i>
                             </button>
-                        </a>
+                        </div>
                     </td>
                     <td class="text-center align-middle bg-light" style="width: 10%;">
                         <input type="text" id="detalhesLanche" name="detalhesLanche" class="bg-light w-100">
@@ -132,5 +137,66 @@
         </table>
     </div>  
 </div>
+
+<!-- Estrutura do Modal -->
+<div class="modal fade" id="lancheModal" tabindex="-1" aria-labelledby="lancheModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADICIONAR | REMOVER</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="adicionarLanches">
+                    <div class="table-responsive">       
+                        <form action="" method="post">
+                            <table class="table" id="editar">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">
+                                            INGRDIENTES
+                                        </th>
+                                        <th scope="col" class="text-center bg-light">PREÇO</th>
+                                        <th scope="col" class="text-center bg-light">ADICIONAR</th>
+                                        <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">RETIRAR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for ingred in ingredientes %}
+                                    <tr>
+                                        <th class="bg-light">
+                                            {{ ingred.ingrediente }}
+                                            <input type="hidden" id="nome_ingredi" name="nome_ingredi" value="{{ ingred.ingrediente }}">
+                                        </th>
+                                        <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                                            ${{ ingred.valor | number_format(2, ',', '.') }}
+                                            <input type="hidden" id="valor_ingredi" name="valor_ingredi" value="{{ ingred.valor }}">
+                                        </td>
+                                        <td class="text-center align-middle bg-light">
+                                            <div class="testeIngredi">
+                                                <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                                            </div>
+                                        </td>
+                                        <td class="text-center align-middle bg-light">
+                                            <input id="editarLanche" type="button" class="text-center fw-bolder text-white" value="-" style="border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;">
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                
+                            <div class="text-center" style="margin-top: 20px; ">
+                                <button type="submit" class="btn btn-primary fw-bold mx-1" style="width: 130px; border-radius: 0px 0px 0px 10px;">CONFIRMAR</button>
+                                <button type="submit" class="btn btn-danger fw-bold mx-1" style="width: 130px; border-radius: 0px 10px 0px 0px;">CANCELAR</button>
+                            </div>
+                        </form>
+                    </div>  
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}

@@ -24,6 +24,8 @@ let cont = 0
 let totalLanche = 0
 let totalBebida = 0
 let total = 0
+let ingred = ""
+let lanche_ingredi = ""
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
@@ -36,6 +38,8 @@ enviarLancheBtns.forEach(btn => {
         // Captura os dados do lanche e da mesa
         const nomeLanche = form.querySelector('input[name="lanche"]').value;
         const valorLanche = form.querySelector('input[name="valor_lanche"]').value;
+        lanche_ingredi = nomeLanche
+        console.log(lanche_ingredi)
         const detalhesLanche = form.querySelector('input[name="detalhesLanche"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
         const a_lanche = form.querySelector('a[id="a_lanche"]')
@@ -299,7 +303,8 @@ enviarBebidaBtns.forEach(btn => {
     });
 });
 
-const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
+const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi button[type="button"]');
+const enviarIngredi = document.querySelectorAll('.testeIngredi');
     
 enviarIngrediBtns.forEach(btn => {
 btn.addEventListener('click', (event) => {
@@ -307,11 +312,19 @@ btn.addEventListener('click', (event) => {
 
     const form = btn.closest('tr');
 
-    const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
-    const nomeLanche = form.querySelector('input[name="nome_lanche"]').value;
+    const nomeLanche = form.querySelector('input[name="lanche"]').value;
 
-    console.log(nomeLanche + " + " + nomeIngredi);
-});
+    // Cria uma nova linha na tabela do formulário
+    const row = document.createElement('tr');
+
+    const nomeLancheCell = document.createElement('th');
+    nomeLancheCell.className = 'bg-light text-primary';
+    nomeLancheCell.textContent = nomeLanche;
+    row.appendChild(nomeLancheCell);
+
+    //TENHO QUE ARRUMAR ESSA QUESTÃO DO MODAL, AGORA EU TROUXE O MODAL PARA DENTRO DO ADICIONAR E VOU TENTAR INTEGRAR TUDO.
+    })
+
 });
 
 

@@ -1,20 +1,12 @@
-{% extends 'base.html' %}
-{% block conteudo %}
 
-<!-- <header class="text-center bg-dark" id="adicionarHeader">
-    <h1 class="text-white">
-        {{ busca.lanche }}
-    </h1>
-</header> -->
-
-<div class="w-100 bg-dark" id="adicionarLanches">
+<div id="adicionarLanches">
     <div class="table-responsive">       
         <form action="" method="post">
-            <table class="table" id="editar" style="margin-bottom: 30px; margin-top: 50px;">
+            <table class="table" id="editar">
                 <thead>
                     <tr>
                         <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">
-                            {{ busca.lanche | upper }}
+                            INGRDIENTES
                         </th>
                         <th scope="col" class="text-center bg-light">PREÇO</th>
                         <th scope="col" class="text-center bg-light">ADICIONAR</th>
@@ -24,16 +16,16 @@
                 <tbody>
                     {% for ingred in ingredientes %}
                     <tr>
-                        <input type="hidden" id="nome_lanche" name="nome_lanche" value="{{ busca.lanche }}">
                         <th class="bg-light">
                             {{ ingred.ingrediente }}
                             <input type="hidden" id="nome_ingredi" name="nome_ingredi" value="{{ ingred.ingrediente }}">
                         </th>
                         <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
                             ${{ ingred.valor | number_format(2, ',', '.') }}
+                            <input type="hidden" id="valor_ingredi" name="valor_ingredi" value="{{ ingred.valor }}">
                         </td>
                         <td class="text-center align-middle bg-light">
-                            <div class="enviarIngredi">
+                            <div class="testeIngredi">
                                 <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
                             </div>
                         </td>
@@ -45,7 +37,7 @@
                 </tbody>
             </table>
 
-            <div class="text-center" style="margin-bottom: 30px; margin-top: -20px; ">
+            <div class="text-center" style="margin-top: 20px; ">
                 <button type="submit" class="btn btn-primary fw-bold mx-1" style="width: 130px; border-radius: 0px 0px 0px 10px;">CONFIRMAR</button>
                 <button type="submit" class="btn btn-danger fw-bold mx-1" style="width: 130px; border-radius: 0px 10px 0px 0px;">CANCELAR</button>
             </div>
@@ -53,5 +45,4 @@
     </div>  
 </div>
 
-{% endblock %}
 
