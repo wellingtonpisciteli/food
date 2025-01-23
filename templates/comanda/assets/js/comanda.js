@@ -303,28 +303,32 @@ enviarBebidaBtns.forEach(btn => {
     });
 });
 
-const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi button[type="button"]');
-const enviarIngredi = document.querySelectorAll('.testeIngredi');
+const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
     
-enviarIngrediBtns.forEach(btn => {
+enviarIngrediBtns.forEach((btn) => {
 btn.addEventListener('click', (event) => {
     event.preventDefault();
 
     const form = btn.closest('tr');
 
-    const nomeLanche = form.querySelector('input[name="lanche"]').value;
+    const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
 
-    // Cria uma nova linha na tabela do formulário
-    const row = document.createElement('tr');
+    let ingredCell = document.querySelector('#listaPedidos div'); // Verifica se já existe um <span> no totalMesa
 
-    const nomeLancheCell = document.createElement('th');
-    nomeLancheCell.className = 'bg-light text-primary';
-    nomeLancheCell.textContent = nomeLanche;
-    row.appendChild(nomeLancheCell);
+    if(!ingredCell){
+        const ingredCell = document.createElement('div');
+        ingredCell.className = 'row'
+        listaPedidos.appendChild(ingredCell)
+    }
 
-    //TENHO QUE ARRUMAR ESSA QUESTÃO DO MODAL, AGORA EU TROUXE O MODAL PARA DENTRO DO ADICIONAR E VOU TENTAR INTEGRAR TUDO.
+    const nomeIngrediCell = document.createElement('span');
+    nomeIngrediCell.className = 'col bg-light text-black';
+    nomeIngrediCell.textContent = " + " + nomeIngredi;    
+    
+    listaPedidos.appendChild(nomeIngrediCell)
+
     })
-
+    
 });
 
 

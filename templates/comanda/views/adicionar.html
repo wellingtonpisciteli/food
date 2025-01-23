@@ -32,7 +32,6 @@
                         <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
                     </td>
                     <td class="text-center align-middle bg-light">
-                        <div class="enviarIngredi">
                             <button 
                                 type="button"
                                 class="text-center text-white fw-bolder" style="border-radius: 4px; background-color:#343aeb; border: #1c1f8f; width: 30px;"
@@ -41,7 +40,6 @@
                                 data-lanche-id="{{ item.id }}">
                                 <i id="editarLanche" class="fa-solid fa-pen-to-square"></i>
                             </button>
-                        </div>
                     </td>
                     <td class="text-center align-middle bg-light" style="width: 10%;">
                         <input type="text" id="detalhesLanche" name="detalhesLanche" class="bg-light w-100">
@@ -173,7 +171,7 @@
                                             <input type="hidden" id="valor_ingredi" name="valor_ingredi" value="{{ ingred.valor }}">
                                         </td>
                                         <td class="text-center align-middle bg-light">
-                                            <div class="testeIngredi">
+                                            <div class="enviarIngredi">
                                                 <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
                                             </div>
                                         </td>
