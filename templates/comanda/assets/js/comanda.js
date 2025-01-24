@@ -42,7 +42,6 @@ enviarLancheBtns.forEach(btn => {
         console.log(lanche_ingredi)
         const detalhesLanche = form.querySelector('input[name="detalhesLanche"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
-        const a_lanche = form.querySelector('a[id="a_lanche"]')
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
@@ -86,9 +85,8 @@ enviarLancheBtns.forEach(btn => {
         obsLancheBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
         obsLancheBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
         obsLancheBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
-        obsLancheBtnEditar.onclick = () => {
-            window.location.href = a_lanche;
-        }; 
+        obsLancheBtnEditar.setAttribute('data-bs-target', '#lancheModal');
+        obsLancheBtnEditar.setAttribute('data-bs-toggle', 'modal');
         
         const obsLancheBtnApagar = document.createElement('button');
         obsLancheBtnApagar.className = 'text-center align-middle text-white';
@@ -226,6 +224,11 @@ enviarBebidaBtns.forEach(btn => {
         detalheBebidaCell.className = 'text-center align-middle bg-light';
         detalheBebidaCell.textContent = detalhesBebida;
         row.appendChild(detalheBebidaCell);
+
+        const obsBebidaBtnEditar = document.createElement('button');
+        obsBebidaBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
+        obsBebidaBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
+        obsBebidaBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
         
         const obsBebidaBtnApagar = document.createElement('button');
         obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
@@ -248,6 +251,7 @@ enviarBebidaBtns.forEach(btn => {
 
         const obsBebidaCell = document.createElement('td');
         obsBebidaCell.className = 'text-center align-middle bg-light';
+        obsBebidaCell.appendChild(obsBebidaBtnEditar);
         obsBebidaCell.appendChild(obsBebidaBtnApagar);
         row.appendChild(obsBebidaCell);
 
@@ -306,30 +310,106 @@ enviarBebidaBtns.forEach(btn => {
 const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
     
 enviarIngrediBtns.forEach((btn) => {
-btn.addEventListener('click', (event) => {
-    event.preventDefault();
+    btn.addEventListener('click', (event) => {
+        event.preventDefault();
 
-    const form = btn.closest('tr');
+        const form = btn.closest('tr');
 
-    const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
+        const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
+        const valorIngredi = form.querySelector('input[name="valor_ingredi"]').value;
 
-    let ingredCell = document.querySelector('#listaPedidos div'); // Verifica se já existe um <span> no totalMesa
+        const row = document.createElement('tr');
 
-    if(!ingredCell){
-        const ingredCell = document.createElement('div');
-        ingredCell.className = 'row'
-        listaPedidos.appendChild(ingredCell)
-    }
+        const nomeIngrediCell = document.createElement('td');
+        nomeIngrediCell.className = 'col bg-light';
+        nomeIngrediCell.style.color = 'green';
+        nomeIngrediCell.textContent = " + " + nomeIngredi;     
+        row.appendChild(nomeIngrediCell)
 
-    const nomeIngrediCell = document.createElement('span');
-    nomeIngrediCell.className = 'col bg-light text-black';
-    nomeIngrediCell.textContent = " + " + nomeIngredi;    
-    
-    listaPedidos.appendChild(nomeIngrediCell)
+        const valorIngrediCell = document.createElement('td');
+        valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
+        valorIngrediCell.style.color = 'green';
+        valorIngrediCell.textContent = `+ $${parseFloat(valorIngredi).toFixed(2)}`;     
+        row.appendChild(valorIngrediCell)
 
-    })
-    
+        const detalheIngrediCell = document.createElement('td');
+        detalheIngrediCell.className = 'text-center align-middle bg-light';
+        row.appendChild(detalheIngrediCell);
+
+        const ingrediBtnEditar = document.createElement('button');
+        ingrediBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
+        ingrediBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
+        ingrediBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
+
+        const ingrediBtnApagar = document.createElement('button');
+        ingrediBtnApagar.className = 'text-center align-middle bg-danger text-white';
+        ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        ingrediBtnApagar.onclick = () => {
+            row.remove(); // Remove a linha inteira do DOM
+        }
+
+        const ingrediBtnCell = document.createElement('td');
+        ingrediBtnCell.className = 'text-center align-middle bg-light';
+        ingrediBtnCell.appendChild(ingrediBtnEditar);
+        ingrediBtnCell.appendChild(ingrediBtnApagar);
+        row.appendChild(ingrediBtnCell);
+
+        listaPedidos.appendChild(row);
+    })   
 });
+
+const removerIngrediBtns = document.querySelectorAll('.removerIngredi input[type="button"]');
+    
+removerIngrediBtns.forEach((btn) => {
+    btn.addEventListener('click', (event) => {
+        event.preventDefault();
+
+        const form = btn.closest('tr');
+
+        const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
+
+        const row = document.createElement('tr');
+
+        const nomeIngrediCell = document.createElement('td');
+        nomeIngrediCell.className = 'col bg-light';
+        nomeIngrediCell.style.color = 'red';
+        nomeIngrediCell.textContent = " - " + nomeIngredi;     
+        row.appendChild(nomeIngrediCell)
+
+        const valorIngrediCell = document.createElement('td');
+        valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
+        valorIngrediCell.textContent = `$${parseFloat(0).toFixed(2)}`;     
+        row.appendChild(valorIngrediCell)
+
+        const detalheIngrediCell = document.createElement('td');
+        detalheIngrediCell.className = 'text-center align-middle bg-light';
+        row.appendChild(detalheIngrediCell);
+
+        const ingrediBtnEditar = document.createElement('button');
+        ingrediBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
+        ingrediBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
+        ingrediBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
+
+        const ingrediBtnApagar = document.createElement('button');
+        ingrediBtnApagar.className = 'text-center align-middle bg-danger text-white';
+        ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        ingrediBtnApagar.onclick = () => {
+            row.remove(); // Remove a linha inteira do DOM
+        }
+
+        const ingrediBtnCell = document.createElement('td');
+        ingrediBtnCell.className = 'text-center align-middle bg-light';
+        ingrediBtnCell.appendChild(ingrediBtnEditar);
+        ingrediBtnCell.appendChild(ingrediBtnApagar);
+        row.appendChild(ingrediBtnCell);
+
+        listaPedidos.appendChild(row);
+    })   
+});
+
+
 
 
 
