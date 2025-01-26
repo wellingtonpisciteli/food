@@ -43,27 +43,43 @@ class ComandaModelo{
      *
      * @return void
      */
-    public function armazenarPedido(array $dados):void{
-        $querry="INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, detalhes_lanche, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt=Conexao::getInstancia()->prepare($querry);
+    public function armazenarPedido(array $dados): void
+{
+    $query = "INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, detalhes_lanche, nome_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $stmt = Conexao::getInstancia()->prepare($query);
 
-        foreach($dados['mesa'] as $index=>$mesa){
-            $nome_lanche=$dados['nome_lanche'][$index] ?? null;
-            $valor_lanche=$dados['valor_lanche'][$index] ?? null;
-            $detalhes_lanche=$dados['detalhes_lanche'][$index] ?? null;
+    foreach ($dados['mesa'] as $index => $mesa) {
+        $nome_lanche = $dados['nome_lanche'][$index] ?? null;
+        $valor_lanche = $dados['valor_lanche'][$index] ?? null;
+        $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
 
-            $nome_bebida=$dados['nome_bebida'][$index] ?? null;
-            $tamanho_bebida=$dados['tamanho_bebida'][$index] ?? null;
-            $valor_bebida=$dados['valor_bebida'][$index] ?? null;
-            $detalhes_bebida=$dados['detalhes_bebida'][$index] ?? null;
+        // Aqui, você pega a string de ingredientes concatenados
+        $nome_ingredi = $dados['ingredientes_concatenados'] ?? null; // Ingredientes agora em uma única string
+        $valor_ingredi = $dados['valor_ingredi'][$index] ?? null; // Valor total dos ingredientes
 
-            $total=$dados['total'][$index] ?? null;
+        $nome_bebida = $dados['nome_bebida'][$index] ?? null;
+        $tamanho_bebida = $dados['tamanho_bebida'][$index] ?? null;
+        $valor_bebida = $dados['valor_bebida'][$index] ?? null;
+        $detalhes_bebida = $dados['detalhes_bebida'][$index] ?? null;
 
-            if (!empty($nome_lanche) || !empty($nome_bebida)) {
-                $stmt->execute([$mesa, $nome_lanche, $valor_lanche, $detalhes_lanche,  $nome_bebida, $tamanho_bebida, $valor_bebida, $detalhes_bebida, $total]);
-            }
+        $total = $dados['total'][$index] ?? null;
+
+        if (!empty($nome_lanche) || !empty($nome_bebida)) {
+            $stmt->execute([
+                $mesa,
+                $nome_lanche,
+                $valor_lanche,
+                $detalhes_lanche,
+                $nome_ingredi,  // Ingredientes concatenados
+                $valor_ingredi, // Valor total dos ingredientes
+                $nome_bebida,
+                $tamanho_bebida,
+                $valor_bebida,
+                $detalhes_bebida,
+                $total
+            ]);
         }
-
     }
+}
     
 }

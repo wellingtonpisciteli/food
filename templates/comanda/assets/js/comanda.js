@@ -309,6 +309,8 @@ enviarBebidaBtns.forEach(btn => {
 
 const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
     
+let ingredientesConcatenados = ''; // Variável para armazenar os ingredientes concatenados
+
 enviarIngrediBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
         event.preventDefault();
@@ -318,19 +320,28 @@ enviarIngrediBtns.forEach((btn) => {
         const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
         const valorIngredi = form.querySelector('input[name="valor_ingredi"]').value;
 
+        // Atualiza os ingredientes concatenados
+        if (ingredientesConcatenados) {
+            ingredientesConcatenados += ` + ${nomeIngredi}`;
+        } else {
+            ingredientesConcatenados = nomeIngredi;
+        }
+        
+        
+        // Atualiza a exibição da tabela
         const row = document.createElement('tr');
 
         const nomeIngrediCell = document.createElement('td');
         nomeIngrediCell.className = 'col bg-light';
         nomeIngrediCell.style.color = 'green';
         nomeIngrediCell.textContent = " + " + nomeIngredi;     
-        row.appendChild(nomeIngrediCell)
+        row.appendChild(nomeIngrediCell);
 
         const valorIngrediCell = document.createElement('td');
         valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
         valorIngrediCell.style.color = 'green';
         valorIngrediCell.textContent = `+ $${parseFloat(valorIngredi).toFixed(2)}`;     
-        row.appendChild(valorIngrediCell)
+        row.appendChild(valorIngrediCell);
 
         const detalheIngrediCell = document.createElement('td');
         detalheIngrediCell.className = 'text-center align-middle bg-light';
@@ -338,16 +349,21 @@ enviarIngrediBtns.forEach((btn) => {
 
         const ingrediBtnEditar = document.createElement('button');
         ingrediBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
-        ingrediBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
+        ingrediBtnEditar.style = 'border-radius: 4px; width: 30px; background-color: #343aeb; border: #1c1f8f;';
         ingrediBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
 
         const ingrediBtnApagar = document.createElement('button');
         ingrediBtnApagar.className = 'text-center align-middle bg-danger text-white';
-        ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;';
         ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         ingrediBtnApagar.onclick = () => {
-            row.remove(); // Remove a linha inteira do DOM
-        }
+            row.remove();
+            // Atualiza a string de ingredientes removendo o ingrediente correspondente
+            ingredientesConcatenados = ingredientesConcatenados
+                .split(' + ')
+                .filter((ingrediente) => ingrediente !== nomeIngredi)
+                .join(' + ');
+        };
 
         const ingrediBtnCell = document.createElement('td');
         ingrediBtnCell.className = 'text-center align-middle bg-light';
@@ -355,8 +371,41 @@ enviarIngrediBtns.forEach((btn) => {
         ingrediBtnCell.appendChild(ingrediBtnApagar);
         row.appendChild(ingrediBtnCell);
 
+        let totalCell = document.querySelector('#totalMesa span'); // Verifica se já existe um <span> no totalMesa
+
+        total += parseFloat(valorIngredi);
+
+        totalCell.textContent = `$${total.toFixed(2)}`;
+
         listaPedidos.appendChild(row);
-    })   
+
+        // Atualiza ou cria o input oculto para os ingredientes concatenados
+        let inputHidden = document.querySelector('input[name="ingredientes_concatenados"]');
+        if (!inputHidden) {
+            inputHidden = document.createElement('input');
+            inputHidden.type = 'hidden';
+            inputHidden.name = 'ingredientes_concatenados';
+            pedidosDiv.appendChild(inputHidden);
+        }
+        inputHidden.value = ingredientesConcatenados;
+        
+        // Cria inputs ocultos para envio no formulário
+        const valorIngredInput = document.createElement('input');
+        valorIngredInput.type = 'hidden';
+        valorIngredInput.name = 'valor_ingredi[]';
+        valorIngredInput.value = valorIngredi; 
+
+        btnDiv.addEventListener("click", () => {
+            const totalIngredInput = document.createElement('input');
+            totalIngredInput.type = 'hidden';
+            totalIngredInput.name = 'total[]';
+            totalIngredInput.value = total;
+
+            pedidosDiv.appendChild(totalIngredInput);
+        });
+
+        pedidosDiv.appendChild(valorIngredInput);
+    });   
 });
 
 const removerIngrediBtns = document.querySelectorAll('.removerIngredi input[type="button"]');
@@ -368,7 +417,7 @@ removerIngrediBtns.forEach((btn) => {
         const form = btn.closest('tr');
 
         const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
-
+        
         const row = document.createElement('tr');
 
         const nomeIngrediCell = document.createElement('td');
