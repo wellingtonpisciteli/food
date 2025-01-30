@@ -47,9 +47,20 @@ body{
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 }
 
+
 #adicionarLanches input{
     border-radius: 3px;
 }
+
+#btnEnvioIngredi:hover{
+    background-color: chartreuse !important;
+}
+
+#editarLanche:hover{
+    background-color: red !important;
+}
+
+
 
 #rodapeComanda{
     padding: 10px;

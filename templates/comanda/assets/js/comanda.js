@@ -24,8 +24,6 @@ let cont = 0
 let totalLanche = 0
 let totalBebida = 0
 let total = 0
-let ingred = ""
-let lanche_ingredi = ""
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
@@ -38,8 +36,6 @@ enviarLancheBtns.forEach(btn => {
         // Captura os dados do lanche e da mesa
         const nomeLanche = form.querySelector('input[name="lanche"]').value;
         const valorLanche = form.querySelector('input[name="valor_lanche"]').value;
-        lanche_ingredi = nomeLanche
-        console.log(lanche_ingredi)
         const detalhesLanche = form.querySelector('input[name="detalhesLanche"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
 
@@ -49,6 +45,7 @@ enviarLancheBtns.forEach(btn => {
             cont = 0
             return;
         }
+
 
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
@@ -164,6 +161,9 @@ enviarLancheBtns.forEach(btn => {
         pedidosDiv.appendChild(nomeLancheInput);
         pedidosDiv.appendChild(valorInput);
         pedidosDiv.appendChild(detalhesLancheInput);
+
+        form.querySelector('input[name="detalhesLanche"]').value = "";
+
     });
 });
 
@@ -310,6 +310,8 @@ enviarBebidaBtns.forEach(btn => {
 const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
     
 let ingredientesConcatenados = ''; // Variável para armazenar os ingredientes concatenados
+let valoresConcatenados = 0; // Variável para armazenar os ingredientes concatenados
+
 
 enviarIngrediBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
@@ -326,8 +328,13 @@ enviarIngrediBtns.forEach((btn) => {
         } else {
             ingredientesConcatenados = nomeIngredi;
         }
-        
-        
+
+        if (valoresConcatenados) {
+            valoresConcatenados += ` + ${valorIngredi}`;
+        } else {
+            valoresConcatenados = valorIngredi;
+        }
+            
         // Atualiza a exibição da tabela
         const row = document.createElement('tr');
 
@@ -388,12 +395,16 @@ enviarIngrediBtns.forEach((btn) => {
             pedidosDiv.appendChild(inputHidden);
         }
         inputHidden.value = ingredientesConcatenados;
-        
-        // Cria inputs ocultos para envio no formulário
-        const valorIngredInput = document.createElement('input');
-        valorIngredInput.type = 'hidden';
-        valorIngredInput.name = 'valor_ingredi[]';
-        valorIngredInput.value = valorIngredi; 
+
+        // Atualiza ou cria o input oculto para os ingredientes concatenados
+        let inputValores = document.querySelector('input[name="valores_concatenados"]');
+        if (!inputValores) {
+            inputValores = document.createElement('input');
+            inputValores.type = 'hidden';
+            inputValores.name = 'valores_concatenados';
+            pedidosDiv.appendChild(inputValores);
+        }
+        inputValores.value = valoresConcatenados;
 
         btnDiv.addEventListener("click", () => {
             const totalIngredInput = document.createElement('input');
@@ -403,8 +414,6 @@ enviarIngrediBtns.forEach((btn) => {
 
             pedidosDiv.appendChild(totalIngredInput);
         });
-
-        pedidosDiv.appendChild(valorIngredInput);
     });   
 });
 

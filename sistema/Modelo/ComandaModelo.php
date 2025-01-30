@@ -55,7 +55,7 @@ class ComandaModelo{
 
         // Aqui, você pega a string de ingredientes concatenados
         $nome_ingredi = $dados['ingredientes_concatenados'] ?? null; // Ingredientes agora em uma única string
-        $valor_ingredi = $dados['valor_ingredi'][$index] ?? null; // Valor total dos ingredientes
+        $valor_ingredi = $dados['valores_concatenados'] ?? null; // Valor total dos ingredientes
 
         $nome_bebida = $dados['nome_bebida'][$index] ?? null;
         $tamanho_bebida = $dados['tamanho_bebida'][$index] ?? null;

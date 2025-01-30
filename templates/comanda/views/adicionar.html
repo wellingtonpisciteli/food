@@ -136,16 +136,16 @@
             <div class="modal-body">
                 <div id="adicionarLanches">
                     <div class="table-responsive">       
-                        <form action="" method="post">
-                            <table class="table" id="editar">
+                        <div>
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th scope="col" class="bg-light" style="border-radius: 10px 0px 0px 0px;">
+                                        <th scope="col" class="bg-light">
                                             INGRDIENTES
                                         </th>
                                         <th scope="col" class="text-center bg-light">PREÇO</th>
                                         <th scope="col" class="text-center bg-light">ADICIONAR</th>
-                                        <th scope="col" class="text-center bg-light" style="border-radius: 0px 10px 0px 0px;">RETIRAR</th>
+                                        <th scope="col" class="text-center bg-light">RETIRAR</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -161,7 +161,7 @@
                                         </td>
                                         <td class="text-center align-middle bg-light">
                                             <div class="enviarIngredi">
-                                                <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                                                <input id="btnEnvioIngredi" type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
                                             </div>
                                         </td>
                                         <td class="text-center align-middle bg-light">
@@ -173,12 +173,7 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                
-                            <div class="text-center" style="margin-top: 20px; ">
-                                <button type="button" class="btn btn-primary fw-bold mx-1" style="width: 130px; border-radius: 0px 0px 0px 10px;">CONFIRMAR</button>
-                                <button type="button" class="btn btn-danger fw-bold mx-1" style="width: 130px; border-radius: 0px 10px 0px 0px;">CANCELAR</button>
-                            </div>
-                        </form>
+                        </div>
                     </div>  
                 </div>
                 
@@ -186,6 +181,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}
