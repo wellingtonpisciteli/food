@@ -46,7 +46,6 @@ enviarLancheBtns.forEach(btn => {
             return;
         }
 
-
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
@@ -316,6 +315,7 @@ let valoresConcatenados = 0; // Variável para armazenar os ingredientes concate
 enviarIngrediBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
         event.preventDefault();
+        
 
         const form = btn.closest('tr');
 
@@ -326,13 +326,13 @@ enviarIngrediBtns.forEach((btn) => {
         if (ingredientesConcatenados) {
             ingredientesConcatenados += ` + ${nomeIngredi}`;
         } else {
-            ingredientesConcatenados = nomeIngredi;
+            ingredientesConcatenados = ` + ${nomeIngredi}`;
         }
 
         if (valoresConcatenados) {
             valoresConcatenados += ` + ${valorIngredi}`;
         } else {
-            valoresConcatenados = valorIngredi;
+            valoresConcatenados = ` + ${valorIngredi}`;
         }
             
         // Atualiza a exibição da tabela
@@ -365,13 +365,35 @@ enviarIngrediBtns.forEach((btn) => {
         ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         ingrediBtnApagar.onclick = () => {
             row.remove();
-            // Atualiza a string de ingredientes removendo o ingrediente correspondente
-            ingredientesConcatenados = ingredientesConcatenados
-                .split(' + ')
-                .filter((ingrediente) => ingrediente !== nomeIngredi)
-                .join(' + ');
+        
+            // Converte as strings concatenadas em arrays
+            let listaIngredientes = ingredientesConcatenados.split(' + ');
+            let listaValores = valoresConcatenados.split(' + ');
+        
+            // Encontra o índice do ingrediente a ser removido se não index0f = -1
+            const index = listaIngredientes.indexOf(nomeIngredi);
+        
+            if (index !== -1) {
+                listaIngredientes.splice(index, 1); // Remove o ingrediente
+                listaValores.splice(index, 1); // Remove o valor correspondente
+            }
+        
+            // Atualiza as strings concatenadas sem o ingrediente removido
+            ingredientesConcatenados = listaIngredientes.join(' + ');
+            valoresConcatenados = listaValores.join(' + ');
+        
+            // Atualiza os inputs ocultos
+            document.querySelector('input[name="ingredientes_concatenados"]').value = ingredientesConcatenados;
+            document.querySelector('input[name="valores_concatenados"]').value = valoresConcatenados;
+        
+            console.log('Ingredientes Atualizados:', ingredientesConcatenados);
+            console.log('Valores Atualizados:', valoresConcatenados);
+        
+            // Atualiza o total corretamente
+            total -= parseFloat(valorIngredi);
+            totalCell.textContent = `$${total.toFixed(2)}`;
         };
-
+        
         const ingrediBtnCell = document.createElement('td');
         ingrediBtnCell.className = 'text-center align-middle bg-light';
         ingrediBtnCell.appendChild(ingrediBtnEditar);
@@ -426,6 +448,19 @@ removerIngrediBtns.forEach((btn) => {
         const form = btn.closest('tr');
 
         const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
+
+        // Atualiza os ingredientes concatenados
+        if (ingredientesConcatenados) {
+            ingredientesConcatenados += ` - ${nomeIngredi}`;
+        } else {
+            ingredientesConcatenados = ` - ${nomeIngredi}`;
+        }
+
+        if (valoresConcatenados) {
+            valoresConcatenados += ` + ${0}`;
+        } else {
+            valoresConcatenados = 0;
+        }
         
         const row = document.createElement('tr');
 
@@ -464,6 +499,26 @@ removerIngrediBtns.forEach((btn) => {
         row.appendChild(ingrediBtnCell);
 
         listaPedidos.appendChild(row);
+
+        // Atualiza ou cria o input oculto para os ingredientes concatenados
+        let inputHidden = document.querySelector('input[name="ingredientes_concatenados"]');
+        if (!inputHidden) {
+            inputHidden = document.createElement('input');
+            inputHidden.type = 'hidden';
+            inputHidden.name = 'ingredientes_concatenados';
+            pedidosDiv.appendChild(inputHidden);
+        }
+        inputHidden.value = ingredientesConcatenados;
+
+        // Atualiza ou cria o input oculto para os ingredientes concatenados
+        let inputValores = document.querySelector('input[name="valores_concatenados"]');
+        if (!inputValores) {
+            inputValores = document.createElement('input');
+            inputValores.type = 'hidden';
+            inputValores.name = 'valores_concatenados';
+            pedidosDiv.appendChild(inputValores);
+        }
+        inputValores.value = valoresConcatenados;
     })   
 });
 
