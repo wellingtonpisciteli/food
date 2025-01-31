@@ -21,14 +21,19 @@ const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
 
 let cont = 0
+let apagarLanche = false
 let totalLanche = 0
 let totalBebida = 0
 let total = 0
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-        event.preventDefault();
         cont += 1
+
+        apagarLanche = true
+        if(apagarLanche==true && cont>1){
+            ingredientesConcatenados += ' /';
+        }
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -89,6 +94,7 @@ enviarLancheBtns.forEach(btn => {
         obsLancheBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
         obsLancheBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsLancheBtnApagar.onclick = () => {
+            
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
@@ -162,7 +168,6 @@ enviarLancheBtns.forEach(btn => {
         pedidosDiv.appendChild(detalhesLancheInput);
 
         form.querySelector('input[name="detalhesLanche"]').value = "";
-
     });
 });
 
@@ -171,7 +176,7 @@ const listaBebidas = document.getElementById('listaBebidas');
 
 enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-        event.preventDefault();
+
         cont += 1;
 
         // Pega a linha relacionada ao botão
@@ -314,9 +319,9 @@ let valoresConcatenados = 0; // Variável para armazenar os ingredientes concate
 
 enviarIngrediBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
-        event.preventDefault();
-        
 
+        apagarLanche = false
+        
         const form = btn.closest('tr');
 
         const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
@@ -343,6 +348,12 @@ enviarIngrediBtns.forEach((btn) => {
         nomeIngrediCell.style.color = 'green';
         nomeIngrediCell.textContent = " + " + nomeIngredi;     
         row.appendChild(nomeIngrediCell);
+
+        let testando = ingredientesConcatenados.split(' /')
+
+        ingredientesConcatenados = testando.join(' /')
+
+        console.log(ingredientesConcatenados)
 
         const valorIngrediCell = document.createElement('td');
         valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
@@ -404,7 +415,7 @@ enviarIngrediBtns.forEach((btn) => {
 
         total += parseFloat(valorIngredi);
 
-        totalCell.textContent = `$${total.toFixed(2)}`;
+        totalCell.textContent = `$${total.toFixed(2)}`;  
 
         listaPedidos.appendChild(row);
 
@@ -521,6 +532,13 @@ removerIngrediBtns.forEach((btn) => {
         inputValores.value = valoresConcatenados;
     })   
 });
+
+btnDiv.addEventListener("click", (e)=>{
+    if(cont == 0){
+        e.preventDefault()
+        alert("Selecione um item do cardápio.")
+    }
+})
 
 
 
