@@ -45,7 +45,7 @@ class ComandaModelo{
      */
     public function armazenarPedido(array $dados): void
 {
-    $query = "INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, detalhes_lanche, nome_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, detalhes_lanche, add_ingredi, remover_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = Conexao::getInstancia()->prepare($query);
 
     foreach ($dados['mesa'] as $index => $mesa) {
@@ -54,7 +54,8 @@ class ComandaModelo{
         $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
 
         // Aqui, você pega a string de ingredientes concatenados
-        $nome_ingredi = $dados['ingredientes_concatenados'] ?? null; // Ingredientes agora em uma única string
+        $add_ingredi = $dados['ingredientes_concatenados'] ?? null; // Ingredientes agora em uma única string
+        $remover_ingredi = $dados['remover_Ingredientes_Concatenados'] ?? null; //
         $valor_ingredi = $dados['valores_concatenados'] ?? null; // Valor total dos ingredientes
 
         $nome_bebida = $dados['nome_bebida'][$index] ?? null;
@@ -70,7 +71,8 @@ class ComandaModelo{
                 $nome_lanche,
                 $valor_lanche,
                 $detalhes_lanche,
-                $nome_ingredi,  // Ingredientes concatenados
+                $add_ingredi,  // Ingredientes concatenados
+                $remover_ingredi,
                 $valor_ingredi, // Valor total dos ingredientes
                 $nome_bebida,
                 $tamanho_bebida,

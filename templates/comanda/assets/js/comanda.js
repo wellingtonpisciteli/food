@@ -32,7 +32,9 @@ enviarLancheBtns.forEach(btn => {
 
         apagarLanche = true
         if(apagarLanche==true && cont>1){
-            ingredientesConcatenados += ' /';
+            ingredientesConcatenados += ' + /';
+            removerIngredientesConcatenados += ' - /';
+            valoresConcatenados += ' + /'
         }
 
         // Pega a linha relacionada ao botão
@@ -316,9 +318,10 @@ const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="
 let ingredientesConcatenados = ''; // Variável para armazenar os ingredientes concatenados
 let valoresConcatenados = 0; // Variável para armazenar os ingredientes concatenados
 
-
 enviarIngrediBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
+
+        cont += 1
 
         apagarLanche = false
         
@@ -349,12 +352,6 @@ enviarIngrediBtns.forEach((btn) => {
         nomeIngrediCell.textContent = " + " + nomeIngredi;     
         row.appendChild(nomeIngrediCell);
 
-        let testando = ingredientesConcatenados.split(' /')
-
-        ingredientesConcatenados = testando.join(' /')
-
-        console.log(ingredientesConcatenados)
-
         const valorIngrediCell = document.createElement('td');
         valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
         valorIngrediCell.style.color = 'green';
@@ -380,6 +377,8 @@ enviarIngrediBtns.forEach((btn) => {
             // Converte as strings concatenadas em arrays
             let listaIngredientes = ingredientesConcatenados.split(' + ');
             let listaValores = valoresConcatenados.split(' + ');
+
+            // console.log(nomeIngredi)
         
             // Encontra o índice do ingrediente a ser removido se não index0f = -1
             const index = listaIngredientes.indexOf(nomeIngredi);
@@ -387,6 +386,9 @@ enviarIngrediBtns.forEach((btn) => {
             if (index !== -1) {
                 listaIngredientes.splice(index, 1); // Remove o ingrediente
                 listaValores.splice(index, 1); // Remove o valor correspondente
+            }else{
+                console.log(listaIngredientes)
+                console.log(listaValores)
             }
         
             // Atualiza as strings concatenadas sem o ingrediente removido
@@ -403,6 +405,8 @@ enviarIngrediBtns.forEach((btn) => {
             // Atualiza o total corretamente
             total -= parseFloat(valorIngredi);
             totalCell.textContent = `$${total.toFixed(2)}`;
+
+            console.log(listaIngredientes)
         };
         
         const ingrediBtnCell = document.createElement('td');
@@ -451,6 +455,8 @@ enviarIngrediBtns.forEach((btn) => {
 });
 
 const removerIngrediBtns = document.querySelectorAll('.removerIngredi input[type="button"]');
+
+let removerIngredientesConcatenados = '';
     
 removerIngrediBtns.forEach((btn) => {
     btn.addEventListener('click', (event) => {
@@ -459,18 +465,19 @@ removerIngrediBtns.forEach((btn) => {
         const form = btn.closest('tr');
 
         const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
+        const valorIngredi = 0;
 
         // Atualiza os ingredientes concatenados
-        if (ingredientesConcatenados) {
-            ingredientesConcatenados += ` - ${nomeIngredi}`;
+        if (removerIngredientesConcatenados) {
+            removerIngredientesConcatenados += ` - ${nomeIngredi}`;
         } else {
-            ingredientesConcatenados = ` - ${nomeIngredi}`;
+            removerIngredientesConcatenados = ` - ${nomeIngredi}`;
         }
 
         if (valoresConcatenados) {
             valoresConcatenados += ` + ${0}`;
         } else {
-            valoresConcatenados = 0;
+            valoresConcatenados = ` + ${0}`;
         }
         
         const row = document.createElement('tr');
@@ -500,7 +507,33 @@ removerIngrediBtns.forEach((btn) => {
         ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
         ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         ingrediBtnApagar.onclick = () => {
-            row.remove(); // Remove a linha inteira do DOM
+            row.remove();
+        
+            // Converte as strings concatenadas em arrays
+            let listaIngredientes = removerIngredientesConcatenados.split(' - ');
+            let listaValores = valoresConcatenados.split(' + ');
+        
+            // Encontra o índice do ingrediente a ser removido se não index0f = -1
+            const index = listaIngredientes.indexOf(nomeIngredi);
+        
+            if (index !== -1) {
+                listaIngredientes.splice(index, 1); // Remove o ingrediente
+                listaValores.splice(index, 1); // Remove o valor correspondente
+            }
+        
+            // Atualiza as strings concatenadas sem o ingrediente removido
+            removerIngredientesConcatenados = listaIngredientes.join(' - ');
+            valoresConcatenados = listaValores.join(' + ');
+        
+            // Atualiza os inputs ocultos
+            document.querySelector('input[name="remover_Ingredientes_Concatenados"]').value = removerIngredientesConcatenados;
+            document.querySelector('input[name="valores_concatenados"]').value = valoresConcatenados;
+        
+            console.log('Ingredientes Atualizados:', removerIngredientesConcatenados);
+            console.log('Valores Atualizados:', valoresConcatenados);
+        
+            // Atualiza o total corretamente
+            total -= parseFloat(valorIngredi);
         }
 
         const ingrediBtnCell = document.createElement('td');
@@ -512,14 +545,14 @@ removerIngrediBtns.forEach((btn) => {
         listaPedidos.appendChild(row);
 
         // Atualiza ou cria o input oculto para os ingredientes concatenados
-        let inputHidden = document.querySelector('input[name="ingredientes_concatenados"]');
+        let inputHidden = document.querySelector('input[name="remover_Ingredientes_Concatenados"]');
         if (!inputHidden) {
             inputHidden = document.createElement('input');
             inputHidden.type = 'hidden';
-            inputHidden.name = 'ingredientes_concatenados';
+            inputHidden.name = 'remover_Ingredientes_Concatenados';
             pedidosDiv.appendChild(inputHidden);
         }
-        inputHidden.value = ingredientesConcatenados;
+        inputHidden.value = removerIngredientesConcatenados;
 
         // Atualiza ou cria o input oculto para os ingredientes concatenados
         let inputValores = document.querySelector('input[name="valores_concatenados"]');
