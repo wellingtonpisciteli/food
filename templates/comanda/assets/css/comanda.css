@@ -26,6 +26,17 @@ body{
     border-radius: 5px;
 }
 
+/* Remove as setas apenas no input com a classe 'no-spin' */
+#nummesa::-webkit-outer-spin-button,
+#nummesa::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#nummesa {
+  -moz-appearance: textfield;
+}
+
 #adicionarTabela{
     width: 95%; 
     margin: auto; 
@@ -66,3 +77,4 @@ body{
     padding: 10px;
     background-image: linear-gradient(to right, darkred, black);
 }
+

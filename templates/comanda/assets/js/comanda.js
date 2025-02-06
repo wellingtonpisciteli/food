@@ -1,11 +1,20 @@
 const numMesaInput = document.getElementById('nummesa'); // Campo principal da mesa
 const mesaInputs = document.querySelectorAll('input[name="mesa_pedido"]');
+const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
 
 // Atualiza o valor de todos os campos "mesa_pedido" ao digitar no campo "nummesa"
 if (numMesaInput) {
     numMesaInput.addEventListener('input', () => {
-        console.log('Valor da mesa:', numMesaInput.value);
-        // Insira aqui o código necessário para essa funcionalidade
+        controleMesa.forEach(num=>{
+            if(numMesaInput.value == num.value){
+                Swal.fire({
+                    title: 'Mesa inválida',
+                    text: 'Escolha outro número',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                  });
+            }
+        })
     });
 }
 
@@ -29,8 +38,8 @@ let total = 0
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-
         apagarLanche = true
+
         if(apagarLanche==true && cont>1){
             ingredientesConcatenados += ' + /';
             removerIngredientesConcatenados += ' - /';
@@ -48,7 +57,12 @@ enviarLancheBtns.forEach(btn => {
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
-            alert('Por favor, insira o número da mesa antes de selecionar o pedido.');
+            Swal.fire({
+                title: 'Número da Mesa!',
+                text: 'Selecione um número',
+                icon: 'info',
+                confirmButtonText: 'OK'
+              });
             cont = 0
             return;
         }
@@ -195,7 +209,12 @@ enviarBebidaBtns.forEach(btn => {
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
-            alert('Por favor, insira o número da mesa antes de selecionar o pedido.');
+            Swal.fire({
+                title: 'Número da Mesa!',
+                text: 'Selecione um número',
+                icon: 'info',
+                confirmButtonText: 'OK'
+              });
             cont = 0;
             return;
         }
@@ -569,9 +588,15 @@ removerIngrediBtns.forEach((btn) => {
 btnDiv.addEventListener("click", (e)=>{
     if(cont == 0){
         e.preventDefault()
-        alert("Selecione um item do cardápio.")
+        Swal.fire({
+            title: 'Comanda Vazia!',
+            text: 'Selecione um item do cárdapio.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+          });
     }
 })
+
 
 
 

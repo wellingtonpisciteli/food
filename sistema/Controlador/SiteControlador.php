@@ -45,6 +45,7 @@ class SiteControlador extends Controlador{
         $tamanho_bebida=(new ComandaModelo())->ler("tamanho_bebida", "tamanho");
         $pedido=(new ComandaModelo())->ler("pedidos", "nome_lanche");
         $ingredi=(new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $mesa = (new ComandaModelo())->ler("pedidos", "mesa");
 
         echo($this->template->renderizar('adicionar.html', [
             'titulo'=>'Adicionar',
@@ -53,7 +54,8 @@ class SiteControlador extends Controlador{
             'tamanhoBebida'=>$tamanho_bebida,
             'ingred'=>$ingred,
             'pedido'=>$pedido,
-            'ingredientes'=>$ingredi
+            'ingredientes'=>$ingredi,
+            'mesa'=>$mesa
         ]));
     }
 
