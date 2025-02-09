@@ -29,11 +29,13 @@ class SiteControlador extends Controlador{
     {
         $cardapioBebida=(new ComandaModelo())->ler("marcas_bebida", "marca");
         $cardapioLanche=(new ComandaModelo())->ler("cardapio_lanche", "lanche");
+        $pedidos=(new ComandaModelo())->ler("pedidos", "mesa");
 
         echo($this->template->renderizar('comanda.html', [
             'titulo'=>'Sistema_Food',
             'cardapioBebida'=>$cardapioBebida,
-            'cardapioLanche'=>$cardapioLanche
+            'cardapioLanche'=>$cardapioLanche,
+            'pedidos'=>$pedidos
         ]));
     }
 
