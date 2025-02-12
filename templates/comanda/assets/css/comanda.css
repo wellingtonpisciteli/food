@@ -2,7 +2,6 @@
 
 body{
     background-color: rgba(165, 42, 42, 0.048);
-    
 }
 
 #menuComanda{
@@ -42,6 +41,11 @@ body{
     margin: auto; 
     margin-bottom: 10px;
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+}
+
+#adicionarTabelaHome{
+    width: 100%; 
+    margin: auto; 
 }
 
 #tabelaPedidos{

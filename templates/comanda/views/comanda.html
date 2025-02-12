@@ -1,23 +1,75 @@
 {% extends 'base.html' %}
 {% block conteudo %}
 
-  <div>
-    <header>Ultimos pedidos</header>
-    {% set mesa_anterior = None %}  <!-- Inicializa a variável auxiliar -->
-    {% for pedido in pedidos %}
-    {% if pedido.mesa != mesa_anterior %}
-        <!-- Exibe a mesa e trava o número da mesa -->
-        <input type="hidden" class="comanda_mesa" name="comanda_mesa" value="{{ pedido.mesa }}">
-        Mesa: {{ pedido.mesa }} <br>
-        {% set mesa_anterior = pedido.mesa %}  <!-- Atualiza a mesa anterior -->
-    {% endif %}
-    
-    <!-- Exibe o lanche, que sempre será mostrado -->
-    <input type="hidden" class="lanche_mesa" name="lanche_mesa" value="{{ pedido.nome_lanche }}">
-    {{ pedido.nome_lanche }} <br>
-{% endfor %}
-  </div>
+<body class="w-100 bg-dark">
+  <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos</header>
+  
+  <main class="bg-light" id="adicionarTabela" style="margin-top: 15px; margin-bottom: 30px;">
+      {% set mesa_anterior = None %}  <!-- Inicializa a variável auxiliar -->
+      {% set cont = 0 %}  <!-- Inicializa a variável auxiliar -->
+      {% for pedido in pedidos %}
+          <!-- Exibe a mesa e trava o número da mesa -->
+          <table class="table-responsive" id="adicionarTabelaHome" style="margin-left: 3px;">
+            <thead>
+              {% if pedido.mesa != mesa_anterior %}
+              <th scope="col">
+                {% if pedido.mesa < 10 %}
+                MESA: <span style="color: red;">0{{ pedido.mesa }}</span>
+                {% else %}
+                MESA: <span style="color: red;">{{ pedido.mesa }}</span>
+                {% endif %}
+              </th>
+              <th scope="col">
+                TOTAL: <span style="color: blue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
+              </th>
+              <th scope="col">
+                Ás: <span style="color: green">10:34</span>
+              </th>
 
-  <script src="{{ url('/templates/comanda/assets/js/comanda.js') }}" defer></script>
+              <div class="bg-dark"><hr style="margin-top: 2.5px; margin-bottom: 2.5px; height: 6px;"></div>
+              {% set mesa_anterior = pedido.mesa %}
+              {% set cont = 0 %}
+              {% endif %}
+              <tr>   
+                <th scope="col" style="width: 90px;">
+                  {% if cont == 0 %}
+                    Lanches
+                  {% set cont = 1 %}
+                  {% endif %}
+                  </th>
+                <th scope="col" style="width: 120px;">
+                  {% if cont == 1 %}
+                    Adicionais
+                  {% set cont = 2 %}
+                  {% endif %}
+                </th>
+                <th scope="col" style="width: 90px;">
+                  {% if cont == 2 %}
+                    Bebidas
+                  {% set cont = 3 %}
+                  {% endif %}
+                </th>
+              </tr>
+            </thead>
+            
+            <tbody>
+              <tr>
+                <td scope="col">
+                  {{ pedido.nome_lanche }}
+                </td>
+                <td scope="col">
+                  {{ pedido.add_ingredi }} {{ pedido.remover_ingredi }}
+                </td>
+                <td scope="col">
+                  {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      {% endfor %}
+  </main>
+</body>
+
+<script src="{{ url('/templates/comanda/assets/js/comanda.js') }}" defer></script>
 
 {% endblock %}
