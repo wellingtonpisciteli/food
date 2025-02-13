@@ -14,16 +14,30 @@
               {% if pedido.mesa != mesa_anterior %}
               <th scope="col">
                 {% if pedido.mesa < 10 %}
-                MESA: <span style="color: red;">0{{ pedido.mesa }}</span>
+                  <span style="color: blue;">0{{ pedido.mesa }}</span>
+                  {% if pedido.status == 1 %} 
+                    <span style="color: green;">ON</span>
+                  {% else %}
+                    <span style="color: red;">OFF</span>
+                  {% endif %}
                 {% else %}
-                MESA: <span style="color: red;">{{ pedido.mesa }}</span>
+                  <span style="color: blue;">{{ pedido.mesa }}</span>
+                   {% if pedido.status == 1 %} 
+                    <span style="color: green;">ON</span>
+                  {% else %}
+                    <span style="color: red;">OFF</span>
+                  {% endif %}
                 {% endif %}
               </th>
               <th scope="col">
-                TOTAL: <span style="color: blue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
+                TOTAL: <span style="color: blue;">
+                  ${{ pedido.total | number_format(2, ',', '.') }}
+                </span>
               </th>
               <th scope="col">
-                Ás: <span style="color: green">10:34</span>
+                Ás: <span style="color: green">
+                  {{ pedido.data_hora | date('H:i') }}
+                </span>
               </th>
 
               <div class="bg-dark"><hr style="margin-top: 2.5px; margin-bottom: 2.5px; height: 6px;"></div>
