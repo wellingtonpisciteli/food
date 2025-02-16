@@ -45,18 +45,19 @@ class ComandaModelo{
      */
     public function armazenarPedido(array $dados): void
 {
-    $query = "INSERT INTO pedidos (mesa, nome_lanche, valor_lanche, detalhes_lanche, add_ingredi, remover_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO pedidos (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, id_ingredi, add_ingredi, remover_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = Conexao::getInstancia()->prepare($query);
 
     foreach ($dados['mesa'] as $index => $mesa) {
+        $id_lanche = $dados['id_lanche'][$index] ?? null;
         $nome_lanche = $dados['nome_lanche'][$index] ?? null;
         $valor_lanche = $dados['valor_lanche'][$index] ?? null;
         $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
 
-        // Aqui, você pega a string de ingredientes concatenados
-        $add_ingredi = $dados['ingredientes_concatenados'] ?? null; // Ingredientes agora em uma única string
+        $id_ingredi = $dados['id_ingredi'][$index] ?? null;
+        $add_ingredi = $dados['add_ingredi'][$index] ?? null; 
         $remover_ingredi = $dados['remover_Ingredientes_Concatenados'] ?? null; //
-        $valor_ingredi = $dados['valores_concatenados'] ?? null; // Valor total dos ingredientes
+        $valor_ingredi = $dados['valor_ingredi'][$index] ?? null; 
 
         $nome_bebida = $dados['nome_bebida'][$index] ?? null;
         $tamanho_bebida = $dados['tamanho_bebida'][$index] ?? null;
@@ -65,15 +66,17 @@ class ComandaModelo{
 
         $total = $dados['total'][$index] ?? null;
 
-        if (!empty($nome_lanche) || !empty($nome_bebida)) {
+        if (!empty($nome_lanche) || !empty($nome_bebida) || !empty($add_ingredi)) {
             $stmt->execute([
                 $mesa,
+                $id_lanche,
                 $nome_lanche,
                 $valor_lanche,
                 $detalhes_lanche,
-                $add_ingredi,  // Ingredientes concatenados
+                $id_ingredi,
+                $add_ingredi, 
                 $remover_ingredi,
-                $valor_ingredi, // Valor total dos ingredientes
+                $valor_ingredi, 
                 $nome_bebida,
                 $tamanho_bebida,
                 $valor_bebida,

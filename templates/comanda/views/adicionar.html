@@ -87,6 +87,47 @@
             </tbody>
         </table>
 
+        <div class="mt-3" style="margin-left: 2.5%;">
+            <input class="btn btn-primary fw-bolder" type="button" value="Adicionais" id="btnAbrirIngrediente" style="margin-bottom: 10px;">
+        </div>
+
+        <table class="table" id="adicionarTabelaIngrediente">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light" style="width: 130px;">ADICIONAIS</th>
+                    <th scope="col" class="text-center bg-light" style="width: 200px;">PREÇO</th>
+                    <th scope="col" class="text-center bg-light" style="width: 100px;">ADD</th>
+                    <th scope="col" class="text-center bg-light" style="width: 100px;">REMOVER</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in ingredientes %}
+                <tr>
+                    <input type="hidden" id="detalhesIngrediente" name="detalhesIngrediente">
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <th class="bg-light">
+                        <span>{{ item.ingrediente }}</span>
+                        <input type="hidden" id="nomeIngrediente" name="nomeIngrediente" value="{{ item.ingrediente }}">
+                    </th>
+                    <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                        <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                        <input type="hidden" value="{{ item.valor }}" id="valorIngrediente" name="valorIngrediente">
+                    </td>
+                    <td class="text-center align-middle bg-light">
+                        <div class="enviarIngrediente">
+                            <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle bg-light" style="width: 25%;">
+                        <div class="removerIngredienteBtns">
+                            <input type="button" class="text-center text-white fw-bolder" value="-" style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
         <h3 id="comandaMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
             Comanda:
         </h3>
@@ -96,6 +137,7 @@
                 <table class="table" id="tabelaPedidos">
                     <thead>
                         <tr>
+                            <th scope="col" class="bg-light">ID</th>
                             <th scope="col" class="bg-light">LANCHES</th>
                             <th scope="col" class="text-center bg-light">PREÇO</th>
                             <th scope="col" class="text-center bg-light">OBS</th>
@@ -107,6 +149,7 @@
                     </tbody>
                     <thead>
                         <tr>
+                            <th scope="col" class="bg-light">ID</th>
                             <th scope="col" class="bg-light">BEBIDAS</th>
                             <th scope="col" class="text-center bg-light">PREÇO</th>
                             <th scope="col" class="text-center bg-light">OBS</th>
@@ -117,6 +160,7 @@
                         <!-- Os itens serão adicionados aqui dinamicamente -->
                     </tbody>
                 </table>
+
                 <h3 id="totalMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
                     Total:
                 </h3>
@@ -127,63 +171,6 @@
             </form>
         </table>
     </div>  
-</div>
-
-<!-- Estrutura do Modal -->
-<div class="modal fade" id="lancheModal" tabindex="-1" aria-labelledby="lancheModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">ADICIONAR | REMOVER</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="adicionarLanches">
-                    <div class="table-responsive">       
-                        <div>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="bg-light">
-                                            INGRDIENTES
-                                        </th>
-                                        <th scope="col" class="text-center bg-light">PREÇO</th>
-                                        <th scope="col" class="text-center bg-light">ADICIONAR</th>
-                                        <th scope="col" class="text-center bg-light">RETIRAR</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for ingred in ingredientes %}
-                                    <tr>
-                                        <th class="bg-light">
-                                            {{ ingred.ingrediente }}
-                                            <input type="hidden" id="nome_ingredi" name="nome_ingredi" value="{{ ingred.ingrediente }}">
-                                        </th>
-                                        <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
-                                            ${{ ingred.valor | number_format(2, ',', '.') }}
-                                            <input type="hidden" id="valor_ingredi" name="valor_ingredi" value="{{ ingred.valor }}">
-                                        </td>
-                                        <td class="text-center align-middle bg-light">
-                                            <div class="enviarIngredi">
-                                                <input id="btnEnvioIngredi" type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
-                                            </div>
-                                        </td>
-                                        <td class="text-center align-middle bg-light">
-                                            <div class="removerIngredi">
-                                                <input id="editarLanche" type="button" class="text-center fw-bolder text-white" value="-" style="border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;">
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>  
-                </div>
-                
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="{{ url('/templates/comanda/assets/js/adicionar.js') }}" defer></script>

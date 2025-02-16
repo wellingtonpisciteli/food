@@ -34,17 +34,16 @@ let apagarLanche = false
 let totalLanche = 0
 let totalBebida = 0
 let total = 0
+let idLanche = 0
+let idIngrediente = 0
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-        apagarLanche = true
+        idLanche += 1
 
-        if (apagarLanche == true && cont > 1) {
-            ingredientesConcatenados += ' + /';
-            removerIngredientesConcatenados += ' - /';
-            valoresConcatenados += ' + /';
-        }
+        console.log("idLanche = "+ idLanche)
+        console.log("idIngrediente = "+ idIngrediente)
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -69,6 +68,11 @@ enviarLancheBtns.forEach(btn => {
 
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
+
+        const idLancheCell = document.createElement('th');
+        idLancheCell.className = 'bg-light text-danger';
+        idLancheCell.textContent = idLanche;
+        row.appendChild(idLancheCell);
 
         const nomeLancheCell = document.createElement('th');
         nomeLancheCell.className = 'bg-light text-primary';
@@ -98,13 +102,6 @@ enviarLancheBtns.forEach(btn => {
         detalheLancheCell.textContent = detalhesLanche;
         row.appendChild(detalheLancheCell);
 
-        const obsLancheBtnEditar = document.createElement('button');
-        obsLancheBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
-        obsLancheBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
-        obsLancheBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
-        obsLancheBtnEditar.setAttribute('data-bs-target', '#lancheModal');
-        obsLancheBtnEditar.setAttribute('data-bs-toggle', 'modal');
-
         const obsLancheBtnApagar = document.createElement('button');
         obsLancheBtnApagar.className = 'text-center align-middle text-white';
         obsLancheBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
@@ -127,7 +124,6 @@ enviarLancheBtns.forEach(btn => {
 
         const obsLancheCell = document.createElement('td');
         obsLancheCell.className = 'text-center align-middle bg-light';
-        obsLancheCell.appendChild(obsLancheBtnEditar);
         obsLancheCell.appendChild(obsLancheBtnApagar);
         row.appendChild(obsLancheCell);
 
@@ -145,6 +141,13 @@ enviarLancheBtns.forEach(btn => {
         mesaInput.type = 'hidden';
         mesaInput.name = 'mesa[]';
         mesaInput.value = mesaPedido;
+
+        const idLancheInput = document.createElement('input');
+        idLancheInput.type = 'hidden';
+        idLancheInput.name = 'id_lanche[]';
+        idLancheInput.value = idLanche;
+
+        console.log(idLancheInput)
 
         const nomeLancheInput = document.createElement('input');
         nomeLancheInput.type = 'hidden';
@@ -171,14 +174,8 @@ enviarLancheBtns.forEach(btn => {
 
         })
 
-        btnDivCancelar.addEventListener('click', () => {
-            let confirma = confirm("Cancelar?")
-            if (confirma) {
-                location.reload()
-            }
-        })
-
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(idLancheInput);
         pedidosDiv.appendChild(nomeLancheInput);
         pedidosDiv.appendChild(valorInput);
         pedidosDiv.appendChild(detalhesLancheInput);
@@ -222,6 +219,11 @@ enviarBebidaBtns.forEach(btn => {
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
+        const idBebidaCell = document.createElement('th');
+        idBebidaCell.className = 'bg-light text-danger';
+        idBebidaCell.textContent = idLanche;
+        row.appendChild(idBebidaCell);
+
         const nomeBebidaCell = document.createElement('th');
         nomeBebidaCell.className = 'bg-light text-primary';
         nomeBebidaCell.textContent = `${nomeBebida} (${tamanhoBebida})`; // Exibe o nome e o tamanho
@@ -250,11 +252,6 @@ enviarBebidaBtns.forEach(btn => {
         detalheBebidaCell.textContent = detalhesBebida;
         row.appendChild(detalheBebidaCell);
 
-        const obsBebidaBtnEditar = document.createElement('button');
-        obsBebidaBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
-        obsBebidaBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
-        obsBebidaBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
-
         const obsBebidaBtnApagar = document.createElement('button');
         obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
         obsBebidaBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
@@ -276,7 +273,6 @@ enviarBebidaBtns.forEach(btn => {
 
         const obsBebidaCell = document.createElement('td');
         obsBebidaCell.className = 'text-center align-middle bg-light';
-        obsBebidaCell.appendChild(obsBebidaBtnEditar);
         obsBebidaCell.appendChild(obsBebidaBtnApagar);
         row.appendChild(obsBebidaCell);
 
@@ -332,257 +328,291 @@ enviarBebidaBtns.forEach(btn => {
     });
 });
 
-const enviarIngrediBtns = document.querySelectorAll('.enviarIngredi input[type="button"]');
+const enviarIngredienteBtns = document.querySelectorAll('.enviarIngrediente input[type="button"]');
 
-let ingredientesConcatenados = ''; // Variável para armazenar os ingredientes concatenados
-let valoresConcatenados = 0; // Variável para armazenar os ingredientes concatenados
-
-enviarIngrediBtns.forEach((btn) => {
+enviarIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-
         cont += 1
+        idIngrediente = idLanche 
 
-        apagarLanche = false
+        console.log("idLanche = "+ idLanche)
+        console.log("idIngrediente = "+ idIngrediente)
 
+        // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
 
-        const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
-        const valorIngredi = form.querySelector('input[name="valor_ingredi"]').value;
+        // Captura os dados do lanche e da mesa
+        const nomeIngrediente = form.querySelector('input[name="nomeIngrediente"]').value;
+        const valorIngrediente = form.querySelector('input[name="valorIngrediente"]').value;
+        const detalhesIngrediente = form.querySelector('input[name="detalhesIngrediente"]').value;
+        const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
 
-        // Atualiza os ingredientes concatenados
-        if (ingredientesConcatenados) {
-            ingredientesConcatenados += ` + ${nomeIngredi}`;
-        } else {
-            ingredientesConcatenados = ` + ${nomeIngredi}`;
+        // Verifica se o valor da mesa está presente
+        if (!mesaPedido || mesaPedido < 0) {
+            Swal.fire({
+                title: 'Número da Mesa!',
+                text: 'Selecione um número',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+            cont = 0
+            return;
         }
 
-        if (valoresConcatenados) {
-            valoresConcatenados += ` + ${valorIngredi}`;
-        } else {
-            valoresConcatenados = ` + ${valorIngredi}`;
-        }
-
-        // Atualiza a exibição da tabela
+        // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
-        const nomeIngrediCell = document.createElement('td');
-        nomeIngrediCell.className = 'col bg-light';
-        nomeIngrediCell.style.color = 'green';
-        nomeIngrediCell.textContent = " + " + nomeIngredi;
-        row.appendChild(nomeIngrediCell);
+        const idIngredienteCell = document.createElement('th');
+        idIngredienteCell.className = 'bg-light text-danger';
+        idIngredienteCell.textContent = idIngrediente;
+        row.appendChild(idIngredienteCell);
 
-        const valorIngrediCell = document.createElement('td');
-        valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
-        valorIngrediCell.style.color = 'green';
-        valorIngrediCell.textContent = `+ $${parseFloat(valorIngredi).toFixed(2)}`;
-        row.appendChild(valorIngrediCell);
+        const nomeIngredienteCell = document.createElement('th');
+        nomeIngredienteCell.className = 'bg-light';
+        nomeIngredienteCell.style = 'color: green;'
+        nomeIngredienteCell.textContent = "+ "+ nomeIngrediente;
+        row.appendChild(nomeIngredienteCell);
 
-        const detalheIngrediCell = document.createElement('td');
-        detalheIngrediCell.className = 'text-center align-middle bg-light';
-        row.appendChild(detalheIngrediCell);
-
-        const ingrediBtnEditar = document.createElement('button');
-        ingrediBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
-        ingrediBtnEditar.style = 'border-radius: 4px; width: 30px; background-color: #343aeb; border: #1c1f8f;';
-        ingrediBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
-
-        const ingrediBtnApagar = document.createElement('button');
-        ingrediBtnApagar.className = 'text-center align-middle bg-danger text-white';
-        ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;';
-        ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        ingrediBtnApagar.onclick = () => {
-            row.remove();
-
-            // Converte as strings concatenadas em arrays
-            let listaIngredientes = ingredientesConcatenados.split(' + ');
-            let listaValores = valoresConcatenados.split(' + ');
-
-            // console.log(nomeIngredi)
-
-            // Encontra o índice do ingrediente a ser removido se não index0f = -1
-            const index = listaIngredientes.indexOf(nomeIngredi);
-
-            if (index !== -1) {
-                listaIngredientes.splice(index, 1); // Remove o ingrediente
-                listaValores.splice(index, 1); // Remove o valor correspondente
-            } else {
-                console.log(listaIngredientes)
-                console.log(listaValores)
-            }
-
-            // Atualiza as strings concatenadas sem o ingrediente removido
-            ingredientesConcatenados = listaIngredientes.join(' + ');
-            valoresConcatenados = listaValores.join(' + ');
-
-            // Atualiza os inputs ocultos
-            document.querySelector('input[name="ingredientes_concatenados"]').value = ingredientesConcatenados;
-            document.querySelector('input[name="valores_concatenados"]').value = valoresConcatenados;
-
-            console.log('Ingredientes Atualizados:', ingredientesConcatenados);
-            console.log('Valores Atualizados:', valoresConcatenados);
-
-            // Atualiza o total corretamente
-            total -= parseFloat(valorIngredi);
-            totalCell.textContent = `$${total.toFixed(2)}`;
-
-            console.log(listaIngredientes)
-        };
-
-        const ingrediBtnCell = document.createElement('td');
-        ingrediBtnCell.className = 'text-center align-middle bg-light';
-        ingrediBtnCell.appendChild(ingrediBtnEditar);
-        ingrediBtnCell.appendChild(ingrediBtnApagar);
-        row.appendChild(ingrediBtnCell);
+        const valorIngredienteCell = document.createElement('td');
+        valorIngredienteCell.className = 'text-center align-middle bg-light fw-bolder';
+        valorIngredienteCell.style = 'color: blue;'
+        valorIngredienteCell.textContent = `$${parseFloat(valorIngrediente).toFixed(2)}`;
+        row.appendChild(valorIngredienteCell);
 
         let totalCell = document.querySelector('#totalMesa span'); // Verifica se já existe um <span> no totalMesa
 
-        total += parseFloat(valorIngredi);
+        if (!totalCell) {
+            // Se não existir, cria um novo elemento
+            totalCell = document.createElement('span');
+            totalMesa.appendChild(totalCell);
+        }
+
+        total += parseFloat(valorIngrediente);
 
         totalCell.textContent = `$${total.toFixed(2)}`;
 
+        const detalheIngredienteCell = document.createElement('td');
+        detalheIngredienteCell.className = 'text-center align-middle bg-light';
+        detalheIngredienteCell.textContent = detalhesIngrediente;
+        row.appendChild(detalheIngredienteCell);
+
+        const obsIngredienteBtnApagar = document.createElement('button');
+        obsIngredienteBtnApagar.className = 'text-center align-middle text-white';
+        obsIngredienteBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsIngredienteBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        obsIngredienteBtnApagar.onclick = () => {
+
+            row.remove(); // Remove a linha inteira do DOM
+
+            // Coloca os inputs ocultos em um array
+            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput];
+
+            // Itera sobre o array para remover os inputs
+            hiddenInputs.forEach(function (input) {
+                input.remove();
+            });
+
+            total -= parseFloat(valorIngrediente);
+            totalCell.textContent = `$${total.toFixed(2)}`;
+        };
+
+        const obsIngredienteCell = document.createElement('td');
+        obsIngredienteCell.className = 'text-center align-middle bg-light';
+        // obsIngredienteCell.appendChild(obsLancheBtnEditar);
+        obsIngredienteCell.appendChild(obsIngredienteBtnApagar);
+        row.appendChild(obsIngredienteCell);
+
+        if (cont == 1) {
+            const mesaCell = document.createElement('span');
+            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
+            comandaMesa.appendChild(mesaCell);
+        }
+
+        // Adiciona a nova linha à tabela
         listaPedidos.appendChild(row);
 
-        // Atualiza ou cria o input oculto para os ingredientes concatenados
-        let inputHidden = document.querySelector('input[name="ingredientes_concatenados"]');
-        if (!inputHidden) {
-            inputHidden = document.createElement('input');
-            inputHidden.type = 'hidden';
-            inputHidden.name = 'ingredientes_concatenados';
-            pedidosDiv.appendChild(inputHidden);
-        }
-        inputHidden.value = ingredientesConcatenados;
+        // Cria inputs ocultos para envio no formulário
+        const mesaInput = document.createElement('input');
+        mesaInput.type = 'hidden';
+        mesaInput.name = 'mesa[]';
+        mesaInput.value = mesaPedido;
 
-        // Atualiza ou cria o input oculto para os ingredientes concatenados
-        let inputValores = document.querySelector('input[name="valores_concatenados"]');
-        if (!inputValores) {
-            inputValores = document.createElement('input');
-            inputValores.type = 'hidden';
-            inputValores.name = 'valores_concatenados';
-            pedidosDiv.appendChild(inputValores);
-        }
-        inputValores.value = valoresConcatenados;
+        const idIngredieteInput = document.createElement('input');
+        idIngredieteInput.type = 'hidden';
+        idIngredieteInput.name = 'id_ingredi[]';
+        idIngredieteInput.value = idIngrediente;
+
+        console.log(idIngredieteInput)
+
+        const nomeIngredieteInput = document.createElement('input');
+        nomeIngredieteInput.type = 'hidden';
+        nomeIngredieteInput.name = 'add_ingredi[]';
+        nomeIngredieteInput.value = "+ " + nomeIngrediente;
+
+        const valorIngredienteInput = document.createElement('input');
+        valorIngredienteInput.type = 'hidden';
+        valorIngredienteInput.name = 'valor_ingredi[]';
+        valorIngredienteInput.value = valorIngrediente;
 
         btnDiv.addEventListener("click", () => {
-            const totalIngredInput = document.createElement('input');
-            totalIngredInput.type = 'hidden';
-            totalIngredInput.name = 'total[]';
-            totalIngredInput.value = total;
+            const totalInput = document.createElement('input');
+            totalInput.type = 'hidden';
+            totalInput.name = 'total[]';
+            totalInput.value = total;
 
-            pedidosDiv.appendChild(totalIngredInput);
-        });
+            pedidosDiv.appendChild(totalInput);
+
+        })
+
+        pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(nomeIngredieteInput);
+        pedidosDiv.appendChild(idIngredieteInput);
+        pedidosDiv.appendChild(valorIngredienteInput);
     });
 });
 
-const removerIngrediBtns = document.querySelectorAll('.removerIngredi input[type="button"]');
+document.querySelector('#btnAbrirIngrediente').addEventListener('click', function() {
+    var tabela = document.getElementById('adicionarTabelaIngrediente');
+    tabela.classList.toggle('show');
+});
 
-let removerIngredientesConcatenados = '';
+const removerIngredienteBtns = document.querySelectorAll('.removerIngredienteBtns input[type="button"]');
 
-removerIngrediBtns.forEach((btn) => {
+removerIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-        event.preventDefault();
+        cont += 1
+        idIngrediente = idLanche 
 
+        // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
 
-        const nomeIngredi = form.querySelector('input[name="nome_ingredi"]').value;
-        const valorIngredi = 0;
+        // Captura os dados do lanche e da mesa
+        const nomeIngrediente = form.querySelector('input[name="nomeIngrediente"]').value;
+        const valorIngrediente = 0;
+        const detalhesIngrediente = form.querySelector('input[name="detalhesIngrediente"]').value;
+        const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
 
-        // Atualiza os ingredientes concatenados
-        if (removerIngredientesConcatenados) {
-            removerIngredientesConcatenados += ` - ${nomeIngredi}`;
-        } else {
-            removerIngredientesConcatenados = ` - ${nomeIngredi}`;
+        // Verifica se o valor da mesa está presente
+        if (!mesaPedido || mesaPedido < 0) {
+            Swal.fire({
+                title: 'Número da Mesa!',
+                text: 'Selecione um número',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+            cont = 0
+            return;
         }
 
-        if (valoresConcatenados) {
-            valoresConcatenados += ` + ${0}`;
-        } else {
-            valoresConcatenados = ` + ${0}`;
-        }
-
+        // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
-        const nomeIngrediCell = document.createElement('td');
-        nomeIngrediCell.className = 'col bg-light';
-        nomeIngrediCell.style.color = 'red';
-        nomeIngrediCell.textContent = " - " + nomeIngredi;
-        row.appendChild(nomeIngrediCell)
+        const idIngredienteCell = document.createElement('th');
+        idIngredienteCell.className = 'bg-light text-danger';
+        idIngredienteCell.textContent = idIngrediente;
+        row.appendChild(idIngredienteCell);
 
-        const valorIngrediCell = document.createElement('td');
-        valorIngrediCell.className = 'text-center align-middle bg-light fw-bold';
-        valorIngrediCell.textContent = `$${parseFloat(0).toFixed(2)}`;
-        row.appendChild(valorIngrediCell)
+        const nomeIngredienteCell = document.createElement('th');
+        nomeIngredienteCell.className = 'bg-light';
+        nomeIngredienteCell.style = 'color: red;'
+        nomeIngredienteCell.textContent = "- "+ nomeIngrediente;
+        row.appendChild(nomeIngredienteCell);
 
-        const detalheIngrediCell = document.createElement('td');
-        detalheIngrediCell.className = 'text-center align-middle bg-light';
-        row.appendChild(detalheIngrediCell);
+        const valorIngredienteCell = document.createElement('td');
+        valorIngredienteCell.className = 'text-center align-middle bg-light fw-bolder';
+        valorIngredienteCell.style = 'color: blue;'
+        valorIngredienteCell.textContent = `$${parseFloat(0).toFixed(2)}`;
+        row.appendChild(valorIngredienteCell);
 
-        const ingrediBtnEditar = document.createElement('button');
-        ingrediBtnEditar.className = 'text-center align-middle text-white me-2 fw-bolder';
-        ingrediBtnEditar.style = 'border-radius: 4px; width: 30px;  background-color: #343aeb; border: #1c1f8f;'
-        ingrediBtnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"><i>';
+        let totalCell = document.querySelector('#totalMesa span'); // Verifica se já existe um <span> no totalMesa
 
-        const ingrediBtnApagar = document.createElement('button');
-        ingrediBtnApagar.className = 'text-center align-middle bg-danger text-white';
-        ingrediBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
-        ingrediBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
-        ingrediBtnApagar.onclick = () => {
-            row.remove();
-
-            // Converte as strings concatenadas em arrays
-            let listaIngredientes = removerIngredientesConcatenados.split(' - ');
-            let listaValores = valoresConcatenados.split(' + ');
-
-            // Encontra o índice do ingrediente a ser removido se não index0f = -1
-            const index = listaIngredientes.indexOf(nomeIngredi);
-
-            if (index !== -1) {
-                listaIngredientes.splice(index, 1); // Remove o ingrediente
-                listaValores.splice(index, 1); // Remove o valor correspondente
-            }
-
-            // Atualiza as strings concatenadas sem o ingrediente removido
-            removerIngredientesConcatenados = listaIngredientes.join(' - ');
-            valoresConcatenados = listaValores.join(' + ');
-
-            // Atualiza os inputs ocultos
-            document.querySelector('input[name="remover_Ingredientes_Concatenados"]').value = removerIngredientesConcatenados;
-            document.querySelector('input[name="valores_concatenados"]').value = valoresConcatenados;
-
-            console.log('Ingredientes Atualizados:', removerIngredientesConcatenados);
-            console.log('Valores Atualizados:', valoresConcatenados);
-
-            // Atualiza o total corretamente
-            total -= parseFloat(valorIngredi);
+        if (!totalCell) {
+            // Se não existir, cria um novo elemento
+            totalCell = document.createElement('span');
+            totalMesa.appendChild(totalCell);
         }
 
-        const ingrediBtnCell = document.createElement('td');
-        ingrediBtnCell.className = 'text-center align-middle bg-light';
-        ingrediBtnCell.appendChild(ingrediBtnEditar);
-        ingrediBtnCell.appendChild(ingrediBtnApagar);
-        row.appendChild(ingrediBtnCell);
+        total += parseFloat(valorIngrediente);
 
+        totalCell.textContent = `$${total.toFixed(2)}`;
+
+        const detalheIngredienteCell = document.createElement('td');
+        detalheIngredienteCell.className = 'text-center align-middle bg-light';
+        detalheIngredienteCell.textContent = detalhesIngrediente;
+        row.appendChild(detalheIngredienteCell);
+
+        const obsIngredienteBtnApagar = document.createElement('button');
+        obsIngredienteBtnApagar.className = 'text-center align-middle text-white';
+        obsIngredienteBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsIngredienteBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
+        obsIngredienteBtnApagar.onclick = () => {
+
+            row.remove(); // Remove a linha inteira do DOM
+
+            // Coloca os inputs ocultos em um array
+            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput];
+
+            // Itera sobre o array para remover os inputs
+            hiddenInputs.forEach(function (input) {
+                input.remove();
+            });
+
+            // total -= parseFloat(valorIngrediente);
+            // totalCell.textContent = `$${total.toFixed(2)}`;
+        };
+
+        const obsIngredienteCell = document.createElement('td');
+        obsIngredienteCell.className = 'text-center align-middle bg-light';
+        obsIngredienteCell.appendChild(obsIngredienteBtnApagar);
+        row.appendChild(obsIngredienteCell);
+
+        if (cont == 1) {
+            const mesaCell = document.createElement('span');
+            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
+            comandaMesa.appendChild(mesaCell);
+        }
+
+        // Adiciona a nova linha à tabela
         listaPedidos.appendChild(row);
 
-        // Atualiza ou cria o input oculto para os ingredientes concatenados
-        let inputHidden = document.querySelector('input[name="remover_Ingredientes_Concatenados"]');
-        if (!inputHidden) {
-            inputHidden = document.createElement('input');
-            inputHidden.type = 'hidden';
-            inputHidden.name = 'remover_Ingredientes_Concatenados';
-            pedidosDiv.appendChild(inputHidden);
-        }
-        inputHidden.value = removerIngredientesConcatenados;
+        // Cria inputs ocultos para envio no formulário
+        const mesaInput = document.createElement('input');
+        mesaInput.type = 'hidden';
+        mesaInput.name = 'mesa[]';
+        mesaInput.value = mesaPedido;
 
-        // Atualiza ou cria o input oculto para os ingredientes concatenados
-        let inputValores = document.querySelector('input[name="valores_concatenados"]');
-        if (!inputValores) {
-            inputValores = document.createElement('input');
-            inputValores.type = 'hidden';
-            inputValores.name = 'valores_concatenados';
-            pedidosDiv.appendChild(inputValores);
-        }
-        inputValores.value = valoresConcatenados;
-    })
+        const idIngredieteInput = document.createElement('input');
+        idIngredieteInput.type = 'hidden';
+        idIngredieteInput.name = 'id_ingredi[]';
+        idIngredieteInput.value = idIngrediente;
+
+        console.log(idIngredieteInput)
+
+        const nomeIngredieteInput = document.createElement('input');
+        nomeIngredieteInput.type = 'hidden';
+        nomeIngredieteInput.name = 'add_ingredi[]';
+        nomeIngredieteInput.value = '- '+ nomeIngrediente;
+
+        const valorIngredienteInput = document.createElement('input');
+        valorIngredienteInput.type = 'hidden';
+        valorIngredienteInput.name = 'valor_ingredi[]';
+        valorIngredienteInput.value = valorIngrediente;
+
+        btnDiv.addEventListener("click", () => {
+            const totalInput = document.createElement('input');
+            totalInput.type = 'hidden';
+            totalInput.name = 'total[]';
+            totalInput.value = total;
+
+            pedidosDiv.appendChild(totalInput);
+
+        })
+
+        pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(nomeIngredieteInput);
+        pedidosDiv.appendChild(idIngredieteInput);
+        pedidosDiv.appendChild(valorIngredienteInput);
+    });
 });
 
 btnDiv.addEventListener("click", (e) => {
@@ -596,6 +626,27 @@ btnDiv.addEventListener("click", (e) => {
         });
     }
 })
+
+btnDivCancelar.addEventListener('click', () => {
+    // Usando Swal.fire para confirmação com a opção de "Sim" e "Não"
+    Swal.fire({
+        title: 'Cancelar?',
+        text: "Tem certeza que deseja cancelar?",
+        icon: 'warning',
+        showCancelButton: true,  // Exibe o botão de cancelamento
+        confirmButtonText: 'Sim, cancelar',
+        cancelButtonText: 'Não, manter',
+        reverseButtons: true  // Coloca os botões na ordem: "Sim, cancelar" e "Não, manter"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Se o usuário confirmar (clicar em "Sim, cancelar")
+            location.reload();  // Recarregar a página
+        } else {
+            // Caso o usuário cancele, não faz nada
+            console.log("Cancelado");
+        }
+    });
+});
 
 
 

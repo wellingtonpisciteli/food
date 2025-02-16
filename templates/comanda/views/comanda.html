@@ -3,6 +3,94 @@
 
 <body class="w-100 bg-dark">
   <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos</header>
+
+  <div class="bg-light" style="margin-left: 2.5%; width: 35%;">
+    {% set mesa_anterior = None %}  
+    {% set cont = 0 %} 
+
+    {% for pedido in pedidos %}
+      {% if pedido.mesa != mesa_anterior %}
+        <div class="bg-dark"><br></div>
+
+        <div style="background-color: aquamarine; width: 150px; margin: auto; text-align: center; padding: 10px">
+          {% if pedido.mesa < 10 %}
+            MESA: 0{{ pedido.mesa }} <br>
+          {% else %}
+            MESA: {{ pedido.mesa }} <br>
+          {% endif %}
+
+          {% if pedido.status == 1 %}
+            STATUS: ABERTA <br>
+          {% else %}
+            STATUS: FECHADA <br>
+          {% endif %}
+
+          TOTAL: ${{ pedido.total | number_format(2, ',', '.') }} <br>
+          Ás: {{ pedido.data_hora | date('H:i') }}
+        </div>   
+
+        {% set mesa_anterior = pedido.mesa %}
+        {% set cont = 0 %}
+      {% endif %}
+
+      <table class="table-responsive" style="margin: auto; background-color: cornflowerblue;">
+        <thead>
+          <tr>
+            <th scope="col" style="background-color: brown; width: 30px;">
+              {% if cont == 0 %}
+                ID
+              {% set cont = 1 %}
+              {% endif %}
+            </th>
+            <th scope="col" style="background-color: blue; width: 120px;">
+              {% if cont == 1 %}
+                Lanches
+              {% set cont = 2 %}
+              {% endif %}
+            </th>
+            <th scope="col" style="background-color: blueviolet; width: 30px;">
+              {% if cont == 2 %}
+                ID
+              {% set cont = 3 %}
+              {% endif %}
+            </th>
+            <th scope="col" style="background-color: aquamarine; width: 120px;">
+              {% if cont == 3 %}
+                Adicionais
+              {% set cont = 4 %}
+              {% endif %}
+            </th>
+            <th scope="col" style="background-color: chocolate; width: 120px;">
+              {% if cont == 4 %}
+                Bebidas
+              {% set cont = 5 %}
+              {% endif %}
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              {{ pedido.id_lanche }}
+            </td>
+            <td>
+              {{ pedido.nome_lanche }}
+            </td>
+            <td>
+              {{ pedido.id_ingredi }}
+            </td>
+            <td>
+              {{ pedido.add_ingredi }}
+            </td>
+            <td>
+              {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    {% endfor %}
+  </div>
   
   <main class="bg-light" id="adicionarTabela" style="margin-top: 15px; margin-bottom: 30px;">
       {% set mesa_anterior = None %}  <!-- Inicializa a variável auxiliar -->
@@ -45,22 +133,34 @@
               {% set cont = 0 %}
               {% endif %}
               <tr>   
-                <th scope="col" style="width: 90px;">
+                <th scope="col" style="width: 40px;">
                   {% if cont == 0 %}
-                    Lanches
+                    ID
                   {% set cont = 1 %}
                   {% endif %}
-                  </th>
-                <th scope="col" style="width: 120px;">
+                </th>
+                <th scope="col" style="width: 200px;">
                   {% if cont == 1 %}
-                    Adicionais
+                    Lanches
                   {% set cont = 2 %}
                   {% endif %}
                 </th>
-                <th scope="col" style="width: 90px;">
+                <th scope="col" style="width: 40px;">
                   {% if cont == 2 %}
-                    Bebidas
+                    ID
                   {% set cont = 3 %}
+                  {% endif %}
+                </th>
+                <th scope="col" style="width: 120px;">
+                  {% if cont == 3 %}
+                    Adicionais
+                  {% set cont = 4 %}
+                  {% endif %}
+                </th>
+                <th scope="col" style="width: 90px;">
+                  {% if cont == 4 %}
+                    Bebidas
+                  {% set cont = 5 %}
                   {% endif %}
                 </th>
               </tr>
@@ -69,10 +169,16 @@
             <tbody>
               <tr>
                 <td scope="col">
+                  {{ pedido.id_lanche }}
+                </td>
+                <td scope="col">
                   {{ pedido.nome_lanche }}
                 </td>
                 <td scope="col">
-                  {{ pedido.add_ingredi }} {{ pedido.remover_ingredi }}
+                  {{ pedido.id_ingredi }}
+                </td>
+                <td scope="col">
+                  {{ pedido.add_ingredi }}
                 </td>
                 <td scope="col">
                   {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
