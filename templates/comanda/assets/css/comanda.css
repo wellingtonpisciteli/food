@@ -102,3 +102,65 @@ body{
     background-image: linear-gradient(to right, darkred, black);
 }
 
+
+
+#divTable{
+    margin-left: 2.5% !important; 
+    margin-bottom: 15px !important; 
+    margin-top: 20px;
+    width: 47.5%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.thTable{
+    width: 180px;
+}
+
+@media (max-width: 1270px){
+    .thTable{
+        width: 140px;
+    }
+}
+
+@media (min-width: 700px) and (max-width: 1024px) { 
+    /* Para iPads e dispositivos com largura similar */
+    #divTable {
+        width: 95%; /* Ajuste a largura conforme necessário */
+    }
+
+    .thTable {
+        width: 210px;
+    }
+}
+
+@media (max-width: 699px) { /* Para celulares */
+    #divTable {
+        width: 95%;
+    }
+    
+    .thTable{
+        width: 95px;
+    }
+
+    .mesaComanda{
+        font-size: 1.1em !important;
+        font-weight: bolder;
+    }
+}
+
+.mesaComanda{
+    display: flex; 
+    justify-content: space-evenly; 
+    align-items: center;
+
+    background-image: linear-gradient(to right, #FF4500, black);
+    color: white;
+    font-size: 1.2em;
+    font-weight: bolder;
+    width: 100%; 
+    margin: auto; 
+    text-align: center; 
+    padding: 10px; 
+    margin-bottom: 5px;  
+}
+
