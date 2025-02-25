@@ -18,6 +18,7 @@ if (numMesaInput) {
     });
 }
 
+
 // Captura o botão para adicionar um lanche
 const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="button"]');
 
@@ -41,9 +42,6 @@ enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
         idLanche += 1
-
-        console.log("idLanche = "+ idLanche)
-        console.log("idIngrediente = "+ idIngrediente)
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -334,9 +332,6 @@ enviarIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
         idIngrediente = idLanche 
-
-        console.log("idLanche = "+ idLanche)
-        console.log("idIngrediente = "+ idIngrediente)
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');

@@ -7,6 +7,7 @@
   <div id="divTable" class="bg-light table-responsive">
     {% set mesa_anterior = None %}  
     {% set cont = 0 %} 
+    {% set marca = 0 %}
 
     {% for pedido in pedidos %}
       {% if pedido.mesa != mesa_anterior %}
@@ -14,6 +15,9 @@
           <div class="bg-dark"><br></div>
         {% endif %}
 
+        {% set marca = marca + 1 %}
+        
+        {% if marca <=3 %}
         <div class="mesaComanda">
           <div>
               {% if pedido.mesa < 10 %}
@@ -39,11 +43,13 @@
               Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
           </div>
       </div>
+      {% endif %}
       
       {% set mesa_anterior = pedido.mesa %}
       {% set cont = 0 %}
       {% endif %}
 
+      {% if marca <=3 %}
       <table style="margin: auto; margin-bottom: 2px;">
         <thead>
           <tr>
@@ -126,6 +132,7 @@
           </tr>
         </tbody>
       </table>
+      {% endif %}
     {% endfor %}
   </div>
   

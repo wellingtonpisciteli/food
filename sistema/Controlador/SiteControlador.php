@@ -29,7 +29,7 @@ class SiteControlador extends Controlador{
     {
         $cardapioBebida=(new ComandaModelo())->ler("marcas_bebida", "marca");
         $cardapioLanche=(new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $pedidos=(new ComandaModelo())->ler("pedidos", "mesa");
+        $pedidos=(new ComandaModelo())->ler("pedidos", "data_hora");
 
         echo($this->template->renderizar('comanda.html', [
             'titulo'=>'Sistema_Food',

@@ -8,7 +8,7 @@ use sistema\Nucleo\Helpers;
 class ComandaModelo{
     public function ler(string $tabela, string $nome):array | object
     {
-        $querry="SELECT * FROM {$tabela} ORDER BY {$nome} ASC";
+        $querry="SELECT * FROM {$tabela} ORDER BY {$nome} DESC ";
         $stmt=Conexao::getInstancia()->query($querry);
         $resultado=$stmt->fetchAll();
         return $resultado;
