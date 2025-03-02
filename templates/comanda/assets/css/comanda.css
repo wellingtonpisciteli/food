@@ -95,8 +95,6 @@ body{
     background-color: red !important;
 }
 
-
-
 #rodapeComanda{
     padding: 10px;
     background-image: linear-gradient(to right, darkred, black);
@@ -109,7 +107,6 @@ body{
     margin-bottom: 15px !important; 
     margin-top: 20px;
     width: 47.5%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .thTable{
@@ -131,6 +128,7 @@ body{
     .thTable {
         width: 210px;
     }
+    
 }
 
 @media (max-width: 699px) { /* Para celulares */
@@ -162,5 +160,136 @@ body{
     text-align: center; 
     padding: 10px; 
     margin-bottom: 5px;  
+}
+
+/* Contêiner principal do cardápio */
+.cardapio-container {
+    background-image: linear-gradient(to left, #FF4500, black);
+    width: 47%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    right: 20px;
+    top: 24.2%;
+    height: 550px;
+    padding: 20px;
+}
+
+/* Container da tabela */
+.table-responsive {
+    width: 97%;
+    overflow-x: auto;
+}
+
+/* Estilos da tabela */
+.table {
+    width: 100%;
+    margin-top: 15px;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+/* Cabeçalho do cardápio */
+.cardapio-header {
+    font-weight: bolder;
+    font-size: 1.5em;
+    color: white;
+    text-align: center;
+}
+
+/* Estilos para as células de cabeçalho */
+.cardapio-th {
+    background-color: #343a40;
+    padding: 12px;
+    color: white;
+    font-size: 1.2em;
+}
+
+/* Estilos para as células de itens */
+.cardapio-th-item {
+    padding: 12px;
+}
+
+/* Estilos para valores de lanches */
+#valor_lanche{
+    color: blue;
+}
+
+/* Estilos para valores de bebidas */
+.cardapio-valor {
+    text-align: center;
+    align-items: middle;
+    width: 40%;
+}
+
+/* Estilo do select para bebidas */
+.form-select {
+    font-weight: bolder;
+    text-align: center;
+}
+
+/* Estilos específicos para cada tabela */
+.cardapio-lanche, .cardapio-bebida, .cardapio-adicionais {
+    background-color: #f8f9fa;
+    margin-top: 15px;
+    border-collapse: collapse;
+}
+
+/* Estilo para o fundo escuro da tabela */
+.thead-dark {
+    background-color: #343a40;
+    color: white;
+}
+
+/* Ajustando a margem das tabelas */
+.cardapio-bebida, .cardapio-adicionais {
+    margin-top: -16px;
+}
+
+
+/* Responsividade - Ajustar para telas pequenas (Mobile e iPad) */
+@media (max-width: 1024px) {
+    .cardapio-container {
+        width: 95%;
+        position: static;
+        top: auto;
+        right: auto;
+        margin-top: 20px;
+        height: auto;
+        padding: 15px;
+        margin-left: 2.5% !important; 
+        margin-bottom: 20px !important;
+    }
+
+    /* Colocar o cardápio abaixo dos últimos pedidos */
+    .cardapio-wrapper {
+        margin-top: 20px;
+    }
+
+    .cardapio-header {
+        font-size: 1.2em;
+    }
+
+    .cardapio-th, .cardapio-th-item {
+        font-size: 1em;
+        padding: 10px;
+    }
+
+    .cardapio-valor select {
+        width: 100%;
+    }
+
+    /* Ajuste do layout da tabela */
+    .table-responsive {
+        width: 100%;
+        overflow-x: hidden; /* Remover a rolagem horizontal */
+    }
+
+    /* Ajustar as margens e tamanhos das tabelas */
+    .cardapio-lanche, .cardapio-bebida, .cardapio-adicionais {
+        width: 100%;
+    }
 }
 

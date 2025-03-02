@@ -30,12 +30,18 @@ class SiteControlador extends Controlador{
         $cardapioBebida=(new ComandaModelo())->ler("marcas_bebida", "marca");
         $cardapioLanche=(new ComandaModelo())->ler("cardapio_lanche", "lanche");
         $pedidos=(new ComandaModelo())->ler("pedidos", "data_hora");
+        $tamanho_bebida=(new ComandaModelo())->ler("tamanho_bebida", "tamanho");
+        $ingredi=(new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $adicional=(new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
 
         echo($this->template->renderizar('comanda.html', [
             'titulo'=>'Sistema_Food',
             'cardapioBebida'=>$cardapioBebida,
             'cardapioLanche'=>$cardapioLanche,
-            'pedidos'=>$pedidos
+            'pedidos'=>$pedidos,
+            'tamanhoBebida'=>$tamanho_bebida,
+            'ingred'=>$ingredi,
+            'adicional'=>$adicional,
         ]));
     }
 
@@ -79,6 +85,8 @@ class SiteControlador extends Controlador{
         if($_SERVER["REQUEST_METHOD"]=="POST"){
             $dados=filter_input_array(INPUT_POST, FILTER_DEFAULT);
             (new ComandaModelo())->armazenarPedido($dados);
+
+            (new ComandaModelo())->armazenarAdicional($dados);
         }
         
         Helpers::redirecionar('adicionar');

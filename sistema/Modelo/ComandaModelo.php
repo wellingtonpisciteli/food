@@ -14,6 +14,14 @@ class ComandaModelo{
         return $resultado;
     }
 
+    public function lerAdcional(string $tabela, string $nome):array | object
+    {
+        $querry="SELECT * FROM {$tabela} ORDER BY {$nome} ASC ";
+        $stmt=Conexao::getInstancia()->query($querry);
+        $resultado=$stmt->fetchAll();
+        return $resultado;
+    }
+
     public function buscaPorId(string $tabela, int $id):bool | object
     {
         $querry="SELECT * FROM {$tabela} WHERE id={$id}";
@@ -86,5 +94,22 @@ class ComandaModelo{
         }
     }
 }
+
+    public function armazenarAdicional(array $adicional){
+
+        // Remova a coluna 'mesa' da consulta
+        $query = "INSERT INTO adicionais (id, nome_adicional) VALUES (?, ?)"; 
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
+            $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
+
+            // Execute apenas com os dados restantes (id e nome_adicional)
+            $stmt->execute([
+                $id_ingredi,
+                $add_ingredi
+            ]);
+        }
+    }
     
 }

@@ -1,141 +1,184 @@
 {% extends 'base.html' %}
+
 {% block conteudo %}
 
 <body class="w-100 bg-dark">
   <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos</header>
 
   <div id="divTable" class="bg-light table-responsive">
-    {% set mesa_anterior = None %}  
-    {% set cont = 0 %} 
-    {% set marca = 0 %}
+    {% set mesa_anterior = None %}
+    {% set cont = 0 %}
+    {% set ultimosTres = 0 %}
 
     {% for pedido in pedidos %}
       {% if pedido.mesa != mesa_anterior %}
         {% if cont > 0 %}
-          <div class="bg-dark"><br></div>
+          <div class="bg-dark" style="height: 15px;"></div> <!-- Ajuste no espaçamento -->
         {% endif %}
 
-        {% set marca = marca + 1 %}
-        
-        {% if marca <=3 %}
-        <div class="mesaComanda">
-          <div>
-              {% if pedido.mesa < 10 %}
-                  MESA:<span style="color: lime"> 0{{ pedido.mesa }}</span> 
+        {% set ultimosTres = ultimosTres + 1 %}
+
+        {% if ultimosTres <= 3 %}
+          <div class="mesaComanda">
+            <div>
+              {% if pedido.mesa < 10 %} 
+                MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
               {% else %}
-                  MESA:<span style="color: lime"> {{ pedido.mesa }}</span>
+                MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
               {% endif %}
-          </div>
-      
-          <div>
+            </div>
+
+            <div>
               {% if pedido.status == 1 %}
-                  STATUS: <span style="color: chartreuse;">ABERTA </span>
+                STATUS: <span style="color: chartreuse;">ABERTA </span>
               {% else %}
-                  STATUS: <span style="color: red;">FECHADA</span> 
+                STATUS: <span style="color: red;">FECHADA</span>
               {% endif %}
-          </div>
-      
-          <div>
+            </div>
+
+            <div>
               TOTAL: <span style="color: dodgerblue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
-          </div>
-      
-          <div>
+            </div>
+
+            <div>
               Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
+            </div>
           </div>
-      </div>
-      {% endif %}
-      
-      {% set mesa_anterior = pedido.mesa %}
-      {% set cont = 0 %}
+        {% endif %}
+
+        {% set mesa_anterior = pedido.mesa %}
+        {% set cont = 0 %}
       {% endif %}
 
-      {% if marca <=3 %}
-      <table style="margin: auto; margin-bottom: 2px;">
-        <thead>
-          <tr>
-            <th scope="col" style="width: 30px;">
-              {% if cont == 0 %}
-                ID
-              {% set cont = 1 %}
-              {% endif %}
-            </th>
-            <th class="thTable" scope="col">
-              {% if cont == 1 %}
-                LANCHES
-              {% set cont = 2 %}
-              {% endif %}
-            </th>
-            <th scope="col" style="width: 30px; padding-left: 5px">
-              {% if cont == 2 %}
-                ID
-              {% set cont = 3 %}
-              {% endif %}
-            </th>
-            <th class="thTable" scope="col">
-              {% if cont == 3 %}
-                ADICIONAIS
-              {% set cont = 4 %}
-              {% endif %}
-            </th>
-            <th class="thTable" scope="col" style="padding-left: 15px;">
-              {% if cont == 4 %}
-                BEBIDAS
-              {% set cont = 5 %}
-              {% endif %}
-            </th>
-          </tr>
-        </thead>
+      {% if ultimosTres <= 3 %}
+        {% if pedido.nome_lanche or pedido.nome_bebida %}  <!-- Verifica se há algum lanche ou bebida -->
+          <table style="margin: auto; margin-bottom: 10px; width: 100%;"> <!-- Ajuste nas margens e tamanho -->
+            <thead>
+              <tr>
+                <th class="thTable" scope="col">
+                  {% if cont == 0 %}
+                    LANCHES
+                    {% set cont = 1 %}
+                  {% endif %}
+                </th>
 
-        <tbody>
-          <tr>
-            <td class="text-primary" style="font-weight: bolder;">
-              {% if pedido.id_lanche < 10 and pedido.id_lanche != 0 %}
-                0{{ pedido.id_lanche }}
-              {% elseif pedido.id_lanche != "" %}
-                {{ pedido.id_lanche }}
-              {% else %}
-                <span style="font-weight: bolder; color: black;">-</span>
-              {% endif %}
-            </td>
-            <td style="font-weight: bolder;">
-              {% if pedido.nome_lanche != "" %}
-                {{ pedido.nome_lanche }}
-              {% else %}
-                <span style="font-weight: bolder;">-</span> 
-              {% endif %}
-            </td>
-            <td class="text-primary" style="font-weight: bolder; padding-left: 5px;">
-              {% if pedido.id_ingredi < 10 and pedido.id_ingredi != 0 %}
-                0{{ pedido.id_ingredi }}
-              {% elseif pedido.id_ingredi != "" %}
-                {{ pedido.id_ingredi }}
-              {% else %}
-                <span style="font-weight: bolder; color: black;">-</span>
-              {% endif %}
-            </td>
-            <td>
-              {% if pedido.add_ingredi starts with '+' %}
-                <span style="color: green; font-weight: bolder;">{{ pedido.add_ingredi }}</span>
-              {% elseif pedido.add_ingredi starts with '-' %}
-                <span style="color: red; font-weight: bolder;">{{ pedido.add_ingredi }}</span>
-              {% else %}
-                <span style="font-weight: bolder;">-</span>
-              {% endif %}
-            </td>
-            <td style="font-weight: bolder; padding-left: 15px;">
-              {% if pedido.nome_bebida != "" %}
-                {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
-              {% else %}
-                <span style="font-weight: bolder;">-</span> 
-              {% endif %}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                <th class="thTable" scope="col" style="padding-left: 15px;">
+                  {% if cont == 1 %}
+                    BEBIDAS
+                    {% set cont = 2 %}
+                  {% endif %}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td style="font-weight: bolder;">
+                  {% if pedido.nome_lanche != "" %}
+                    <span style="text-transform: uppercase;">{{ pedido.nome_lanche }}</span>
+                  {% else %}
+                    <span style="font-weight: bolder;">-</span>
+                  {% endif %}
+
+                  {% for teste in adicional %}
+                    {% if pedido.id_lanche == teste.id %}
+                      <div style="margin-top: 5px; margin-left: 5px;">
+                        {% if teste.nome_adicional starts with '+' %}
+                          <span style="color: green; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+                        {% elseif teste.nome_adicional starts with '-' %}
+                          <span style="color: red; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+
+                <td style="font-weight: bolder; padding-left: 15px;">
+                  {% if pedido.nome_bebida != "" %}
+                    {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
+                  {% else %}
+                    <span style="font-weight: bolder;">-</span>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {% endif %}
       {% endif %}
     {% endfor %}
   </div>
-  
+</div>
+
+  <div class="cardapio-wrapper">
+    <div class="cardapio-container">
+      <div class="table-responsive">
+        <!-- Cardápio de Lanches -->
+        <table class="table cardapio-lanche">
+          <header class="cardapio-header">CARDÁPIO</header>
+          <thead class="thead-dark">
+            <tr>
+              <th class="cardapio-th bg-dark text-white">LANCHES</th>
+              <th class="cardapio-th bg-dark text-white">VALOR</th>
+            </tr>
+          </thead>
+          {% for cardapio in cardapioLanche %}
+            <tbody>
+              <tr>
+                <th class="cardapio-th-item">{{ cardapio.lanche }}</th>
+                <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
+              </tr>
+            </tbody>
+          {% endfor %}
+        </table>
+
+        <!-- Cardápio de Bebidas -->
+        <table class="table cardapio-bebida">
+          <thead class="thead-dark">
+            <tr>
+              <th class="cardapio-th bg-dark text-white">BEBIDAS</th>
+              <th class="cardapio-th bg-dark text-white">VALOR</th>
+            </tr>
+          </thead>
+          {% for bebidas in cardapioBebida %}
+            <tbody>
+              <tr>
+                <th class="cardapio-th-item">{{ bebidas.marca }}</th>
+                <td class="cardapio-valor">
+                  <select class="form-select" id="valor_lanche">
+                    {% for tamanho in tamanhoBebida %}
+                      {% if tamanho.marca_bebida_id == bebidas.id %}
+                        <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                          {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          {% endfor %}
+        </table>
+
+        <!-- Cardápio de Adicionais -->
+        <table class="table cardapio-adicionais">
+          <thead class="thead-dark">
+            <tr>
+              <th class="cardapio-th bg-dark text-white">ADICIONAIS</th>
+              <th class="cardapio-th bg-dark text-white">VALOR</th>
+            </tr>
+          </thead>
+          {% for ingredi in ingred %}
+            <tbody>
+              <tr>
+                <th class="cardapio-th-item">{{ ingredi.ingrediente }}</th>
+                <th id="valor_lanche" class="cardapio-th-item">{{ ingredi.valor | number_format(2, ',', '.') }}</th>
+              </tr>
+            </tbody>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
 </body>
 
 <script src="{{ url('/templates/comanda/assets/js/comanda.js') }}" defer></script>

@@ -35,13 +35,18 @@ let apagarLanche = false
 let totalLanche = 0
 let totalBebida = 0
 let total = 0
-let idLanche = 0
+// Recupera o valor de idLanche do localStorage, se existir, senão inicia com 0
+let idLanche = localStorage.getItem('idLanche') ? parseInt(localStorage.getItem('idLanche')) : 0;
 let idIngrediente = 0
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
         idLanche += 1
+        console.log(idLanche)
+
+        // Atualiza o idLanche no localStorage para garantir que ele não zere
+        localStorage.setItem('idLanche', idLanche);
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
