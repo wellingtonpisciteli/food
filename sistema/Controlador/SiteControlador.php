@@ -67,6 +67,18 @@ class SiteControlador extends Controlador{
         ]));
     }
 
+    public function pedidosAbertos():void{
+        $adicional=(new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
+        $pedidos=(new ComandaModelo())->ler("pedidos", "data_hora");
+
+        echo($this->template->renderizar('pedidosAbertos.html', [
+            'titulo'=>'pedidos_abertos',
+            'adicional'=>$adicional,
+            'pedidos'=>$pedidos
+
+        ]));
+    }
+
     public function busca(int $id)
     {
         $buscaId=(new ComandaModelo())->buscaPorId("cardapio_lanche", $id);

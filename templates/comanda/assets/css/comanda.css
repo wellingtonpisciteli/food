@@ -110,7 +110,10 @@ body{
 }
 
 .thTable{
+    color: darkblue;
     width: 180px;
+    font-weight: bolder;
+    border-bottom: 1.3px solid #0000002f; /* Borda inferior */
 }
 
 @media (max-width: 1270px){

@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+
+<body class="w-100 bg-dark">
+
+  <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos</header>
+
+  <div id="divTable" class="bg-light table-responsive">
+    {% set mesa_anterior = None %}
+    {% set cont = 0 %}
+
+    {% for pedido in pedidos %}
+      {% if pedido.mesa != mesa_anterior %}
+        {% if cont > 0 %}
+          <div class="bg-dark" style="height: 15px;"></div> <!-- Ajuste no espaçamento -->
+        {% endif %}
+
+        <div class="btnAbrirAberto">
+            <button>
+                {% if pedido.mesa < 10 %} 
+                MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+                {% else %}
+                MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
+                {% endif %}
+            </button>
+        </div>
+
+        <div class="mesaComanda" style="display: none;">
+            <div>
+                {% if pedido.mesa < 10 %} 
+                MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+                {% else %}
+                MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
+                {% endif %}
+            </div>
+
+            <div>
+                {% if pedido.status == 1 %}
+                STATUS: <span style="color: chartreuse;">ABERTA </span>
+                {% else %}
+                STATUS: <span style="color: red;">FECHADA</span>
+                {% endif %}
+            </div>
+
+            <div>
+                TOTAL: <span style="color: dodgerblue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
+            </div>
+
+            <div>
+                Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
+            </div>
+        </div>
+
+        {% set mesa_anterior = pedido.mesa %}
+        {% set cont = 0 %}
+      {% endif %}
+
+        {% if pedido.nome_lanche or pedido.nome_bebida %}  <!-- Verifica se há algum lanche ou bebida -->
+          <table style="margin: auto; margin-bottom: 10px; width: 100%; display: none;"> <!-- Ajuste nas margens e tamanho -->
+            <thead>
+              <tr>
+                <th class="thTable" scope="col">
+                  {% if cont == 0 %}
+                    LANCHES
+                    {% set cont = 1 %}
+                  {% endif %}
+                </th>
+
+                <th class="thTable" scope="col" style="padding-left: 15px;">
+                  {% if cont == 1 %}
+                    BEBIDAS
+                    {% set cont = 2 %}
+                  {% endif %}
+                </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td style="font-weight: bolder;">
+                  {% if pedido.nome_lanche != "" %}
+                    <span>{{ pedido.nome_lanche }}</span>
+                  {% else %}
+                    <span style="font-weight: bolder;">-</span>
+                  {% endif %}
+
+                  {% for teste in adicional %}
+                    {% if pedido.id_lanche == teste.id %}
+                      <div style="margin-top: 5px; margin-left: 5px;">
+                        {% if teste.nome_adicional starts with '+' %}
+                          <span style="color: green; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+                        {% elseif teste.nome_adicional starts with '-' %}
+                          <span style="color: red; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </td>
+
+                <td style="font-weight: bolder; padding-left: 15px;">
+                  {% if pedido.nome_bebida != "" %}
+                    {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
+                  {% else %}
+                    <span style="font-weight: bolder;">-</span>
+                  {% endif %}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+</body>
+
+<script>
+    const teste = document.querySelectorAll(".btnAbrirAberto");
+    const mesaComanda = document.querySelectorAll(".mesaComanda");
+
+    // Itera sobre cada botão .btnAbrirAberto
+    teste.forEach((button, index) => {
+        button.addEventListener("click", () => {
+            // Verifica se existe um .mesaComanda correspondente
+            if (mesaComanda[index]) {
+                mesaComanda[index].style.display = "block";  // Torna visível o elemento correspondente
+            }
+        });
+    });
+</script>
+
+<script src="{{ url('/templates/comanda/assets/js/comanda.js') }}" defer></script>
+
+{% endblock %}

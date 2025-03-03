@@ -72,11 +72,6 @@ enviarLancheBtns.forEach(btn => {
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
-        const idLancheCell = document.createElement('th');
-        idLancheCell.className = 'bg-light text-danger';
-        idLancheCell.textContent = idLanche;
-        row.appendChild(idLancheCell);
-
         const nomeLancheCell = document.createElement('th');
         nomeLancheCell.className = 'bg-light text-primary';
         nomeLancheCell.textContent = nomeLanche;
@@ -114,7 +109,7 @@ enviarLancheBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [nomeLancheInput, valorInput, detalhesLancheInput, mesaInput];
+            const hiddenInputs = [nomeLancheInput, valorInput, detalhesLancheInput, mesaInput, idLancheInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -221,11 +216,6 @@ enviarBebidaBtns.forEach(btn => {
 
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
-
-        const idBebidaCell = document.createElement('th');
-        idBebidaCell.className = 'bg-light text-danger';
-        idBebidaCell.textContent = idLanche;
-        row.appendChild(idBebidaCell);
 
         const nomeBebidaCell = document.createElement('th');
         nomeBebidaCell.className = 'bg-light text-primary';
@@ -362,11 +352,6 @@ enviarIngredienteBtns.forEach(btn => {
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
-        const idIngredienteCell = document.createElement('th');
-        idIngredienteCell.className = 'bg-light text-danger';
-        idIngredienteCell.textContent = idIngrediente;
-        row.appendChild(idIngredienteCell);
-
         const nomeIngredienteCell = document.createElement('th');
         nomeIngredienteCell.className = 'bg-light';
         nomeIngredienteCell.style = 'color: green;'
@@ -405,7 +390,7 @@ enviarIngredienteBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput];
+            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput, idIngredieteInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -507,11 +492,6 @@ removerIngredienteBtns.forEach(btn => {
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
-        const idIngredienteCell = document.createElement('th');
-        idIngredienteCell.className = 'bg-light text-danger';
-        idIngredienteCell.textContent = idIngrediente;
-        row.appendChild(idIngredienteCell);
-
         const nomeIngredienteCell = document.createElement('th');
         nomeIngredienteCell.className = 'bg-light';
         nomeIngredienteCell.style = 'color: red;'
@@ -550,7 +530,7 @@ removerIngredienteBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput];
+            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput, idIngredieteInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {

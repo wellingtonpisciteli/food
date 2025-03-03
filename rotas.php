@@ -8,6 +8,8 @@ try{
 
     SimpleRouter::get(URL_SITE.'comanda', 'SiteControlador@comanda');
     SimpleRouter::get(URL_SITE.'adicionar', 'SiteControlador@adicionar');
+    SimpleRouter::get(URL_SITE.'pedidosAbertos', 'SiteControlador@pedidosAbertos');
+
     SimpleRouter::get(URL_SITE.'busca/{id}', 'SiteControlador@busca');
     SimpleRouter::match(['get','post'], URL_SITE.'cadastrar', 'SiteControlador@cadastrar');
     SimpleRouter::match(['get','post'], URL_SITE.'cadastrarMesa', 'SiteControlador@cadastrarMesa');
