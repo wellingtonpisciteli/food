@@ -296,3 +296,61 @@ body{
     }
 }
 
+.mesaAberta{
+    display: flex; 
+    justify-content: space-evenly; 
+    align-items: center;
+
+    background-image: linear-gradient(to right, #FF4500, black);
+    color: white;
+    font-size: 1.2em;
+    font-weight: bolder;
+    width: 100%; 
+    margin: auto; 
+    text-align: center; 
+    padding: 10px; 
+    margin-bottom: 5px;  
+}
+
+.thTableAberto{
+    color: darkblue;
+    width: 340px;
+    font-weight: bolder;
+    border-bottom: 1.3px solid #0000002f; /* Borda inferior */
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    /* Estilos específicos para tablets */
+    .thTableAberto {
+        width: 250px;
+    }
+}
+
+
+@media (max-width: 699px) { /* Para celulares */ 
+    .thTableAberto{
+        width: 90px;
+    }
+}
+
+ /* Media query para telas menores */
+ @media (max-width: 767px) {
+    .mesaAberta .button-container {
+      width: 100%; /* Faz com que o botão ocupe toda a largura disponível */
+      text-align: center; /* Alinha o botão ao centro */
+      margin-top: 10px; /* Dá um espaçamento acima do botão */
+    }
+
+    .mesaAberta > div {
+      flex-direction: column; /* Alinha os itens na coluna */
+      text-align: center; /* Alinha os textos ao centro */
+    }
+
+    /* Ajuste de espaçamento entre os itens */
+    .mesaAberta div {
+      margin-bottom: 10px; /* Adiciona espaçamento entre os itens */
+    }
+  }
+
+
+

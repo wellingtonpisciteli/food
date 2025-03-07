@@ -53,7 +53,7 @@ class ComandaModelo{
      */
     public function armazenarPedido(array $dados): void
 {
-    $query = "INSERT INTO pedidos (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, id_ingredi, add_ingredi, remover_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO pedidos (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, id_ingredi, add_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt = Conexao::getInstancia()->prepare($query);
 
     foreach ($dados['mesa'] as $index => $mesa) {
@@ -64,7 +64,6 @@ class ComandaModelo{
 
         $id_ingredi = $dados['id_ingredi'][$index] ?? null;
         $add_ingredi = $dados['add_ingredi'][$index] ?? null; 
-        $remover_ingredi = $dados['remover_Ingredientes_Concatenados'] ?? null; //
         $valor_ingredi = $dados['valor_ingredi'][$index] ?? null; 
 
         $nome_bebida = $dados['nome_bebida'][$index] ?? null;
@@ -83,7 +82,6 @@ class ComandaModelo{
                 $detalhes_lanche,
                 $id_ingredi,
                 $add_ingredi, 
-                $remover_ingredi,
                 $valor_ingredi, 
                 $nome_bebida,
                 $tamanho_bebida,
@@ -98,16 +96,19 @@ class ComandaModelo{
     public function armazenarAdicional(array $adicional){
 
         // Remova a coluna 'mesa' da consulta
-        $query = "INSERT INTO adicionais (id, nome_adicional) VALUES (?, ?)"; 
+        $query = "INSERT INTO adicionais (id, nome_adicional, valor_adicional) VALUES (?, ?, ?)"; 
         $stmt = Conexao::getInstancia()->prepare($query);
 
         foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
             $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
+            $valor_adicional = $adicional['valor_ingredi'][$index] ?? null;
+
 
             // Execute apenas com os dados restantes (id e nome_adicional)
             $stmt->execute([
                 $id_ingredi,
-                $add_ingredi
+                $add_ingredi,
+                $valor_adicional
             ]);
         }
     }

@@ -4,145 +4,165 @@
 
 <body class="w-100 bg-dark">
 
-  <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 5%; margin-bottom: 20px;">Pedidos Abertos</header>
+  <header class="bg-dark text-white fw-bolder fs-3"
+    style="margin-top: 15px; margin-bottom: 20px; justify-content: center; display: flex;">Pedidos Abertos</header>
 
-  <div style="display: flex; gap: 10px; flex-wrap: wrap; width: 90%; margin: auto;">
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarMesas btn fs-5 btn-primary" style="font-weight: bolder; color: white;">
+      Mostrar Todos
+    </button>
+  </div>
+
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="mesaButtonsContainer">
     {% for pedido in pedidos %}
-      {% if pedido.mesa != mesa_anterior %}
-        <button class="btnAbrirAberto btn fs-5 btn-success" 
-                style="font-weight: bolder; color: white;" 
-                data-mesa="{{ pedido.mesa }}">
-          {% if pedido.mesa < 10 %}
-            MESA: <span style="color: chartreuse; font-weight: bolder;"> 0{{ pedido.mesa }}</span>
-          {% else %}
-            MESA: <span style="color: chartreuse; font-weight: bolder;"> {{ pedido.mesa }}</span>
-          {% endif %}
-        </button>
-        {% set mesa_anterior = pedido.mesa %}
-        {% set cont = 0 %}
-      {% endif %}
+    {% if pedido.status == 1 %}
+    {% if pedido.mesa != mesa_anterior %}
+    <button class="btnAbrirAberto btn fs-5 btn-success" style="font-weight: bolder; color: white;"
+      data-mesa="{{ pedido.mesa }}">
+      {% if pedido.mesa < 10 %} MESA: <span style="color: chartreuse; font-weight: bolder;"> 0{{ pedido.mesa }}</span>
+        {% else %}
+        MESA: <span style="color: chartreuse; font-weight: bolder;"> {{ pedido.mesa }}</span>
+        {% endif %}
+    </button>
+    {% set mesa_anterior = pedido.mesa %}
+    {% set cont = 0 %}
+    {% endif %}
+    {% endif %}
     {% endfor %}
   </div>
 
-  <div id="divTable" class="bg-light table-responsive" style="width: 90%; margin: auto; margin-top: 10px;">
+  <div class="bg-light table-responsive"
+    style="width: 100%; margin-top: 20px; justify-content: center; padding: 10px; margin-bottom: 20px;">
     {% set mesa_anterior = None %}
     {% set cont = 0 %}
 
     {% for pedido in pedidos %}
-      {% if pedido.status == 1 %}
-        {% if pedido.mesa != mesa_anterior %}
-          <div class="mesaComanda" style="display: none;" data-mesa="{{ pedido.mesa }}">
-            <div>
-              {% if pedido.mesa < 10 %}
-                MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
-              {% else %}
-                MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
-              {% endif %}
-            </div>
-
-            <div>
-              STATUS: <span style="color: chartreuse;">ABERTA</span>
-            </div>
-
-            <div>
-              TOTAL: <span style="color: dodgerblue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
-            </div>
-
-            <div>
-              Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
-            </div>
-          </div>
-          {% set cont = 0 %}
-          {% set mesa_anterior = pedido.mesa %}
-        {% endif %}
-
-        {% if pedido.nome_lanche or pedido.nome_bebida %}
-          <table style="margin: auto; margin-bottom: 10px; width: 100%; display: none;" class="tablePedido" data-mesa="{{ pedido.mesa }}">
-            <thead>
-              <tr>
-                <th class="thTable" scope="col">
-                  {% if cont == 0 %}
-                    LANCHES
-                    {% set cont = 1 %}
-                  {% endif %}
-                </th>
-                <th class="thTable" scope="col" style="padding-left: 15px;">
-                  {% if cont == 1 %}
-                    BEBIDAS
-                    {% set cont = 2 %}
-                  {% endif %}
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="font-weight: bolder;">
-                  {% if pedido.nome_lanche != "" %}
-                    <span>{{ pedido.nome_lanche }}</span>
-
-                    {% for teste in adicional %}
-                      {% if pedido.id_lanche == teste.id %}
-                        <div style="margin-top: 5px; margin-left: 5px;">
-                          {% if teste.nome_adicional starts with '+' %}
-                            <span style="color: green; font-weight: bolder;">{{ teste.nome_adicional }}</span>
-                          {% elseif teste.nome_adicional starts with '-' %}
-                            <span style="color: red; font-weight: bolder;">{{ teste.nome_adicional }}</span>
-                          {% endif %}
-                        </div>
-                      {% endif %}
-                    {% endfor %}
-
-                  {% else %}
-                    <span style="font-weight: bolder;">-</span>
-                  {% endif %}
-                </td>
-
-                <td style="font-weight: bolder; padding-left: 15px;">
-                  {% if pedido.nome_bebida != "" %}
-                    {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
-                  {% else %}
-                    <span style="font-weight: bolder;">-</span>
-                  {% endif %}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        {% endif %}
+    {% if pedido.status == 1 %}
+    {% if pedido.mesa != mesa_anterior %}
+    <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
+      <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">
+        {% if pedido.mesa < 10 %} <div>
+          MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+      </div>
+      {% else %}
+      <div>
+        MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
+      </div>
       {% endif %}
-    {% endfor %}
+
+      <div>
+        STATUS: <span style="color: chartreuse;">ABERTA</span>
+      </div>
+
+      <div>
+        TOTAL: <span style="color: dodgerblue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
+      </div>
+
+      <div>
+        Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
+      </div>
+
+      <div>    
+          <a class="btn fs-6 btn-secondary" style="font-weight: bolder; color: white;" href="{{url('editarPedido')}}">EDITAR</a>
+      </div>
+    </div>
+  </div>
+  {% set cont = 0 %}
+  {% set mesa_anterior = pedido.mesa %}
+  {% endif %}
+
+  {% if pedido.nome_lanche or pedido.nome_bebida %}
+  <table style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;" class="tablePedido"
+    data-mesa="{{ pedido.mesa }}">
+    <thead>
+      <tr>
+        <th class="thTableAberto" scope="col">
+          {% if cont == 0 %}
+          LANCHES
+          {% set cont = 1 %}
+          {% endif %}
+        </th>
+        <th class="thTableAberto" scope="col" style="padding-left: 15px;">
+          {% if cont == 1 %}
+          VALOR
+          {% set cont = 2 %}
+          {% endif %}
+        </th>
+        <th class="thTableAberto" scope="col" style="padding-left: 15px;">
+          {% if cont == 2 %}
+          BEBIDAS
+          {% set cont = 3 %}
+          {% endif %}
+        </th>
+        <th class="thTableAberto" scope="col" style="padding-left: 15px;">
+          {% if cont == 3 %}
+          VALOR
+          {% set cont = 4 %}
+          {% endif %}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: bolder;">
+          {% if pedido.nome_lanche != "" %}
+          <span>{{ pedido.nome_lanche }}</span>
+
+          {% for teste in adicional %}
+          {% if pedido.id_lanche == teste.id %}
+          <div style="margin-top: 5px; margin-left: 5px;">
+            {% if teste.nome_adicional starts with '+' %}
+            <span style="color: green; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+            {% elseif teste.nome_adicional starts with '-' %}
+            <span style="color: red; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+            {% endif %}
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% else %}
+          <span style="font-weight: bolder;">-</span>
+          {% endif %}
+        </td>
+
+        <td>
+          {% set somaAdicional = 0 %}
+          <!-- Loop para somar os valores dos adicionais -->
+          {% for teste in adicional %}
+          {% if pedido.id_lanche == teste.id %}
+          {% set somaAdicional = somaAdicional + teste.valor_adicional %}
+          {% endif %}
+          {% endfor %}
+
+          <span style="font-weight: bolder; padding-left: 15px;">
+            {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+          </span>
+        </td>
+
+        <td style="font-weight: bolder; padding-left: 15px;">
+          {% if pedido.nome_bebida != "" %}
+          {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
+          {% else %}
+          <span style="font-weight: bolder;">-</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if pedido.nome_bebida != "" %}
+          <span style="font-weight: bolder; padding-left: 15px;">{{ pedido.valor_bebida | number_format(2, ',', '.')
+            }}</span>
+          {% else %}
+          <span style="font-weight: bolder; padding-left: 15px;">-</span>
+          {% endif %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
   </div>
 
 </body>
-
-<script>
-    const buttons = document.querySelectorAll(".btnAbrirAberto"); // Botões das mesas
-    const mesaComanda = document.querySelectorAll(".mesaComanda"); // Conteúdo das mesas
-    const tablePedido = document.querySelectorAll(".tablePedido"); // Conteúdo das tabelas de pedidos
-
-    // Itera sobre cada botão .btnAbrirAberto
-    buttons.forEach(button => {
-        button.addEventListener("click", () => {
-            const mesa = button.getAttribute("data-mesa");  // Obtém o número da mesa clicada
-
-            // Itera sobre as divs de pedidos e as tabelas de pedidos
-            mesaComanda.forEach(item => {
-                if (item.getAttribute("data-mesa") === mesa) {
-                    item.style.display = "block";  // Torna visível o conteúdo da mesa correspondente
-                } else {
-                    item.style.display = "none";   // Esconde o conteúdo de outras mesas
-                }
-            });
-
-            tablePedido.forEach(item => {
-                if (item.getAttribute("data-mesa") === mesa) {
-                    item.style.display = "block";  // Torna visível a tabela do pedido correspondente
-                } else {
-                    item.style.display = "none";   // Esconde a tabela de outros pedidos
-                }
-            });
-        });
-    });
-</script>
 
 <script src="{{ url('/templates/comanda/assets/js/comanda.js') }}" defer></script>
 

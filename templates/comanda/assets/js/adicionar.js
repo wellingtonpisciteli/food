@@ -326,7 +326,7 @@ const enviarIngredienteBtns = document.querySelectorAll('.enviarIngrediente inpu
 enviarIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-        idIngrediente = idLanche 
+        idIngrediente = idLanche
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -355,7 +355,7 @@ enviarIngredienteBtns.forEach(btn => {
         const nomeIngredienteCell = document.createElement('th');
         nomeIngredienteCell.className = 'bg-light';
         nomeIngredienteCell.style = 'color: green;'
-        nomeIngredienteCell.textContent = "+ "+ nomeIngrediente;
+        nomeIngredienteCell.textContent = "+ " + nomeIngrediente;
         row.appendChild(nomeIngredienteCell);
 
         const valorIngredienteCell = document.createElement('td');
@@ -456,7 +456,7 @@ enviarIngredienteBtns.forEach(btn => {
     });
 });
 
-document.querySelector('#btnAbrirIngrediente').addEventListener('click', function() {
+document.querySelector('#btnAbrirIngrediente').addEventListener('click', function () {
     var tabela = document.getElementById('adicionarTabelaIngrediente');
     tabela.classList.toggle('show');
 });
@@ -466,7 +466,7 @@ const removerIngredienteBtns = document.querySelectorAll('.removerIngredienteBtn
 removerIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-        idIngrediente = idLanche 
+        idIngrediente = idLanche
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -495,7 +495,7 @@ removerIngredienteBtns.forEach(btn => {
         const nomeIngredienteCell = document.createElement('th');
         nomeIngredienteCell.className = 'bg-light';
         nomeIngredienteCell.style = 'color: red;'
-        nomeIngredienteCell.textContent = "- "+ nomeIngrediente;
+        nomeIngredienteCell.textContent = "- " + nomeIngrediente;
         row.appendChild(nomeIngredienteCell);
 
         const valorIngredienteCell = document.createElement('td');
@@ -571,7 +571,7 @@ removerIngredienteBtns.forEach(btn => {
         const nomeIngredieteInput = document.createElement('input');
         nomeIngredieteInput.type = 'hidden';
         nomeIngredieteInput.name = 'add_ingredi[]';
-        nomeIngredieteInput.value = '- '+ nomeIngrediente;
+        nomeIngredieteInput.value = '- ' + nomeIngrediente;
 
         const valorIngredienteInput = document.createElement('input');
         valorIngredienteInput.type = 'hidden';

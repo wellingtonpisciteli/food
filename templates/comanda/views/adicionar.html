@@ -2,7 +2,7 @@
 {% block conteudo %}
 
 {% for num in mesa %}
-    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+<input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
 {% endfor %}
 
 <header class="text-center bg-dark" id="adicionarHeader">
@@ -10,9 +10,9 @@
         Mesa: <input id="nummesa" name="nummesa" type="number" class="fw-bolder bg-light text-center">
     </h3>
 </header>
- 
+
 <div class="w-100 bg-dark" id="adicionarLanches">
-    <div class="table-responsive">       
+    <div class="table-responsive">
         <table class="table" id="adicionarTabela">
             <thead>
                 <tr>
@@ -39,7 +39,8 @@
                     </td>
                     <td class="text-center align-middle bg-light">
                         <div class="enviarLanche">
-                            <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                            <input type="button" class="text-center text-white fw-bolder" value="+"
+                                style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
                         </div>
                     </td>
                 </tr>
@@ -79,7 +80,8 @@
                     </td>
                     <td class="text-center align-middle bg-light" style="width: 25%;">
                         <div class="enviarBebida">
-                            <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                            <input type="button" class="text-center text-white fw-bolder" value="+"
+                                style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
                         </div>
                     </td>
                 </tr>
@@ -88,7 +90,8 @@
         </table>
 
         <div class="mt-3" style="margin-left: 2.5%;">
-            <input class="btn btn-primary fw-bolder" type="button" value="Adicionais" id="btnAbrirIngrediente" style="margin-bottom: 10px;">
+            <input class="btn btn-primary fw-bolder" type="button" value="Adicionais" id="btnAbrirIngrediente"
+                style="margin-bottom: 10px;">
         </div>
 
         <table class="table" id="adicionarTabelaIngrediente">
@@ -115,12 +118,14 @@
                     </td>
                     <td class="text-center align-middle bg-light">
                         <div class="enviarIngrediente">
-                            <input type="button" class="text-center text-white fw-bolder" value="+" style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                            <input type="button" class="text-center text-white fw-bolder" value="+"
+                                style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
                         </div>
                     </td>
                     <td class="text-center align-middle bg-light" style="width: 25%;">
                         <div class="removerIngredienteBtns">
-                            <input type="button" class="text-center text-white fw-bolder" value="-" style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
+                            <input type="button" class="text-center text-white fw-bolder" value="-"
+                                style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
                         </div>
                     </td>
                 </tr>
@@ -163,12 +168,14 @@
                     Total:
                 </h3>
                 <div class="text-center mt-3">
-                    <input class="btn btn-primary" type="submit" value="Enviar" id="btnDiv" style="margin-bottom: 25px;">
-                    <input class="btn btn-danger" type="button" value="Cancelar" id="btnDivCancelar" style="margin-bottom: 25px;">
+                    <input class="btn btn-primary" type="submit" value="Enviar" id="btnDiv"
+                        style="margin-bottom: 25px;">
+                    <input class="btn btn-danger" type="button" value="Cancelar" id="btnDivCancelar"
+                        style="margin-bottom: 25px;">
                 </div>
             </form>
         </table>
-    </div>  
+    </div>
 </div>
 
 <script src="{{ url('/templates/comanda/assets/js/adicionar.js') }}" defer></script>
