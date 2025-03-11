@@ -30,6 +30,14 @@ class ComandaModelo{
         return $resultado;
     }
 
+    public function buscaPorMesa(string $tabela, int $mesa):array
+    {
+        $querry="SELECT * FROM {$tabela} WHERE mesa={$mesa}";
+        $stmt=Conexao::getInstancia()->query($querry);
+        $resultado=$stmt->fetchAll();
+        return $resultado;
+    }
+
     public function lerRelacao(string $tabela, string $parametro, int $id):array | object
     {
         $querry="SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
@@ -111,6 +119,12 @@ class ComandaModelo{
                 $valor_adicional
             ]);
         }
+    }
+
+    public function atualizarPedido(array $dados, int $mesa){
+        $querry = "UPDATE pedidos SET id = :id, id_lanche = :id_lanche, nome_lanche = :nome_lanche, valor_lanche = :valor_lanche, detalhes_lanche = :detalhes_lanche WHERE mesa = {$mesa}";
+        $stmt = Conexao::getInstancia()->prepare($querry);
+        $stmt->execute($dados);
     }
     
 }

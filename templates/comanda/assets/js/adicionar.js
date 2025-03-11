@@ -461,6 +461,7 @@ document.querySelector('#btnAbrirIngrediente').addEventListener('click', functio
     tabela.classList.toggle('show');
 });
 
+
 const removerIngredienteBtns = document.querySelectorAll('.removerIngredienteBtns input[type="button"]');
 
 removerIngredienteBtns.forEach(btn => {

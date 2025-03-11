@@ -86,10 +86,10 @@ class SiteControlador extends Controlador{
         $ingred=(new ComandaModelo())->ler("ingredientes", "ingrediente");
         $lanche_ingred=(new ComandaModelo())->lerRelacao("lanche_ingredientes", "lanche_id", $id);
 
-            ['busca'=>$buscaId,
-            'cardapio'=>$cardapio,
-            'ingredientes'=>$ingred,
-            'lanche_ingredi'=>$lanche_ingred];
+        ['busca'=>$buscaId,
+        'cardapio'=>$cardapio,
+        'ingredientes'=>$ingred,
+        'lanche_ingredi'=>$lanche_ingred];
       
     } 
 
@@ -102,6 +102,41 @@ class SiteControlador extends Controlador{
         }
         
         Helpers::redirecionar('adicionar');
+    }
+
+    public function atualizar(array $dados, int $mesa):void{
+        if($_SERVER["REQUEST_METHOD"]=="POST"){
+            $dados=filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            (new ComandaModelo())->atualizarPedido($dados, $mesa);
+        }
+        
+        Helpers::redirecionar('pedidosAbertos.html');
+    }
+
+    public function editarPedido(int $mesa):void{
+        $pedidoMesa = (new ComandaModelo())->buscaPorMesa("pedidos", $mesa);
+        $adicional=(new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
+        $cardapio=(new ComandaModelo())->ler("cardapio_lanche", "lanche");
+        $ingred=(new ComandaModelo())->ler("lanche_ingredientes", "lanche_id");
+        $cardapio_bebida=(new ComandaModelo())->ler("marcas_bebida", "marca");
+        $tamanho_bebida=(new ComandaModelo())->ler("tamanho_bebida", "tamanho");
+        $pedido=(new ComandaModelo())->ler("pedidos", "nome_lanche");
+        $ingredi=(new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $mesa = (new ComandaModelo())->ler("pedidos", "mesa");
+
+        echo($this->template->renderizar('editar.html', [
+            'titulo'=>'editar_pedido',
+            'editarPedido'=>$pedidoMesa,
+            'adicional'=>$adicional,
+            'ingredientes'=>$ingredi,
+            'cardapio'=>$cardapio,
+            'cardapio_bebida'=>$cardapio_bebida,
+            'tamanhoBebida'=>$tamanho_bebida,
+            'ingred'=>$ingred,
+            'pedido'=>$pedido,
+            'ingredientes'=>$ingredi,
+            'mesa'=>$mesa
+        ])); 
     }
     
 }
