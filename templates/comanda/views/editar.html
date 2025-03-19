@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="w-100 bg-dark" id="adicionarLanches">
+    <div class="table-responsive">
+        <table>
+            <form action="{{ url('atualizar/'~editar.id) }}" method="post" class="bg-light" id="pedidos">
+                <table class="table" id="tabelaPedidos">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">LANCHE</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                            <th scope="col" class="text-center bg-light">OBS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos">
+                        <tr>
+                            <td>
+                                <input value="{{ editar.nome_lanche }}" type="text" name="nome_lanche" id="nome_lanche" style="font-weight: bolder;">
+                    
+                                {% for add in adicional %}
+                                {% if editar.id_lanche == add.id %}
+                                <div style="margin-top: 5px; margin-left: 5px;">
+                                    {% if add.nome_adicional starts with '+' %}
+                                    <input value="{{ add.nome_adicional }}" type="text" style="color: green; font-weight: bolder;">
+                                    {% elseif add.nome_adicional starts with '-' %}
+                                    <input value="{{ add.nome_adicional }}" type="text" style="color: red; font-weight: bolder;">
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                                {% endfor %}
+                            </td>
+                    
+                            <td>
+                                {% set somaAdicional = 0 %}
+                                <!-- Loop para somar os valores dos adicionais -->
+                                {% for add in adicional %}
+                                {% if editar.id_lanche == add.id %}
+                                {% set somaAdicional = somaAdicional + add.valor_adicional %}
+                                {% endif %}
+                                {% endfor %}
+                    
+                                {{ (somaAdicional + editar.valor_lanche) | number_format(2, ',', '.') }}
+                                <input value="{{ somaAdicional + editar.valor_lanche }}" type="hidden" name="valor_lanche" id="valor_lanche">
+                            </td>
+                    
+                            <td>
+                                <input value="{{ editar.detalhes_lanche }}" type="text" name="detalhes_lanche" id="detalhes_lanche">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Campos ocultos -->
+                <input type="hidden" name="mesa" value="{{ editar.mesa }}">
+                <input type="hidden" name="id_lanche" value="{{ editar.id_lanche }}">
+                <input type="hidden" name="id_ingredi" value="{{ editar.id_ingredi }}">
+                <input type="hidden" name="add_ingredi" value="{{ editar.add_ingredi }}">
+                <input type="hidden" name="valor_ingredi" value="{{ editar.valor_ingredi }}">
+                <input type="hidden" name="nome_bebida" value="{{ editar.nome_bebida }}">
+                <input type="hidden" name="tamanho_bebida" value="{{ editar.tamanho_bebida }}">
+                <input type="hidden" name="valor_bebida" value="{{ editar.valor_bebida }}">
+                <input type="hidden" name="detalhes_bebida" value="{{ editar.detalhes_bebida }}">
+                <input type="hidden" name="total" value="{{ editar.total }}">
+                <input type="hidden" name="status" value="{{ editar.status }}">
+
+                <div class="text-center mt-3">
+                    <input class="btn btn-primary" type="submit" value="Enviar"
+                        style="margin-bottom: 25px;">
+                    <input class="btn btn-danger" type="button" value="Cancelar"
+                        style="margin-bottom: 25px;">
+                </div>
+            </form>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

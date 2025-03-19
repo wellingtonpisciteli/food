@@ -62,10 +62,6 @@
       <div>
         Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
       </div>
-
-      <div>    
-          <a class="btn fs-6 btn-secondary" style="font-weight: bolder; color: white;" href="{{url('editarPedido/'~pedido.mesa)}}">EDITAR</a>
-      </div>
     </div>
   </div>
   {% set cont = 0 %}
@@ -99,6 +95,12 @@
           {% if cont == 3 %}
           VALOR
           {% set cont = 4 %}
+          {% endif %}
+        </th>
+        <th>
+          {% if cont == 4 %}
+          EDITAR
+          {% set cont = 5 %}
           {% endif %}
         </th>
       </tr>
@@ -153,6 +155,9 @@
           {% else %}
           <span style="font-weight: bolder; padding-left: 15px;">-</span>
           {% endif %}
+        </td>
+        <td>
+          <a href="{{url('editarPedido/'~pedido.id)}}">ir</a>
         </td>
       </tr>
     </tbody>
