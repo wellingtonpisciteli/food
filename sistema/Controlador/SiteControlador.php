@@ -109,15 +109,58 @@ class SiteControlador extends Controlador
     }
 
     public function atualizar(int $id): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Filtrando os dados recebidos via POST
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            (new ComandaModelo())->atualizarPedido($dados, $id);
+        // Filtrando apenas os dados necessários para o pedido
+        $dadosPedido = [
+            'mesa' => $dados['mesa'],
+            'id_lanche' => $dados['id_lanche'],
+            'nome_lanche' => $dados['nome_lanche'],
+            'valor_lanche' => $dados['valor_lanche'],
+            'detalhes_lanche' => $dados['detalhes_lanche'],
+            'id_ingredi' => $dados['id_ingredi'],
+            'add_ingredi' => $dados['add_ingredi'],
+            'valor_ingredi' => $dados['valor_ingredi'],
+            'nome_bebida' => $dados['nome_bebida'],
+            'tamanho_bebida' => $dados['tamanho_bebida'],
+            'valor_bebida' => $dados['valor_bebida'],
+            'detalhes_bebida' => $dados['detalhes_bebida'],
+            'total' => $dados['total'],
+            'status' => $dados['status']
+        ];
+
+        // Atualizando a tabela de pedidos
+        (new ComandaModelo())->atualizarPedido($dadosPedido, $id);
+
+        if (!empty($dados['nome_adicional']) && !empty($dados['valor_adicional'])) {
+            $dadosAdicional = [
+                'nome_adicional' => $dados['nome_adicional'],
+                'valor_adicional' => $dados['valor_adicional']
+            ];
+
+            (new ComandaModelo())->atualizarAdicional($dadosAdicional, $id);
         }
-
-        Helpers::redirecionar('pedidosAbertos');
     }
+
+    // Após a atualização, redireciona para a página de pedidos abertos
+    Helpers::redirecionar('pedidosAbertos');
+}
+
+public function atualizarAdicional(int $chave): void
+{
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Filtrando os dados recebidos via POST
+        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            
+        (new ComandaModelo())->atualizarAdicional($dados, $chave);
+    }
+
+    // Após a atualização, redireciona para a página de pedidos abertos
+    Helpers::redirecionar('pedidosAbertos');
+}
 
 
     public function editarPedido(int $id): void
@@ -128,6 +171,16 @@ class SiteControlador extends Controlador
         echo ($this->template->renderizar('editar.html', [
             'titulo' => 'editar_pedido',
             'editar' => $pedidoMesa,
+            'adicional' => $adicional
+        ]));
+    }
+
+    public function editarAdicionais(int $chave): void
+    {
+        $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
+
+        echo ($this->template->renderizar('editarAdicional.html', [
+            'titulo' => 'editar_adicional',
             'adicional' => $adicional
         ]));
     }

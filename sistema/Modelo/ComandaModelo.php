@@ -31,6 +31,15 @@ class ComandaModelo
         return $resultado;
     }
 
+    public function buscaPorChave(string $tabela, int $id): bool | object
+    {
+        $querry = "SELECT * FROM {$tabela} WHERE chave={$id}";
+        $stmt = Conexao::getInstancia()->query($querry);
+        $resultado = $stmt->fetch();
+        return $resultado;
+    }
+
+
     public function buscaPorMesa(string $tabela, int $mesa): array
     {
         $querry = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
@@ -127,6 +136,16 @@ class ComandaModelo
         detalhes_bebida = :detalhes_bebida, 
         total = :total, 
         status = :status WHERE id = {$id}";
+
+        $stmt = Conexao::getInstancia()->prepare($querry);
+        $stmt->execute($dados);
+    }
+
+    public function atualizarAdicional(array $dados, int $id)
+    {
+        $querry = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
+        valor_adicional = :valor_adicional 
+        WHERE chave = {$id}";
 
         $stmt = Conexao::getInstancia()->prepare($querry);
         $stmt->execute($dados);

@@ -20,11 +20,15 @@
                     
                                 {% for add in adicional %}
                                 {% if editar.id_lanche == add.id %}
+                                <input type="hidden" value="{{ add.valor_adicional }}" name="valor_adicional" id="valor_adicional">
+                                
+                                <input type="hidden" value="{{ add.chave }}" name="chave" id="chave">
+                                
                                 <div style="margin-top: 5px; margin-left: 5px;">
                                     {% if add.nome_adicional starts with '+' %}
-                                    <input value="{{ add.nome_adicional }}" type="text" style="color: green; font-weight: bolder;">
+                                    <input value="{{ add.nome_adicional }}" type="text" name="nome_adicional" id="nome_adicional" style="color: green; font-weight: bolder;"> {{ add.chave }}
                                     {% elseif add.nome_adicional starts with '-' %}
-                                    <input value="{{ add.nome_adicional }}" type="text" style="color: red; font-weight: bolder;">
+                                    <input value="{{ add.nome_adicional }}" type="text" name="nome_adicional" id="nome_adicional" style="color: red; font-weight: bolder;"> {{ add.chave }}
                                     {% endif %}
                                 </div>
                                 {% endif %}
@@ -49,6 +53,29 @@
                             </td>
                         </tr>
                     </tbody>
+
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">BEBIDA</th>
+                            <th scope="col" class="text-center bg-light">TAMANHO</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos">
+                        <tr>
+                            <td>
+                                <input value="{{ editar.nome_bebida }}" type="text" name="nome_bebida" id="nome_bebida" style="font-weight: bolder;">
+                            </td>
+                    
+                            <td>
+                                <input value="{{ editar.tamanho_bebida }}" type="text" name="tamanho_bebida" id="tamanho_bebida">
+                            </td>
+                    
+                            <td>
+                                <input value="{{ editar.valor_bebida }}" type="text" name="valor_bebida" id="valor_bebida">
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
 
                 <!-- Campos ocultos -->
@@ -57,9 +84,6 @@
                 <input type="hidden" name="id_ingredi" value="{{ editar.id_ingredi }}">
                 <input type="hidden" name="add_ingredi" value="{{ editar.add_ingredi }}">
                 <input type="hidden" name="valor_ingredi" value="{{ editar.valor_ingredi }}">
-                <input type="hidden" name="nome_bebida" value="{{ editar.nome_bebida }}">
-                <input type="hidden" name="tamanho_bebida" value="{{ editar.tamanho_bebida }}">
-                <input type="hidden" name="valor_bebida" value="{{ editar.valor_bebida }}">
                 <input type="hidden" name="detalhes_bebida" value="{{ editar.detalhes_bebida }}">
                 <input type="hidden" name="total" value="{{ editar.total }}">
                 <input type="hidden" name="status" value="{{ editar.status }}">

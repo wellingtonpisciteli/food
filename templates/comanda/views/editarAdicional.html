@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+<div class="w-100 bg-dark" id="adicionarLanches">
+    <div class="table-responsive">
+        <table>
+            <form action="{{ url('atualizarAdicional/'~adicional.chave) }}" method="post" class="bg-light" id="pedidos">
+                <table class="table" id="tabelaPedidos">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">ADICIONAL</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos">
+                        <tr>
+                            <td>
+                                <input value="{{ adicional.nome_adicional }}" type="text" name="nome_adicional" id="nome_adicional" style="font-weight: bolder;">
+                            </td>
+                    
+                            <td>
+                                <input type="text" value="{{ adicional.valor_adicional }}" name="valor_adicional" id="valor_adicional">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-center mt-3">
+                    <input class="btn btn-primary" type="submit" value="Enviar"
+                        style="margin-bottom: 25px;">
+                    <input class="btn btn-danger" type="button" value="Cancelar"
+                        style="margin-bottom: 25px;">
+                </div>
+            </form>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

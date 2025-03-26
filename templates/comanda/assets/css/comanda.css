@@ -314,7 +314,7 @@ body{
 
 .thTableAberto{
     color: darkblue;
-    width: 340px;
+    width: 269px;
     font-weight: bolder;
     border-bottom: 1.3px solid #0000002f; /* Borda inferior */
 }
@@ -322,14 +322,16 @@ body{
 @media (min-width: 768px) and (max-width: 1024px) {
     /* Estilos específicos para tablets */
     .thTableAberto {
-        width: 250px;
+        width: 210px;
+        background-color: #FF4500;
     }
 }
 
 
 @media (max-width: 699px) { /* Para celulares */ 
     .thTableAberto{
-        width: 90px;
+        width: 136px;
+        background-color: #FF4500;
     }
 }
 

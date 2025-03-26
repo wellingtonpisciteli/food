@@ -79,25 +79,25 @@
           {% set cont = 1 %}
           {% endif %}
         </th>
-        <th class="thTableAberto" scope="col" style="padding-left: 15px;">
+        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
           {% if cont == 1 %}
           VALOR
           {% set cont = 2 %}
           {% endif %}
         </th>
-        <th class="thTableAberto" scope="col" style="padding-left: 15px;">
+        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
           {% if cont == 2 %}
           BEBIDAS
           {% set cont = 3 %}
           {% endif %}
         </th>
-        <th class="thTableAberto" scope="col" style="padding-left: 15px;">
+        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
           {% if cont == 3 %}
           VALOR
           {% set cont = 4 %}
           {% endif %}
         </th>
-        <th>
+        <th class="thTableAberto" scope="col" >
           {% if cont == 4 %}
           EDITAR
           {% set cont = 5 %}
@@ -110,23 +110,23 @@
         <td style="font-weight: bolder;">
           {% if pedido.nome_lanche != "" %}
           <span>{{ pedido.nome_lanche }}</span>
-
+    
           {% for teste in adicional %}
           {% if pedido.id_lanche == teste.id %}
           <div style="margin-top: 5px; margin-left: 5px;">
             {% if teste.nome_adicional starts with '+' %}
             <span style="color: green; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+            <a href="{{url('editarAdicionais/'~teste.chave)}}" style="font-weight: bolder; margin-left: 20px;"><i class="fa-solid fa-pen"></i></a>
             {% elseif teste.nome_adicional starts with '-' %}
             <span style="color: red; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+            <a href="{{url('editarAdicionais/'~teste.chave)}}" style="font-weight: bolder; margin-left: 20px;"><i class="fa-solid fa-pen"></i></a>
             {% endif %}
           </div>
           {% endif %}
           {% endfor %}
-          {% else %}
-          <span style="font-weight: bolder;">-</span>
           {% endif %}
         </td>
-
+    
         <td>
           {% set somaAdicional = 0 %}
           <!-- Loop para somar os valores dos adicionais -->
@@ -135,29 +135,26 @@
           {% set somaAdicional = somaAdicional + teste.valor_adicional %}
           {% endif %}
           {% endfor %}
-
-          <span style="font-weight: bolder; padding-left: 15px;">
+    
+          <span style="font-weight: bolder; padding-left: 5px;">
             {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
           </span>
         </td>
-
-        <td style="font-weight: bolder; padding-left: 15px;">
+    
+        <td style="font-weight: bolder; padding-left: 5px;">
           {% if pedido.nome_bebida != "" %}
           {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
-          {% else %}
-          <span style="font-weight: bolder;">-</span>
           {% endif %}
         </td>
+    
         <td>
           {% if pedido.nome_bebida != "" %}
-          <span style="font-weight: bolder; padding-left: 15px;">{{ pedido.valor_bebida | number_format(2, ',', '.')
-            }}</span>
-          {% else %}
-          <span style="font-weight: bolder; padding-left: 15px;">-</span>
+          <span style="font-weight: bolder; padding-left: 5px;">{{ pedido.valor_bebida | number_format(2, ',', '.') }}</span>
           {% endif %}
         </td>
+    
         <td>
-          <a href="{{url('editarPedido/'~pedido.id)}}">ir</a>
+          <a href="{{url('editarPedido/'~pedido.id)}}" style="font-weight: bolder; margin-left: 20px;"><i class="fa-solid fa-pen"></i></a>
         </td>
       </tr>
     </tbody>
@@ -169,6 +166,6 @@
 
 </body>
 
-<script src="{{ url('/templates/comanda/assets/js/comanda.js') }}" defer></script>
+<script src="{{ url('/templates/comanda/assets/js/pedidosAbertos.js') }}" defer></script>
 
 {% endblock %}
