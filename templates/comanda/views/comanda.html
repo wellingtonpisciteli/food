@@ -3,6 +3,7 @@
 {% block conteudo %}
 
 <body class="w-100 bg-dark">
+  
   <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos
   </header>
 
@@ -79,13 +80,13 @@
             <span style="font-weight: bolder; padding-left: 5px;">-</span>
             {% endif %}
 
-            {% for teste in adicional %}
-            {% if pedido.id_lanche == teste.id %}
+            {% for add in adicional %}
+            {% if pedido.id_lanche == add.id %}
             <div style="margin-top: 5px; margin-left: 5px;">
-              {% if teste.nome_adicional starts with '+' %}
-              <span style="color: green; font-weight: bolder;">{{ teste.nome_adicional }}</span>
-              {% elseif teste.nome_adicional starts with '-' %}
-              <span style="color: red; font-weight: bolder;">{{ teste.nome_adicional }}</span>
+              {% if add.nome_adicional starts with '+' %}
+              <span style="color: green; font-weight: bolder;">{{ add.nome_adicional }}</span>
+              {% elseif add.nome_adicional starts with '-' %}
+              <span style="color: red; font-weight: bolder;">{{ add.nome_adicional }}</span>
               {% endif %}
             </div>
             {% endif %}
@@ -105,7 +106,7 @@
     {% endif %}
     {% endif %}
     {% endfor %}
-    </div>
+    </div> 
     </div>
 
     <div class="cardapio-wrapper">

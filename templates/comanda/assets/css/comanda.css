@@ -25,6 +25,13 @@ body{
     border-radius: 5px;
 }
 
+#mesa{
+    margin-top: 7px;
+    width: 60px;
+    height: 40px;
+    border-radius: 5px;
+}
+
 /* Remove as setas apenas no input com a classe 'no-spin' */
 #nummesa::-webkit-outer-spin-button,
 #nummesa::-webkit-inner-spin-button {
@@ -314,7 +321,7 @@ body{
 
 .thTableAberto{
     color: darkblue;
-    width: 269px;
+    width: 340px;
     font-weight: bolder;
     border-bottom: 1.3px solid #0000002f; /* Borda inferior */
 }
@@ -322,16 +329,14 @@ body{
 @media (min-width: 768px) and (max-width: 1024px) {
     /* Estilos específicos para tablets */
     .thTableAberto {
-        width: 210px;
-        background-color: #FF4500;
+        width: 255px;
     }
 }
 
 
 @media (max-width: 699px) { /* Para celulares */ 
     .thTableAberto{
-        width: 136px;
-        background-color: #FF4500;
+        width: 90px;
     }
 }
 

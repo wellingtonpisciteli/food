@@ -116,7 +116,6 @@ class SiteControlador extends Controlador
 
         // Filtrando apenas os dados necessários para o pedido
         $dadosPedido = [
-            'mesa' => $dados['mesa'],
             'id_lanche' => $dados['id_lanche'],
             'nome_lanche' => $dados['nome_lanche'],
             'valor_lanche' => $dados['valor_lanche'],
@@ -135,14 +134,10 @@ class SiteControlador extends Controlador
         // Atualizando a tabela de pedidos
         (new ComandaModelo())->atualizarPedido($dadosPedido, $id);
 
-        if (!empty($dados['nome_adicional']) && !empty($dados['valor_adicional'])) {
-            $dadosAdicional = [
-                'nome_adicional' => $dados['nome_adicional'],
-                'valor_adicional' => $dados['valor_adicional']
-            ];
+        $dadosMesa = ['mesa' => $dados['mesa']];
+        $mesa = $dados['nummesa'];
 
-            (new ComandaModelo())->atualizarAdicional($dadosAdicional, $id);
-        }
+        (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
     }
 
     // Após a atualização, redireciona para a página de pedidos abertos
@@ -167,21 +162,34 @@ public function atualizarAdicional(int $chave): void
     {
         $pedidoMesa = (new ComandaModelo())->buscaPorId("pedidos", $id);
         $adicional = (new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
+        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $mesa = (new ComandaModelo())->ler("pedidos", "mesa");
 
         echo ($this->template->renderizar('editar.html', [
             'titulo' => 'editar_pedido',
             'editar' => $pedidoMesa,
-            'adicional' => $adicional
+            'adicional' => $adicional,
+            'cardapio' => $cardapio,
+            'cardapio_bebida' => $cardapio_bebida,
+            'tamanhoBebida' => $tamanho_bebida,
+            'ingredientes' => $ingredi,
+            'mesa' => $mesa
         ]));
     }
 
     public function editarAdicionais(int $chave): void
     {
         $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
 
         echo ($this->template->renderizar('editarAdicional.html', [
             'titulo' => 'editar_adicional',
-            'adicional' => $adicional
+            'adicional' => $adicional,
+            'ingredientes' => $ingredi
+
         ]));
     }
 }

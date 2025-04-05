@@ -119,11 +119,18 @@ class ComandaModelo
         }
     }
 
+    public function atualizarMesa(array $dados, $mesa)
+    {
+        $query = "UPDATE pedidos SET mesa = :mesa WHERE mesa = {$mesa}";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute($dados);
+    }
+
 
     public function atualizarPedido(array $dados, int $id)
     {
-        $querry = "UPDATE pedidos SET mesa = :mesa, 
-        id_lanche = :id_lanche, 
+        $query = "UPDATE pedidos SET id_lanche = :id_lanche, 
         nome_lanche = :nome_lanche, 
         valor_lanche = :valor_lanche, 
         detalhes_lanche = :detalhes_lanche, 
@@ -137,17 +144,17 @@ class ComandaModelo
         total = :total, 
         status = :status WHERE id = {$id}";
 
-        $stmt = Conexao::getInstancia()->prepare($querry);
+        $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute($dados);
     }
 
     public function atualizarAdicional(array $dados, int $id)
     {
-        $querry = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
+        $query = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
         valor_adicional = :valor_adicional 
         WHERE chave = {$id}";
 
-        $stmt = Conexao::getInstancia()->prepare($querry);
+        $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute($dados);
     }
 }

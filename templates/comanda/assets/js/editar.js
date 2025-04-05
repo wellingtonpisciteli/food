@@ -1,0 +1,71 @@
+// Aguardar o carregamento completo da página
+window.onload = function() {
+
+  const nummesa = document.getElementById('nummesa');
+  const mesa = document.querySelector('input[name="mesa"]')
+  const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
+
+
+  controleMesa.forEach(num=>{
+    console.log(num.value)
+  })
+
+  nummesa.value = mesa.value
+  
+  mesa.addEventListener("input", ()=>{
+    console.log(nummesa.value)
+  })
+
+  if (mesa) {
+      mesa.addEventListener('input', () => {
+        if(mesa.value == nummesa.value){
+          console.log("mesas iguais")
+        }else{
+          controleMesa.forEach(num => {
+            if (mesa.value == num.value) {
+                Swal.fire({
+                    title: 'Mesa inválida',
+                    text: 'Escolha outro número',
+                    icon: 'info',
+                    confirmButtonText: 'OK'
+                });
+            }
+          })
+        }
+      });
+  }
+
+  const botoesAdicionar = document.querySelectorAll('.enviarLanche input[type="button"]');
+
+  botoesAdicionar.forEach(function(botao) {
+    botao.addEventListener('click', function() {
+
+      const linha = botao.closest('tr'); 
+      const lanche = linha.querySelector('input[name="lanche"]').value; 
+      const preco = linha.querySelector('input[name="valor_lanche"]').value; 
+      const detalhes = linha.querySelector('input[name="detalhesLanche"]').value;
+  
+      document.getElementById('nome_lanche').value = lanche;
+      document.getElementById('valor_lanche').value = preco;
+      document.getElementById('detalhes_lanche').value = detalhes;
+
+    });
+  });
+
+  const botoesAdicionarBebida = document.querySelectorAll('.enviarBebida input[type="button"]');
+
+  botoesAdicionarBebida.forEach(function(botao) {
+  botao.addEventListener('click', function() {
+      const linha = botao.closest('tr');   
+      const bebida = linha.querySelector('input[name="bebida"]').value; 
+      const selectTamanho = linha.querySelector('select#tamanho_valor');
+      const valorTamanho = selectTamanho.value; 
+      const [preco, tamanho] = valorTamanho.split('|');
+      
+      document.getElementById('nome_bebida').value = bebida;
+      document.getElementById('valor_bebida').value = preco; 
+      document.getElementById('tamanho_bebida').value = tamanho; 
+  });
+  });
+
+};
