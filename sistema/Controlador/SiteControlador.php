@@ -109,53 +109,60 @@ class SiteControlador extends Controlador
     }
 
     public function atualizar(int $id): void
-{
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Filtrando os dados recebidos via POST
-        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Filtrando os dados recebidos via POST
+            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-        // Filtrando apenas os dados necessários para o pedido
-        $dadosPedido = [
-            'id_lanche' => $dados['id_lanche'],
-            'nome_lanche' => $dados['nome_lanche'],
-            'valor_lanche' => $dados['valor_lanche'],
-            'detalhes_lanche' => $dados['detalhes_lanche'],
-            'id_ingredi' => $dados['id_ingredi'],
-            'add_ingredi' => $dados['add_ingredi'],
-            'valor_ingredi' => $dados['valor_ingredi'],
-            'nome_bebida' => $dados['nome_bebida'],
-            'tamanho_bebida' => $dados['tamanho_bebida'],
-            'valor_bebida' => $dados['valor_bebida'],
-            'detalhes_bebida' => $dados['detalhes_bebida'],
-            'total' => $dados['total'],
-            'status' => $dados['status']
-        ];
+            // Filtrando apenas os dados necessários para o pedido
+            $dadosPedido = [
+                'id_lanche' => $dados['id_lanche'],
+                'nome_lanche' => $dados['nome_lanche'],
+                'valor_lanche' => $dados['valor_lanche'],
+                'detalhes_lanche' => $dados['detalhes_lanche'],
+                'id_ingredi' => $dados['id_ingredi'],
+                'add_ingredi' => $dados['add_ingredi'],
+                'valor_ingredi' => $dados['valor_ingredi'],
+                'nome_bebida' => $dados['nome_bebida'],
+                'tamanho_bebida' => $dados['tamanho_bebida'],
+                'valor_bebida' => $dados['valor_bebida'],
+                'detalhes_bebida' => $dados['detalhes_bebida'],
+                'total' => $dados['total'],
+                'status' => $dados['status']
+            ];
 
-        // Atualizando a tabela de pedidos
-        (new ComandaModelo())->atualizarPedido($dadosPedido, $id);
+            // Atualizando a tabela de pedidos
+            (new ComandaModelo())->atualizarPedido($dadosPedido, $id);
 
-        $dadosMesa = ['mesa' => $dados['mesa']];
-        $mesa = $dados['nummesa'];
+            $dadosMesa = ['mesa' => $dados['mesa']];
+            $mesa = $dados['nummesa'];
 
-        (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
+            (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
+        }
+
+        // Após a atualização, redireciona para a página de pedidos abertos
+        Helpers::redirecionar('pedidosAbertos');
     }
 
-    // Após a atualização, redireciona para a página de pedidos abertos
-    Helpers::redirecionar('pedidosAbertos');
-}
+    public function atualizarAdicional(int $chave): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            // Filtrando os dados recebidos via POST
+            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+                
+            (new ComandaModelo())->atualizarAdicional($dados, $chave);
+        }
 
-public function atualizarAdicional(int $chave): void
-{
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Filtrando os dados recebidos via POST
-        $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-            
-        (new ComandaModelo())->atualizarAdicional($dados, $chave);
+        // Após a atualização, redireciona para a página de pedidos abertos
+        Helpers::redirecionar('pedidosAbertos');
     }
 
-    // Após a atualização, redireciona para a página de pedidos abertos
-    Helpers::redirecionar('pedidosAbertos');
-}
+    public function excluirPedido(int $id)
+    {   
+        (new ComandaModelo())->apagarPedido($id);
+        
+        Helpers::redirecionar('pedidosAbertos');
+    }
 
 
     public function editarPedido(int $id): void

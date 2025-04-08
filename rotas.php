@@ -14,6 +14,7 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'SiteControlador@cadastrar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'atualizar/{id}', 'SiteControlador@atualizar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'atualizarAdicional/{chave}', 'SiteControlador@atualizarAdicional');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirPedido/{id}', 'SiteControlador@excluirPedido');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarPedido/{id}', 'SiteControlador@editarPedido');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicionais/{chave}', 'SiteControlador@editarAdicionais');
     SimpleRouter::get(URL_SITE . '404', 'SiteControlador@erro404');

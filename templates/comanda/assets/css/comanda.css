@@ -379,6 +379,37 @@ body{
     max-height: 1000px; /* Valor alto o suficiente para a tabela */
 }
 
+@media (max-width: 768px) {
+    .nome_pedido {
+        width: 100px;
+    }
+
+    .nome_pedidoTd{
+        width: ;
+    }
+
+    .detalhes_pedido {
+        width: 70px;
+    }
+
+    .detalhes_pedidoTd  {
+        width: 40px;
+    }
+
+    .valor_pedido {
+        width: 30px; 
+        font-weight: bolder;
+    }
+
+    .valor_pedidoTd {
+        width: 50px;
+    }
+
+    .apagarPedidoTd{
+        width: 80px;
+    }
+}
+
 
 
 

@@ -157,4 +157,12 @@ class ComandaModelo
         $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute($dados);
     }
+
+    public function apagarPedido(int $id){
+        $query = "DELETE FROM pedidos WHERE id = {$id}";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute();
+    }
 }
