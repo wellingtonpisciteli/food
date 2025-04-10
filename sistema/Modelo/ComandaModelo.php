@@ -15,7 +15,7 @@ class ComandaModelo
         return $resultado;
     }
 
-    public function lerAdcional(string $tabela, string $nome): array | object
+    public function lerAdicional(string $tabela, string $nome): array | object
     {
         $querry = "SELECT * FROM {$tabela} ORDER BY {$nome} ASC ";
         $stmt = Conexao::getInstancia()->query($querry);
@@ -59,7 +59,7 @@ class ComandaModelo
 
     public function armazenarPedido(array $dados): void
     {
-        $query = "INSERT INTO pedidos (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, id_ingredi, add_ingredi, valor_ingredi, nome_bebida, tamanho_bebida, valor_bebida, detalhes_bebida, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO pedidos (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, total) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
         foreach ($dados['mesa'] as $index => $mesa) {
@@ -68,31 +68,15 @@ class ComandaModelo
             $valor_lanche = $dados['valor_lanche'][$index] ?? null;
             $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
 
-            $id_ingredi = $dados['id_ingredi'][$index] ?? null;
-            $add_ingredi = $dados['add_ingredi'][$index] ?? null;
-            $valor_ingredi = $dados['valor_ingredi'][$index] ?? null;
-
-            $nome_bebida = $dados['nome_bebida'][$index] ?? null;
-            $tamanho_bebida = $dados['tamanho_bebida'][$index] ?? null;
-            $valor_bebida = $dados['valor_bebida'][$index] ?? null;
-            $detalhes_bebida = $dados['detalhes_bebida'][$index] ?? null;
-
             $total = $dados['total'][$index] ?? null;
 
-            if (!empty($nome_lanche) || !empty($nome_bebida) || !empty($add_ingredi)) {
+            if (!empty($nome_lanche)) {
                 $stmt->execute([
                     $mesa,
                     $id_lanche,
                     $nome_lanche,
                     $valor_lanche,
                     $detalhes_lanche,
-                    $id_ingredi,
-                    $add_ingredi,
-                    $valor_ingredi,
-                    $nome_bebida,
-                    $tamanho_bebida,
-                    $valor_bebida,
-                    $detalhes_bebida,
                     $total
                 ]);
             }
@@ -101,8 +85,6 @@ class ComandaModelo
 
     public function armazenarAdicional(array $adicional)
     {
-
-        // Remova a coluna 'mesa' da consulta
         $query = "INSERT INTO adicionais (id, nome_adicional, valor_adicional) VALUES (?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
@@ -110,11 +92,33 @@ class ComandaModelo
             $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
             $valor_adicional = $adicional['valor_ingredi'][$index] ?? null;
 
-            // Execute apenas com os dados restantes (id e nome_adicional)
             $stmt->execute([
                 $id_ingredi,
                 $add_ingredi,
                 $valor_adicional
+            ]);
+        }
+    }
+
+    public function armazenarBebida(array $bebida)
+    {
+        $query = "INSERT INTO bebidas (mesa, id, nome_bebida, tamanho_bebida, detalhes_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        foreach ($bebida['nome_bebida'] as $index => $nome_bebida) {
+            $mesa = $bebida['mesa'][$index] ?? null;
+            $idBebida = $bebida['id_bebida'][$index] ?? null;
+            $tamanho_bebida = $bebida['tamanho_bebida'][$index] ?? null;
+            $detalhes_bebida = $bebida['detalhes_bebida'][$index] ?? null;
+            $valor_bebida = $bebida['valor_bebida'][$index] ?? null;
+
+            $stmt->execute([
+                $mesa,
+                $idBebida,
+                $nome_bebida,
+                $tamanho_bebida,
+                $detalhes_bebida,
+                $valor_bebida
             ]);
         }
     }
@@ -134,13 +138,6 @@ class ComandaModelo
         nome_lanche = :nome_lanche, 
         valor_lanche = :valor_lanche, 
         detalhes_lanche = :detalhes_lanche, 
-        id_ingredi = :id_ingredi, 
-        add_ingredi = :add_ingredi, 
-        valor_ingredi = :valor_ingredi, 
-        nome_bebida = :nome_bebida, 
-        tamanho_bebida = :tamanho_bebida, 
-        valor_bebida = :valor_bebida, 
-        detalhes_bebida = :detalhes_bebida, 
         total = :total, 
         status = :status WHERE id = {$id}";
 
@@ -148,11 +145,22 @@ class ComandaModelo
         $stmt->execute($dados);
     }
 
-    public function atualizarAdicional(array $dados, int $id)
+    public function atualizarAdicional(array $dados, int $chave)
     {
         $query = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
         valor_adicional = :valor_adicional 
-        WHERE chave = {$id}";
+        WHERE chave = {$chave}";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute($dados);
+    }
+
+    public function atualizarBebida(array $dados, int $chave)
+    {
+        $query = "UPDATE bebidas SET nome_bebida = :nome_bebida,
+        tamanho_bebida = :tamanho_bebida, 
+        valor_bebida = :valor_bebida 
+        WHERE chave = {$chave}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute($dados);
@@ -160,6 +168,22 @@ class ComandaModelo
 
     public function apagarPedido(int $id){
         $query = "DELETE FROM pedidos WHERE id = {$id}";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute();
+    }
+
+    public function apagarAdicional(int $chave){
+        $query = "DELETE FROM adicionais WHERE chave = {$chave}";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute();
+    }
+
+    public function apagarBebida(int $chave){
+        $query = "DELETE FROM bebidas WHERE chave = {$chave}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 

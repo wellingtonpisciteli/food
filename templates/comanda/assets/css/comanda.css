@@ -379,13 +379,19 @@ body{
     max-height: 1000px; /* Valor alto o suficiente para a tabela */
 }
 
+.valor_pedido{
+    color: blue;
+    width: 50px;
+    font-weight: bolder;
+}
+
 @media (max-width: 768px) {
     .nome_pedido {
         width: 100px;
     }
 
     .nome_pedidoTd{
-        width: ;
+        width: 100px ;
     }
 
     .detalhes_pedido {

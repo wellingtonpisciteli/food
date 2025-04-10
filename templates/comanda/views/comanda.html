@@ -94,11 +94,11 @@
           </td>
 
           <td style="font-weight: bolder; padding-left: 15px;">
-            {% if pedido.nome_bebida != "" %}
-            {{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}
-            {% else %}
-            <span style="font-weight: bolder;">-</span>
+            {% for bebida in bebidas %}
+            {% if pedido.id_lanche == bebida.id %}
+            {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
             {% endif %}
+            {% endfor %}
           </td>
         </tr>
       </tbody>

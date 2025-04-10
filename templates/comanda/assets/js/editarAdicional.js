@@ -32,4 +32,28 @@ window.onload = function() {
       });
       });
 
+    const apagarPedidos = document.querySelectorAll('.apagarPedido');
+
+    apagarPedidos.forEach(apagarPedido => {
+        apagarPedido.addEventListener('click', (event) => {
+        event.preventDefault(); 
+
+        Swal.fire({
+            title: 'Apagar?',
+            text: 'Deseja apagar este lanche?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sim',
+            cancelButtonText: 'Não',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+            window.location.href = apagarPedido.getAttribute('href');
+            } else {
+            console.log('Cancelado');
+            }
+        });
+        });
+    });
+
 };

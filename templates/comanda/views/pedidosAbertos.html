@@ -140,15 +140,21 @@
         </td>
     
         <td style="font-weight: bolder;">
-          {% if pedido.nome_bebida != "" %}
-          <a href="{{url('editarPedido/'~pedido.id)}}" style="text-decoration: none;  color: inherit;">{{ pedido.nome_bebida }} {{ pedido.tamanho_bebida }}</a>
-          {% endif %}
+          {% for bebida in bebidas %}
+            {% if pedido.id_lanche == bebida.id %}
+            <a href="{{url('editarBebidas/'~bebida.chave)}}" style="text-decoration: none;  color: inherit;">
+              {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+            </a>
+            {% endif %}
+            {% endfor %}
         </td>
     
         <td>
-          {% if pedido.nome_bebida != "" %}
-          <span style="font-weight: bolder; padding-left: 5px;">{{ pedido.valor_bebida | number_format(2, ',', '.') }}</span>
-          {% endif %}
+          {% for bebida in bebidas %}
+            {% if pedido.id_lanche == bebida.id %}
+              <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+            {% endif %}
+            {% endfor %}
         </td>
       </tr>
     </tbody>

@@ -33,7 +33,8 @@ class SiteControlador extends Controlador
         $pedidos = (new ComandaModelo())->ler("pedidos", "data_hora");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
-        $adicional = (new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida");
 
         echo ($this->template->renderizar('comanda.html', [
             'titulo' => 'Sistema_Food',
@@ -43,6 +44,7 @@ class SiteControlador extends Controlador
             'tamanhoBebida' => $tamanho_bebida,
             'ingred' => $ingredi,
             'adicional' => $adicional,
+            'bebidas' => $bebidas
         ]));
     }
 
@@ -70,105 +72,22 @@ class SiteControlador extends Controlador
 
     public function pedidosAbertos(): void
     {
-        $adicional = (new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
         $pedidos = (new ComandaModelo())->ler("pedidos", "data_hora");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'pedidos_abertos',
             'adicional' => $adicional,
-            'pedidos' => $pedidos
-
+            'pedidos' => $pedidos,
+            'bebidas' => $bebidas
         ]));
     }
-
-    public function busca(int $id)
-    {
-        $buscaId = (new ComandaModelo())->buscaPorId("cardapio_lanche", $id);
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $ingred = (new ComandaModelo())->ler("ingredientes", "ingrediente");
-        $lanche_ingred = (new ComandaModelo())->lerRelacao("lanche_ingredientes", "lanche_id", $id);
-
-        [
-            'busca' => $buscaId,
-            'cardapio' => $cardapio,
-            'ingredientes' => $ingred,
-            'lanche_ingredi' => $lanche_ingred
-        ];
-    }
-
-    public function cadastrar(): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-            (new ComandaModelo())->armazenarPedido($dados);
-
-            (new ComandaModelo())->armazenarAdicional($dados);
-        }
-
-        Helpers::redirecionar('adicionar');
-    }
-
-    public function atualizar(int $id): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Filtrando os dados recebidos via POST
-            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-
-            // Filtrando apenas os dados necessários para o pedido
-            $dadosPedido = [
-                'id_lanche' => $dados['id_lanche'],
-                'nome_lanche' => $dados['nome_lanche'],
-                'valor_lanche' => $dados['valor_lanche'],
-                'detalhes_lanche' => $dados['detalhes_lanche'],
-                'id_ingredi' => $dados['id_ingredi'],
-                'add_ingredi' => $dados['add_ingredi'],
-                'valor_ingredi' => $dados['valor_ingredi'],
-                'nome_bebida' => $dados['nome_bebida'],
-                'tamanho_bebida' => $dados['tamanho_bebida'],
-                'valor_bebida' => $dados['valor_bebida'],
-                'detalhes_bebida' => $dados['detalhes_bebida'],
-                'total' => $dados['total'],
-                'status' => $dados['status']
-            ];
-
-            // Atualizando a tabela de pedidos
-            (new ComandaModelo())->atualizarPedido($dadosPedido, $id);
-
-            $dadosMesa = ['mesa' => $dados['mesa']];
-            $mesa = $dados['nummesa'];
-
-            (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
-        }
-
-        // Após a atualização, redireciona para a página de pedidos abertos
-        Helpers::redirecionar('pedidosAbertos');
-    }
-
-    public function atualizarAdicional(int $chave): void
-    {
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Filtrando os dados recebidos via POST
-            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-                
-            (new ComandaModelo())->atualizarAdicional($dados, $chave);
-        }
-
-        // Após a atualização, redireciona para a página de pedidos abertos
-        Helpers::redirecionar('pedidosAbertos');
-    }
-
-    public function excluirPedido(int $id)
-    {   
-        (new ComandaModelo())->apagarPedido($id);
-        
-        Helpers::redirecionar('pedidosAbertos');
-    }
-
 
     public function editarPedido(int $id): void
     {
         $pedidoMesa = (new ComandaModelo())->buscaPorId("pedidos", $id);
-        $adicional = (new ComandaModelo())->lerAdcional("adicionais", "nome_adicional");
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
@@ -194,9 +113,38 @@ class SiteControlador extends Controlador
 
         echo ($this->template->renderizar('editarAdicional.html', [
             'titulo' => 'editar_adicional',
-            'adicional' => $adicional,
+            'editar' => $adicional,
             'ingredientes' => $ingredi
 
         ]));
+    }
+
+    public function editarBebidas(int $chave): void
+    {
+        $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
+        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
+
+        echo ($this->template->renderizar('editarBebida.html', [
+            'titulo' => 'editar_bebida',
+            'editar' => $bebida,
+            'cardapio_bebida' => $cardapio_bebida,
+            'tamanhoBebida' => $tamanho_bebida
+        ]));
+    }
+
+    public function busca(int $id)
+    {
+        $buscaId = (new ComandaModelo())->buscaPorId("cardapio_lanche", $id);
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
+        $ingred = (new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $lanche_ingred = (new ComandaModelo())->lerRelacao("lanche_ingredientes", "lanche_id", $id);
+
+        [
+            'busca' => $buscaId,
+            'cardapio' => $cardapio,
+            'ingredientes' => $ingred,
+            'lanche_ingredi' => $lanche_ingred
+        ];
     }
 }

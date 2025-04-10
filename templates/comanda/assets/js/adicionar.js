@@ -38,6 +38,8 @@ let total = 0
 // Recupera o valor de idLanche do localStorage, se existir, senão inicia com 0
 let idLanche = localStorage.getItem('idLanche') ? parseInt(localStorage.getItem('idLanche')) : 0;
 let idIngrediente = 0
+let idBebida = 0
+
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
@@ -188,6 +190,10 @@ const listaBebidas = document.getElementById('listaBebidas');
 enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
 
+        idBebida = idLanche
+
+        console.log(idBebida)
+
         cont += 1;
 
         // Pega a linha relacionada ao botão
@@ -284,6 +290,11 @@ enviarBebidaBtns.forEach(btn => {
         mesaInput.name = 'mesa[]';
         mesaInput.value = mesaPedido;
 
+        const idBebidaInput = document.createElement('input');
+        idBebidaInput.type = 'hidden';
+        idBebidaInput.name = 'id_bebida[]';
+        idBebidaInput.value = idBebida;
+
         const nomeBebidaInput = document.createElement('input');
         nomeBebidaInput.type = 'hidden';
         nomeBebidaInput.name = 'nome_bebida[]';
@@ -314,6 +325,7 @@ enviarBebidaBtns.forEach(btn => {
         })
 
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(idBebidaInput);
         pedidosDiv.appendChild(nomeBebidaInput);
         pedidosDiv.appendChild(tamanhoBebidaInput);
         pedidosDiv.appendChild(valorBebidaInput);

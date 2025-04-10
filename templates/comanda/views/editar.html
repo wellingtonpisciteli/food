@@ -3,9 +3,9 @@
 
 <body class="w-100 bg-dark">
 
-    {% for num in mesa %}
-    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
-    {% endfor %}
+{% for num in mesa %}
+<input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+{% endfor %}
 
 <div id="adicionarLanches" style="margin-bottom: 25px;">
     
@@ -23,93 +23,51 @@
 
                 <table class="table" id="tabelaPedidos">
                     {% if editar.nome_lanche != "" %}
-                    <div id="divLanche">
-                        <thead class="lanche">
-                            <tr>
-                                <th scope="col" class="bg-light">LANCHE</th>
-                                <th scope="col" class="text-center bg-light">OBS</th>
-                                <th scope="col" class="text-center bg-light">PREÇO</th>
-                                <th scope="col" class="text-center bg-light">EXCLUIR</th>
-                            </tr>
-                        </thead>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">LANCHE</th>
+                            <th scope="col" class="text-center bg-light">OBS</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                            <th scope="col" class="text-center bg-light">EXCLUIR</th>
+                        </tr>
+                    </thead>
 
-                        <tbody class="lanche" id="listaPedidos">
-                            <tr>
-                                <td class="nome_pedidoTd">
-                                    <input value="{{ editar.nome_lanche }}" type="text" class="nome_pedido" name="nome_lanche" id="nome_lanche" style="font-weight: bolder;">
-                                </td>
-                        
-                                <td class="detalhes_pedidoTd">
-                                    <input value="{{ editar.detalhes_lanche }}" type="text" class="detalhes_pedido" name="detalhes_lanche" id="detalhes_lanche">
-                                </td>
-                                <td class="valor_pedidoTd">
-                                    {% set somaAdicional = 0 %}
-                                    
-                                    {% for add in adicional %}
-                                    {% if editar.id_lanche == add.id %}
-                                    {% set somaAdicional = somaAdicional + add.valor_adicional %}
-                                    {% endif %}
-                                    {% endfor %}
-                                    
-                                    {% set total = somaAdicional + editar.valor_lanche %}
+                    <tbody id="listaPedidos">
+                        <tr>
+                            <td class="nome_pedidoTd">
+                                <input value="{{ editar.nome_lanche }}" type="text" class="nome_pedido" name="nome_lanche" id="nome_lanche" style="font-weight: bolder;">
+                            </td>
+                    
+                            <td class="detalhes_pedidoTd">
+                                <input value="{{ editar.detalhes_lanche }}" type="text" class="detalhes_pedido" name="detalhes_lanche" id="detalhes_lanche">
+                            </td>
+                            <td class="valor_pedidoTd">
+                                {% set somaAdicional = 0 %}
+                                
+                                {% for add in adicional %}
+                                {% if editar.id_lanche == add.id %}
+                                {% set somaAdicional = somaAdicional + add.valor_adicional %}
+                                {% endif %}
+                                {% endfor %}
+                                
+                                {% set total = somaAdicional + editar.valor_lanche %}
 
-                                    <input value="{{ total }}" type="text" name="valor_lanche" class="valor_pedido" id="valor_lanche" style=" font-weight: bolder;">
-                                </td>
+                                <input value="{{ total }}" type="text" name="valor_lanche" class="valor_pedido" id="valor_lanche">
+                            </td>
 
-                                <td class="apagarPedidoTd">
-                                    <a class="apagarPedido" href="{{url('excluirPedido/' ~ editar.id)}}">
-                                        <button  style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
-                                            <i class="fa-solid fa-trash" style="color: white;"></i>
-                                        </button>                     
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </div>
-                    {% endif %}
-
-                    {% if editar.nome_bebida != "" %}
-                    <div id="divBebida">
-                        <thead class="bebida">
-                            <tr>
-                                <th scope="col" class="bg-light">BEBIDA</th>
-                                <th scope="col" class="text-center bg-light">TAMANHO</th>
-                                <th scope="col" class="text-center bg-light">PREÇO</th>
-                                <th scope="col" class="text-center bg-light">EXCLUIR</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bebida" id="listaPedidos">
-                            <tr>
-                                <td>
-                                    <input value="{{ editar.nome_bebida }}" type="text" name="nome_bebida" id="nome_bebida" style="font-weight: bolder;">
-                                </td>
-                        
-                                <td>
-                                    <input value="{{ editar.tamanho_bebida }}" type="text" name="tamanho_bebida" id="tamanho_bebida">
-                                </td>
-                        
-                                <td>
-                                    <input value="{{ editar.valor_bebida }}" type="text" name="valor_bebida" id="valor_bebida">
-                                </td>
-                                <td>
-                                    <a class="apagarPedido" href="{{url('excluirPedido/' ~ editar.id)}}">
-                                        <button  style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
-                                            <i class="fa-solid fa-trash" style="color: white;"></i>
-                                        </button>                     
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </div>
+                            <td class="apagarPedidoTd">
+                                <a class="apagarPedido" href="{{url('excluirPedido/' ~ editar.id)}}">
+                                    <button  style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
+                                        <i class="fa-solid fa-trash" style="color: white;"></i>
+                                    </button>                     
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
                     {% endif %}
                 </table>
 
-                <!-- Campos ocultos -->
                 <input type="hidden" name="id_lanche" value="{{ editar.id_lanche }}">
-                <input type="hidden" name="id_ingredi" value="{{ editar.id_ingredi }}">
-                <input type="hidden" name="add_ingredi" value="{{ editar.add_ingredi }}">
-                <input type="hidden" name="valor_ingredi" value="{{ editar.valor_ingredi }}">
-                <input type="hidden" name="detalhes_bebida" value="{{ editar.detalhes_bebida }}">
                 <input type="hidden" name="total" value="{{ editar.total }}">
                 <input type="hidden" name="status" value="{{ editar.status }}">
 
@@ -158,44 +116,6 @@
         </tbody>
     </table>
     {% endif %}
-
-    {% if editar.nome_bebida != "" %}
-    <table class="table" id="adicionarTabela" style="margin-bottom: 20px;">
-        <thead>
-            <tr>
-                <th scope="col" class="bg-light">BEBIDAS</th>
-                <th scope="col" class="text-center bg-light">TAMANHO</th>
-                <th scope="col" class="text-center bg-light">ADD</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in cardapio_bebida %}
-            <tr>
-                <th class="bg-light w-25">{{ item.marca }}</th>
-                <input type="hidden" id="bebida" name="bebida" value="{{ item.marca }}">
-                <td class="text-center align-middle w-40 bg-light">
-                    <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
-                        {% for tamanho in tamanhoBebida %}
-                        {% if tamanho.marca_bebida_id == item.id %}
-                        <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
-                            {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
-                        </option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-                </td>
-                <td class="text-center align-middle bg-light" style="width: 25%;">
-                    <div class="enviarBebida">
-                        <input type="button" class="text-center text-white fw-bolder" value="+" 
-                            style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
-                    </div>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
-
 </div>
 
 <body>
