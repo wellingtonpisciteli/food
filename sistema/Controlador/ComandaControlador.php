@@ -18,15 +18,18 @@ class ComandaControlador extends Controlador
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-            (new ComandaModelo())->armazenarPedido($dados);
+            (new ComandaModelo())->armazenarLanche($dados);
 
             (new ComandaModelo())->armazenarAdicional($dados);
 
             (new ComandaModelo())->armazenarBebida($dados);
+
+            (new ComandaModelo())->armazenarTotal($dados);
         }
 
         Helpers::redirecionar('adicionar');
     }
+
 
     public function atualizar(int $id): void
     {
@@ -46,11 +49,10 @@ class ComandaControlador extends Controlador
                     'nome_lanche' => $dados['nome_lanche'],
                     'valor_lanche' => $dados['valor_lanche'],
                     'detalhes_lanche' => $dados['detalhes_lanche'],
-                    'total' => $dados['total'],
                     'status' => $dados['status']
                 ];
     
-                (new ComandaModelo())->atualizarPedido($dadosPedido, $id);
+                (new ComandaModelo())->atualizarLanche($dadosPedido, $id);
             }
             
             if (!empty($dados['nome_bebida'])) {
@@ -75,10 +77,11 @@ class ComandaControlador extends Controlador
 
         Helpers::redirecionar('pedidosAbertos');
     }
+    
 
-    public function excluirPedido(int $id)
+    public function excluir(int $id)
     {   
-        (new ComandaModelo())->apagarPedido($id);
+        (new ComandaModelo())->apagarLanche($id);
 
         (new ComandaModelo())->apagarAdicional($id);
 

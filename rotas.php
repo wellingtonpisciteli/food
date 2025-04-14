@@ -13,10 +13,12 @@ try {
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'ComandaControlador@cadastrar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'atualizar/{id}', 'ComandaControlador@atualizar');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirPedido/{id}', 'ComandaControlador@excluirPedido');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarPedido/{id}', 'SiteControlador@editarPedido');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicionais/{chave}', 'SiteControlador@editarAdicionais');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarBebidas/{chave}', 'SiteControlador@editarBebidas');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluir/{id}', 'ComandaControlador@excluir');
+
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarBebida/{chave}', 'SiteControlador@editarBebida');
+
     SimpleRouter::get(URL_SITE . '404', 'SiteControlador@erro404');
 
     SimpleRouter::get(URL_SITE . 'sair', 'SiteControlador@sair');

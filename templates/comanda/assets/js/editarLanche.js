@@ -65,7 +65,7 @@ window.onload = function() {
       const lanche = linha.querySelector('input[name="lanche"]').value; 
       const preco = linha.querySelector('input[name="valor_lanche"]').value; 
       const detalhes = linha.querySelector('input[name="detalhesLanche"]').value;
-  
+
       document.getElementById('nome_lanche').value = lanche;
       document.getElementById('valor_lanche').value = preco;
       document.getElementById('detalhes_lanche').value = detalhes;

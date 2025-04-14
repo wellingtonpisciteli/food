@@ -7,6 +7,10 @@
   <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos
   </header>
 
+  <div class="bg-light" style="height: 550px; width: 600px; margin-left: 2.5%; margin-top: 20px; margin-bottom: 20px; display: none; align-items: center; justify-content: center;">
+    <h4>Ultimos Pedidos apareceram aqui...</h4>
+  </div>
+
   <div id="divTable" class="bg-light table-responsive">
     {% set mesa_anterior = None %}
     {% set cont = 0 %}
@@ -14,6 +18,7 @@
 
     {% for pedido in pedidos %}
     {% if pedido.mesa != mesa_anterior %}
+
     {% if cont > 0 %}
     <div class="bg-dark" style="height: 15px;"></div> <!-- Ajuste no espaçamento -->
     {% endif %}
@@ -36,15 +41,22 @@
         {% endif %}
       </div>
 
-      <div>
-        TOTAL: <span style="color: dodgerblue;">${{ pedido.total | number_format(2, ',', '.') }}</span>
-      </div>
+      {% set mostrado = false %}
+
+      {% for valor in total %}
+        {% if pedido.mesa == valor.mesa and not mostrado %}
+          <div>
+            TOTAL: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
+          </div>
+          {% set mostrado = true %}
+        {% endif %}
+      {% endfor %}
 
       <div>
         Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
       </div>
+    {% endif %}
   </div>
-  {% endif %}
 
   {% set mesa_anterior = pedido.mesa %}
   {% set cont = 0 %}

@@ -57,9 +57,9 @@ class ComandaModelo
     }
 
 
-    public function armazenarPedido(array $dados): void
+    public function armazenarLanche(array $dados): void
     {
-        $query = "INSERT INTO pedidos (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, total) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO lanches (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche) VALUES (?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
         foreach ($dados['mesa'] as $index => $mesa) {
@@ -68,8 +68,6 @@ class ComandaModelo
             $valor_lanche = $dados['valor_lanche'][$index] ?? null;
             $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
 
-            $total = $dados['total'][$index] ?? null;
-
             if (!empty($nome_lanche)) {
                 $stmt->execute([
                     $mesa,
@@ -77,7 +75,6 @@ class ComandaModelo
                     $nome_lanche,
                     $valor_lanche,
                     $detalhes_lanche,
-                    $total
                 ]);
             }
         }
@@ -85,15 +82,17 @@ class ComandaModelo
 
     public function armazenarAdicional(array $adicional)
     {
-        $query = "INSERT INTO adicionais (id, nome_adicional, valor_adicional) VALUES (?, ?, ?)";
+        $query = "INSERT INTO adicionais (id, mesa, nome_adicional, valor_adicional) VALUES (?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
         foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
+            $mesa = $adicional['mesa'][$index] ?? null;
             $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
             $valor_adicional = $adicional['valor_ingredi'][$index] ?? null;
 
             $stmt->execute([
                 $id_ingredi,
+                $mesa,
                 $add_ingredi,
                 $valor_adicional
             ]);
@@ -123,22 +122,50 @@ class ComandaModelo
         }
     }
 
+    public function armazenarTotal(array $dados): void
+    {
+        $query = "INSERT INTO total (mesa, total) VALUES (?, ?)";
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        foreach ($dados['mesa'] as $index => $mesa) {
+            
+            $total = $dados['total'][$index] ?? null;
+
+            if (!empty($total)) {
+                $stmt->execute([
+                    $mesa,
+                    $total
+                ]);
+            }
+        }
+    }
+
     public function atualizarMesa(array $dados, $mesa)
     {
-        $query = "UPDATE pedidos SET mesa = :mesa WHERE mesa = {$mesa}";
-
+        $query = "UPDATE lanches SET mesa = :mesa WHERE mesa = {$mesa}";
         $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute($dados);
+
+        $query2 = "UPDATE adicionais SET mesa = :mesa WHERE mesa = {$mesa}";
+        $stmt2 = Conexao::getInstancia()->prepare($query2);
+        $stmt2->execute($dados);
+
+        $query3 = "UPDATE bebidas SET mesa = :mesa WHERE mesa = {$mesa}";
+        $stmt3 = Conexao::getInstancia()->prepare($query3);
+        $stmt3->execute($dados);
+
+        $query4 = "UPDATE total SET mesa = :mesa WHERE mesa = {$mesa}";
+        $stmt4 = Conexao::getInstancia()->prepare($query4);
+        $stmt4->execute($dados);       
     }
 
 
-    public function atualizarPedido(array $dados, int $id)
+    public function atualizarLanche(array $dados, int $id)
     {
-        $query = "UPDATE pedidos SET id_lanche = :id_lanche, 
+        $query = "UPDATE lanches SET id_lanche = :id_lanche, 
         nome_lanche = :nome_lanche, 
         valor_lanche = :valor_lanche, 
         detalhes_lanche = :detalhes_lanche, 
-        total = :total, 
         status = :status WHERE id = {$id}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
@@ -166,8 +193,8 @@ class ComandaModelo
         $stmt->execute($dados);
     }
 
-    public function apagarPedido(int $id){
-        $query = "DELETE FROM pedidos WHERE id = {$id}";
+    public function apagarLanche(int $id){
+        $query = "DELETE FROM lanches WHERE id = {$id}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 

@@ -40,6 +40,8 @@ let idLanche = localStorage.getItem('idLanche') ? parseInt(localStorage.getItem(
 let idIngrediente = 0
 let idBebida = 0
 
+console.log(idLanche);
+
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {

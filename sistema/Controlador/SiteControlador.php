@@ -30,11 +30,12 @@ class SiteControlador extends Controlador
     {
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $pedidos = (new ComandaModelo())->ler("pedidos", "data_hora");
+        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida");
+        $total = (new ComandaModelo())->ler("total", "total");
 
         echo ($this->template->renderizar('comanda.html', [
             'titulo' => 'Sistema_Food',
@@ -44,9 +45,11 @@ class SiteControlador extends Controlador
             'tamanhoBebida' => $tamanho_bebida,
             'ingred' => $ingredi,
             'adicional' => $adicional,
-            'bebidas' => $bebidas
+            'bebidas' => $bebidas,
+            'total' => $total
         ]));
     }
+
 
     public function adicionar(): void
     {
@@ -54,9 +57,9 @@ class SiteControlador extends Controlador
         $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id");
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
-        $pedido = (new ComandaModelo())->ler("pedidos", "nome_lanche");
+        $pedido = (new ComandaModelo())->ler("lanches", "nome_lanche");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
-        $mesa = (new ComandaModelo())->ler("pedidos", "mesa");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa");
 
         echo ($this->template->renderizar('adicionar.html', [
             'titulo' => 'Adicionar',
@@ -70,43 +73,42 @@ class SiteControlador extends Controlador
         ]));
     }
 
+
     public function pedidosAbertos(): void
     {
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $pedidos = (new ComandaModelo())->ler("pedidos", "data_hora");
+        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora");
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida");
+        $total = (new ComandaModelo())->ler("total", "total");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'pedidos_abertos',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
-            'bebidas' => $bebidas
+            'bebidas' => $bebidas,
+            'total' => $total
         ]));
     }
 
-    public function editarPedido(int $id): void
+
+    public function editarLanche(int $id): void
     {
-        $pedidoMesa = (new ComandaModelo())->buscaPorId("pedidos", $id);
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $pedidoMesa = (new ComandaModelo())->buscaPorId("lanches", $id);
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
-        $mesa = (new ComandaModelo())->ler("pedidos", "mesa");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa");
+        $total = (new ComandaModelo())->ler("total", "total");
 
-        echo ($this->template->renderizar('editar.html', [
-            'titulo' => 'editar_pedido',
+        echo ($this->template->renderizar('editarLanche.html', [
+            'titulo' => 'editar_lanche',
             'editar' => $pedidoMesa,
-            'adicional' => $adicional,
             'cardapio' => $cardapio,
-            'cardapio_bebida' => $cardapio_bebida,
-            'tamanhoBebida' => $tamanho_bebida,
-            'ingredientes' => $ingredi,
-            'mesa' => $mesa
+            'mesa' => $mesa,
+            'total' => $total
         ]));
     }
 
-    public function editarAdicionais(int $chave): void
+
+    public function editarAdicional(int $chave): void
     {
         $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
@@ -119,19 +121,23 @@ class SiteControlador extends Controlador
         ]));
     }
 
-    public function editarBebidas(int $chave): void
+
+    public function editarBebida(int $chave): void
     {
         $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa");
 
         echo ($this->template->renderizar('editarBebida.html', [
             'titulo' => 'editar_bebida',
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,
-            'tamanhoBebida' => $tamanho_bebida
+            'tamanhoBebida' => $tamanho_bebida,
+            'mesa' => $mesa
         ]));
     }
+    
 
     public function busca(int $id)
     {
