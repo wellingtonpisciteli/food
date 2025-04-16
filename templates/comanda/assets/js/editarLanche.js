@@ -5,10 +5,6 @@ window.onload = function() {
   const mesa = document.querySelector('input[name="mesa"]')
   const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
 
-  controleMesa.forEach(num=>{
-    console.log(num.value)
-  })
-
   nummesa.value = mesa.value
 
   if (mesa) {
@@ -54,9 +50,13 @@ window.onload = function() {
       });
     });
   });
-  
 
   const botoesAdicionar = document.querySelectorAll('.enviarLanche input[type="button"]');
+  const novoTotal = document.getElementById('novoTotal');
+  const total = document.getElementById('total');
+  const valorLanche = document.getElementById('valor_lanche');
+
+  let totalInicial = total.value - valorLanche.value
 
   botoesAdicionar.forEach(function(botao) {
     botao.addEventListener('click', function() {
@@ -66,6 +66,8 @@ window.onload = function() {
       const preco = linha.querySelector('input[name="valor_lanche"]').value; 
       const detalhes = linha.querySelector('input[name="detalhesLanche"]').value;
 
+      novoTotal.value = Number(totalInicial) + Number(preco);
+  
       document.getElementById('nome_lanche').value = lanche;
       document.getElementById('valor_lanche').value = preco;
       document.getElementById('detalhes_lanche').value = detalhes;

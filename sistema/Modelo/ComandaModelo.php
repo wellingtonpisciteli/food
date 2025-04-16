@@ -140,35 +140,34 @@ class ComandaModelo
         }
     }
 
-    public function atualizarMesa(array $dados, $mesa)
+    public function atualizarMesa(array $dados, $mesaAntiga)
     {
-        $query = "UPDATE lanches SET mesa = :mesa WHERE mesa = {$mesa}";
-        $stmt = Conexao::getInstancia()->prepare($query);
-        $stmt->execute($dados);
+        $tabelas = ['lanches', 'adicionais', 'bebidas', 'total'];
 
-        $query2 = "UPDATE adicionais SET mesa = :mesa WHERE mesa = {$mesa}";
-        $stmt2 = Conexao::getInstancia()->prepare($query2);
-        $stmt2->execute($dados);
-
-        $query3 = "UPDATE bebidas SET mesa = :mesa WHERE mesa = {$mesa}";
-        $stmt3 = Conexao::getInstancia()->prepare($query3);
-        $stmt3->execute($dados);
-
-        $query4 = "UPDATE total SET mesa = :mesa WHERE mesa = {$mesa}";
-        $stmt4 = Conexao::getInstancia()->prepare($query4);
-        $stmt4->execute($dados);       
+        foreach ($tabelas as $tabela) {
+            $query = "UPDATE {$tabela} SET mesa = :mesaNova WHERE mesa = :mesaAntiga";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                ':mesaNova' => $dados['mesa'],
+                ':mesaAntiga' => $mesaAntiga
+            ]);
+        }
     }
-
 
     public function atualizarLanche(array $dados, int $id)
     {
-        $query = "UPDATE lanches SET id_lanche = :id_lanche, 
-        nome_lanche = :nome_lanche, 
-        valor_lanche = :valor_lanche, 
-        detalhes_lanche = :detalhes_lanche, 
-        status = :status WHERE id = {$id}";
+        $query = "UPDATE lanches SET 
+            id_lanche = :id_lanche, 
+            nome_lanche = :nome_lanche, 
+            valor_lanche = :valor_lanche, 
+            detalhes_lanche = :detalhes_lanche, 
+            status = :status 
+            WHERE id = :id";
 
         $stmt = Conexao::getInstancia()->prepare($query);
+
+        $dados['id'] = $id;
+
         $stmt->execute($dados);
     }
 
@@ -191,6 +190,17 @@ class ComandaModelo
 
         $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute($dados);
+    }
+
+    public function atualizarTotal(int $novoTotal, int $mesa)
+    {
+        $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute([
+            ':novoTotal' => $novoTotal,
+            ':mesa' => $mesa
+        ]);
     }
 
     public function apagarLanche(int $id){

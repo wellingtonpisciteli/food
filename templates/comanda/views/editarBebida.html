@@ -15,6 +15,16 @@
         <table class="table" id="adicionarTabela">
             <form action="{{ url('atualizar/'~editar.chave) }}" method="post" class="bg-light" id="pedidos">
                 
+                <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="hidden" class="fw-bolder bg-light text-center">
+                    
+                {% for valor in total %}
+                {% if valor.mesa == editar.mesa %}
+                <input type="hidden" name="total" id="total" value="{{ valor.total }}">
+                {% endif %}
+                {% endfor %}
+
+                <input type="hidden" id="novoTotal" name="novoTotal" type="number">
+                
                 <table class="table" id="tabelaPedidos">
                     <thead>
                         <tr>

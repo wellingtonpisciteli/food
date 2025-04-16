@@ -43,6 +43,11 @@ class ComandaControlador extends Controlador
                 (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
             }
 
+            $novoTotal = $dados['novoTotal'];
+            $mesa = $dados['mesa'];
+
+            (new ComandaModelo())->atualizarTotal($novoTotal, $mesa);
+
             if (!empty($dados['nome_lanche'])) {
                 $dadosPedido = [
                     'id_lanche' => $dados['id_lanche'],

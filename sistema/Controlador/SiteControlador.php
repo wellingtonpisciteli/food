@@ -112,12 +112,13 @@ class SiteControlador extends Controlador
     {
         $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $total = (new ComandaModelo())->ler("total", "total");
 
         echo ($this->template->renderizar('editarAdicional.html', [
             'titulo' => 'editar_adicional',
             'editar' => $adicional,
-            'ingredientes' => $ingredi
-
+            'ingredientes' => $ingredi,
+            'total' => $total
         ]));
     }
 
@@ -128,13 +129,15 @@ class SiteControlador extends Controlador
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
         $mesa = (new ComandaModelo())->ler("lanches", "mesa");
+        $total = (new ComandaModelo())->ler("total", "total");
 
         echo ($this->template->renderizar('editarBebida.html', [
             'titulo' => 'editar_bebida',
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
-            'mesa' => $mesa
+            'mesa' => $mesa,
+            'total' => $total
         ]));
     }
     

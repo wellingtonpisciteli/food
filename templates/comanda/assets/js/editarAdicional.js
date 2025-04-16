@@ -2,12 +2,22 @@
 window.onload = function() {
 
     const botoesAdicionarAdicionais = document.querySelectorAll('.enviarIngrediente input[type="button"]');
+    const novoTotal = document.getElementById('novoTotal');
+    const total = document.getElementById('total');
+    const valorIngredi = document.getElementById('valor_adicional');
+
+    let totalInicial = total.value - valorIngredi.value
+    console.log(totalInicial)
 
     botoesAdicionarAdicionais.forEach(function(botao) {
       botao.addEventListener('click', function() {
           const linha = botao.closest('tr');   
           const adicional = linha.querySelector('input[name="nomeIngrediente"]').value; 
           const preco = linha.querySelector('input[name="valorIngrediente"]').value; 
+
+          novoTotal.value = Number(totalInicial) + Number(preco);
+
+          console.log(novoTotal)
           
           document.getElementById('nome_adicional').value = "+ "+ adicional;
           document.getElementById('valor_adicional').value = preco; 

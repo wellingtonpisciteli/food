@@ -1,6 +1,11 @@
 window.onload = function() {
 
     const botoesAdicionarBebida = document.querySelectorAll('.enviarBebida input[type="button"]');
+    const novoTotal = document.getElementById('novoTotal');
+    const total = document.getElementById('total');
+    const valorBebida = document.getElementById('valor_bebida');
+
+    let totalInicial = total.value - valorBebida.value
 
     botoesAdicionarBebida.forEach(function(botao) {
     botao.addEventListener('click', function() {
@@ -9,6 +14,8 @@ window.onload = function() {
         const selectTamanho = linha.querySelector('select#tamanho_valor');
         const valorTamanho = selectTamanho.value; 
         const [preco, tamanho] = valorTamanho.split('|');
+
+        novoTotal.value = Number(totalInicial) + Number(preco);
         
         document.getElementById('nome_bebida').value = bebida;
         document.getElementById('valor_bebida').value = preco; 
