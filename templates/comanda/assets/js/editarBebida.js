@@ -39,9 +39,11 @@ window.onload = function() {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-            window.location.href = apagarPedido.getAttribute('href');
+                novoTotal.value = totalInicial;
+                document.getElementById('apagar').value = 'preenchido';
+                document.getElementById('pedidos').submit();
             } else {
-            console.log('Cancelado');
+                console.log('Cancelado');
             }
         });
         });

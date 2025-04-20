@@ -25,31 +25,7 @@ window.onload = function() {
         }
       });
   }
-
-
-  const apagarPedidos = document.querySelectorAll('.apagarPedido');
-
-  apagarPedidos.forEach(apagarPedido => {
-    apagarPedido.addEventListener('click', (event) => {
-      event.preventDefault(); 
-
-      Swal.fire({
-        title: 'Apagar?',
-        text: 'Deseja apagar este lanche?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não',
-        reverseButtons: true
-      }).then((result) => {
-        if (result.isConfirmed) {
-          window.location.href = apagarPedido.getAttribute('href');
-        } else {
-          console.log('Cancelado');
-        }
-      });
-    });
-  });
+  
 
   const botoesAdicionar = document.querySelectorAll('.enviarLanche input[type="button"]');
   const novoTotal = document.getElementById('novoTotal');
@@ -72,6 +48,32 @@ window.onload = function() {
       document.getElementById('valor_lanche').value = preco;
       document.getElementById('detalhes_lanche').value = detalhes;
 
+    });
+  });
+
+  const apagarPedidos = document.querySelectorAll('.apagarPedido');
+
+  apagarPedidos.forEach(apagarPedido => {
+    apagarPedido.addEventListener('click', (event) => {
+      event.preventDefault(); 
+
+      Swal.fire({
+        title: 'Apagar?',
+        text: 'Deseja apagar este lanche?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          novoTotal.value = totalInicial;
+          document.getElementById('apagar').value = 'preenchido';
+          document.getElementById('pedidos').submit();
+        } else {
+            console.log('Cancelado');
+        }
+      });
     });
   });
 

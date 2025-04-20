@@ -7,9 +7,9 @@ use sistema\Nucleo\Helpers;
 
 class ComandaModelo
 {
-    public function ler(string $tabela, string $nome): array | object
+    public function ler(string $tabela, string $nome, string $param): array | object
     {
-        $querry = "SELECT * FROM {$tabela} ORDER BY {$nome} DESC ";
+        $querry = "SELECT * FROM {$tabela} ORDER BY {$nome} {$param} ";
         $stmt = Conexao::getInstancia()->query($querry);
         $resultado = $stmt->fetchAll();
         return $resultado;

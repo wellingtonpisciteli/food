@@ -43,10 +43,12 @@ class ComandaControlador extends Controlador
                 (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
             }
 
-            $novoTotal = $dados['novoTotal'];
-            $mesa = $dados['mesa'];
+            if (!empty($dados['novoTotal'])){
+                $novoTotal = $dados['novoTotal'];
+                $mesa = $dados['mesa'];
 
-            (new ComandaModelo())->atualizarTotal($novoTotal, $mesa);
+                (new ComandaModelo())->atualizarTotal($novoTotal, $mesa);
+            }
 
             if (!empty($dados['nome_lanche'])) {
                 $dadosPedido = [
@@ -77,6 +79,10 @@ class ComandaControlador extends Controlador
                 ];
     
                 (new ComandaModelo())->atualizarAdicional($dadosAdicional, $id);
+            }
+
+            if (($dados['apagar'])=='preenchido'){
+                (new ComandaControlador())->excluir($id);
             }
         }
 

@@ -11,6 +11,10 @@
     </h3>
 </header>
 
+{% for item in pedido %}
+<input type="hidden" value="{{ item.id_lanche }}" id="idLancheTeste" class="idLancheTeste">
+{% endfor %}
+
 <div class="w-100 bg-dark" id="adicionarLanches">
     <div class="table-responsive">
         <table class="table" id="adicionarTabela">

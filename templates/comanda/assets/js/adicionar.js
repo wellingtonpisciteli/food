@@ -35,22 +35,18 @@ let apagarLanche = false
 let totalLanche = 0
 let totalBebida = 0
 let total = 0
-// Recupera o valor de idLanche do localStorage, se existir, senão inicia com 0
-let idLanche = localStorage.getItem('idLanche') ? parseInt(localStorage.getItem('idLanche')) : 0;
 let idIngrediente = 0
 let idBebida = 0
 
-console.log(idLanche);
+const idIngredi = document.querySelectorAll('.idLancheTeste')
 
+let proximoValor = parseInt(idIngredi[idIngredi.length - 1].value) || 0;
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-        idLanche += 1
-        console.log(idLanche)
-
-        // Atualiza o idLanche no localStorage para garantir que ele não zere
-        localStorage.setItem('idLanche', idLanche);
+        proximoValor++;
+        console.log('Novo valor lanche:', proximoValor);
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -147,9 +143,7 @@ enviarLancheBtns.forEach(btn => {
         const idLancheInput = document.createElement('input');
         idLancheInput.type = 'hidden';
         idLancheInput.name = 'id_lanche[]';
-        idLancheInput.value = idLanche;
-
-        console.log(idLancheInput)
+        idLancheInput.value = proximoValor;
 
         const nomeLancheInput = document.createElement('input');
         nomeLancheInput.type = 'hidden';
@@ -192,9 +186,8 @@ const listaBebidas = document.getElementById('listaBebidas');
 enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
 
-        idBebida = idLanche
-
-        console.log(idBebida)
+        idBebida = proximoValor
+        console.log('Novo valor bebida:', idBebida);
 
         cont += 1;
 
@@ -340,7 +333,9 @@ const enviarIngredienteBtns = document.querySelectorAll('.enviarIngrediente inpu
 enviarIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-        idIngrediente = idLanche
+        idIngrediente = proximoValor
+        console.log('Novo valor adicional:', idIngrediente);
+
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -441,8 +436,6 @@ enviarIngredienteBtns.forEach(btn => {
         idIngredieteInput.name = 'id_ingredi[]';
         idIngredieteInput.value = idIngrediente;
 
-        console.log(idIngredieteInput)
-
         const nomeIngredieteInput = document.createElement('input');
         nomeIngredieteInput.type = 'hidden';
         nomeIngredieteInput.name = 'add_ingredi[]';
@@ -481,7 +474,8 @@ const removerIngredienteBtns = document.querySelectorAll('.removerIngredienteBtn
 removerIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
-        idIngrediente = idLanche
+        idIngrediente = proximoValor
+        console.log('Novo valor -ingrediente:', idIngrediente);
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -580,8 +574,6 @@ removerIngredienteBtns.forEach(btn => {
         idIngredieteInput.type = 'hidden';
         idIngredieteInput.name = 'id_ingredi[]';
         idIngredieteInput.value = idIngrediente;
-
-        console.log(idIngredieteInput)
 
         const nomeIngredieteInput = document.createElement('input');
         nomeIngredieteInput.type = 'hidden';

@@ -44,7 +44,8 @@
                                 <input type="text" value="{{ editar.valor_adicional }}" class="valor_pedido" name="valor_adicional" id="valor_adicional">
                             </td>
                             <td class="apagarPedidoTd">
-                                <a class="apagarPedido" href="{{url('excluir/' ~ editar.chave)}}">
+                                <a class="apagarPedido" href="{{url('atualizar/' ~ editar.chave)}}">
+                                    <input type="hidden" name="apagar" id="apagar">
                                     <button  style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
                                         <i class="fa-solid fa-trash" style="color: white;"></i>
                                     </button>                     

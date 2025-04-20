@@ -7,7 +7,6 @@ window.onload = function() {
     const valorIngredi = document.getElementById('valor_adicional');
 
     let totalInicial = total.value - valorIngredi.value
-    console.log(totalInicial)
 
     botoesAdicionarAdicionais.forEach(function(botao) {
       botao.addEventListener('click', function() {
@@ -16,8 +15,6 @@ window.onload = function() {
           const preco = linha.querySelector('input[name="valorIngrediente"]').value; 
 
           novoTotal.value = Number(totalInicial) + Number(preco);
-
-          console.log(novoTotal)
           
           document.getElementById('nome_adicional').value = "+ "+ adicional;
           document.getElementById('valor_adicional').value = preco; 
@@ -33,7 +30,9 @@ window.onload = function() {
       botao.addEventListener('click', function() {
           const linha = botao.closest('tr');   
           const adicional = linha.querySelector('input[name="nomeIngrediente"]').value; 
-          const preco = 0   
+          const preco = 0  
+          
+          novoTotal.value = totalInicial;
           
           document.getElementById('nome_adicional').value = "- "+ adicional;
           document.getElementById('valor_adicional').value = preco; 
@@ -46,23 +45,25 @@ window.onload = function() {
 
     apagarPedidos.forEach(apagarPedido => {
         apagarPedido.addEventListener('click', (event) => {
-        event.preventDefault(); 
-
-        Swal.fire({
-            title: 'Apagar?',
-            text: 'Deseja apagar este lanche?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Sim',
-            cancelButtonText: 'Não',
-            reverseButtons: true
-        }).then((result) => {
-            if (result.isConfirmed) {
-            window.location.href = apagarPedido.getAttribute('href');
-            } else {
-            console.log('Cancelado');
-            }
-        });
+            event.preventDefault();
+    
+            Swal.fire({
+                title: 'Apagar?',
+                text: 'Deseja apagar este lanche?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim',
+                cancelButtonText: 'Não',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    novoTotal.value = totalInicial;
+                    document.getElementById('apagar').value = 'preenchido';
+                    document.getElementById('pedidos').submit();
+                } else {
+                    console.log('Cancelado');
+                }
+            });
         });
     });
 

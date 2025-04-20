@@ -76,7 +76,6 @@
   {% set mesa_anterior = pedido.mesa %}
   {% endif %}
 
-  {% if pedido.nome_lanche or pedido.nome_bebida %}
   <table style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;" class="tablePedido"
     data-mesa="{{ pedido.mesa }}">
     <thead>
@@ -167,7 +166,6 @@
       </tr>
     </tbody>
   </table>
-  {% endif %}
   {% endif %}
   {% endfor %}
   </div>

@@ -28,14 +28,14 @@ class SiteControlador extends Controlador
 
     public function comanda(): void
     {
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida");
-        $total = (new ComandaModelo())->ler("total", "total");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
+        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('comanda.html', [
             'titulo' => 'Sistema_Food',
@@ -53,13 +53,13 @@ class SiteControlador extends Controlador
 
     public function adicionar(): void
     {
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id");
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
-        $pedido = (new ComandaModelo())->ler("lanches", "nome_lanche");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa");
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
+        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
 
         echo ($this->template->renderizar('adicionar.html', [
             'titulo' => 'Adicionar',
@@ -77,9 +77,9 @@ class SiteControlador extends Controlador
     public function pedidosAbertos(): void
     {
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida");
-        $total = (new ComandaModelo())->ler("total", "total");
+        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
+        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'pedidos_abertos',
@@ -94,9 +94,9 @@ class SiteControlador extends Controlador
     public function editarLanche(int $id): void
     {
         $pedidoMesa = (new ComandaModelo())->buscaPorId("lanches", $id);
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa");
-        $total = (new ComandaModelo())->ler("total", "total");
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('editarLanche.html', [
             'titulo' => 'editar_lanche',
@@ -111,8 +111,8 @@ class SiteControlador extends Controlador
     public function editarAdicional(int $chave): void
     {
         $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente");
-        $total = (new ComandaModelo())->ler("total", "total");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('editarAdicional.html', [
             'titulo' => 'editar_adicional',
@@ -126,10 +126,10 @@ class SiteControlador extends Controlador
     public function editarBebida(int $chave): void
     {
         $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa");
-        $total = (new ComandaModelo())->ler("total", "total");
+        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('editarBebida.html', [
             'titulo' => 'editar_bebida',
@@ -145,8 +145,8 @@ class SiteControlador extends Controlador
     public function busca(int $id)
     {
         $buscaId = (new ComandaModelo())->buscaPorId("cardapio_lanche", $id);
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche");
-        $ingred = (new ComandaModelo())->ler("ingredientes", "ingrediente");
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "DESC");
+        $ingred = (new ComandaModelo())->ler("ingredientes", "ingrediente", "DESC");
         $lanche_ingred = (new ComandaModelo())->lerRelacao("lanche_ingredientes", "lanche_id", $id);
 
         [
