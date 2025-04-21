@@ -62,7 +62,7 @@
   {% set cont = 0 %}
   {% endif %}
 
-  {% if ultimosTres <= 3 %} {% if pedido.nome_lanche or pedido.nome_bebida %} <!-- Verifica se há algum lanche ou bebida
+  {% if ultimosTres <= 3 %} {% if pedido.nome_lanche %} <!-- Verifica se há algum lanche ou bebida
     -->
     <table style="margin: auto; margin-bottom: 10px; width: 100%;"> <!-- Ajuste nas margens e tamanho -->
       <thead>
@@ -107,7 +107,7 @@
 
           <td style="font-weight: bolder; padding-left: 15px;">
             {% for bebida in bebidas %}
-            {% if pedido.id_lanche == bebida.id %}
+            {% if bebida.id == pedido.id_lanche %}
             {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
             {% endif %}
             {% endfor %}

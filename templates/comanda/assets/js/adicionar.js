@@ -37,16 +37,23 @@ let totalBebida = 0
 let total = 0
 let idIngrediente = 0
 let idBebida = 0
+let controleBebida = false
 
 const idIngredi = document.querySelectorAll('.idLancheTeste')
 
-let proximoValor = parseInt(idIngredi[idIngredi.length - 1].value) || 0;
+let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
+let proximoValor = parseInt(ultimoInput) || 0;
+let proximoValorBebida = parseInt(ultimoInput) || 0;
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
+        controleBebida = true
         cont += 1
         proximoValor++;
-        console.log('Novo valor lanche:', proximoValor);
+
+        console.log('====================');
+        console.log('🚀 Início dos dados:');
+        console.log('idLanche:', proximoValor);
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -150,10 +157,15 @@ enviarLancheBtns.forEach(btn => {
         nomeLancheInput.name = 'nome_lanche[]';
         nomeLancheInput.value = nomeLanche;
 
+        console.log('Nome do lanche', nomeLancheInput)
+
         const valorInput = document.createElement('input');
         valorInput.type = 'hidden';
         valorInput.name = 'valor_lanche[]';
         valorInput.value = valorLanche;
+
+        console.log('Preço do lanche', valorInput)
+        console.log('====================');
 
         const detalhesLancheInput = document.createElement('input');
         detalhesLancheInput.type = 'hidden';
@@ -183,14 +195,18 @@ enviarLancheBtns.forEach(btn => {
 const enviarBebidaBtns = document.querySelectorAll('.enviarBebida input[type="button"]');
 const listaBebidas = document.getElementById('listaBebidas');
 
+
 enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-
-        idBebida = proximoValor
-        console.log('Novo valor bebida:', idBebida);
-
+        idBebida = proximoValorBebida+=30
         cont += 1;
 
+        idBebida;
+        
+        console.log('====================');
+        console.log('🚀 Início dos dados:');
+        console.log('Novo IdBebida:', idBebida);
+        
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
 
@@ -310,6 +326,21 @@ enviarBebidaBtns.forEach(btn => {
         detalhesBebidaInput.name = 'detalhes_bebida[]';
         detalhesBebidaInput.value = detalhesBebida;
 
+        const idLancheInput = document.createElement('input');
+        idLancheInput.type = 'hidden';
+        idLancheInput.name = 'id_lanche[]';
+        idLancheInput.value = idBebida;
+
+        const nomeLancheInput = document.createElement('input');
+        nomeLancheInput.type = 'hidden';
+        nomeLancheInput.name = 'nome_lanche[]';
+        nomeLancheInput.value = " ";
+
+        const valorInput = document.createElement('input');
+        valorInput.type = 'hidden';
+        valorInput.name = 'valor_lanche[]';
+        valorInput.value = ' ';
+
         btnDiv.addEventListener("click", () => {
             const totalbebidaInput = document.createElement('input');
             totalbebidaInput.type = 'hidden';
@@ -325,6 +356,14 @@ enviarBebidaBtns.forEach(btn => {
         pedidosDiv.appendChild(tamanhoBebidaInput);
         pedidosDiv.appendChild(valorBebidaInput);
         pedidosDiv.appendChild(detalhesBebidaInput);
+
+        pedidosDiv.appendChild(idLancheInput);
+        pedidosDiv.appendChild(nomeLancheInput);
+        pedidosDiv.appendChild(valorInput);
+
+        console.log('IdLanche input: ', idLancheInput)
+        console.log('IdBebida input: ', idBebidaInput)
+        console.log('====================');       
     });
 });
 
@@ -334,7 +373,7 @@ enviarIngredienteBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         cont += 1
         idIngrediente = proximoValor
-        console.log('Novo valor adicional:', idIngrediente);
+        console.log('IdIngredi: ', idIngrediente);
 
 
         // Pega a linha relacionada ao botão

@@ -140,10 +140,12 @@
           {% set somaAdicional = somaAdicional + add.valor_adicional %}
           {% endif %}
           {% endfor %}
-    
+          
+          {% if pedido.valor_lanche != 0 %}
           <span style="font-weight: bolder; padding-left: 5px;">
             {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
           </span>
+          {% endif %}
         </td>
     
         <td style="font-weight: bolder;">
@@ -168,6 +170,12 @@
   </table>
   {% endif %}
   {% endfor %}
+  </div>
+
+  <div style="display: flex; justify-content: center; margin-bottom: 25px;">
+    <button class="btnMostrarMesas btn fs-5 btn-primary" style="font-weight: bolder; color: white;">
+      Novo Lanche
+    </button>
   </div>
 
 </body>
