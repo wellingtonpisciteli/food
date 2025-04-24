@@ -39,6 +39,20 @@ let idIngrediente = 0
 let idBebida = 0
 let controleBebida = false
 
+function getDataHoraAtual() {
+    const agora = new Date();
+
+    const ano = agora.getFullYear();
+    const mes = String(agora.getMonth() + 1).padStart(2, '0');
+    const dia = String(agora.getDate()).padStart(2, '0');
+
+    const horas = String(agora.getHours()).padStart(2, '0');
+    const minutos = String(agora.getMinutes()).padStart(2, '0');
+    const segundos = String(agora.getSeconds()).padStart(2, '0');
+
+    return `${ano}-${mes}-${dia} ${horas}:${minutos}:${segundos}`;
+}
+
 const idIngredi = document.querySelectorAll('.idLancheTeste')
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
@@ -178,7 +192,15 @@ enviarLancheBtns.forEach(btn => {
             totalInput.name = 'total[]';
             totalInput.value = total;
 
+            let hora = getDataHoraAtual()
+            
+            const horaInput = document.createElement('input');
+            horaInput.type = 'hidden';
+            horaInput.name = 'data_hora[]';
+            horaInput.value = hora;
+
             pedidosDiv.appendChild(totalInput);
+            pedidosDiv.appendChild(horaInput);
 
         })
 
@@ -349,7 +371,15 @@ enviarBebidaBtns.forEach(btn => {
             totalbebidaInput.name = 'total[]';
             totalbebidaInput.value = total;
 
+            let hora = getDataHoraAtual()
+            
+            const horaInput = document.createElement('input');
+            horaInput.type = 'hidden';
+            horaInput.name = 'data_hora[]';
+            horaInput.value = hora;
+
             pedidosDiv.appendChild(totalbebidaInput);
+            pedidosDiv.appendChild(horaInput);
         })
 
         pedidosDiv.appendChild(mesaInput);

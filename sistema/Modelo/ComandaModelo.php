@@ -59,7 +59,8 @@ class ComandaModelo
 
     public function armazenarLanche(array $dados): void
     {
-        $query = "INSERT INTO lanches (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO lanches (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, data_hora) VALUES (?, ?, ?, ?, ?, ?)";
+
         $stmt = Conexao::getInstancia()->prepare($query);
 
         if (!empty($dados['nome_lanche']) && is_array($dados['nome_lanche'])) {
@@ -68,6 +69,7 @@ class ComandaModelo
                 $nome_lanche = $dados['nome_lanche'][$index] ?? null;
                 $valor_lanche = $dados['valor_lanche'][$index] ?? null;
                 $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
+                $data_hora = $dados['data_hora'][$index] ?? null;
 
                 if (!empty($nome_lanche)) {
                     $stmt->execute([
@@ -76,6 +78,7 @@ class ComandaModelo
                         $nome_lanche,
                         $valor_lanche,
                         $detalhes_lanche,
+                        $data_hora
                     ]);
                 }
             }
@@ -224,6 +227,24 @@ class ComandaModelo
             if (!empty($total)) {
                 $stmt->execute([
                     ':novoTotal' => $total,
+                    ':mesa' => $mesa
+                ]);
+            }
+        }
+    }
+
+    public function atualizarHora(array $dados){
+        $query = "UPDATE lanches SET data_hora = :data_hora WHERE mesa = :mesa";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        foreach ($dados['mesa'] as $index => $mesa) {
+            
+            $hora = $dados['data_hora'][$index] ?? null;
+
+            if (!empty($hora)) {
+                $stmt->execute([
+                    ':data_hora' => $hora,
                     ':mesa' => $mesa
                 ]);
             }

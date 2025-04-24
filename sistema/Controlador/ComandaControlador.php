@@ -29,6 +29,8 @@ class ComandaControlador extends Controlador
             
             (new ComandaModelo())->atualizarNovoTotal($dados);
 
+            (new ComandaModelo())->atualizarHora($dados);
+
         }
 
         Helpers::redirecionar('pedidosAbertos');

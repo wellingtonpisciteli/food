@@ -30,7 +30,7 @@ class SiteControlador extends Controlador
     {
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $pedidos = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
