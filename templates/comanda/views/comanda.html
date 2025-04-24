@@ -7,17 +7,18 @@
   <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos
   </header>
 
+
   <div class="bg-light" style="height: 550px; width: 600px; margin-left: 2.5%; margin-top: 20px; margin-bottom: 20px; display: none; align-items: center; justify-content: center;">
     <h4>Ultimos Pedidos apareceram aqui...</h4>
   </div>
 
   <div id="divTable" class="bg-light table-responsive">
-    {% set mesa_anterior = None %}
+    {% set mesas_exibidas = [] %}
     {% set cont = 0 %}
     {% set ultimosTres = 0 %}
 
     {% for pedido in pedidos %}
-    {% if pedido.mesa != mesa_anterior %}
+    {% if pedido.mesa not in mesas_exibidas %}
 
     {% if cont > 0 %}
     <div class="bg-dark" style="height: 15px;"></div> <!-- Ajuste no espaçamento -->
@@ -58,7 +59,7 @@
     {% endif %}
   </div>
 
-  {% set mesa_anterior = pedido.mesa %}
+  {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
   {% set cont = 0 %}
   {% endif %}
 

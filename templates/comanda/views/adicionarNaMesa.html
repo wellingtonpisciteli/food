@@ -1,0 +1,192 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% set cont = 0 %}
+{% for num in mesa %}
+{% set cont = cont + 1 %}
+{% if cont == 1 %}
+<header class="text-center bg-dark" id="adicionarHeader">
+    <h3 class="text-white text-center">
+        Mesa: <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="number" class="fw-bolder bg-light text-center">
+    </h3>
+</header>
+{% endif %}
+
+<input type="hidden" value="{{ num.total }}" id="totalInicial" name="totalInicial">
+{% endfor %}
+
+{% for item in pedido %}
+    <input type="hidden" value="{{ item.id_lanche }}" id="idLancheNovo" class="idLancheNovo">
+{% endfor %}
+
+<div class="w-100 bg-dark" id="adicionarLanches">
+    <div class="table-responsive">
+        <table class="table" id="adicionarTabela">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light" style="width: 120px;">LANCHES</th>
+                    <th scope="col" class="text-center bg-light" style="width: 70px;">PREÇO</th>
+                    <th scope="col" class="text-center bg-light">OBS</th>
+                    <th scope="col" class="text-center bg-light" style="width: 100px;">ADD</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cardapio %}
+                <tr>
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <th class="bg-light">
+                        <span>{{ item.lanche }}</span>
+                        <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">
+                    </th>
+                    <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                        <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                        <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
+                    </td>
+                    <td class="text-center align-middle bg-light" style="width: 25%;">
+                        <input type="text" id="detalhesLanche" name="detalhesLanche" class="bg-light w-100">
+                    </td>
+                    <td class="text-center align-middle bg-light">
+                        <div class="enviarLanche">
+                            <input type="button" class="text-center text-white fw-bolder" value="+"
+                                style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <table class="table" id="adicionarTabela" style="margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light">BEBIDAS</th>
+                    <th scope="col" class="text-center bg-light">TAMANHO</th>
+                    <th scope="col" class="text-center bg-light">OBS</th>
+                    <th scope="col" class="text-center bg-light">ADD</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cardapio_bebida %}
+                <tr>
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <th class="bg-light w-25">{{ item.marca }}</th>
+                    <input type="hidden" id="bebida" name="bebida" value="{{ item.marca }}">
+                    <td class="text-center align-middle w-40 bg-light">
+                        <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
+                            {% for tamanho in tamanhoBebida %}
+                            {% if tamanho.marca_bebida_id==item.id %}
+                            <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                                {{ tamanho.tamanho }} -
+                                ${{ tamanho.valor | number_format(2, ',', '.') }}
+                            </option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td class="text-center align-middle bg-light" style="width: 10%;">
+                        <input type="text" id="detalhesBebida" name="detalhesBebida" class="bg-light w-100">
+                    </td>
+                    <td class="text-center align-middle bg-light" style="width: 25%;">
+                        <div class="enviarBebida">
+                            <input type="button" class="text-center text-white fw-bolder" value="+"
+                                style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="mt-3" style="margin-left: 2.5%;">
+            <input class="btn btn-primary fw-bolder" type="button" value="Adicionais" id="btnAbrirIngrediente"
+                style="margin-bottom: 10px;">
+        </div>
+
+        <table class="table" id="adicionarTabelaIngrediente">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light" style="width: 130px;">ADICIONAIS</th>
+                    <th scope="col" class="text-center bg-light" style="width: 200px;">PREÇO</th>
+                    <th scope="col" class="text-center bg-light" style="width: 100px;">ADD</th>
+                    <th scope="col" class="text-center bg-light" style="width: 100px;">REMOVER</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in ingredientes %}
+                <tr>
+                    <input type="hidden" id="detalhesIngrediente" name="detalhesIngrediente">
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <th class="bg-light">
+                        <span>{{ item.ingrediente }}</span>
+                        <input type="hidden" id="nomeIngrediente" name="nomeIngrediente" value="{{ item.ingrediente }}">
+                    </th>
+                    <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                        <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                        <input type="hidden" value="{{ item.valor }}" id="valorIngrediente" name="valorIngrediente">
+                    </td>
+                    <td class="text-center align-middle bg-light">
+                        <div class="enviarIngrediente">
+                            <input type="button" class="text-center text-white fw-bolder" value="+"
+                                style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle bg-light" style="width: 25%;">
+                        <div class="removerIngredienteBtns">
+                            <input type="button" class="text-center text-white fw-bolder" value="-"
+                                style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 id="comandaMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+            Comanda:
+        </h3>
+
+        <table>
+            <form action="{{ url('cadastrar') }}" method="post" class="bg-light" id="pedidos">
+                <table class="table" id="tabelaPedidos">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">LANCHES</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                            <th scope="col" class="text-center bg-light">OBS</th>
+                            <th scope="col" class="text-center bg-light">EDITAR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaPedidos">
+                        <!-- Os itens serão adicionados aqui dinamicamente -->
+                    </tbody>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="bg-light">BEBIDAS</th>
+                            <th scope="col" class="text-center bg-light">PREÇO</th>
+                            <th scope="col" class="text-center bg-light">OBS</th>
+                            <th scope="col" class="text-center bg-light">EDITAR</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaBebidas">
+                        <!-- Os itens serão adicionados aqui dinamicamente -->
+                    </tbody>
+                </table>
+
+                <h3 id="totalMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+                    Total:
+                </h3>
+                <div class="text-center mt-3">
+                    <input class="btn btn-primary" type="submit" value="Enviar" id="btnDiv"
+                        style="margin-bottom: 25px;">
+                    <input class="btn btn-danger" type="button" value="Cancelar" id="btnDivCancelar"
+                        style="margin-bottom: 25px;">
+                </div>
+            </form>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url('/templates/comanda/assets/js/adicionarNaMesa.js') }}" defer></script>
+
+
+{% endblock %}

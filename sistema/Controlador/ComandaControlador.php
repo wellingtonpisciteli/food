@@ -18,6 +18,7 @@ class ComandaControlador extends Controlador
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            
             (new ComandaModelo())->armazenarLanche($dados);
 
             (new ComandaModelo())->armazenarAdicional($dados);
@@ -25,9 +26,12 @@ class ComandaControlador extends Controlador
             (new ComandaModelo())->armazenarBebida($dados);
 
             (new ComandaModelo())->armazenarTotal($dados);
+            
+            (new ComandaModelo())->atualizarNovoTotal($dados);
+
         }
 
-        Helpers::redirecionar('adicionar');
+        Helpers::redirecionar('pedidosAbertos');
     }
 
 

@@ -18,6 +18,7 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarBebida/{chave}', 'SiteControlador@editarBebida');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarNaMesa/{mesa}', 'SiteControlador@adicionarNaMesa');
 
     SimpleRouter::get(URL_SITE . '404', 'SiteControlador@erro404');
 

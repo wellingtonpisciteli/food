@@ -30,7 +30,7 @@ class Template{
     private function helpers():void{
         array(
             $this->twig->addFunction(
-                new \Twig\TwigFunction('url', function(string $url=null){
+                new \Twig\TwigFunction('url', function(?string $url=null){
                     return Helpers::url($url);
                 })
             ),

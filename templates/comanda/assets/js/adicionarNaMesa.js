@@ -1,27 +1,11 @@
-const numMesaInput = document.getElementById('nummesa'); // Campo principal da mesa
-const mesaInputs = document.querySelectorAll('input[name="mesa_pedido"]');
-const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
+const totalInicial = document.getElementById("totalInicial")
+const novoTotal = document.getElementById('novoTotal');
 
-// Atualiza o valor de todos os campos "mesa_pedido" ao digitar no campo "nummesa"
-if (numMesaInput) {
-    numMesaInput.addEventListener('input', () => {
-        controleMesa.forEach(num => {
-            if (numMesaInput.value == num.value) {
-                Swal.fire({
-                    title: 'Mesa inválida',
-                    text: 'Escolha outro número',
-                    icon: 'info',
-                    confirmButtonText: 'OK'
-                });
-            }
-        })
-    });
-}
+console.log(totalInicial.value)
 
+const numMesaInput = document.getElementById('nummesa'); 
 
-// Captura o botão para adicionar um lanche
 const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="button"]');
-
 
 const pedidosDiv = document.getElementById('pedidos');
 const listaPedidos = document.getElementById('listaPedidos');
@@ -39,7 +23,7 @@ let idIngrediente = 0
 let idBebida = 0
 let controleBebida = false
 
-const idIngredi = document.querySelectorAll('.idLancheTeste')
+const idIngredi = document.querySelectorAll('.idLancheNovo')
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
 let proximoValor = parseInt(ultimoInput) || 0;
@@ -147,6 +131,8 @@ enviarLancheBtns.forEach(btn => {
         mesaInput.name = 'mesa[]';
         mesaInput.value = mesaPedido;
 
+        console.log('mesa', mesaInput)
+
         const idLancheInput = document.createElement('input');
         idLancheInput.type = 'hidden';
         idLancheInput.name = 'id_lanche[]';
@@ -175,14 +161,12 @@ enviarLancheBtns.forEach(btn => {
         btnDiv.addEventListener("click", () => {
             const totalInput = document.createElement('input');
             totalInput.type = 'hidden';
-            totalInput.name = 'total[]';
-            totalInput.value = total;
+            totalInput.name = 'novoTotal[]';
+            totalInput.value = total + parseFloat(totalInicial.value);
 
             pedidosDiv.appendChild(totalInput);
 
         })
-
-        console.log(total)
 
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idLancheInput);
@@ -346,8 +330,8 @@ enviarBebidaBtns.forEach(btn => {
         btnDiv.addEventListener("click", () => {
             const totalbebidaInput = document.createElement('input');
             totalbebidaInput.type = 'hidden';
-            totalbebidaInput.name = 'total[]';
-            totalbebidaInput.value = total;
+            totalbebidaInput.name = 'novoTotal[]';
+            totalbebidaInput.value = total + parseFloat(totalInicial.value);
 
             pedidosDiv.appendChild(totalbebidaInput);
         })
@@ -490,8 +474,8 @@ enviarIngredienteBtns.forEach(btn => {
         btnDiv.addEventListener("click", () => {
             const totalInput = document.createElement('input');
             totalInput.type = 'hidden';
-            totalInput.name = 'total[]';
-            totalInput.value = total;
+            totalInput.name = 'novoTotal[]';
+            totalInput.value = total + parseFloat(totalInicial.value);
 
             pedidosDiv.appendChild(totalInput);
 
@@ -629,8 +613,8 @@ removerIngredienteBtns.forEach(btn => {
         btnDiv.addEventListener("click", () => {
             const totalInput = document.createElement('input');
             totalInput.type = 'hidden';
-            totalInput.name = 'total[]';
-            totalInput.value = total;
+            totalInput.name = 'novoTotal[]';
+            totalInput.value = total + parseFloat(totalInicial.value);
 
             pedidosDiv.appendChild(totalInput);
 

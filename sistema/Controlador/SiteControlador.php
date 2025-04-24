@@ -30,7 +30,7 @@ class SiteControlador extends Controlador
     {
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
+        $pedidos = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
@@ -87,6 +87,28 @@ class SiteControlador extends Controlador
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
             'total' => $total
+        ]));
+    }
+
+    public function adicionarNaMesa(int $mesa): void
+    {
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
+        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
+
+        echo ($this->template->renderizar('adicionarNaMesa.html', [
+            'titulo' => 'Adicionar',
+            'cardapio' => $cardapio,
+            'cardapio_bebida' => $cardapio_bebida,
+            'tamanhoBebida' => $tamanho_bebida,
+            'ingred' => $ingred,
+            'pedido' => $pedido,
+            'ingredientes' => $ingredi,
+            'mesa' => $mesa
         ]));
     }
 

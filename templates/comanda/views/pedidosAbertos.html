@@ -13,44 +13,49 @@
     </button>
   </div>
 
+  {% set mesas_exibidas = [] %}
+
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
-    {% if pedido.status == 1 %}
-    {% if pedido.mesa != mesa_anterior %}
-    <button class="btnAbrirAberto btn fs-5 btn-success" style="font-weight: bolder; color: white;"
-      data-mesa="{{ pedido.mesa }}">
-      {% if pedido.mesa < 10 %} MESA: <span style="color: chartreuse; font-weight: bolder;"> 0{{ pedido.mesa }}</span>
-        {% else %}
-        MESA: <span style="color: chartreuse; font-weight: bolder;"> {{ pedido.mesa }}</span>
-        {% endif %}
-    </button>
-    {% set mesa_anterior = pedido.mesa %}
-    {% set cont = 0 %}
-    {% endif %}
-    {% endif %}
+      {% if pedido.status == 1 and pedido.mesa not in mesas_exibidas %}
+        <button class="btnAbrirAberto btn fs-5 btn-success" style="font-weight: bolder; color: white;"
+          data-mesa="{{ pedido.mesa }}">
+          MESA:
+          <span style="color: chartreuse; font-weight: bolder;">
+            {% if pedido.mesa < 10 %}
+              0{{ pedido.mesa }}
+            {% else %}
+              {{ pedido.mesa }}
+            {% endif %}
+          </span>
+        </button>
+        {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
+      {% endif %}
     {% endfor %}
   </div>
 
   <div class="bg-light table-responsive"
     style="width: 100%; margin-top: 20px; justify-content: center; padding: 10px; margin-bottom: 20px;">
     
-    {% set mesa_anterior = None %}
+    {% set mesas_exibidas = [] %}
+
     {% set cont = 0 %}
 
     {% for pedido in pedidos %}
     {% if pedido.status == 1 %}
-    {% if pedido.mesa != mesa_anterior %}
+    {% if pedido.mesa not in mesas_exibidas %}
     <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
       <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">
+        
         {% if pedido.mesa < 10 %} <div>
           MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
-      </div>
-      {% else %}
-      <div>
-        MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
-      </div>
-      {% endif %}
+        </div>
+        {% else %}
+        <div>
+          MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
+        </div>
+        {% endif %}
 
       <div>
         STATUS: <span style="color: chartreuse;">ABERTA</span>
@@ -70,10 +75,19 @@
       <div>
         Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
       </div>
+
+      <div style="display: flex; justify-content: center; margin-bottom: 25px;">
+        <a href="{{url('adicionarNaMesa/'~ pedido.mesa)}}" id="addLanche" class="btn fs-5 btn-primary" style="font-weight: bolder; color: white;  margin-right: 5px;">
+          Adicionar
+        </a>
+        <a href="" id="excluirMesa" class="btn fs-5 btn-danger" style="font-weight: bolder; color: white; margin-left: 5px;">
+          Excluir Mesa
+        </a>
+      </div>
     </div>
   </div>
   {% set cont = 0 %}
-  {% set mesa_anterior = pedido.mesa %}
+  {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
   {% endif %}
 
   <table style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;" class="tablePedido"
@@ -172,11 +186,9 @@
   {% endfor %}
   </div>
 
-  <div style="display: flex; justify-content: center; margin-bottom: 25px;">
-    <button class="btnMostrarMesas btn fs-5 btn-primary" style="font-weight: bolder; color: white;">
-      Novo Lanche
-    </button>
-  </div>
+  {% for valor in total %}
+  
+  {% endfor %}
 
 </body>
 

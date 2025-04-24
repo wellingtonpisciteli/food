@@ -9,32 +9,32 @@ class ComandaModelo
 {
     public function ler(string $tabela, string $nome, string $param): array | object
     {
-        $querry = "SELECT * FROM {$tabela} ORDER BY {$nome} {$param} ";
-        $stmt = Conexao::getInstancia()->query($querry);
+        $query = "SELECT * FROM {$tabela} ORDER BY {$nome} {$param} ";
+        $stmt = Conexao::getInstancia()->query($query);
         $resultado = $stmt->fetchAll();
         return $resultado;
     }
 
     public function lerAdicional(string $tabela, string $nome): array | object
     {
-        $querry = "SELECT * FROM {$tabela} ORDER BY {$nome} ASC ";
-        $stmt = Conexao::getInstancia()->query($querry);
+        $query = "SELECT * FROM {$tabela} ORDER BY {$nome} ASC ";
+        $stmt = Conexao::getInstancia()->query($query);
         $resultado = $stmt->fetchAll();
         return $resultado;
     }
 
     public function buscaPorId(string $tabela, int $id): bool | object
     {
-        $querry = "SELECT * FROM {$tabela} WHERE id={$id}";
-        $stmt = Conexao::getInstancia()->query($querry);
+        $query = "SELECT * FROM {$tabela} WHERE id={$id}";
+        $stmt = Conexao::getInstancia()->query($query);
         $resultado = $stmt->fetch();
         return $resultado;
     }
 
     public function buscaPorChave(string $tabela, int $id): bool | object
     {
-        $querry = "SELECT * FROM {$tabela} WHERE chave={$id}";
-        $stmt = Conexao::getInstancia()->query($querry);
+        $query = "SELECT * FROM {$tabela} WHERE chave={$id}";
+        $stmt = Conexao::getInstancia()->query($query);
         $resultado = $stmt->fetch();
         return $resultado;
     }
@@ -42,8 +42,8 @@ class ComandaModelo
 
     public function buscaPorMesa(string $tabela, int $mesa): array
     {
-        $querry = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
-        $stmt = Conexao::getInstancia()->query($querry);
+        $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
+        $stmt = Conexao::getInstancia()->query($query);
         $resultado = $stmt->fetchAll();
         return $resultado;
     }
@@ -62,20 +62,22 @@ class ComandaModelo
         $query = "INSERT INTO lanches (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche) VALUES (?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        foreach ($dados['mesa'] as $index => $mesa) {
-            $id_lanche = $dados['id_lanche'][$index] ?? null;
-            $nome_lanche = $dados['nome_lanche'][$index] ?? null;
-            $valor_lanche = $dados['valor_lanche'][$index] ?? null;
-            $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
+        if (!empty($dados['nome_lanche']) && is_array($dados['nome_lanche'])) {
+            foreach ($dados['mesa'] as $index => $mesa) {
+                $id_lanche = $dados['id_lanche'][$index] ?? null;
+                $nome_lanche = $dados['nome_lanche'][$index] ?? null;
+                $valor_lanche = $dados['valor_lanche'][$index] ?? null;
+                $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
 
-            if (!empty($nome_lanche)) {
-                $stmt->execute([
-                    $mesa,
-                    $id_lanche,
-                    $nome_lanche,
-                    $valor_lanche,
-                    $detalhes_lanche,
-                ]);
+                if (!empty($nome_lanche)) {
+                    $stmt->execute([
+                        $mesa,
+                        $id_lanche,
+                        $nome_lanche,
+                        $valor_lanche,
+                        $detalhes_lanche,
+                    ]);
+                }
             }
         }
     }
@@ -85,17 +87,21 @@ class ComandaModelo
         $query = "INSERT INTO adicionais (id, mesa, nome_adicional, valor_adicional) VALUES (?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
-            $mesa = $adicional['mesa'][$index] ?? null;
-            $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
-            $valor_adicional = $adicional['valor_ingredi'][$index] ?? null;
+        if (!empty($adicional['id_ingredi']) && is_array($adicional['id_ingredi'])) {
+            foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
+                $mesa = $adicional['mesa'][$index] ?? null;
+                $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
+                $valor_adicional = $adicional['valor_ingredi'][$index] ?? null;
 
-            $stmt->execute([
-                $id_ingredi,
-                $mesa,
-                $add_ingredi,
-                $valor_adicional
-            ]);
+                if (!empty($id_ingredi)) {
+                    $stmt->execute([
+                        $id_ingredi,
+                        $mesa,
+                        $add_ingredi,
+                        $valor_adicional
+                    ]);
+                }
+            }
         }
     }
 
@@ -104,21 +110,23 @@ class ComandaModelo
         $query = "INSERT INTO bebidas (mesa, id, nome_bebida, tamanho_bebida, detalhes_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        foreach ($bebida['nome_bebida'] as $index => $nome_bebida) {
-            $mesa = $bebida['mesa'][$index] ?? null;
-            $idBebida = $bebida['id_bebida'][$index] ?? null;
-            $tamanho_bebida = $bebida['tamanho_bebida'][$index] ?? null;
-            $detalhes_bebida = $bebida['detalhes_bebida'][$index] ?? null;
-            $valor_bebida = $bebida['valor_bebida'][$index] ?? null;
+        if (!empty($bebida['nome_bebida']) && is_array($bebida['nome_bebida'])) {
+            foreach ($bebida['nome_bebida'] as $index => $nome_bebida) {
+                $mesa = $bebida['mesa'][$index] ?? null;
+                $idBebida = $bebida['id_bebida'][$index] ?? null;
+                $tamanho_bebida = $bebida['tamanho_bebida'][$index] ?? null;
+                $detalhes_bebida = $bebida['detalhes_bebida'][$index] ?? null;
+                $valor_bebida = $bebida['valor_bebida'][$index] ?? null;
 
-            $stmt->execute([
-                $mesa,
-                $idBebida,
-                $nome_bebida,
-                $tamanho_bebida,
-                $detalhes_bebida,
-                $valor_bebida
-            ]);
+                $stmt->execute([
+                    $mesa,
+                    $idBebida,
+                    $nome_bebida,
+                    $tamanho_bebida,
+                    $detalhes_bebida,
+                    $valor_bebida
+                ]);
+            }
         }
     }
 
@@ -201,6 +209,25 @@ class ComandaModelo
             ':novoTotal' => $novoTotal,
             ':mesa' => $mesa
         ]);
+    }
+
+    public function atualizarNovoTotal(array $dados)
+    {
+        $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+        
+        foreach ($dados['mesa'] as $index => $mesa) {
+            
+            $total = $dados['novoTotal'][$index] ?? null;
+
+            if (!empty($total)) {
+                $stmt->execute([
+                    ':novoTotal' => $total,
+                    ':mesa' => $mesa
+                ]);
+            }
+        }
     }
 
     public function apagarLanche(int $id){
