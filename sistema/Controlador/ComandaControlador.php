@@ -27,9 +27,9 @@ class ComandaControlador extends Controlador
 
             (new ComandaModelo())->armazenarTotal($dados);
             
-            (new ComandaModelo())->atualizarNovoTotal($dados);
+            (new ComandaModelo())->armazenarNovoTotal($dados);
 
-            (new ComandaModelo())->atualizarHora($dados);
+            (new ComandaModelo())->armazenarHora($dados);
 
         }
 
@@ -42,7 +42,7 @@ class ComandaControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if (!empty($dados['mesa'])) {
+            if ($dados['atualizarMesa'] == "preenchido") {
                 $dadosMesa = ['mesa' => $dados['mesa']];
                 $mesa = $dados['nummesa'];
 
@@ -50,8 +50,8 @@ class ComandaControlador extends Controlador
             }
 
             if (!empty($dados['novoTotal'])){
-                $novoTotal = $dados['novoTotal'];
-                $mesa = $dados['mesa'];
+                $novoTotal = (int)$dados['novoTotal'];
+                $mesa = (int)$dados['mesa'];
 
                 (new ComandaModelo())->atualizarTotal($novoTotal, $mesa);
             }
@@ -87,6 +87,10 @@ class ComandaControlador extends Controlador
                 (new ComandaModelo())->atualizarAdicional($dadosAdicional, $id);
             }
 
+            if (!empty($dados['add_ingredi'])) {
+                (new ComandaModelo())->armazenarAdicional($dados);
+            }
+
             if (($dados['apagar'])=='preenchido'){
                 (new ComandaControlador())->excluir($id);
             }
@@ -103,6 +107,13 @@ class ComandaControlador extends Controlador
         (new ComandaModelo())->apagarAdicional($id);
 
         (new ComandaModelo())->apagarBebida($id);
+
+        Helpers::redirecionar('pedidosAbertos');
+    }
+
+    public function excluirMesa(int $mesa)
+    {
+        (new ComandaModelo())->apagarMesa($mesa);
 
         Helpers::redirecionar('pedidosAbertos');
     }

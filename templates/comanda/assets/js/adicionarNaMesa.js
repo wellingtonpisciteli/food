@@ -600,9 +600,6 @@ removerIngredienteBtns.forEach(btn => {
             hiddenInputs.forEach(function (input) {
                 input.remove();
             });
-
-            // total -= parseFloat(valorIngrediente);
-            // totalCell.textContent = `$${total.toFixed(2)}`;
         };
 
         const obsIngredienteCell = document.createElement('td');

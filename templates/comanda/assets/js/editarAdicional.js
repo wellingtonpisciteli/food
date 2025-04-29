@@ -52,6 +52,8 @@ window.onload = function() {
                 text: 'Deseja apagar este lanche?',
                 icon: 'warning',
                 showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
                 confirmButtonText: 'Sim',
                 cancelButtonText: 'Não',
                 reverseButtons: true

@@ -3,6 +3,7 @@ const mesaComanda = document.querySelectorAll(".mesaAberta"); // Conteúdo das m
 const tablePedido = document.querySelectorAll(".tablePedido"); // Conteúdo das tabelas de pedidos
 const mesaButtonsContainer = document.getElementById("mesaButtonsContainer"); // Contêiner dos botões das mesas
 const btnMostrarMesas = document.querySelector(".btnMostrarMesas"); // Botão "Mostrar Todos"
+const botoesExcluir = document.querySelectorAll(".excluir-mesa");
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
@@ -73,4 +74,26 @@ btnMostrarMesas.addEventListener("click", function () {
         btnMostrarMesas.classList.remove("btn-danger"); // Remove a classe btn-danger
         btnMostrarMesas.classList.add("btn-primary"); // Adiciona a classe btn-primary
     }
+});
+
+botoesExcluir.forEach(botao => {
+    botao.addEventListener("click", function (e) {
+        e.preventDefault();
+        const url = this.getAttribute("data-url");
+
+        Swal.fire({
+            title: 'Tem certeza?',
+            text: "Esta ação não pode ser desfeita!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sim, excluir!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = url;
+            }
+        });
+    });
 });

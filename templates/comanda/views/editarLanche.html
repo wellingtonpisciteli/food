@@ -28,6 +28,7 @@
                 </header>
 
                 <input type="hidden" id="nummesa" name="nummesa" type="number">
+                <input type="hidden" id="atualizarMesa" name="atualizarMesa">
 
                 <table class="table" id="tabelaPedidos">
                     {% if editar.nome_lanche != "" %}
@@ -55,11 +56,6 @@
 
                             <td class="apagarPedidoTd">
                                 <a class="apagarPedido" href="{{url('atualizar/' ~ editar.id)}}">
-                                    <!-- {% for valor in total %}
-                                    {% if valor.mesa == editar.mesa %}
-                                    <input type="hidden" name="idTotal" id="idTotal" value="{{ valor.id }}">
-                                    {% endif %}
-                                    {% endfor %} -->
                                     <input type="hidden" name="apagar" id="apagar">
                                     <button  style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
                                         <i class="fa-solid fa-trash" style="color: white;"></i>
@@ -71,7 +67,7 @@
                     {% endif %}
                 </table>
 
-                <input type="hidden" name="id_lanche" value="{{ editar.id_lanche }}">
+                <input type="hidden" name="id_lanche" id="id_lanche" value="{{ editar.id_lanche }}">
                 <input type="hidden" name="total" value="{{ editar.total }}">
                 <input type="hidden" name="status" value="{{ editar.status }}">
 
@@ -85,7 +81,6 @@
         </table>
     </div>
 
-    {% if editar.nome_lanche != "" %}
     <table class="table" id="adicionarTabela">
         <thead>
             <tr>
@@ -119,7 +114,49 @@
             {% endfor %}
         </tbody>
     </table>
-    {% endif %}
+
+    <div class="mt-3" style="margin-left: 2.5%;">
+        <input class="btn btn-primary fw-bolder" type="button" value="Adicionais" id="btnAbrirIngrediente"
+        style="margin-bottom: 10px;">
+    </div>
+
+    <table class="table" id="adicionarTabelaIngrediente">
+        <thead>
+            <tr>
+                <th scope="col" class="bg-light" style="width: 130px;">ADICIONAIS</th>
+                <th scope="col" class="text-center bg-light" style="width: 200px;">PREÇO</th>
+                <th scope="col" class="text-center bg-light" style="width: 100px;">ADD</th>
+                <th scope="col" class="text-center bg-light" style="width: 100px;">REMOVER</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in ingredientes %}
+            <tr>
+                <th class="bg-light">
+                    <span>{{ item.ingrediente }}</span>
+                    <input type="hidden" id="nomeIngrediente" name="nomeIngrediente" value="{{ item.ingrediente }}">
+                </th>
+                <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                    <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                    <input type="hidden" value="{{ item.valor }}" id="valorIngrediente" name="valorIngrediente">
+                </td>
+
+                <td class="text-center align-middle bg-light">
+                    <div class="enviarIngrediente">
+                        <input type="button" class="text-center text-white fw-bolder" value="+"
+                            style="background-color: #32cd32; border-radius: 4px; border: #228b22; width: 30px;">
+                    </div>
+                </td>
+                <td class="text-center align-middle bg-light" style="width: 25%;">
+                    <div class="removerIngredienteBtns">
+                        <input type="button" class="text-center text-white fw-bolder" value="-"
+                            style="background-color: #dc3545; border-radius: 4px; border: #b02a37; width: 30px;">
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 </div>
 
 <body>

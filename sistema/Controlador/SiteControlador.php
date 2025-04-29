@@ -119,12 +119,16 @@ class SiteControlador extends Controlador
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
 
         echo ($this->template->renderizar('editarLanche.html', [
             'titulo' => 'editar_lanche',
             'editar' => $pedidoMesa,
             'cardapio' => $cardapio,
             'mesa' => $mesa,
+            'ingredientes' => $ingredi,
+            'ingred' => $ingred,
             'total' => $total
         ]));
     }

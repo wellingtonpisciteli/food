@@ -341,7 +341,7 @@ body{
 }
 
  /* Media query para telas menores */
- @media (max-width: 767px) {
+ @media (max-width: 820px) {
     .mesaAberta .button-container {
       width: 100%; /* Faz com que o botão ocupe toda a largura disponível */
       text-align: center; /* Alinha o botão ao centro */

@@ -151,6 +151,43 @@ class ComandaModelo
         }
     }
 
+    public function armazenarNovoTotal(array $dados)
+    {
+        $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+        
+        foreach ($dados['mesa'] as $index => $mesa) {
+            
+            $total = $dados['novoTotal'][$index] ?? null;
+
+            if (!empty($total)) {
+                $stmt->execute([
+                    ':novoTotal' => $total,
+                    ':mesa' => $mesa
+                ]);
+            }
+        }
+    }
+
+    public function armazenarHora(array $dados){
+        $query = "UPDATE lanches SET data_hora = :data_hora WHERE mesa = :mesa";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        foreach ($dados['mesa'] as $index => $mesa) {
+            
+            $hora = $dados['data_hora'][$index] ?? null;
+
+            if (!empty($hora)) {
+                $stmt->execute([
+                    ':data_hora' => $hora,
+                    ':mesa' => $mesa
+                ]);
+            }
+        }
+    }
+
     public function atualizarMesa(array $dados, $mesaAntiga)
     {
         $tabelas = ['lanches', 'adicionais', 'bebidas', 'total'];
@@ -214,43 +251,6 @@ class ComandaModelo
         ]);
     }
 
-    public function atualizarNovoTotal(array $dados)
-    {
-        $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
-
-        $stmt = Conexao::getInstancia()->prepare($query);
-        
-        foreach ($dados['mesa'] as $index => $mesa) {
-            
-            $total = $dados['novoTotal'][$index] ?? null;
-
-            if (!empty($total)) {
-                $stmt->execute([
-                    ':novoTotal' => $total,
-                    ':mesa' => $mesa
-                ]);
-            }
-        }
-    }
-
-    public function atualizarHora(array $dados){
-        $query = "UPDATE lanches SET data_hora = :data_hora WHERE mesa = :mesa";
-
-        $stmt = Conexao::getInstancia()->prepare($query);
-
-        foreach ($dados['mesa'] as $index => $mesa) {
-            
-            $hora = $dados['data_hora'][$index] ?? null;
-
-            if (!empty($hora)) {
-                $stmt->execute([
-                    ':data_hora' => $hora,
-                    ':mesa' => $mesa
-                ]);
-            }
-        }
-    }
-
     public function apagarLanche(int $id){
         $query = "DELETE FROM lanches WHERE id = {$id}";
 
@@ -274,4 +274,19 @@ class ComandaModelo
 
         $stmt->execute();
     }
+
+    public function apagarMesa(int $mesa)
+    {
+        $tabelas = ['lanches', 'adicionais', 'bebidas', 'total'];
+
+        foreach ($tabelas as $tabela)
+        {
+            $query = "DELETE FROM {$tabela} WHERE mesa = :mesaApagar";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                ':mesaApagar' => $mesa
+            ]);
+        } 
+    }
+
 }

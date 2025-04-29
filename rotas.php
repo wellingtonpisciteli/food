@@ -13,7 +13,7 @@ try {
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'ComandaControlador@cadastrar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'atualizar/{id}', 'ComandaControlador@atualizar');
-
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirMesa/{mesa}', 'ComandaControlador@excluirMesa');
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');
