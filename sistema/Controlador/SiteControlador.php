@@ -116,8 +116,6 @@ class SiteControlador extends Controlador
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
@@ -126,8 +124,6 @@ class SiteControlador extends Controlador
         echo ($this->template->renderizar('adicionarAdicional.html', [
             'titulo' => 'Adicionar',
             'cardapio' => $cardapio,
-            'cardapio_bebida' => $cardapio_bebida,
-            'tamanhoBebida' => $tamanho_bebida,
             'ingred' => $ingred,
             'pedido' => $pedido,
             'ingredientes' => $ingredi,
