@@ -31,6 +31,14 @@ class ComandaModelo
         return $resultado;
     }
 
+    public function buscaPorId_lanche(string $tabela, int $id): bool | object
+    {
+        $query = "SELECT * FROM {$tabela} WHERE id_lanche={$id}";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetch();
+        return $resultado;
+    }
+
     public function buscaPorChave(string $tabela, int $id): bool | object
     {
         $query = "SELECT * FROM {$tabela} WHERE chave={$id}";

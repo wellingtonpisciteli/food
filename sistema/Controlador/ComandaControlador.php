@@ -87,10 +87,6 @@ class ComandaControlador extends Controlador
                 (new ComandaModelo())->atualizarAdicional($dadosAdicional, $id);
             }
 
-            if (!empty($dados['add_ingredi'])) {
-                (new ComandaModelo())->armazenarAdicional($dados);
-            }
-
             if (($dados['apagar'])=='preenchido'){
                 (new ComandaControlador())->excluir($id);
             }

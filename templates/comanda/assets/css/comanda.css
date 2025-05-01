@@ -70,6 +70,14 @@ body{
     max-height: 1000px; /* Valor alto o suficiente para a tabela */
 }
 
+#adicionarAdicional{
+    width: 95%; 
+    margin: auto; 
+    margin-bottom: 10px;
+    margin-top: 10px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+}
+
 #adicionarTabelaHome{
     width: 100%; 
     margin: auto; 

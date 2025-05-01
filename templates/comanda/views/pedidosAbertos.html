@@ -129,7 +129,7 @@
         <td style="font-weight: bolder;">
           {% if pedido.nome_lanche != "" %}
           <span>
-            <a href="{{url('editarLanche/'~pedido.id)}}" style="text-decoration: none;  color: inherit;">{{ pedido.nome_lanche }}</i></a>
+            <a href="{{url('editarLanche/'~pedido.id)}}" style="text-decoration: none;  color: inherit;">{{ pedido.nome_lanche }}</i></a> <br>
           </span>
 
           {% for add in adicional %}
@@ -147,6 +147,12 @@
           </div>
           {% endif %}
           {% endfor %}
+          {% endif %}
+
+          {% if pedido.nome_lanche != " " %}
+            <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" id="addLanche" class="primary">
+              <i class="fa-solid fa-square-plus"></i>
+            </a>
           {% endif %}
         </td>
     

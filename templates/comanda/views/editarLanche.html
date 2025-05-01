@@ -19,7 +19,7 @@
                 {% endif %}
                 {% endfor %}
 
-                <input type="hidden" id="novoTotal" name="novoTotal" type="number">
+                <input type="hidden" id="novoTotal" name="novoTotal" value="0">
 
                 <header class="text-center bg-dark" id="adicionarHeader">
                     <h3 class="text-white text-center">
@@ -68,7 +68,6 @@
                 </table>
 
                 <input type="hidden" name="id_lanche" id="id_lanche" value="{{ editar.id_lanche }}">
-                <input type="hidden" name="total" value="{{ editar.total }}">
                 <input type="hidden" name="status" value="{{ editar.status }}">
 
                 <div class="text-center mt-3">
