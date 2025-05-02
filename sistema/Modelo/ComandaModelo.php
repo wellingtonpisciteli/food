@@ -259,12 +259,18 @@ class ComandaModelo
         ]);
     }
 
-    public function apagarLanche(int $id){
+    public function apagarLanche(int $id, $idApagarAdicional){
         $query = "DELETE FROM lanches WHERE id = {$id}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
         $stmt->execute();
+
+        $query2 = "DELETE FROM adicionais WHERE id = {$idApagarAdicional}";
+
+        $stmt2 = Conexao::getInstancia()->prepare($query2);
+
+        $stmt2->execute();
     }
 
     public function apagarAdicional(int $chave){
@@ -275,12 +281,18 @@ class ComandaModelo
         $stmt->execute();
     }
 
-    public function apagarBebida(int $chave){
+    public function apagarBebida(int $chave, int $idApagar){
         $query = "DELETE FROM bebidas WHERE chave = {$chave}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
         $stmt->execute();
+
+        $query2 = "DELETE FROM lanches WHERE id_lanche = {$idApagar}";
+
+        $stmt2 = Conexao::getInstancia()->prepare($query2);
+
+        $stmt2->execute();
     }
 
     public function apagarMesa(int $mesa)
