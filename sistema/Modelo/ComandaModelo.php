@@ -71,23 +71,33 @@ class ComandaModelo
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        if (!empty($dados['nome_lanche']) && is_array($dados['nome_lanche'])) {
+        if (!empty($dados['id_lanche']) && is_array($dados['id_lanche'])) {
             foreach ($dados['mesa'] as $index => $mesa) {
                 $id_lanche = $dados['id_lanche'][$index] ?? null;
-                $nome_lanche = $dados['nome_lanche'][$index] ?? null;
-                $valor_lanche = $dados['valor_lanche'][$index] ?? null;
+                $data_hora = $dados['data_hora'][$index] ?? date('Y-m-d H:i:s');
                 $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
-                $data_hora = $dados['data_hora'][$index] ?? null;
+                $id = $dados['idCardapioLanche'][$index] ?? null;
 
-                if (!empty($nome_lanche)) {
-                    $stmt->execute([
-                        $mesa,
-                        $id_lanche,
-                        $nome_lanche,
-                        $valor_lanche,
-                        $detalhes_lanche,
-                        $data_hora
-                    ]);
+                if (!empty($id_lanche)){
+                    // 🔍 Buscar os dados do lanche no cardápio
+                    $busca = $this->buscaPorId('cardapio_lanche', $id);
+                }
+                
+                // Validar se encontrou
+                if ($busca) {
+                    $nome_lanche = $busca->lanche ?? null;
+                    $valor_lanche = $busca->valor ?? null;
+
+                    if (!empty($nome_lanche)) {
+                        $stmt->execute([
+                            $mesa,
+                            $id_lanche,
+                            $nome_lanche,
+                            $valor_lanche,
+                            $detalhes_lanche,
+                            $data_hora
+                        ]);
+                    }
                 }
             }
         }
@@ -95,22 +105,31 @@ class ComandaModelo
 
     public function armazenarAdicional(array $adicional)
     {
-        $query = "INSERT INTO adicionais (id, mesa, nome_adicional, valor_adicional) VALUES (?, ?, ?, ?)";
+        $query = "INSERT INTO adicionais (id, mesa, nome_adicional, valor_adicional, tipo) VALUES (?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
         if (!empty($adicional['id_ingredi']) && is_array($adicional['id_ingredi'])) {
             foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
-                $mesa = $adicional['mesa'][$index] ?? null;
-                $add_ingredi = $adicional['add_ingredi'][$index] ?? null;
-                $valor_adicional = $adicional['valor_ingredi'][$index] ?? null;
+                $mesa = $adicional['mesa_adicional'][$index] ?? null;
+                $tipo = $adicional['tipo'][$index] ?? null;
+                $id = $adicional['idAdd'][$index] ?? null;
 
-                if (!empty($id_ingredi)) {
-                    $stmt->execute([
-                        $id_ingredi,
-                        $mesa,
-                        $add_ingredi,
-                        $valor_adicional
-                    ]);
+                // 🔍 Buscar os dados do adicional no cardápio
+                $busca = $this->buscaPorId('ingredientes', $id);
+
+                if ($busca) {
+                    $nomeAdicional = $busca->ingrediente ?? null;
+                    $valorAdicional = $busca->valor ?? null;
+
+                    if (!empty($id_ingredi)) {
+                        $stmt->execute([
+                            $id_ingredi,
+                            $mesa,
+                            $nomeAdicional,
+                            $valorAdicional,
+                            $tipo
+                        ]);
+                    }
                 }
             }
         }
@@ -121,22 +140,31 @@ class ComandaModelo
         $query = "INSERT INTO bebidas (mesa, id, nome_bebida, tamanho_bebida, detalhes_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        if (!empty($bebida['nome_bebida']) && is_array($bebida['nome_bebida'])) {
-            foreach ($bebida['nome_bebida'] as $index => $nome_bebida) {
-                $mesa = $bebida['mesa'][$index] ?? null;
+        if (!empty($bebida['mesa_bebida']) && is_array($bebida['mesa_bebida'])) {
+            foreach ($bebida['mesa_bebida'] as $index => $mesa_bebida) {
                 $idBebida = $bebida['id_bebida'][$index] ?? null;
-                $tamanho_bebida = $bebida['tamanho_bebida'][$index] ?? null;
                 $detalhes_bebida = $bebida['detalhes_bebida'][$index] ?? null;
-                $valor_bebida = $bebida['valor_bebida'][$index] ?? null;
+                $idMarca = $bebida['idMarcaBebida'][$index] ?? null;
+                $idTamanho = $bebida['idTamanhoValorBebida'][$index] ?? null;
 
-                $stmt->execute([
-                    $mesa,
-                    $idBebida,
-                    $nome_bebida,
-                    $tamanho_bebida,
-                    $detalhes_bebida,
-                    $valor_bebida
-                ]);
+                // 🔍 Buscar os dados da bebida no cardápio
+                $buscaMarca = $this->buscaPorId('marcas_bebida', $idMarca);
+                $buscaTamanho = $this->buscaPorId('tamanho_bebida', $idTamanho);
+
+                if ($buscaMarca) {
+                    $nomeBebida = $buscaMarca->marca ?? null;
+                    $tamanhoBebida = $buscaTamanho->tamanho ?? null;
+                    $valorBebida = $buscaTamanho->valor ?? null;
+
+                    $stmt->execute([
+                        $mesa_bebida,
+                        $idBebida,
+                        $nomeBebida,
+                        $tamanhoBebida,
+                        $detalhes_bebida,
+                        $valorBebida
+                    ]);
+                }
             }
         }
     }

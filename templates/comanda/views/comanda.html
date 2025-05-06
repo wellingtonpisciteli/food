@@ -96,10 +96,10 @@
             {% for add in adicional %}
             {% if pedido.id_lanche == add.id %}
             <div style="margin-top: 5px; margin-left: 5px;">
-              {% if add.nome_adicional starts with '+' %}
-              <span style="color: green; font-weight: bolder;">{{ add.nome_adicional }}</span>
-              {% elseif add.nome_adicional starts with '-' %}
-              <span style="color: red; font-weight: bolder;">{{ add.nome_adicional }}</span>
+              {% if add.tipo == '+' %}
+              <span style="color: green; font-weight: bolder;">+{{ add.nome_adicional }}</span>
+              {% elseif add.tipo == '-' %}
+              <span style="color: red; font-weight: bolder;">-{{ add.nome_adicional }}</span>
               {% endif %}
             </div>
             {% endif %}
@@ -108,7 +108,7 @@
 
           <td style="font-weight: bolder; padding-left: 15px;">
             {% for bebida in bebidas %}
-            {% if bebida.id == pedido.id_lanche %}
+            {% if bebida.mesa == pedido.mesa %}
             {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }}
             {% endif %}
             {% endfor %}

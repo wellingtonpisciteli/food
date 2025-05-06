@@ -30,6 +30,8 @@
                 {% for item in cardapio %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
+
                     <th class="bg-light">
                         <span>{{ item.lanche }}</span>
                         <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">
@@ -65,13 +67,15 @@
                 {% for item in cardapio_bebida %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <input value="{{ item.id }}" id="idMarca" name="idMarca" type="hidden">
+
                     <th class="bg-light w-25">{{ item.marca }}</th>
                     <input type="hidden" id="bebida" name="bebida" value="{{ item.marca }}">
                     <td class="text-center align-middle w-40 bg-light">
                         <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
                             {% for tamanho in tamanhoBebida %}
                             {% if tamanho.marca_bebida_id==item.id %}
-                            <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                            <option value="{{ tamanho.id }} | {{ tamanho.valor }}|{{ tamanho.tamanho }}">
                                 {{ tamanho.tamanho }} -
                                 ${{ tamanho.valor | number_format(2, ',', '.') }}
                             </option>
@@ -111,7 +115,9 @@
                 {% for item in ingredientes %}
                 <tr>
                     <input type="hidden" id="detalhesIngrediente" name="detalhesIngrediente">
-                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden">
+                    <input value="{{ item.id }}" id="idAdicional" name="idAdicional" type="hidden">
+                    
                     <th class="bg-light">
                         <span>{{ item.ingrediente }}</span>
                         <input type="hidden" id="nomeIngrediente" name="nomeIngrediente" value="{{ item.ingrediente }}">

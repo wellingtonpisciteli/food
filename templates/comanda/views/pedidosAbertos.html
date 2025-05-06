@@ -135,13 +135,13 @@
           {% for add in adicional %}
           {% if pedido.id_lanche == add.id %}
           <div style="margin-top: 5px">
-            {% if add.nome_adicional starts with '+' %}
+            {% if add.tipo == '+' %}
             <span style="color: green; font-weight: bolder;">
-              <a href="{{url('editarAdicional/'~add.chave)}}" style="text-decoration: none;  color: inherit;">{{ add.nome_adicional }}</a>
+              <a href="{{url('editarAdicional/'~add.chave)}}" style="text-decoration: none;  color: inherit;">+{{ add.nome_adicional }}</a>
             </span>        
-            {% elseif add.nome_adicional starts with '-' %}
+            {% elseif add.tipo == '-' %}
             <span style="color: red; font-weight: bolder;">
-              <a href="{{url('editarAdicional/'~add.chave)}}" style="text-decoration: none;  color: inherit;">{{ add.nome_adicional }}</a>
+              <a href="{{url('editarAdicional/'~add.chave)}}" style="text-decoration: none;  color: inherit;">-{{ add.nome_adicional }}</a>
             </span>
             {% endif %}
           </div>
@@ -174,7 +174,7 @@
     
         <td style="font-weight: bolder;">
           {% for bebida in bebidas %}
-            {% if pedido.id_lanche == bebida.id %}
+            {% if pedido.mesa == bebida.mesa %}
             <a href="{{url('editarBebida/'~bebida.chave)}}" style="text-decoration: none;  color: inherit;">
               {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
             </a>
