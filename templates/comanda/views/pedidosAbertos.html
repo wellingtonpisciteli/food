@@ -14,6 +14,8 @@
   </div>
 
   {% set mesas_exibidas = [] %}
+  {% set bebidas_exibidas = [] %}
+  {% set chaves_exibidas = [] %}
 
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
@@ -127,10 +129,13 @@
     <tbody>
       <tr>
         <td style="font-weight: bolder;">
-          {% if pedido.nome_lanche != "" %}
-          <span>
-            <a href="{{url('editarLanche/'~pedido.id)}}" style="text-decoration: none;  color: inherit;">{{ pedido.nome_lanche }}</i></a> <br>
-          </span>
+          {% if pedido.nome_lanche == 'Em escolha...' %}
+              <a href="{{url('editarLanche/'~pedido.id)}}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</i></a> <br>
+            {% else %}
+            <span>
+              <a href="{{url('editarLanche/'~pedido.id)}}" style="text-decoration: none;  color: inherit;">{{ pedido.nome_lanche }}</i></a> <br>
+            </span>
+          {% endif %}
 
           {% for add in adicional %}
           {% if pedido.id_lanche == add.id %}
@@ -149,11 +154,9 @@
           {% endfor %}
           {% endif %}
 
-          {% if pedido.nome_lanche != " " %}
-            <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" id="addLanche" class="primary">
-              <i class="fa-solid fa-square-plus"></i>
-            </a>
-          {% endif %}
+          <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" id="addLanche" class="primary">
+            <i class="fa-solid fa-square-plus"></i>
+          </a>
         </td>
     
         <td>
@@ -173,26 +176,31 @@
         </td>
     
         <td style="font-weight: bolder;">
-          {% for bebida in bebidas %}
-            {% if pedido.mesa == bebida.mesa %}
-            <a href="{{url('editarBebida/'~bebida.chave)}}" style="text-decoration: none;  color: inherit;">
-              {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
-            </a>
-            {% endif %}
+            {% for bebida in bebidas %}
+              {% if bebida.mesa == pedido.mesa %}
+                {% if bebida.id not in bebidas_exibidas %}
+                  <a href="{{url('editarBebida/'~bebida.chave)}}" style="text-decoration: none;  color: inherit;">
+                    {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                  </a>
+                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
+                {% endif %}
+              {% endif %}
             {% endfor %}
         </td>
     
         <td>
           {% for bebida in bebidas %}
-            {% if pedido.id_lanche == bebida.id %}
-              <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+            {% if bebida.mesa == pedido.mesa %}
+              {% if bebida.chave not in chaves_exibidas %}
+                <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+              {% endif %}
             {% endif %}
-            {% endfor %}
+          {% endfor %}
         </td>
       </tr>
     </tbody>
   </table>
-  {% endif %}
   {% endfor %}
   </div>
 

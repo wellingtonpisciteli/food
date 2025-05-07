@@ -32,6 +32,7 @@
             </thead>
             <tbody>
                 {% for item in cardapio %}
+                {% if item.lanche != 'Em escolha...' %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
                     <th class="bg-light">
@@ -52,6 +53,7 @@
                         </div>
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>

@@ -131,7 +131,7 @@ enviarLancheBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [detalhesLancheInput, mesaInput, idLancheInput];
+            const hiddenInputs = [detalhesLancheInput, mesaInput, idLancheInput, idCardapioInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -216,8 +216,6 @@ enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         idBebida = proximoValorBebida+=30
         cont += 1;
-
-        idBebida;
         
         console.log('====================');
         console.log('🚀 Início dos dados:');
@@ -287,7 +285,7 @@ enviarBebidaBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [detalhesBebidaInput, mesaInput];
+            const hiddenInputs = [detalhesBebidaInput, mesaInput, idBebidaInput, idMarcaInput, idTamanhoInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -371,7 +369,6 @@ enviarIngredienteBtns.forEach(btn => {
         idIngrediente = proximoValor
         console.log('IdIngredi: ', idIngrediente);
 
-
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
 
@@ -435,7 +432,7 @@ enviarIngredienteBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [mesaInput, idIngredieteInput];
+            const hiddenInputs = [mesaInput, idIngredieteInput, tipoInput, idAdicionalInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -578,7 +575,7 @@ removerIngredienteBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [mesaInput, idIngredieteInput];
+            const hiddenInputs = [mesaInput, idIngredieteInput, tipoInput, idAdicionalInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -644,6 +641,16 @@ btnDiv.addEventListener("click", (e) => {
         Swal.fire({
             title: 'Comanda Vazia!',
             text: 'Selecione um item do cárdapio.',
+            icon: 'info',
+            confirmButtonText: 'OK'
+        });
+    }
+
+    if (controleBebida == false) {
+        e.preventDefault()
+        Swal.fire({
+            title: 'Lanche em escolha?',
+            text: 'Selecione "Em ecolha..."',
             icon: 'info',
             confirmButtonText: 'OK'
         });

@@ -14,6 +14,7 @@
 
   <div id="divTable" class="bg-light table-responsive">
     {% set mesas_exibidas = [] %}
+    {% set bebidas_exibidas = [] %}
     {% set cont = 0 %}
     {% set ultimosTres = 0 %}
 
@@ -29,9 +30,9 @@
     {% if ultimosTres <= 3 %} <div class="mesaComanda">
       <div>
         {% if pedido.mesa < 10 %} MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
-          {% else %}
-          MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
-          {% endif %}
+        {% else %}
+        MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
+        {% endif %}
       </div>
 
       <div>
@@ -87,30 +88,33 @@
       <tbody>
         <tr>
           <td style="font-weight: bolder;">
-            {% if pedido.nome_lanche != "" %}
-            <span style="padding-left: 5px;">{{ pedido.nome_lanche }}</span>
+            {% if pedido.nome_lanche == 'Em escolha...' %}
+              <span style="padding-left: 5px; color: gray; font-style: italic;">Em escolha...</span>
             {% else %}
-            <span style="font-weight: bolder; padding-left: 5px;">-</span>
+              <span style="padding-left: 5px;">{{ pedido.nome_lanche }}</span>
             {% endif %}
 
             {% for add in adicional %}
-            {% if pedido.id_lanche == add.id %}
-            <div style="margin-top: 5px; margin-left: 5px;">
-              {% if add.tipo == '+' %}
-              <span style="color: green; font-weight: bolder;">+{{ add.nome_adicional }}</span>
-              {% elseif add.tipo == '-' %}
-              <span style="color: red; font-weight: bolder;">-{{ add.nome_adicional }}</span>
+              {% if pedido.id_lanche == add.id %}
+                <div style="margin-top: 5px; margin-left: 5px;">
+                  {% if add.tipo == '+' %}
+                    <span style="color: green; font-weight: bolder;">+{{ add.nome_adicional }}</span>
+                  {% elseif add.tipo == '-' %}
+                    <span style="color: red; font-weight: bolder;">-{{ add.nome_adicional }}</span>
+                  {% endif %}
+                </div>
               {% endif %}
-            </div>
-            {% endif %}
             {% endfor %}
           </td>
 
           <td style="font-weight: bolder; padding-left: 15px;">
             {% for bebida in bebidas %}
-            {% if bebida.mesa == pedido.mesa %}
-            {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }}
-            {% endif %}
+              {% if bebida.mesa == pedido.mesa %}
+                {% if bebida.id not in bebidas_exibidas %}
+                  {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
+                {% endif %}
+              {% endif %}
             {% endfor %}
           </td>
         </tr>
@@ -137,8 +141,10 @@
             {% for cardapio in cardapioLanche %}
             <tbody>
               <tr>
+                {% if cardapio.lanche != 'Em escolha...' %}
                 <th class="cardapio-th-item">{{ cardapio.lanche }}</th>
                 <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
+                {% endif %}
               </tr>
             </tbody>
             {% endfor %}

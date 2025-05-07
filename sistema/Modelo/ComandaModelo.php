@@ -119,7 +119,12 @@ class ComandaModelo
 
                 if ($busca) {
                     $nomeAdicional = $busca->ingrediente ?? null;
-                    $valorAdicional = $busca->valor ?? null;
+                    
+                    if (isset($tipo) && $tipo === '-') {
+                        $valorAdicional = 0;
+                    }else{
+                        $valorAdicional = $busca->valor ?? 0;
+                    }
 
                     if (!empty($id_ingredi)) {
                         $stmt->execute([

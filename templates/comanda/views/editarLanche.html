@@ -94,6 +94,7 @@
         </thead>
         <tbody>
             {% for item in cardapio %}
+            {% if item.lanche != 'Em escolha...' %}
             <tr>
                 <th class="bg-light">
                     <span>{{ item.lanche }}</span>
@@ -113,6 +114,7 @@
                     </div>
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
         </tbody>
     </table>

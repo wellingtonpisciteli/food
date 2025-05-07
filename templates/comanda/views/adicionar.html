@@ -33,12 +33,22 @@
                     <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
 
                     <th class="bg-light">
+                        {% if item.lanche == "Em escolha..." %}
+                        <span style="color: red; font-style: italic;">{{ item.lanche }}</span>
+                        <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">
+                        {% else %}
                         <span>{{ item.lanche }}</span>
                         <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">
+                        {% endif %}
                     </th>
                     <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
-                        <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
-                        <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
+                        {% if item.lanche == "Em escolha..." %}
+                            <span style="color: red; font-style: italic;"> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                            <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
+                        {% else %}
+                            <span> ${{ item.valor | number_format(2, ',', '.') }}</span>
+                            <input type="hidden" value="{{ item.valor }}" id="valor_lanche" name="valor_lanche">
+                        {% endif %}
                     </td>
                     <td class="text-center align-middle bg-light" style="width: 25%;">
                         <input type="text" id="detalhesLanche" name="detalhesLanche" class="bg-light w-100">
