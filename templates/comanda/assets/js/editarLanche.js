@@ -53,18 +53,22 @@ window.onload = function() {
       controleTotal = true
 
       const linha = botao.closest('tr'); 
+
       const lanche = linha.querySelector('input[name="lanche"]').value; 
       const preco = linha.querySelector('input[name="valor_lanche"]').value; 
       const detalhes = linha.querySelector('input[name="detalhesLanche"]').value;
+      const idCardapio = linha.querySelector('input[name="idCardapio"]').value;
+
+      console.log(idCardapio)
       
       precoLanche = Number(preco)
       
       novoTotal.value = Number(totalInicial) + Number(preco) + Number(valorAdicional);
 
-      document.getElementById('nome_lanche').value = lanche;
-      document.getElementById('valor_lanche').value = preco;
+      document.getElementById('nome-lanche').innerHTML = lanche;
+      document.getElementById('valor-lanche').innerHTML = preco;
       document.getElementById('detalhes_lanche').value = detalhes;
-
+      document.getElementById('id_cardapio').value = idCardapio;
     });
   });
 

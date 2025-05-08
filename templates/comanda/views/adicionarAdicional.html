@@ -34,6 +34,8 @@
                 <tr>
                     <input type="hidden" id="detalhesIngrediente" name="detalhesIngrediente">
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <input value="{{ item.id }}" id="idAdicional" name="idAdicional" type="hidden">
+                    
                     <th class="bg-light">
                         <span>{{ item.ingrediente }}</span>
                         <input type="hidden" id="nomeIngrediente" name="nomeIngrediente" value="{{ item.ingrediente }}">

@@ -33,8 +33,11 @@
                 <input type="hidden" id="nummesa" name="nummesa" type="number">
                 <input type="hidden" id="atualizarMesa" name="atualizarMesa">
 
+                <input type="hidden" id="id_cardapio" name="id_cardapio">
+                <input type="hidden" name="id_lanche" id="id_lanche" value="{{ editar.id_lanche }}">
+                <input type="hidden" name="status" value="{{ editar.status }}">
+
                 <table class="table" id="tabelaPedidos">
-                    {% if editar.nome_lanche != "" %}
                     <thead>
                         <tr>
                             <th scope="col" class="bg-light">LANCHE</th>
@@ -47,14 +50,19 @@
                     <tbody id="listaPedidos">
                         <tr>
                             <td class="nome_pedidoTd">
-                                <input value="{{ editar.nome_lanche }}" type="text" class="nome_pedido" name="nome_lanche" id="nome_lanche" style="font-weight: bolder;">
+                                <div contenteditable="true" id="nome-lanche" style="font-weight: bolder;">
+                                    {{ editar.nome_lanche }}
+                                </div>
                             </td>
-                    
+                            
                             <td class="detalhes_pedidoTd">
-                                <input value="{{ editar.detalhes_lanche }}" type="text" class="detalhes_pedido" name="detalhes_lanche" id="detalhes_lanche">
+                                <input type="text" class="detalhes_pedidoTd" name="detalhes_lanche" id="detalhes_lanche" value="{{ editar.detalhes_lanche }}">
                             </td>
+                            
                             <td class="valor_pedidoTd">
-                                <input value="{{ editar.valor_lanche }}" type="text" name="valor_lanche" class="valor_pedido" id="valor_lanche">
+                                <div contenteditable="true" id="valor-lanche" style="font-weight: bolder;">
+                                    {{ editar.valor_lanche }}
+                                </div>
                             </td>
 
                             <td class="apagarPedidoTd">
@@ -67,11 +75,7 @@
                             </td>
                         </tr>
                     </tbody>
-                    {% endif %}
                 </table>
-
-                <input type="hidden" name="id_lanche" id="id_lanche" value="{{ editar.id_lanche }}">
-                <input type="hidden" name="status" value="{{ editar.status }}">
 
                 <div class="text-center mt-3">
                     <input class="btn btn-primary" type="submit" value="Enviar"
@@ -96,6 +100,8 @@
             {% for item in cardapio %}
             {% if item.lanche != 'Em escolha...' %}
             <tr>
+                <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
+                
                 <th class="bg-light">
                     <span>{{ item.lanche }}</span>
                     <input type="hidden" id="lanche" name="lanche" value="{{ item.lanche }}">

@@ -251,7 +251,7 @@ enviarBebidaBtns.forEach(btn => {
 
         const nomeBebidaCell = document.createElement('th');
         nomeBebidaCell.className = 'bg-light text-primary';
-        nomeBebidaCell.textContent = `${nomeBebida} (${tamanhoBebida})`; // Exibe o nome e o tamanho
+        nomeBebidaCell.textContent = `${nomeBebida} (${tamanhoBebida})`;
         row.appendChild(nomeBebidaCell);
 
         const valorBebidaCell = document.createElement('td');

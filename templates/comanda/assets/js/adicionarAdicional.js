@@ -50,6 +50,7 @@ enviarIngredienteBtns.forEach(btn => {
         const valorIngrediente = form.querySelector('input[name="valorIngrediente"]').value;
         const detalhesIngrediente = form.querySelector('input[name="detalhesIngrediente"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
+        const idIAdicional = form.querySelector('input[name="idAdicional"]').value;
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
@@ -104,7 +105,7 @@ enviarIngredienteBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput, idIngredieteInput];
+            const hiddenInputs = [mesaInput, idIngredieteInput, tipoInput, idAdicionalInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -133,7 +134,7 @@ enviarIngredienteBtns.forEach(btn => {
         // Cria inputs ocultos para envio no formulário
         const mesaInput = document.createElement('input');
         mesaInput.type = 'hidden';
-        mesaInput.name = 'mesa[]';
+        mesaInput.name = 'mesa_adicional[]';
         mesaInput.value = mesaPedido;
 
         const idIngredieteInput = document.createElement('input');
@@ -141,21 +142,15 @@ enviarIngredienteBtns.forEach(btn => {
         idIngredieteInput.name = 'id_ingredi[]';
         idIngredieteInput.value = idIngrediente;
 
-        console.log(idIngredieteInput)
+        const tipoInput = document.createElement('input');
+        tipoInput.type = 'hidden';
+        tipoInput.name = 'tipo[]';
+        tipoInput.value = '+';
 
-        const nomeIngredieteInput = document.createElement('input');
-        nomeIngredieteInput.type = 'hidden';
-        nomeIngredieteInput.name = 'add_ingredi[]';
-        nomeIngredieteInput.value = "+ " + nomeIngrediente;
-
-        console.log(nomeIngredieteInput)
-
-        const valorIngredienteInput = document.createElement('input');
-        valorIngredienteInput.type = 'hidden';
-        valorIngredienteInput.name = 'valor_ingredi[]';
-        valorIngredienteInput.value = valorIngrediente;
-
-        console.log(valorIngredienteInput)
+        const idAdicionalInput = document.createElement('input');
+        idAdicionalInput.type = 'hidden';
+        idAdicionalInput.name = 'idAdd[]';
+        idAdicionalInput.value = idIAdicional;
 
         btnDiv.addEventListener("click", () => {
             const totalInput = document.createElement('input');
@@ -168,9 +163,9 @@ enviarIngredienteBtns.forEach(btn => {
         })
 
         pedidosDiv.appendChild(mesaInput);
-        pedidosDiv.appendChild(nomeIngredieteInput);
         pedidosDiv.appendChild(idIngredieteInput);
-        pedidosDiv.appendChild(valorIngredienteInput);
+        pedidosDiv.appendChild(tipoInput);
+        pedidosDiv.appendChild(idAdicionalInput);
     });
 });
 
@@ -190,6 +185,7 @@ removerIngredienteBtns.forEach(btn => {
         const valorIngrediente = 0;
         const detalhesIngrediente = form.querySelector('input[name="detalhesIngrediente"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
+        const idIAdicional = form.querySelector('input[name="idAdicional"]').value;
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
@@ -244,7 +240,7 @@ removerIngredienteBtns.forEach(btn => {
             row.remove(); // Remove a linha inteira do DOM
 
             // Coloca os inputs ocultos em um array
-            const hiddenInputs = [nomeIngredieteInput, valorIngredienteInput, mesaInput, idIngredieteInput];
+            const hiddenInputs = [mesaInput, idIngredieteInput, tipoInput, idAdicionalInput];
 
             // Itera sobre o array para remover os inputs
             hiddenInputs.forEach(function (input) {
@@ -269,7 +265,7 @@ removerIngredienteBtns.forEach(btn => {
         // Cria inputs ocultos para envio no formulário
         const mesaInput = document.createElement('input');
         mesaInput.type = 'hidden';
-        mesaInput.name = 'mesa[]';
+        mesaInput.name = 'mesa_adicional[]';
         mesaInput.value = mesaPedido;
 
         const idIngredieteInput = document.createElement('input');
@@ -277,15 +273,15 @@ removerIngredienteBtns.forEach(btn => {
         idIngredieteInput.name = 'id_ingredi[]';
         idIngredieteInput.value = idIngrediente;
 
-        const nomeIngredieteInput = document.createElement('input');
-        nomeIngredieteInput.type = 'hidden';
-        nomeIngredieteInput.name = 'add_ingredi[]';
-        nomeIngredieteInput.value = '- ' + nomeIngrediente;
+        const tipoInput = document.createElement('input');
+        tipoInput.type = 'hidden';
+        tipoInput.name = 'tipo[]';
+        tipoInput.value = '-';
 
-        const valorIngredienteInput = document.createElement('input');
-        valorIngredienteInput.type = 'hidden';
-        valorIngredienteInput.name = 'valor_ingredi[]';
-        valorIngredienteInput.value = valorIngrediente;
+        const idAdicionalInput = document.createElement('input');
+        idAdicionalInput.type = 'hidden';
+        idAdicionalInput.name = 'idAdd[]';
+        idAdicionalInput.value = idIAdicional;
 
         btnDiv.addEventListener("click", () => {
             const totalInput = document.createElement('input');
@@ -298,9 +294,9 @@ removerIngredienteBtns.forEach(btn => {
         })
 
         pedidosDiv.appendChild(mesaInput);
-        pedidosDiv.appendChild(nomeIngredieteInput);
         pedidosDiv.appendChild(idIngredieteInput);
-        pedidosDiv.appendChild(valorIngredienteInput);
+        pedidosDiv.appendChild(tipoInput);
+        pedidosDiv.appendChild(idAdicionalInput);
     });
 });
 

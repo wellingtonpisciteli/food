@@ -243,19 +243,35 @@ class ComandaModelo
         }
     }
 
-    public function atualizarLanche(array $dados, int $id)
+    public function atualizarLanche(array $dados, int $id, int $idCardapio)
     {
+        $dados['id'] = $id;
+
+        $dados['nome_lanche'] = null;
+        $dados['valor_lanche'] = null;
+
+        // 🔍 Buscar os dados do lanche no cardápio
+        $busca = $this->buscaPorId('cardapio_lanche', $idCardapio);
+
+        if ($busca) {
+            $dados['nome_lanche'] = $busca->lanche ?? null;
+            $dados['valor_lanche'] = $busca->valor ?? null;
+        }
+
         $query = "UPDATE lanches SET 
             id_lanche = :id_lanche, 
             nome_lanche = :nome_lanche, 
             valor_lanche = :valor_lanche, 
             detalhes_lanche = :detalhes_lanche, 
             status = :status 
-            WHERE id = :id";
+        WHERE id = :id";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        $dados['id'] = $id;
+        // echo '<pre>';
+        // print_r($stmt);
+        // echo '</pre>';
+        // die(); // Para interromper e ver o resultado
 
         $stmt->execute($dados);
     }
