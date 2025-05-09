@@ -3,24 +3,29 @@ window.onload = function() {
     const botoesAdicionarBebida = document.querySelectorAll('.enviarBebida input[type="button"]');
     const novoTotal = document.getElementById('novoTotal');
     const total = document.getElementById('total');
-    const valorBebida = document.getElementById('valor_bebida');
+    const valorBebida = document.getElementById('valor-bebida');
 
     let totalInicial = total.value - valorBebida.value
 
     botoesAdicionarBebida.forEach(function(botao) {
-    botao.addEventListener('click', function() {
-        const linha = botao.closest('tr');   
-        const bebida = linha.querySelector('input[name="bebida"]').value; 
-        const selectTamanho = linha.querySelector('select#tamanho_valor');
-        const valorTamanho = selectTamanho.value; 
-        const [preco, tamanho] = valorTamanho.split('|');
+        botao.addEventListener('click', function() {
 
-        novoTotal.value = Number(totalInicial) + Number(preco);
-        
-        document.getElementById('nome_bebida').value = bebida;
-        document.getElementById('valor_bebida').value = preco; 
-        document.getElementById('tamanho_bebida').value = tamanho; 
-    });
+            const linha = botao.closest('tr');
+
+            const bebida = linha.querySelector('input[name="bebida"]').value; 
+            const selectTamanho = linha.querySelector('select#tamanho_valor');
+            const valorTamanho = selectTamanho.value; 
+            const [idTamanhoValor, preco, tamanho] = valorTamanho.split('|');
+            const idCardapio = linha.querySelector('input[name="idCardapio"]').value;
+
+            novoTotal.value = Number(totalInicial) + Number(preco);
+            
+            document.getElementById('nome-bebida').innerHTML = bebida;
+            document.getElementById('valor-bebida').innerHTML = preco; 
+            document.getElementById('tamanho-bebida').innerHTML = tamanho; 
+            document.getElementById('idCardapio_bebida').value = idCardapio;
+            document.getElementById('idTamanhoValor').value = idTamanhoValor;
+        });
     });
 
     const apagarPedidos = document.querySelectorAll('.apagarPedido');

@@ -68,14 +68,12 @@ class ComandaControlador extends Controlador
                 (new ComandaModelo())->atualizarLanche($dadosPedido, $id, $idCardapio);
             }
             
-            if (!empty($dados['nome_bebida'])) {
-                $dadosBebida = [
-                    'nome_bebida' => $dados['nome_bebida'],
-                    'tamanho_bebida' => $dados['tamanho_bebida'],
-                    'valor_bebida' => $dados['valor_bebida']
-                ];
-    
-                (new ComandaModelo())->atualizarBebida($dadosBebida, $id);
+            if (!empty($dados['idCardapio_bebida'])) {
+
+                $idCardapio = $dados['idCardapio_bebida'];
+                $idTamanhoValor = $dados['idTamanhoValor'];
+
+                (new ComandaModelo())->atualizarBebida($id, $idCardapio, $idTamanhoValor);
             }
 
             if (!empty($dados['nome_adicional'])) {

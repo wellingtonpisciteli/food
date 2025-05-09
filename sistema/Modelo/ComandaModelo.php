@@ -286,15 +286,43 @@ class ComandaModelo
         $stmt->execute($dados);
     }
 
-    public function atualizarBebida(array $dados, int $chave)
-    {
+    public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho)
+    {  
+        $nomeBebida = null;
+        $tamanhoBebida = null;
+        $valorBebida = null;
+
+        // Buscar dados
+        $buscaMarca = $this->buscaPorId('marcas_bebida', $idCardapio);
+        $buscaTamanho = $this->buscaPorId('tamanho_bebida', $idTamanho);
+
+        if ($buscaMarca) {
+            $nomeBebida = $buscaMarca->marca ?? null;
+        }
+
+        if ($buscaTamanho) {
+            $tamanhoBebida = $buscaTamanho->tamanho ?? null;
+            $valorBebida = $buscaTamanho->valor ?? null;
+        }
+
         $query = "UPDATE bebidas SET nome_bebida = :nome_bebida,
-        tamanho_bebida = :tamanho_bebida, 
-        valor_bebida = :valor_bebida 
-        WHERE chave = {$chave}";
+            tamanho_bebida = :tamanho_bebida, 
+            valor_bebida = :valor_bebida 
+        WHERE chave = :chave";
 
         $stmt = Conexao::getInstancia()->prepare($query);
-        $stmt->execute($dados);
+
+        // echo '<pre>';
+        // print_r($stmt);
+        // echo '</pre>';
+        // die(); // Para interromper e ver o resultado
+
+        $stmt->execute([
+            ':nome_bebida' => $nomeBebida,
+            ':tamanho_bebida' => $tamanhoBebida,
+            ':valor_bebida' => $valorBebida,
+            ':chave' => $chave
+        ]);
     }
 
     public function atualizarTotal(int $novoTotal, int $mesa)

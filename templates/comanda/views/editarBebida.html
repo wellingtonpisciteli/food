@@ -27,6 +27,9 @@
                 {% endfor %}
 
                 <input type="hidden" id="novoTotal" name="novoTotal" type="number">
+
+                <input type="hidden" id="idCardapio_bebida" name="idCardapio_bebida">
+                <input type="hidden" id="idTamanhoValor" name="idTamanhoValor">
                 
                 <table class="table" id="tabelaPedidos">
                     <thead>
@@ -41,16 +44,23 @@
                     <tbody id="listaPedidos">
                         <tr>
                             <td class="nome_pedidoTd">
-                                <input value="{{ editar.nome_bebida }}" type="text" class="nome_pedido" name="nome_bebida" id="nome_bebida" style="font-weight: bolder;">
+                                <div id="nome-bebida" style="font-weight: bolder;">
+                                    {{ editar.nome_bebida }}
+                                </div>
                             </td>
                     
                             <td class="detalhes_pedidoTd">
-                                <input value="{{ editar.tamanho_bebida }}" type="text" class="detalhes_pedido" name="tamanho_bebida" id="tamanho_bebida">
+                                <div id="tamanho-bebida" style="font-weight: bolder;">
+                                    {{ editar.tamanho_bebida }}
+                                </div>
                             </td>
                     
                             <td class="valor_pedidoTd">
-                                <input value="{{ editar.valor_bebida }}" type="text" class="valor_pedido" name="valor_bebida" id="valor_bebida">
+                                <div id="valor-bebida" style="font-weight: bolder;">
+                                    {{ editar.valor_bebida }}
+                                </div>
                             </td>
+
                             <td class="apagarPedidoTd">
                                 <a class="apagarPedido" href="{{url('atualizar/' ~ editar.chave)}}">
                                     <input type="hidden" name="apagar" id="apagar">
@@ -87,11 +97,13 @@
             <tr>
                 <th class="bg-light w-25">{{ item.marca }}</th>
                 <input type="hidden" id="bebida" name="bebida" value="{{ item.marca }}">
+                <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
+                
                 <td class="text-center align-middle w-40 bg-light">
                     <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
                         {% for tamanho in tamanhoBebida %}
                         {% if tamanho.marca_bebida_id == item.id %}
-                        <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                        <option value="{{ tamanho.id }} |{{ tamanho.valor }}|{{ tamanho.tamanho }}">
                             {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
                         </option>
                         {% endif %}
