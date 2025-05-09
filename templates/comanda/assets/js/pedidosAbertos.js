@@ -97,3 +97,35 @@ botoesExcluir.forEach(botao => {
         });
     });
 });
+
+
+document.querySelectorAll('.editar-mesa').forEach(botao => {
+    botao.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        const mesaAtual = this.getAttribute('data-mesa-atual');
+
+        Swal.fire({
+            title: 'Editar Mesa',
+            html: `
+                <input type="text" id="novaMesa" class="swal2-input" placeholder="Nova mesa">
+            `,
+            showCancelButton: true,
+            confirmButtonText: 'Atualizar',
+            cancelButtonText: 'Cancelar',
+            preConfirm: () => {
+                const novaMesa = document.getElementById('novaMesa').value;
+                if (!novaMesa) {
+                    Swal.showValidationMessage('Você precisa informar a nova mesa');
+                }
+                return novaMesa;
+            }
+        }).then(result => {
+            if (result.isConfirmed) {
+                const novaMesa = result.value;
+                const url = `${mesaAtual}/${novaMesa}`;
+                window.location.href = url;
+            }
+        });
+    });
+});

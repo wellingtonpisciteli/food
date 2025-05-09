@@ -42,13 +42,6 @@ class ComandaControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if ($dados['atualizarMesa'] == "preenchido") {
-                $dadosMesa = ['mesa' => $dados['mesa']];
-                $mesa = $dados['nummesa'];
-
-                (new ComandaModelo())->atualizarMesa($dadosMesa, $mesa);
-            }
-
             if (!empty($dados['novoTotal'])){
                 $novoTotal = (int)$dados['novoTotal'];
                 $mesa = (int)$dados['mesa'];
@@ -70,19 +63,18 @@ class ComandaControlador extends Controlador
             
             if (!empty($dados['idCardapio_bebida'])) {
 
-                $idCardapio = $dados['idCardapio_bebida'];
+                $idCardapio_bebida = $dados['idCardapio_bebida'];
                 $idTamanhoValor = $dados['idTamanhoValor'];
 
-                (new ComandaModelo())->atualizarBebida($id, $idCardapio, $idTamanhoValor);
+                (new ComandaModelo())->atualizarBebida($id, $idCardapio_bebida, $idTamanhoValor);
             }
 
-            if (!empty($dados['nome_adicional'])) {
-                $dadosAdicional = [
-                    'nome_adicional' => $dados['nome_adicional'],
-                    'valor_adicional' => $dados['valor_adicional']
-                ];
-    
-                (new ComandaModelo())->atualizarAdicional($dadosAdicional, $id);
+            if (!empty($dados['idCardapio_adicional'])) {
+
+                $idCardapio_adicional = $dados['idCardapio_adicional'];
+                $tipo = $dados['tipo'];
+
+                (new ComandaModelo())->atualizarAdicional($id, $idCardapio_adicional, $tipo);
             }
 
             if (($dados['apagar'])=='preenchido'){
@@ -111,6 +103,16 @@ class ComandaControlador extends Controlador
     public function excluirMesa(int $mesa)
     {
         (new ComandaModelo())->apagarMesa($mesa);
+
+        Helpers::redirecionar('pedidosAbertos');
+    }
+
+    public function editarMesa(int $mesaAtual, int $novaMesa)
+    {
+
+        if ($novaMesa) {
+            (new ComandaModelo())->atualizarMesa($mesaAtual, $novaMesa);
+        }
 
         Helpers::redirecionar('pedidosAbertos');
     }

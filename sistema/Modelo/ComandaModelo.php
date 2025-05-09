@@ -229,16 +229,17 @@ class ComandaModelo
         }
     }
 
-    public function atualizarMesa(array $dados, $mesaAntiga)
+    public function atualizarMesa(int $mesaAtual, int $novaMesa)
     {
         $tabelas = ['lanches', 'adicionais', 'bebidas', 'total'];
 
         foreach ($tabelas as $tabela) {
-            $query = "UPDATE {$tabela} SET mesa = :mesaNova WHERE mesa = :mesaAntiga";
+            $query = "UPDATE {$tabela} SET mesa = :mesaNova WHERE mesa = :mesaAtual";
+
             $stmt = Conexao::getInstancia()->prepare($query);
             $stmt->execute([
-                ':mesaNova' => $dados['mesa'],
-                ':mesaAntiga' => $mesaAntiga
+                ':mesaNova' => $novaMesa,
+                ':mesaAtual' => $mesaAtual
             ]);
         }
     }
@@ -276,18 +277,50 @@ class ComandaModelo
         $stmt->execute($dados);
     }
 
-    public function atualizarAdicional(array $dados, int $chave)
+    public function atualizarAdicional(int $chave, int $idCardapio, string $tipo)
     {
         $query = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
-        valor_adicional = :valor_adicional 
-        WHERE chave = {$chave}";
+        valor_adicional = :valor_adicional, tipo = :tipo 
+        WHERE chave = :chave";
+
+        $nomeAdicional = null;
+        $valorAdicional = null;
+
+         // 🔍 Buscar os dados do adicional no cardápio
+        $busca = $this->buscaPorId('ingredientes', $idCardapio);
+
+        if ($busca) {
+            $nomeAdicional = $busca->ingrediente ?? null;
+            
+            if (isset($tipo) && $tipo === '-') {
+                $valorAdicional = 0;
+            }else{
+                $valorAdicional = $busca->valor ?? 0;
+            }
+        }
 
         $stmt = Conexao::getInstancia()->prepare($query);
-        $stmt->execute($dados);
+
+        // echo '<pre>';
+        // print_r($stmt);
+        // echo '</pre>';
+        // die(); // Para interromper e ver o resultado
+
+        $stmt->execute([
+            ':chave' => $chave,
+            ':nome_adicional' => $nomeAdicional,
+            ':valor_adicional' => $valorAdicional,
+            ':tipo' => $tipo
+        ]);
     }
 
     public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho)
     {  
+        $query = "UPDATE bebidas SET nome_bebida = :nome_bebida,
+            tamanho_bebida = :tamanho_bebida, 
+            valor_bebida = :valor_bebida 
+        WHERE chave = :chave";
+
         $nomeBebida = null;
         $tamanhoBebida = null;
         $valorBebida = null;
@@ -304,11 +337,6 @@ class ComandaModelo
             $tamanhoBebida = $buscaTamanho->tamanho ?? null;
             $valorBebida = $buscaTamanho->valor ?? null;
         }
-
-        $query = "UPDATE bebidas SET nome_bebida = :nome_bebida,
-            tamanho_bebida = :tamanho_bebida, 
-            valor_bebida = :valor_bebida 
-        WHERE chave = :chave";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 

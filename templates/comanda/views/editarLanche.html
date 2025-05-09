@@ -60,8 +60,8 @@
                             </td>
                             
                             <td class="valor_pedidoTd">
-                                <div id="valor-lanche" style="font-weight: bolder;">
-                                    {{ editar.valor_lanche }}
+                                <div id="valor-lanche" style="font-weight: bolder; color: blue;">
+                                    {{ editar.valor_lanche | number_format(2, ',', '.') }}
                                 </div>
                             </td>
 

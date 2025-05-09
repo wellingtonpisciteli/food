@@ -48,15 +48,25 @@
     {% if pedido.status == 1 %}
     {% if pedido.mesa not in mesas_exibidas %}
   <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
-    <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">
+    <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">   
         
         {% if pedido.mesa < 10 %} 
         <div>
-          MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+          <a href="#"
+            class="btn fs-5 btn-warning editar-mesa"
+            data-mesa-atual="{{url('editarMesa/'~ pedido.mesa)}}"
+            style="font-weight: bolder; color: white; margin-left: 5px;">
+            MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+          </a>      
         </div>
         {% else %}
         <div>
-          MESA: <span style="color: lime"> {{ pedido.mesa }}</span>
+          <a href="#"
+            class="btn fs-5 btn-warning editar-mesa"
+            data-mesa-atual="{{url('editarMesa/'~ pedido.mesa)}}"
+            style="font-weight: bolder; color: white; margin-left: 5px;">
+            MESA: <span style="color: lime">{{ pedido.mesa }}</span>
+          </a>      
         </div>
         {% endif %}
 

@@ -56,8 +56,8 @@
                             </td>
                     
                             <td class="valor_pedidoTd">
-                                <div id="valor-bebida" style="font-weight: bolder;">
-                                    {{ editar.valor_bebida }}
+                                <div id="valor-bebida" style="font-weight: bolder; color: blue;">
+                                    {{ editar.valor_bebida | number_format(2, ',', '.') }}
                                 </div>
                             </td>
 

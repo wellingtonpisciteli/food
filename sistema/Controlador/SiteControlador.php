@@ -80,12 +80,14 @@ class SiteControlador extends Controlador
         $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'pedidos_abertos',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
+            'mesa' => $mesa,
             'total' => $total
         ]));
     }

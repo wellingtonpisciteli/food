@@ -28,6 +28,9 @@
 
                 <input type="hidden" id="novoTotal" name="novoTotal" type="number">
 
+                <input type="hidden" id="idCardapio_adicional" name="idCardapio_adicional">
+                <input type="hidden" id="tipo" name="tipo">
+
                 <table class="table" id="tabelaPedidos">
                     <thead >
                         <tr>
@@ -40,12 +43,17 @@
                     <tbody id="listaPedidos">
                         <tr>
                             <td class="nome_pedidoTd">
-                                <input value="{{ editar.nome_adicional }}" type="text" class="nome_pedido" name="nome_adicional" id="nome_adicional" style="font-weight: bolder;">
+                                <div id="nome-adicional" style="font-weight: bolder;">
+                                    {{ editar.nome_adicional }}
+                                </div>
+                            </td>
+
+                            <td class="valor_pedidoTd">
+                                <div id="valor-adicional" style="font-weight: bolder; color: blue;">
+                                    {{ editar.valor_adicional | number_format(2, ',', '.') }}
+                                </div>
                             </td>
                     
-                            <td class="valor_pedidoTd">
-                                <input type="text" value="{{ editar.valor_adicional }}" class="valor_pedido" name="valor_adicional" id="valor_adicional">
-                            </td>
                             <td class="apagarPedidoTd">
                                 <a class="apagarPedido" href="{{url('atualizar/' ~ editar.chave)}}">
                                     <input type="hidden" name="apagar" id="apagar">
@@ -80,6 +88,8 @@
         <tbody>
             {% for item in ingredientes %}
             <tr>
+                <input value="{{ item.id }}" id="idAdicional" name="idAdicional" type="hidden">
+                
                 <th class="bg-light">
                     <span>{{ item.ingrediente }}</span>
                     <input type="hidden" id="nomeIngrediente" name="nomeIngrediente" value="{{ item.ingrediente }}">

@@ -21,7 +21,7 @@ window.onload = function() {
             novoTotal.value = Number(totalInicial) + Number(preco);
             
             document.getElementById('nome-bebida').innerHTML = bebida;
-            document.getElementById('valor-bebida').innerHTML = preco; 
+            document.getElementById('valor-bebida').innerHTML = preco + ",00"; 
             document.getElementById('tamanho-bebida').innerHTML = tamanho; 
             document.getElementById('idCardapio_bebida').value = idCardapio;
             document.getElementById('idTamanhoValor').value = idTamanhoValor;
