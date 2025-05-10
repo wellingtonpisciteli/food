@@ -3,11 +3,13 @@
 
 <body class="w-100 bg-dark">
 
-{% for num in mesa %}
-<input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
-{% endfor %}
-
 <div id="adicionarLanches" style="margin-bottom: 25px;">
+
+    <header class="text-center bg-dark" id="adicionarHeader">
+        <h3 class="text-white text-center fw-bolder" style="margin-top: 10px;">
+            Mesa: {{ editar.mesa }}
+        </h3>
+    </header>
 
     <div>
         <table class="table" id="adicionarTabela">
@@ -20,18 +22,8 @@
                 {% endfor %}
 
                 <input value="{{ editar.id_lanche }}" id="idApagarAdicional" name="idApagarAdicional" type="hidden">
-                <input value="0" id="idApagar" name="idApagar" type="hidden">
 
                 <input type="hidden" id="novoTotal" name="novoTotal" value="0">
-
-                <header class="text-center bg-dark" id="adicionarHeader">
-                    <h3 class="text-white text-center">
-                        Mesa: <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="number" class="fw-bolder bg-light text-center">
-                    </h3>
-                </header>
-
-                <input type="hidden" id="nummesa" name="nummesa" type="number">
-                <input type="hidden" id="atualizarMesa" name="atualizarMesa">
 
                 <input type="hidden" id="id_cardapio" name="id_cardapio">
                 <input type="hidden" name="id_lanche" id="id_lanche" value="{{ editar.id_lanche }}">

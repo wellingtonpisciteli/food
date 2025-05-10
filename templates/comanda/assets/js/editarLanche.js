@@ -1,40 +1,7 @@
 // Aguardar o carregamento completo da página
 window.onload = function() {
 
-  const nummesa = document.getElementById('nummesa');
-  const atualizarMesa = document.getElementById('atualizarMesa');
-  const mesa = document.querySelector('input[name="mesa"]')
-  const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
   const idLanche = document.getElementById('id_lanche');
-
-  nummesa.value = mesa.value
-
-  if (mesa) {
-      mesa.addEventListener('input', () => {
-        if(mesa.value == nummesa.value){
-          console.log("mesas iguais")
-        }else{
-          if (mesa.value != "") {
-            atualizarMesa.value = 'preenchido'
-            console.log(atualizarMesa.value)
-          }else{
-            atualizarMesa.value = 'naopreenchido'
-            console.log(atualizarMesa.value)
-          }
-          controleMesa.forEach(num => {
-            if (mesa.value == num.value) {
-                Swal.fire({
-                    title: 'Mesa inválida',
-                    text: 'Escolha outro número',
-                    icon: 'info',
-                    confirmButtonText: 'OK'
-                });
-            }
-          })
-        }
-      });
-  }
-  
 
   const botoesAdicionar = document.querySelectorAll('.enviarLanche input[type="button"]');
   const novoTotal = document.getElementById('novoTotal');

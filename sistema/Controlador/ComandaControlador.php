@@ -78,10 +78,9 @@ class ComandaControlador extends Controlador
             }
 
             if (($dados['apagar'])=='preenchido'){
-                $idApagarLanche = $dados['idApagar'];
                 $idApagarAdicional = $dados['idApagarAdicional'];
 
-                (new ComandaControlador())->excluir($id, $idApagarLanche, $idApagarAdicional);
+                (new ComandaControlador())->excluir($id, $idApagarAdicional);
             }
         }
 
@@ -89,13 +88,13 @@ class ComandaControlador extends Controlador
     }
     
 
-    public function excluir(int $id, int $idApagarLanche, int $idApagarAdicional)
+    public function excluir(int $id, int $idApagarAdicional)
     {   
         (new ComandaModelo())->apagarLanche($id, $idApagarAdicional);
 
         (new ComandaModelo())->apagarAdicional($id);
 
-        (new ComandaModelo())->apagarBebida($id, $idApagarLanche);
+        (new ComandaModelo())->apagarBebida($id);
 
         Helpers::redirecionar('pedidosAbertos');
     }

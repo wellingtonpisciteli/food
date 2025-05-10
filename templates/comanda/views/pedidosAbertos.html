@@ -53,20 +53,20 @@
         {% if pedido.mesa < 10 %} 
         <div>
           <a href="#"
-            class="btn fs-5 btn-warning editar-mesa"
+            class="editar-mesa"
             data-mesa-atual="{{url('editarMesa/'~ pedido.mesa)}}"
-            style="font-weight: bolder; color: white; margin-left: 5px;">
+            style="color: white; margin-left: 5px; text-decoration: none;">
             MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
           </a>      
         </div>
         {% else %}
         <div>
           <a href="#"
-            class="btn fs-5 btn-warning editar-mesa"
+            class="editar-mesa"
             data-mesa-atual="{{url('editarMesa/'~ pedido.mesa)}}"
-            style="font-weight: bolder; color: white; margin-left: 5px;">
+            style="color: white; margin-left: 5px; text-decoration: none;">
             MESA: <span style="color: lime">{{ pedido.mesa }}</span>
-          </a>      
+          </a>       
         </div>
         {% endif %}
 

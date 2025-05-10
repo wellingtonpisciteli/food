@@ -107,6 +107,7 @@ document.querySelectorAll('.editar-mesa').forEach(botao => {
 
         Swal.fire({
             title: 'Editar Mesa',
+            icon: 'question',
             html: `
                 <input type="text" id="novaMesa" class="swal2-input" placeholder="Nova mesa">
             `,

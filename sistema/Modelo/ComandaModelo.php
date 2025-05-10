@@ -386,18 +386,12 @@ class ComandaModelo
         $stmt->execute();
     }
 
-    public function apagarBebida(int $chave, int $idApagar){
+    public function apagarBebida(int $chave){
         $query = "DELETE FROM bebidas WHERE chave = {$chave}";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
         $stmt->execute();
-
-        $query2 = "DELETE FROM lanches WHERE id_lanche = {$idApagar}";
-
-        $stmt2 = Conexao::getInstancia()->prepare($query2);
-
-        $stmt2->execute();
     }
 
     public function apagarMesa(int $mesa)

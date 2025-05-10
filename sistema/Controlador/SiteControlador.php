@@ -80,14 +80,12 @@ class SiteControlador extends Controlador
         $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'pedidos_abertos',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
-            'mesa' => $mesa,
             'total' => $total
         ]));
     }
@@ -139,7 +137,6 @@ class SiteControlador extends Controlador
     {
         $pedidoMesa = (new ComandaModelo())->buscaPorId("lanches", $id);
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
@@ -148,7 +145,6 @@ class SiteControlador extends Controlador
             'titulo' => 'editar_lanche',
             'editar' => $pedidoMesa,
             'cardapio' => $cardapio,
-            'mesa' => $mesa,
             'ingredientes' => $ingredi,
             'ingred' => $ingred,
             'total' => $total
@@ -176,7 +172,6 @@ class SiteControlador extends Controlador
         $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('editarBebida.html', [
@@ -184,7 +179,6 @@ class SiteControlador extends Controlador
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
-            'mesa' => $mesa,
             'total' => $total
         ]));
     }
