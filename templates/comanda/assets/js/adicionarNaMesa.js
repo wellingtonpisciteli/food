@@ -1,8 +1,3 @@
-const totalInicial = document.getElementById("totalInicial")
-const novoTotal = document.getElementById('novoTotal');
-
-console.log(totalInicial.value)
-
 const numMesaInput = document.getElementById('nummesa'); 
 
 const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="button"]');
@@ -163,11 +158,6 @@ enviarLancheBtns.forEach(btn => {
         idCardapioInput.value = idCardapio;
 
         btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'novoTotal[]';
-            totalInput.value = total + parseFloat(totalInicial.value);
-
             let hora = getDataHoraAtual()
             
             const horaInput = document.createElement('input');
@@ -175,7 +165,6 @@ enviarLancheBtns.forEach(btn => {
             horaInput.name = 'data_hora[]';
             horaInput.value = hora;
 
-            pedidosDiv.appendChild(totalInput);
             pedidosDiv.appendChild(horaInput);
         })
 
@@ -318,12 +307,7 @@ enviarBebidaBtns.forEach(btn => {
         idTamanhoInput.name = 'idTamanhoValorBebida[]';
         idTamanhoInput.value = idTamanhoValorBebida;
 
-        btnDiv.addEventListener("click", () => {
-            const totalbebidaInput = document.createElement('input');
-            totalbebidaInput.type = 'hidden';
-            totalbebidaInput.name = 'novoTotal[]';
-            totalbebidaInput.value = total + parseFloat(totalInicial.value);
-
+        btnDiv.addEventListener("click", () => {     
             let hora = getDataHoraAtual()
 
             const horaInput = document.createElement('input');
@@ -331,7 +315,6 @@ enviarBebidaBtns.forEach(btn => {
             horaInput.name = 'data_hora[]';
             horaInput.value = hora;            
 
-            pedidosDiv.appendChild(totalbebidaInput);
             pedidosDiv.appendChild(horaInput);
         })
 
@@ -462,16 +445,6 @@ enviarIngredienteBtns.forEach(btn => {
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
 
-        btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'novoTotal[]';
-            totalInput.value = total + parseFloat(totalInicial.value);
-
-            pedidosDiv.appendChild(totalInput);
-
-        })
-
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);
         pedidosDiv.appendChild(tipoInput);
@@ -598,16 +571,6 @@ removerIngredienteBtns.forEach(btn => {
         idAdicionalInput.type = 'hidden';
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
-
-        btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'novoTotal[]';
-            totalInput.value = total + parseFloat(totalInicial.value);
-
-            pedidosDiv.appendChild(totalInput);
-
-        })
 
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);

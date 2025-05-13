@@ -180,11 +180,6 @@ enviarLancheBtns.forEach(btn => {
         console.log(idCardapio)
 
         btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'total[]';
-            totalInput.value = total;
-
             let hora = getDataHoraAtual()
             
             const horaInput = document.createElement('input');
@@ -192,7 +187,6 @@ enviarLancheBtns.forEach(btn => {
             horaInput.name = 'data_hora[]';
             horaInput.value = hora;
 
-            pedidosDiv.appendChild(totalInput);
             pedidosDiv.appendChild(horaInput);
 
         })
@@ -337,11 +331,6 @@ enviarBebidaBtns.forEach(btn => {
         idTamanhoInput.value = idTamanhoValorBebida;
         
         btnDiv.addEventListener("click", () => {
-            const totalbebidaInput = document.createElement('input');
-            totalbebidaInput.type = 'hidden';
-            totalbebidaInput.name = 'total[]';
-            totalbebidaInput.value = total;
-
             let hora = getDataHoraAtual()
             
             const horaInput = document.createElement('input');
@@ -349,7 +338,6 @@ enviarBebidaBtns.forEach(btn => {
             horaInput.name = 'data_hora[]';
             horaInput.value = hora;
 
-            pedidosDiv.appendChild(totalbebidaInput);
             pedidosDiv.appendChild(horaInput);
         })
 
@@ -480,16 +468,6 @@ enviarIngredienteBtns.forEach(btn => {
         idAdicionalInput.value = idIAdicional;
 
         console.log(idAdicionalInput)
-
-        btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'total[]';
-            totalInput.value = total;
-
-            pedidosDiv.appendChild(totalInput);
-
-        })
 
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);

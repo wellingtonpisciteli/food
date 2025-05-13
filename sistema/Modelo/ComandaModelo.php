@@ -56,6 +56,14 @@ class ComandaModelo
         return $resultado;
     }
 
+    public function buscaTotal(string $tabela, int $mesa): object
+    {
+        $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetch();
+        return $resultado;
+    }
+
     public function lerRelacao(string $tabela, string $parametro, int $id): array | object
     {
         $querry = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
@@ -176,20 +184,52 @@ class ComandaModelo
 
     public function armazenarTotal(array $dados): void
     {
+        
         $query = "INSERT INTO total (mesa, total) VALUES (?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        foreach ($dados['mesa'] as $index => $mesa) {
-            
-            $total = $dados['total'][$index] ?? null;
+        $mesa = $dados['mesa'][0] ?? null;
+        if (!$mesa) {
+            echo("Mesa não informada.");
+        }
 
-            if (!empty($total)) {
-                $stmt->execute([
-                    $mesa,
-                    $total
-                ]);
+        $total = 0;
+
+        // Lanches
+        if (!empty($dados['idCardapioLanche'])) {
+            foreach ($dados['idCardapioLanche'] as $idLanche) {
+                if (!empty($idLanche)) {
+                    $lanche = $this->buscaPorId('cardapio_lanche', $idLanche);
+                    $total += $lanche->valor ?? 0;
+                }
             }
         }
+
+        // Bebidas
+        if (!empty($dados['idTamanhoValorBebida'])) {
+            foreach ($dados['idTamanhoValorBebida'] as $idBebida) {
+                if (!empty($idBebida)) {
+                    $bebida = $this->buscaPorId('tamanho_bebida', $idBebida);
+                    $total += $bebida->valor ?? 0;
+                }
+            }
+        }
+
+        // Adicionais
+        if (!empty($dados['idAdd'])) {
+            foreach ($dados['idAdd'] as $index => $idAdicional) {
+                if (!empty($idAdicional)) {
+                    $tipo = $dados['tipo'][$index] ?? '+';
+                    $adicional = $this->buscaPorId('ingredientes', $idAdicional);
+                    $valor = ($tipo === '-') ? 0 : ($adicional->valor ?? 0);
+                    $total += $valor;
+                }
+            }
+        }
+
+
+        // Inserir total no banco
+        $stmt->execute([$mesa, $total]);
     }
 
     public function armazenarNovoTotal(array $dados)
@@ -197,18 +237,61 @@ class ComandaModelo
         $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
 
         $stmt = Conexao::getInstancia()->prepare($query);
-        
-        foreach ($dados['mesa'] as $index => $mesa) {
-            
-            $total = $dados['novoTotal'][$index] ?? null;
 
-            if (!empty($total)) {
-                $stmt->execute([
-                    ':novoTotal' => $total,
-                    ':mesa' => $mesa
-                ]);
+        $mesa = $dados['mesa'][0] ?? null;
+        if (!$mesa) {
+            echo("Mesa não informada.");
+        }
+
+        $total = 0;
+
+        // Recupera o valor atual
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $valorAtual = $buscaTotal->total ?? 0;
+    
+        // Lanches
+        if (!empty($dados['idCardapioLanche'])) {
+            foreach ($dados['idCardapioLanche'] as $idLanche) {
+                if (!empty($idLanche)) {
+                    $lanche = $this->buscaPorId('cardapio_lanche', $idLanche);
+                    $total += $lanche->valor ?? 0;
+                }
             }
         }
+
+        // Bebidas
+        if (!empty($dados['idTamanhoValorBebida'])) {
+            foreach ($dados['idTamanhoValorBebida'] as $idBebida) {
+                if (!empty($idBebida)) {
+                    $bebida = $this->buscaPorId('tamanho_bebida', $idBebida);
+                    $total += $bebida->valor ?? 0;
+                }
+            }
+        }
+
+        // Adicionais
+        if (!empty($dados['idAdd'])) {
+            foreach ($dados['idAdd'] as $index => $idAdicional) {
+                if (!empty($idAdicional)) {
+                    $tipo = $dados['tipo'][$index] ?? '+';
+                    $adicional = $this->buscaPorId('ingredientes', $idAdicional);
+                    $valor = ($tipo === '-') ? 0 : ($adicional->valor ?? 0);
+                    $total += $valor;
+                }
+            }
+        }
+
+        $teste = $total + $valorAtual;
+        
+        // echo '<pre>';
+        // print_r($teste);
+        // echo '</pre>';
+        // die(); 
+
+        $stmt->execute([
+            ':novoTotal' => $teste,
+            ':mesa' => $mesa
+        ]);
     }
 
     public function armazenarHora(array $dados){
