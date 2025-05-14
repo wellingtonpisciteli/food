@@ -165,7 +165,13 @@ enviarLancheBtns.forEach(btn => {
             horaInput.name = 'data_hora[]';
             horaInput.value = hora;
 
+            const controleTotal = document.createElement('input');
+            controleTotal.type = 'hidden';
+            controleTotal.name = 'controleTotal';
+            controleTotal.value = 'controleTotal';
+
             pedidosDiv.appendChild(horaInput);
+            pedidosDiv.appendChild(controleTotal);
         })
 
         pedidosDiv.appendChild(mesaInput);
@@ -287,6 +293,8 @@ enviarBebidaBtns.forEach(btn => {
         mesaInput.name = 'mesa_bebida[]';
         mesaInput.value = mesaPedido;
 
+        console.log(mesaInput)
+
         const idBebidaInput = document.createElement('input');
         idBebidaInput.type = 'hidden';
         idBebidaInput.name = 'id_bebida[]';
@@ -313,9 +321,15 @@ enviarBebidaBtns.forEach(btn => {
             const horaInput = document.createElement('input');
             horaInput.type = 'hidden';
             horaInput.name = 'data_hora[]';
-            horaInput.value = hora;            
+            horaInput.value = hora;   
+            
+            const controleTotal = document.createElement('input');
+            controleTotal.type = 'hidden';
+            controleTotal.name = 'controleTotal';
+            controleTotal.value = 'controleTotal';
 
             pedidosDiv.appendChild(horaInput);
+            pedidosDiv.appendChild(controleTotal);
         })
 
         pedidosDiv.appendChild(mesaInput);

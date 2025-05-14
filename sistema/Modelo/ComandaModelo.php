@@ -182,16 +182,23 @@ class ComandaModelo
         }
     }
 
-    public function armazenarTotal(array $dados): void
+    public function armazenarEatualizarTotal(array $dados): void
     {
-        
-        $query = "INSERT INTO total (mesa, total) VALUES (?, ?)";
-        $stmt = Conexao::getInstancia()->prepare($query);
+        $mesa = $dados['mesa'][0] ?? $dados['mesa_bebida'][0] ?? null;
 
-        $mesa = $dados['mesa'][0] ?? null;
-        if (!$mesa) {
-            echo("Mesa não informada.");
-        }
+        $valorAtual = 0;
+
+        if (!empty($dados['controleTotal']) && $dados['controleTotal'] === 'controleTotal') { 
+            $queryAtualizar = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+            $stmtAtualizar = Conexao::getInstancia()->prepare($queryAtualizar);
+
+            // Recupera o valor atual
+            $buscaTotal = $this->buscaTotal('total', $mesa);
+            $valorAtual = $buscaTotal->total ?? 0;
+        }else{
+            $query = "INSERT INTO total (mesa, total) VALUES (?, ?)";
+            $stmt = Conexao::getInstancia()->prepare($query);
+        }   
 
         $total = 0;
 
@@ -227,72 +234,18 @@ class ComandaModelo
             }
         }
 
+        $totalFinal = $total + $valorAtual;
 
-        // Inserir total no banco
-        $stmt->execute([$mesa, $total]);
-    }
-
-    public function armazenarNovoTotal(array $dados)
-    {
-        $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
-
-        $stmt = Conexao::getInstancia()->prepare($query);
-
-        $mesa = $dados['mesa'][0] ?? null;
-        if (!$mesa) {
-            echo("Mesa não informada.");
-        }
-
-        $total = 0;
-
-        // Recupera o valor atual
-        $buscaTotal = $this->buscaTotal('total', $mesa);
-        $valorAtual = $buscaTotal->total ?? 0;
-    
-        // Lanches
-        if (!empty($dados['idCardapioLanche'])) {
-            foreach ($dados['idCardapioLanche'] as $idLanche) {
-                if (!empty($idLanche)) {
-                    $lanche = $this->buscaPorId('cardapio_lanche', $idLanche);
-                    $total += $lanche->valor ?? 0;
-                }
-            }
-        }
-
-        // Bebidas
-        if (!empty($dados['idTamanhoValorBebida'])) {
-            foreach ($dados['idTamanhoValorBebida'] as $idBebida) {
-                if (!empty($idBebida)) {
-                    $bebida = $this->buscaPorId('tamanho_bebida', $idBebida);
-                    $total += $bebida->valor ?? 0;
-                }
-            }
-        }
-
-        // Adicionais
-        if (!empty($dados['idAdd'])) {
-            foreach ($dados['idAdd'] as $index => $idAdicional) {
-                if (!empty($idAdicional)) {
-                    $tipo = $dados['tipo'][$index] ?? '+';
-                    $adicional = $this->buscaPorId('ingredientes', $idAdicional);
-                    $valor = ($tipo === '-') ? 0 : ($adicional->valor ?? 0);
-                    $total += $valor;
-                }
-            }
-        }
-
-        $teste = $total + $valorAtual;
-        
-        // echo '<pre>';
-        // print_r($teste);
-        // echo '</pre>';
-        // die(); 
-
-        $stmt->execute([
-            ':novoTotal' => $teste,
+        if (!empty($dados['controleTotal']) && $dados['controleTotal'] === 'controleTotal') { 
+            $stmtAtualizar->execute([
+            ':novoTotal' => $totalFinal,
             ':mesa' => $mesa
-        ]);
+        ]);  
+        }else{
+            $stmt->execute([$mesa, $total]);
+        }
     }
+
 
     public function armazenarHora(array $dados){
         $query = "UPDATE lanches SET data_hora = :data_hora WHERE mesa = :mesa";
