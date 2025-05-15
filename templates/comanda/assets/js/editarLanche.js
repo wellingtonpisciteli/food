@@ -4,20 +4,12 @@ window.onload = function() {
   const idLanche = document.getElementById('id_lanche');
 
   const botoesAdicionar = document.querySelectorAll('.enviarLanche input[type="button"]');
-  const novoTotal = document.getElementById('novoTotal');
-  const total = document.getElementById('total');
-  const valorLanche = document.getElementById('valor_lanche');
 
-  let totalInicial = total.value - valorLanche.value
   let valorAdicional = 0
-  let precoLanche = 0
-  let controleTotal = false
 
-  console.log(total)
 
   botoesAdicionar.forEach(function(botao) {
     botao.addEventListener('click', function() {
-      controleTotal = true
 
       const linha = botao.closest('tr'); 
 
@@ -25,13 +17,7 @@ window.onload = function() {
       const preco = linha.querySelector('input[name="valor_lanche"]').value; 
       const detalhes = linha.querySelector('input[name="detalhesLanche"]').value;
       const idCardapio = linha.querySelector('input[name="idCardapio"]').value;
-
-      console.log(idCardapio)
       
-      precoLanche = Number(preco)
-      
-      novoTotal.value = Number(totalInicial) + Number(preco) + Number(valorAdicional);
-
       document.getElementById('nome-lanche').innerHTML = lanche;
       document.getElementById('valor-lanche').innerHTML = preco;
       document.getElementById('detalhes_lanche').value = detalhes;
@@ -55,12 +41,6 @@ window.onload = function() {
         const valorIngrediente = form.querySelector('input[name="valorIngrediente"]').value;
 
         valorAdicional += Number(valorIngrediente)
-
-        if (controleTotal == false) {
-          novoTotal.value = Number(total.value) + Number(precoLanche) + Number(valorAdicional);
-        }else{
-          novoTotal.value = Number(totalInicial) + Number(precoLanche) + Number(valorAdicional);
-        }
         
           // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
@@ -240,7 +220,6 @@ removerIngredienteBtns.forEach(btn => {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
-          novoTotal.value = totalInicial;
           document.getElementById('apagar').value = 'preenchido';
           document.getElementById('pedidos').submit();
         } else {

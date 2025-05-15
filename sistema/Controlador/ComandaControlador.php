@@ -40,13 +40,6 @@ class ComandaControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if (!empty($dados['novoTotal'])){
-                $novoTotal = (int)$dados['novoTotal'];
-                $mesa = (int)$dados['mesa'];
-
-                (new ComandaModelo())->atualizarTotal($novoTotal, $mesa);
-            }
-
             if (!empty($dados['id_cardapio'])) {
                 $dadosPedido = [
                     'id_lanche' => $dados['id_lanche'],
@@ -54,9 +47,11 @@ class ComandaControlador extends Controlador
                     'status' => $dados['status']
                 ];
 
+                $mesa = $dados['mesa'];
+
                 $idCardapio = $dados['id_cardapio'];
     
-                (new ComandaModelo())->atualizarLanche($dadosPedido, $id, $idCardapio);
+                (new ComandaModelo())->atualizarLanche($dadosPedido, $id, $idCardapio, $mesa);
             }
             
             if (!empty($dados['idCardapio_bebida'])) {
@@ -106,7 +101,6 @@ class ComandaControlador extends Controlador
 
     public function editarMesa(int $mesaAtual, int $novaMesa)
     {
-
         if ($novaMesa) {
             (new ComandaModelo())->atualizarMesa($mesaAtual, $novaMesa);
         }

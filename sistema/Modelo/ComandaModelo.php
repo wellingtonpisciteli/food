@@ -280,22 +280,22 @@ class ComandaModelo
         }
     }
 
-    public function atualizarLanche(array $dados, int $id, int $idCardapio)
+    public function atualizarLanche(array $dados, int $id, int $idCardapio, int $mesa)
     {
         $dados['id'] = $id;
+        
+        // Buscar dados do lanche atual
+        $lancheAtual = $this->buscaPorId('lanches', $id);
+        $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
 
-        $dados['nome_lanche'] = null;
-        $dados['valor_lanche'] = null;
+        // Buscar novo lanche no cardápio
+        $novoLanche = $this->buscaPorId('cardapio_lanche', $idCardapio);
 
-        // 🔍 Buscar os dados do lanche no cardápio
-        $busca = $this->buscaPorId('cardapio_lanche', $idCardapio);
+        // Atualizar dados do lanche
+        $dados['nome_lanche'] = $novoLanche->lanche ?? 'Desconhecido';
+        $dados['valor_lanche'] = $novoLanche->valor ?? 0;
 
-        if ($busca) {
-            $dados['nome_lanche'] = $busca->lanche ?? null;
-            $dados['valor_lanche'] = $busca->valor ?? null;
-        }
-
-        $query = "UPDATE lanches SET 
+        $queryLanche = "UPDATE lanches SET 
             id_lanche = :id_lanche, 
             nome_lanche = :nome_lanche, 
             valor_lanche = :valor_lanche, 
@@ -303,14 +303,21 @@ class ComandaModelo
             status = :status 
         WHERE id = :id";
 
-        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmtLanche = Conexao::getInstancia()->prepare($queryLanche);
+        $stmtLanche->execute($dados);
 
-        // echo '<pre>';
-        // print_r($stmt);
-        // echo '</pre>';
-        // die(); // Para interromper e ver o resultado
+        // Atualizar total da mesa
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
 
-        $stmt->execute($dados);
+        $totalFinal = ($totalAtual - $valorLancheAtual) + $dados['valor_lanche'];
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            ':novoTotal' => $totalFinal,
+            ':mesa' => $mesa
+        ]);
     }
 
     public function atualizarAdicional(int $chave, int $idCardapio, string $tipo)
@@ -389,16 +396,6 @@ class ComandaModelo
         ]);
     }
 
-    public function atualizarTotal(int $novoTotal, int $mesa)
-    {
-        $query = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
-
-        $stmt = Conexao::getInstancia()->prepare($query);
-        $stmt->execute([
-            ':novoTotal' => $novoTotal,
-            ':mesa' => $mesa
-        ]);
-    }
 
     public function apagarLanche(int $id, $idApagarAdicional){
         $query = "DELETE FROM lanches WHERE id = {$id}";
