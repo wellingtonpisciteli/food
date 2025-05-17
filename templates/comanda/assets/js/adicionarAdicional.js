@@ -1,9 +1,4 @@
-const totalInicial = document.getElementById("totalInicial")
-
-console.log(totalInicial.value)
-
 const numMesaInput = document.getElementById('nummesa'); 
-
 const pedidosDiv = document.getElementById('pedidos');
 const listaPedidos = document.getElementById('listaPedidos');
 const comandaMesa = document.getElementById('comandaMesa');
@@ -51,6 +46,7 @@ enviarIngredienteBtns.forEach(btn => {
         const detalhesIngrediente = form.querySelector('input[name="detalhesIngrediente"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
         const idIAdicional = form.querySelector('input[name="idAdicional"]').value;
+        console.log(mesaPedido)
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
@@ -152,14 +148,13 @@ enviarIngredienteBtns.forEach(btn => {
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
 
-        btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'novoTotal[]';
-            totalInput.value = total + parseFloat(totalInicial.value);
+        btnDiv.addEventListener("click", () => {             
+            const controleTotal = document.createElement('input');
+            controleTotal.type = 'hidden';
+            controleTotal.name = 'controleTotal';
+            controleTotal.value = 'controleTotal';
 
-            pedidosDiv.appendChild(totalInput);
-
+            pedidosDiv.appendChild(controleTotal);
         })
 
         pedidosDiv.appendChild(mesaInput);
@@ -283,14 +278,13 @@ removerIngredienteBtns.forEach(btn => {
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
 
-        btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'novoTotal[]';
-            totalInput.value = total + parseFloat(totalInicial.value);
+        btnDiv.addEventListener("click", () => {             
+            const controleTotal = document.createElement('input');
+            controleTotal.type = 'hidden';
+            controleTotal.name = 'controleTotal';
+            controleTotal.value = 'controleTotal';
 
-            pedidosDiv.appendChild(totalInput);
-
+            pedidosDiv.appendChild(controleTotal);
         })
 
         pedidosDiv.appendChild(mesaInput);

@@ -596,16 +596,6 @@ removerIngredienteBtns.forEach(btn => {
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
 
-        btnDiv.addEventListener("click", () => {
-            const totalInput = document.createElement('input');
-            totalInput.type = 'hidden';
-            totalInput.name = 'total[]';
-            totalInput.value = total;
-
-            pedidosDiv.appendChild(totalInput);
-
-        })
-
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);
         pedidosDiv.appendChild(tipoInput);

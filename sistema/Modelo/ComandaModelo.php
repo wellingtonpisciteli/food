@@ -184,7 +184,7 @@ class ComandaModelo
 
     public function armazenarEatualizarTotal(array $dados): void
     {
-        $mesa = $dados['mesa'][0] ?? $dados['mesa_bebida'][0] ?? null;
+        $mesa = $dados['mesa'][0] ?? $dados['mesa_bebida'][0] ?? $dados['mesa_adicional'][0];
 
         $valorAtual = 0;
 
@@ -283,7 +283,7 @@ class ComandaModelo
     public function atualizarLanche(array $dados, int $id, int $idCardapio, int $mesa)
     {
         $dados['id'] = $id;
-        
+
         // Buscar dados do lanche atual
         $lancheAtual = $this->buscaPorId('lanches', $id);
         $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
@@ -320,12 +320,12 @@ class ComandaModelo
         ]);
     }
 
-    public function atualizarAdicional(int $chave, int $idCardapio, string $tipo)
+    public function atualizarAdicional(int $chave, int $idCardapio, string $tipo, $mesa)
     {
-        $query = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
-        valor_adicional = :valor_adicional, tipo = :tipo 
-        WHERE chave = :chave";
-
+        // Buscar dados do lanche atual
+        $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
+        $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
+        
         $nomeAdicional = null;
         $valorAdicional = null;
 
@@ -342,27 +342,37 @@ class ComandaModelo
             }
         }
 
-        $stmt = Conexao::getInstancia()->prepare($query);
+        $queryAdicional = "UPDATE adicionais SET nome_adicional = :nome_adicional, 
+        valor_adicional = :valor_adicional, tipo = :tipo 
+        WHERE chave = :chave";
 
-        // echo '<pre>';
-        // print_r($stmt);
-        // echo '</pre>';
-        // die(); // Para interromper e ver o resultado
-
-        $stmt->execute([
+        $stmtAdicional = Conexao::getInstancia()->prepare($queryAdicional);
+        $stmtAdicional->execute([
             ':chave' => $chave,
             ':nome_adicional' => $nomeAdicional,
             ':valor_adicional' => $valorAdicional,
             ':tipo' => $tipo
         ]);
+
+        // Busca o total atual da mesa
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
+
+        $totalFinal = ($totalAtual - $valorAdicionalAtual) + $valorAdicional;
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            ':novoTotal' => $totalFinal,
+            ':mesa' => $mesa
+        ]);
     }
 
-    public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho)
+    public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho, $mesa)
     {  
-        $query = "UPDATE bebidas SET nome_bebida = :nome_bebida,
-            tamanho_bebida = :tamanho_bebida, 
-            valor_bebida = :valor_bebida 
-        WHERE chave = :chave";
+        // Buscar dados da bebida atual
+        $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
+        $valorBebidaAtual = $bebidaAtual->valor_bebida ?? 0;
 
         $nomeBebida = null;
         $tamanhoBebida = null;
@@ -381,18 +391,30 @@ class ComandaModelo
             $valorBebida = $buscaTamanho->valor ?? null;
         }
 
-        $stmt = Conexao::getInstancia()->prepare($query);
+        $queryBebida = "UPDATE bebidas SET nome_bebida = :nome_bebida,
+            tamanho_bebida = :tamanho_bebida, 
+            valor_bebida = :valor_bebida 
+        WHERE chave = :chave";
 
-        // echo '<pre>';
-        // print_r($stmt);
-        // echo '</pre>';
-        // die(); // Para interromper e ver o resultado
-
-        $stmt->execute([
+        $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
+        $stmtBebida->execute([
             ':nome_bebida' => $nomeBebida,
             ':tamanho_bebida' => $tamanhoBebida,
             ':valor_bebida' => $valorBebida,
             ':chave' => $chave
+        ]);
+
+        // Atualizar total da mesa
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
+
+        $totalFinal = ($totalAtual - $valorBebidaAtual) + $valorBebida;
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            ':novoTotal' => $totalFinal,
+            ':mesa' => $mesa
         ]);
     }
 
@@ -442,3 +464,10 @@ class ComandaModelo
     }
 
 }
+
+
+// echo '<pre>';
+        // print_r($stmt);
+        // echo '</pre>';
+        // die(); // Para interromper e ver o resultado
+

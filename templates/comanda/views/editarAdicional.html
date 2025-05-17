@@ -15,18 +15,10 @@
         <table>
             <form action="{{ url('atualizar/'~editar.chave) }}" method="post" class="bg-light" id="pedidos">
 
-                <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="hidden" class="fw-bolder bg-light text-center">
+                <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="hidden">
 
                 <input value="0" id="idApagar" name="idApagar" type="hidden">
                 <input value="0" id="idApagarAdicional" name="idApagarAdicional" type="hidden">
-                    
-                {% for valor in total %}
-                {% if valor.mesa == editar.mesa %}
-                <input type="hidden" name="total" id="total" value="{{ valor.total }}">
-                {% endif %}
-                {% endfor %}
-
-                <input type="hidden" id="novoTotal" name="novoTotal" type="number">
 
                 <input type="hidden" id="idCardapio_adicional" name="idCardapio_adicional">
                 <input type="hidden" id="tipo" name="tipo">

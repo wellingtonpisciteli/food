@@ -18,14 +18,6 @@
                 <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="hidden">
 
                 <input value="0" id="idApagarAdicional" name="idApagarAdicional" type="hidden">
-                    
-                {% for valor in total %}
-                {% if valor.mesa == editar.mesa %}
-                <input type="hidden" name="total" id="total" value="{{ valor.total }}">
-                {% endif %}
-                {% endfor %}
-
-                <input type="hidden" id="novoTotal" name="novoTotal" type="number">
 
                 <input type="hidden" id="idCardapio_bebida" name="idCardapio_bebida">
                 <input type="hidden" id="idTamanhoValor" name="idTamanhoValor">

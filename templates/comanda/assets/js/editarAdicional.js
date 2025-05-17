@@ -2,11 +2,6 @@
 window.onload = function() {
 
     const botoesAdicionarAdicionais = document.querySelectorAll('.enviarIngrediente input[type="button"]');
-    const novoTotal = document.getElementById('novoTotal');
-    const total = document.getElementById('total');
-    const valorIngredi = document.getElementById('valor-adicional');
-
-    let totalInicial = total.value - valorIngredi.value
 
     botoesAdicionarAdicionais.forEach(function(botao) {
         botao.addEventListener('click', function() {
@@ -15,8 +10,6 @@ window.onload = function() {
             const adicional = linha.querySelector('input[name="nomeIngrediente"]').value; 
             const preco = linha.querySelector('input[name="valorIngrediente"]').value; 
             const idCardapio = linha.querySelector('input[name="idAdicional"]').value;
-
-            novoTotal.value = Number(totalInicial) + Number(preco);
             
             document.getElementById('nome-adicional').innerHTML = "+ "+ adicional;
             document.getElementById('valor-adicional').innerHTML = preco + ",00";
@@ -36,14 +29,11 @@ window.onload = function() {
             const adicional = linha.querySelector('input[name="nomeIngrediente"]').value;
             const idCardapio = linha.querySelector('input[name="idAdicional"]').value; 
             const preco = 0  
-            
-            novoTotal.value = totalInicial;
-            
+                        
             document.getElementById('nome-adicional').innerHTML = "- "+ adicional;
             document.getElementById('valor-adicional').innerHTML = preco + ",00"; 
             document.getElementById('idCardapio_adicional').value = idCardapio;
             document.getElementById('tipo').value = "-";
-
 
             document.getElementById('nome-adicional').style.color = 'red';  
       });
@@ -67,7 +57,6 @@ window.onload = function() {
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    novoTotal.value = totalInicial;
                     document.getElementById('apagar').value = 'preenchido';
                     document.getElementById('pedidos').submit();
                 } else {

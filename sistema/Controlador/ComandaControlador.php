@@ -40,14 +40,14 @@ class ComandaControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
+            $mesa = $dados['mesa'];
+
             if (!empty($dados['id_cardapio'])) {
                 $dadosPedido = [
                     'id_lanche' => $dados['id_lanche'],
                     'detalhes_lanche' => $dados['detalhes_lanche'],
                     'status' => $dados['status']
                 ];
-
-                $mesa = $dados['mesa'];
 
                 $idCardapio = $dados['id_cardapio'];
     
@@ -59,7 +59,7 @@ class ComandaControlador extends Controlador
                 $idCardapio_bebida = $dados['idCardapio_bebida'];
                 $idTamanhoValor = $dados['idTamanhoValor'];
 
-                (new ComandaModelo())->atualizarBebida($id, $idCardapio_bebida, $idTamanhoValor);
+                (new ComandaModelo())->atualizarBebida($id, $idCardapio_bebida, $idTamanhoValor, $mesa);
             }
 
             if (!empty($dados['idCardapio_adicional'])) {
@@ -67,7 +67,7 @@ class ComandaControlador extends Controlador
                 $idCardapio_adicional = $dados['idCardapio_adicional'];
                 $tipo = $dados['tipo'];
 
-                (new ComandaModelo())->atualizarAdicional($id, $idCardapio_adicional, $tipo);
+                (new ComandaModelo())->atualizarAdicional($id, $idCardapio_adicional, $tipo, $mesa);
             }
 
             if (($dados['apagar'])=='preenchido'){

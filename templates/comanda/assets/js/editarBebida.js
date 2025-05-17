@@ -1,11 +1,6 @@
 window.onload = function() {
 
     const botoesAdicionarBebida = document.querySelectorAll('.enviarBebida input[type="button"]');
-    const novoTotal = document.getElementById('novoTotal');
-    const total = document.getElementById('total');
-    const valorBebida = document.getElementById('valor-bebida');
-
-    let totalInicial = total.value - valorBebida.value
 
     botoesAdicionarBebida.forEach(function(botao) {
         botao.addEventListener('click', function() {
@@ -17,8 +12,6 @@ window.onload = function() {
             const valorTamanho = selectTamanho.value; 
             const [idTamanhoValor, preco, tamanho] = valorTamanho.split('|');
             const idCardapio = linha.querySelector('input[name="idCardapio"]').value;
-
-            novoTotal.value = Number(totalInicial) + Number(preco);
             
             document.getElementById('nome-bebida').innerHTML = bebida;
             document.getElementById('valor-bebida').innerHTML = preco + ",00"; 
@@ -46,7 +39,6 @@ window.onload = function() {
             reverseButtons: true
         }).then((result) => {
             if (result.isConfirmed) {
-                novoTotal.value = totalInicial;
                 document.getElementById('apagar').value = 'preenchido';
                 document.getElementById('pedidos').submit();
             } else {
