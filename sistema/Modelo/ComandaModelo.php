@@ -31,6 +31,14 @@ class ComandaModelo
         return $resultado;
     }
 
+    public function buscaPorIdS(string $tabela, int $id): array
+    {
+        $query = "SELECT * FROM {$tabela} WHERE id={$id}";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetchAll();
+        return $resultado;
+    }
+
     public function buscaPorId_lanche(string $tabela, int $id): bool | object
     {
         $query = "SELECT * FROM {$tabela} WHERE id_lanche={$id}";
@@ -322,7 +330,7 @@ class ComandaModelo
 
     public function atualizarAdicional(int $chave, int $idCardapio, string $tipo, $mesa)
     {
-        // Buscar dados do lanche atual
+        // Buscar dados do adicional atual
         $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
         $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
         
@@ -419,34 +427,103 @@ class ComandaModelo
     }
 
 
-    public function apagarLanche(int $id, $idApagarAdicional){
-        $query = "DELETE FROM lanches WHERE id = {$id}";
+    public function apagarLanche(int $id, int $idAdicional, int $mesa){
 
-        $stmt = Conexao::getInstancia()->prepare($query);
+        $lancheAtual = $this->buscaPorId('lanches', $id);
+        $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
 
-        $stmt->execute();
+        $adicionalAtual = $this->buscaPorIdS('adicionais', $idAdicional);
 
-        $query2 = "DELETE FROM adicionais WHERE id = {$idApagarAdicional}";
+        $valorAdicionalAtual = 0;
+        if (is_array($adicionalAtual)) {
+            foreach ($adicionalAtual as $adicional) {
+                $valorAdicionalAtual += $adicional->valor_adicional ?? 0;
+            }
+        }
 
-        $stmt2 = Conexao::getInstancia()->prepare($query2);
+        $queryLanche = "DELETE FROM lanches WHERE id = :id";
 
-        $stmt2->execute();
+        $stmtLanche = Conexao::getInstancia()->prepare($queryLanche);
+
+        $stmtLanche->execute([
+            ':id' => $id
+        ]);
+
+        $queryAdicional = "DELETE FROM adicionais WHERE id = :idAdicional";
+
+        $stmtAdcional = Conexao::getInstancia()->prepare($queryAdicional);
+
+        $stmtAdcional->execute([
+            ':idAdicional' => $idAdicional
+        ]);
+
+        // Atualizar total da mesa
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
+
+        $totalFinal = ($totalAtual - $valorLancheAtual - $valorAdicionalAtual);
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            ':novoTotal' => $totalFinal,
+            ':mesa' => $mesa
+        ]);
     }
 
-    public function apagarAdicional(int $chave){
-        $query = "DELETE FROM adicionais WHERE chave = {$chave}";
+    public function apagarAdicional(int $chave, $mesa){
 
-        $stmt = Conexao::getInstancia()->prepare($query);
+        $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
+        $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
 
-        $stmt->execute();
+        $queryAdicional = "DELETE FROM adicionais WHERE chave = :chave";
+
+        $stmtAdicional = Conexao::getInstancia()->prepare($queryAdicional);
+
+        $stmtAdicional->execute([
+            ':chave' => $chave
+        ]);
+
+        // Atualizar total da mesa
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
+
+        $totalFinal = ($totalAtual - $valorAdicionalAtual);
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            ':novoTotal' => $totalFinal,
+            ':mesa' => $mesa
+        ]);
     }
 
-    public function apagarBebida(int $chave){
-        $query = "DELETE FROM bebidas WHERE chave = {$chave}";
+    public function apagarBebida(int $chave, $mesa){
 
-        $stmt = Conexao::getInstancia()->prepare($query);
+        // Buscar dados da bebida atual
+        $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
+        $valorBebidaAtual = $bebidaAtual->valor_bebida ?? 0;
 
-        $stmt->execute();
+        $queryBebida = "DELETE FROM bebidas WHERE chave = :chave";
+
+        $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
+
+        $stmtBebida->execute([
+            ':chave' => $chave
+        ]);
+
+        // Atualizar total da mesa
+        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
+
+        $totalFinal = ($totalAtual - $valorBebidaAtual);
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            ':novoTotal' => $totalFinal,
+            ':mesa' => $mesa
+        ]);
     }
 
     public function apagarMesa(int $mesa)
