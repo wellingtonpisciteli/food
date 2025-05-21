@@ -11,6 +11,12 @@
         </h3>
     </header>
 
+    {% for item in lanches %}
+        {% if item.mesa == editar.mesa %}
+            <div class="lanches"></div>
+        {% endif %}
+    {% endfor %}
+
     <div>
         <table class="table" id="adicionarTabela">
             <form action="{{ url('atualizar/'~editar.id) }}" method="post" class="bg-light" id="pedidos">

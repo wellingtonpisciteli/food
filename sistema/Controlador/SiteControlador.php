@@ -137,9 +137,9 @@ class SiteControlador extends Controlador
     {
         $pedidoMesa = (new ComandaModelo())->buscaPorId("lanches", $id);
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $total = (new ComandaModelo())->ler("total", "total", "DESC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
+        $lanches = (new ComandaModelo())->ler("lanches", "nome_lanche", "ASC");
 
         echo ($this->template->renderizar('editarLanche.html', [
             'titulo' => 'editar_lanche',
@@ -147,7 +147,7 @@ class SiteControlador extends Controlador
             'cardapio' => $cardapio,
             'ingredientes' => $ingredi,
             'ingred' => $ingred,
-            'total' => $total
+            'lanches' => $lanches
         ]));
     }
 
@@ -156,13 +156,11 @@ class SiteControlador extends Controlador
     {
         $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('editarAdicional.html', [
             'titulo' => 'editar_adicional',
             'editar' => $adicional,
-            'ingredientes' => $ingredi,
-            'total' => $total
+            'ingredientes' => $ingredi
         ]));
     }
 
@@ -172,14 +170,12 @@ class SiteControlador extends Controlador
         $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $total = (new ComandaModelo())->ler("total", "total", "DESC");
 
         echo ($this->template->renderizar('editarBebida.html', [
             'titulo' => 'editar_bebida',
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,
-            'tamanhoBebida' => $tamanho_bebida,
-            'total' => $total
+            'tamanhoBebida' => $tamanho_bebida
         ]));
     }
     

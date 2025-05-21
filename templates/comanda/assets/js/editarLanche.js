@@ -1,6 +1,14 @@
 // Aguardar o carregamento completo da página
 window.onload = function() {
 
+  const lanches = document.querySelectorAll('.lanches')
+  let cont = 0
+
+  lanches.forEach(function(lanche){
+    cont += 1
+    console.log(cont)
+  })
+
   const botoesAdicionar = document.querySelectorAll('.enviarLanche input[type="button"]');
 
   botoesAdicionar.forEach(function(botao) {
@@ -39,7 +47,11 @@ window.onload = function() {
         reverseButtons: true
       }).then((result) => {
         if (result.isConfirmed) {
-          document.getElementById('apagar').value = 'preenchido';
+          if (cont === 1) {
+            document.getElementById('id_cardapio').value = 999;
+          }else {
+            document.getElementById('apagar').value = 'preenchido';
+          }
           document.getElementById('pedidos').submit();
         } else {
             console.log('Cancelado');
