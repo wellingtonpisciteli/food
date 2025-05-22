@@ -142,8 +142,20 @@
             <tbody>
               <tr>
                 {% if cardapio.lanche != 'Em escolha...' %}
-                <th class="cardapio-th-item">{{ cardapio.lanche }}</th>
-                <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
+                  <th class="cardapio-th-item" style="width: 360px;">
+                    <details class="dropdown-fake">
+                      <summary class="dropdown-label">{{ cardapio.lanche }}</summary>
+                      <ul class="dropdown-list">
+                        {% for ingred in ingredientes %}
+                          {% if ingred.lanche_id == cardapio.id %}
+                            <li>{{ ingred.ingredientes }}</li>
+                          {% endif %}
+                        {% endfor %}
+                      </ul>
+                    </details>
+                  </th>
+                  
+                  <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
                 {% endif %}
               </tr>
             </tbody>

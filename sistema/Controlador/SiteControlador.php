@@ -36,6 +36,7 @@ class SiteControlador extends Controlador
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
+        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
 
         echo ($this->template->renderizar('comanda.html', [
             'titulo' => 'Sistema_Food',
@@ -46,15 +47,15 @@ class SiteControlador extends Controlador
             'ingred' => $ingredi,
             'adicional' => $adicional,
             'bebidas' => $bebidas,
-            'total' => $total
+            'total' => $total,
+            'ingredientes' => $ingredientes
         ]));
     }
 
 
     public function adicionar(): void
     {
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");    
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
@@ -66,7 +67,6 @@ class SiteControlador extends Controlador
             'cardapio' => $cardapio,
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
-            'ingred' => $ingred,
             'pedido' => $pedido,
             'ingredientes' => $ingredi,
             'mesa' => $mesa
@@ -93,7 +93,6 @@ class SiteControlador extends Controlador
     public function adicionarNaMesa(int $mesa): void
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
@@ -105,7 +104,6 @@ class SiteControlador extends Controlador
             'cardapio' => $cardapio,
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
-            'ingred' => $ingred,
             'pedido' => $pedido,
             'ingredientes' => $ingredi,
             'mesa' => $mesa
@@ -115,7 +113,6 @@ class SiteControlador extends Controlador
     public function adicionarAdicional(int $mesa, int  $id_lanche): void
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
@@ -124,7 +121,6 @@ class SiteControlador extends Controlador
         echo ($this->template->renderizar('adicionarAdicional.html', [
             'titulo' => 'Adicionar',
             'cardapio' => $cardapio,
-            'ingred' => $ingred,
             'pedido' => $pedido,
             'ingredientes' => $ingredi,
             'mesa' => $mesa,
@@ -138,7 +134,6 @@ class SiteControlador extends Controlador
         $pedidoMesa = (new ComandaModelo())->buscaPorId("lanches", $id);
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $ingred = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "DESC" );
         $lanches = (new ComandaModelo())->ler("lanches", "nome_lanche", "ASC");
 
         echo ($this->template->renderizar('editarLanche.html', [
@@ -146,7 +141,6 @@ class SiteControlador extends Controlador
             'editar' => $pedidoMesa,
             'cardapio' => $cardapio,
             'ingredientes' => $ingredi,
-            'ingred' => $ingred,
             'lanches' => $lanches
         ]));
     }
