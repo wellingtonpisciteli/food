@@ -1,8 +1,8 @@
-const buttons = document.querySelectorAll(".btnAbrirAberto"); // Botões das mesas
-const mesaComanda = document.querySelectorAll(".mesaAberta"); // Conteúdo das mesas
-const tablePedido = document.querySelectorAll(".tablePedido"); // Conteúdo das tabelas de pedidos
-const mesaButtonsContainer = document.getElementById("mesaButtonsContainer"); // Contêiner dos botões das mesas
-const btnMostrarMesas = document.querySelector(".btnMostrarMesas"); // Botão "Mostrar Todos"
+const buttons = document.querySelectorAll(".btnAbrirAberto"); 
+const mesaComanda = document.querySelectorAll(".mesaAberta"); 
+const tablePedido = document.querySelectorAll(".tablePedido"); 
+const mesaButtonsContainer = document.getElementById("mesaButtonsContainer");
+const btnMostrarMesas = document.querySelector(".btnMostrarMesas"); 
 const botoesExcluir = document.querySelectorAll(".excluir-mesa");
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
@@ -98,6 +98,8 @@ botoesExcluir.forEach(botao => {
     });
 });
 
+const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
+
 
 document.querySelectorAll('.editar-mesa').forEach(botao => {
     botao.addEventListener('click', function (e) {
@@ -119,6 +121,13 @@ document.querySelectorAll('.editar-mesa').forEach(botao => {
                 if (!novaMesa) {
                     Swal.showValidationMessage('Você precisa informar a nova mesa');
                 }
+      
+                controleMesa.forEach(num => {
+                    if (novaMesa == num.value) {
+                        Swal.showValidationMessage('Ops! Essa mesa já está ocupada. Tente outro número.');
+                    }
+                })
+
                 return novaMesa;
             }
         }).then(result => {

@@ -148,7 +148,7 @@
                       <ul class="dropdown-list">
                         {% for ingred in ingredientes %}
                           {% if ingred.lanche_id == cardapio.id %}
-                            <li>{{ ingred.ingredientes }}</li>
+                            <span>{{ ingred.ingredientes }}</span>
                           {% endif %}
                         {% endfor %}
                       </ul>

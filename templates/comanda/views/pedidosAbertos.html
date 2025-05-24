@@ -3,6 +3,9 @@
 {% block conteudo %}
 
 <body class="w-100 bg-dark">
+  {% for num in mesa %}
+    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+  {% endfor %}
 
   <header class="bg-dark text-white fw-bolder fs-3"
     style="margin-top: 15px; margin-bottom: 20px; justify-content: center; display: flex;">Pedidos Abertos</header>
@@ -38,7 +41,7 @@
   </div>
 
   <div class="bg-light table-responsive"
-    style="width: 100%; margin-top: 20px; justify-content: center; padding: 10px; margin-bottom: 20px;">
+    style="width: 97%; margin-top: 20px; justify-content: center; margin: auto; padding: 10px; margin-bottom: 20px;">
     
     {% set mesas_exibidas = [] %}
 
@@ -213,10 +216,6 @@
   </table>
   {% endfor %}
   </div>
-
-  {% for valor in total %}
-  
-  {% endfor %}
 
 </body>
 
