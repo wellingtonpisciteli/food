@@ -110,6 +110,8 @@ enviarIngredienteBtns.forEach(btn => {
 
             total -= parseFloat(valorIngrediente);
             totalCell.textContent = `$${total.toFixed(2)}`;
+
+            cont -= 1
         };
 
         const obsIngredienteCell = document.createElement('td');
@@ -147,15 +149,6 @@ enviarIngredienteBtns.forEach(btn => {
         idAdicionalInput.type = 'hidden';
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
-
-        btnDiv.addEventListener("click", () => {             
-            const controleTotal = document.createElement('input');
-            controleTotal.type = 'hidden';
-            controleTotal.name = 'controleTotal';
-            controleTotal.value = 'controleTotal';
-
-            pedidosDiv.appendChild(controleTotal);
-        })
 
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);
@@ -241,6 +234,8 @@ removerIngredienteBtns.forEach(btn => {
             hiddenInputs.forEach(function (input) {
                 input.remove();
             });
+
+            cont -= 1
         };
 
         const obsIngredienteCell = document.createElement('td');
@@ -278,21 +273,69 @@ removerIngredienteBtns.forEach(btn => {
         idAdicionalInput.name = 'idAdd[]';
         idAdicionalInput.value = idIAdicional;
 
-        btnDiv.addEventListener("click", () => {             
-            const controleTotal = document.createElement('input');
-            controleTotal.type = 'hidden';
-            controleTotal.name = 'controleTotal';
-            controleTotal.value = 'controleTotal';
-
-            pedidosDiv.appendChild(controleTotal);
-        })
-
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);
         pedidosDiv.appendChild(tipoInput);
         pedidosDiv.appendChild(idAdicionalInput);
     });
 });
+
+function mostrarConfirmacaoAdicionais(listaPedidos, total, comandaMesa) {
+    let linhasPedido = '';
+
+    listaPedidos.querySelectorAll('tr').forEach(linha => {
+        const nome = linha.children[0].textContent.trim();
+        const valor = linha.children[1].textContent;
+        const detalhes = linha.children[2].textContent;
+
+        let icone = '🟢'; // padrão
+        if (nome.startsWith('+')) icone = '➕';
+        else if (nome.startsWith('-')) icone = '❌';
+
+        linhasPedido += `
+            <tr style="border-bottom: 1px solid #ccc;">
+                <td style="padding: 6px 10px;">${icone} ${nome}</td>
+                <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>${valor}</strong></td>
+                <td style="padding: 6px 10px; font-style: italic;">${detalhes || '-'}</td>
+            </tr>
+        `;
+    });
+
+    const mesa = comandaMesa.textContent || "Não definida";
+    const totalTexto = total.toFixed(2);
+
+    return Swal.fire({
+        title: 'Confirmar Adicionais?',
+        html: `
+            <div style="text-align: left;">
+                <p><strong>Mesa:</strong> ${mesa}</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="background-color: #f0f0f0;">
+                            <th style="padding: 6px 10px; text-align: left;">Adicional</th>
+                            <th style="padding: 6px 10px; text-align: right;">Valor</th>
+                            <th style="padding: 6px 10px; text-align: left;">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${linhasPedido}
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px;"><strong>Total:</strong> <span style="color: #198754;">R$ ${totalTexto}</span></p>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '✅ Enviar Adicionais',
+        cancelButtonText: '🛑 Cancelar',
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'btn btn-primary mx-2',
+            cancelButton: 'btn btn-danger mx-2'
+        },
+        buttonsStyling: false
+    });
+}
 
 btnDiv.addEventListener("click", (e) => {
     if (cont == 0) {
@@ -303,6 +346,25 @@ btnDiv.addEventListener("click", (e) => {
             icon: 'info',
             confirmButtonText: 'OK'
         });
+        return
+    }
+
+    if (cont != 0) {
+        e.preventDefault();
+         mostrarConfirmacaoAdicionais(listaPedidos, total, comandaMesa).then((result) => {
+            if (result.isConfirmed) {     
+                document.getElementById('pedidos').submit();  
+            } else {
+                console.log("Envio cancelado");
+            }
+        });
+
+        const controleTotal = document.createElement('input');
+        controleTotal.type = 'hidden';
+        controleTotal.name = 'controleTotal';
+        controleTotal.value = 'controleTotal';
+
+        pedidosDiv.appendChild(controleTotal);
     }
 })
 

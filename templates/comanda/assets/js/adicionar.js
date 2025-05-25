@@ -38,6 +38,8 @@ let total = 0
 let idIngrediente = 0
 let idBebida = 0
 let controleBebida = false
+let controleCont = 0
+let nome_lanche = ""
 
 function getDataHoraAtual() {
     const agora = new Date();
@@ -63,6 +65,7 @@ enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         controleBebida = true
         cont += 1
+        controleCont += 1
         proximoValor++;
 
         console.log('====================');
@@ -140,6 +143,10 @@ enviarLancheBtns.forEach(btn => {
 
             total -= parseFloat(valorLanche);
             totalCell.textContent = `$${total.toFixed(2)}`;
+
+            controleCont -= 1
+
+            console.log(controleCont)
         };
 
         const obsLancheCell = document.createElement('td');
@@ -178,19 +185,6 @@ enviarLancheBtns.forEach(btn => {
         idCardapioInput.value = idCardapio;
 
         console.log(idCardapio)
-
-        btnDiv.addEventListener("click", () => {
-            let hora = getDataHoraAtual()
-            
-            const horaInput = document.createElement('input');
-            horaInput.type = 'hidden';
-            horaInput.name = 'data_hora[]';
-            horaInput.value = hora;
-
-            pedidosDiv.appendChild(horaInput);
-
-        })
-
         console.log(total)
 
         pedidosDiv.appendChild(mesaInput);
@@ -329,17 +323,6 @@ enviarBebidaBtns.forEach(btn => {
         idTamanhoInput.type = 'hidden';
         idTamanhoInput.name = 'idTamanhoValorBebida[]';
         idTamanhoInput.value = idTamanhoValorBebida;
-        
-        btnDiv.addEventListener("click", () => {
-            let hora = getDataHoraAtual()
-            
-            const horaInput = document.createElement('input');
-            horaInput.type = 'hidden';
-            horaInput.name = 'data_hora[]';
-            horaInput.value = hora;
-
-            pedidosDiv.appendChild(horaInput);
-        })
 
         pedidosDiv.appendChild(mesaInput);
         pedidosDiv.appendChild(idBebidaInput);
@@ -603,8 +586,77 @@ removerIngredienteBtns.forEach(btn => {
     });
 });
 
+function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa) {
+    let linhasPedido = '';
+
+    function gerarLinhas(trs, tipo) {
+        trs.forEach(linha => {
+            const nome = linha.children[0].textContent.trim();
+            const valor = linha.children[1].textContent;
+            const detalhes = linha.children[2].textContent;
+
+            const nomeLower = nome.toLowerCase();
+            let icone = '🍔'; // padrão: lanche
+
+            if (tipo === 'bebida') {
+                icone = '🥤';
+            } else if (nome.startsWith('+') || nomeLower.includes('adicional') || nomeLower.includes('extra') || nomeLower.includes('acréscimo')) {
+                icone = '➕';
+            } else if (nome.startsWith('-')) {
+                icone = '❌';
+            }
+
+            linhasPedido += `
+                <tr style="border-bottom: 1px solid #ccc;">
+                    <td style="padding: 6px 10px;">${icone} ${nome}</td>
+                    <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>${valor}</strong></td>
+                    <td style="padding: 6px 10px; font-style: italic;">${detalhes || '-'}</td>
+                </tr>
+            `;
+        });
+    }
+
+    gerarLinhas(listaPedidos.querySelectorAll('tr'), 'lanche');
+    gerarLinhas(listaBebidas.querySelectorAll('tr'), 'bebida');
+
+    const mesa = comandaMesa.textContent || "Não definida";
+    const totalTexto = total.toFixed(2);
+
+    return Swal.fire({
+        title: '📦 Confirmar Pedido?',
+        html: `
+            <div style="text-align: left;">
+                <p><strong>Mesa:</strong> ${mesa}</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                    <thead>
+                        <tr style="background-color: #f0f0f0;">
+                            <th style="padding: 6px 10px; text-align: left;">Item</th>
+                            <th style="padding: 6px 10px; text-align: right;">Valor</th>
+                            <th style="padding: 6px 10px; text-align: left;">Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${linhasPedido}
+                    </tbody>
+                </table>
+                <p style="margin-top: 10px;"><strong>Total:</strong> <span style="color: #198754;">R$ ${totalTexto}</span></p>
+            </div>
+        `,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: '✅ Enviar Pedido',
+        cancelButtonText: '🛑 Manter Pedido',
+        reverseButtons: true,
+        customClass: {
+            confirmButton: 'btn btn-primary mx-2',
+            cancelButton: 'btn btn-danger mx-2'
+        },
+        buttonsStyling: false
+    });
+}
+
 btnDiv.addEventListener("click", (e) => {
-    if (cont == 0) {
+    if (cont === 0 ) {
         e.preventDefault()
         Swal.fire({
             title: 'Comanda Vazia!',
@@ -612,9 +664,10 @@ btnDiv.addEventListener("click", (e) => {
             icon: 'info',
             confirmButtonText: 'OK'
         });
+        return
     }
 
-    if (controleBebida == false) {
+    if (controleCont === 0 ) {
         e.preventDefault()
         Swal.fire({
             title: 'Lanche em escolha?',
@@ -622,6 +675,30 @@ btnDiv.addEventListener("click", (e) => {
             icon: 'info',
             confirmButtonText: 'OK'
         });
+        return
+    }
+
+    if (cont != 0) {
+        e.preventDefault();
+        mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa)
+            .then((result) => {
+                if (result.isConfirmed) {
+                    if (controleCont != 0){
+                        document.getElementById('pedidos').submit();
+                    }
+                } else {
+                    console.log("Envio cancelado");
+                }
+            });
+
+        let hora = getDataHoraAtual();
+
+        const horaInput = document.createElement('input');
+        horaInput.type = 'hidden';
+        horaInput.name = 'data_hora[]';
+        horaInput.value = hora;
+
+        pedidosDiv.appendChild(horaInput);
     }
 })
 
