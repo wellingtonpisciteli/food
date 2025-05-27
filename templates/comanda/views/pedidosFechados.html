@@ -1,0 +1,210 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<body class="w-100 bg-dark">
+ 
+  <header class="bg-dark text-white fw-bolder fs-3"
+    style="margin-top: 15px; margin-bottom: 20px; justify-content: center; display: flex;">Pedidos Fechados</header>
+
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarMesas btn fs-5 btn-primary" style="font-weight: bolder; color: white;">
+      Mostrar Todos
+    </button>
+  </div>
+
+  {% set mesas_exibidas = [] %}
+  {% set bebidas_exibidas = [] %}
+  {% set chaves_exibidas = [] %}
+
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="mesaButtonsContainer">
+    {% for pedido in pedidos %}
+      {% if pedido.status == 0 and pedido.mesa not in mesas_exibidas %}
+        <button class="btnAbrirAberto btn fs-5 btn-success" style="font-weight: bolder; color: white; margin-bottom: 10px;"
+          data-mesa="{{ pedido.mesa }}">
+          MESA:
+          <span style="color: chartreuse; font-weight: bolder;">
+            {% if pedido.mesa < 10 %}
+              0{{ pedido.mesa }}
+            {% else %}
+              {{ pedido.mesa }}
+            {% endif %}
+          </span>
+        </button>
+        {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="bg-light table-responsive"
+    style="width: 97%; margin-top: 20px; justify-content: center; margin: auto; padding: 10px; margin-bottom: 20px;">
+    
+    {% set mesas_exibidas = [] %}
+
+    {% set cont = 0 %}
+
+    {% for pedido in pedidos %}
+    {% if pedido.status == 0 %}
+    {% if pedido.mesa not in mesas_exibidas %}
+  <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
+    <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">   
+        
+        {% if pedido.mesa < 10 %} 
+        <div> 
+            MESA: <span style=" margin-left: 5px; color: lime"> 0{{ pedido.mesa }}</span>      
+        </div>
+        {% else %}
+        <div>
+            MESA: <span style="margin-left: 5px; color: lime">{{ pedido.mesa }}</span>       
+        </div>
+        {% endif %}
+
+      <div>
+        STATUS: <span style="color: gold;">FECHADA</span>
+      </div>
+
+      {% set mostrado = false %}
+
+      {% for valor in total %}
+        {% if pedido.mesa == valor.mesa and not mostrado %}
+          <div>
+            TOTAL: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
+          </div>
+          {% set mostrado = true %}
+        {% endif %}
+      {% endfor %}
+
+      <div>
+        Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
+      </div>
+
+      <div>
+        <a href="#"  
+          class="btn fs-5 btn-primary abrir-mesa" 
+          data-url="{{ url('abrirMesa/' ~ pedido.mesa) }}"
+          style="font-weight: bolder; color: white;  margin-right: 5px;">
+          Abrir Mesa
+        </a>
+        <a href="#" 
+          class="btn fs-5 btn-danger excluir-mesa" 
+          data-url="{{ url('excluirMesa/' ~ pedido.mesa) }}" 
+          style="font-weight: bolder; color: white; margin-left: 5px;">
+          Excluir Mesa
+        </a>
+      </div>
+    </div>
+  </div>
+  {% set cont = 0 %}
+  {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
+  {% endif %}
+
+  <table style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;" class="tablePedido"
+    data-mesa="{{ pedido.mesa }}">
+    <thead>
+      <tr>
+        <th class="thTableAberto" scope="col">
+          {% if cont == 0 %}
+          LANCHES
+          {% set cont = 1 %}
+          {% endif %}
+        </th>
+        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
+          {% if cont == 1 %}
+          VALOR
+          {% set cont = 2 %}
+          {% endif %}
+        </th>
+        <th class="thTableAberto" scope="col">
+          {% if cont == 2 %}
+          BEBIDAS
+          {% set cont = 3 %}
+          {% endif %}
+        </th>
+        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
+          {% if cont == 3 %}
+          VALOR
+          {% set cont = 4 %}
+          {% endif %}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="font-weight: bolder;">
+          {% if pedido.nome_lanche == 'Em escolha...' and pedido.status == 0 %}
+            <span style="color: gray; font-style: italic;">
+                Em escolha...
+            </span> <br>
+            {% else %}
+            <span style="color: inherit;">
+             {{ pedido.nome_lanche }}<br>
+            </span>
+          {% endif %}
+
+          {% for add in adicional %}
+          {% if pedido.id_lanche == add.id %}
+          <div style="margin-top: 5px">
+            {% if add.tipo == '+' %}
+            <span style="color: green; font-weight: bolder;">
+              +{{ add.nome_adicional }}
+            </span>        
+            {% elseif add.tipo == '-' %}
+            <span style="color: red; font-weight: bolder;">
+              -{{ add.nome_adicional }}
+            </span>
+            {% endif %}
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+        </td>
+    
+        <td>
+          {% set somaAdicional = 0 %}
+          <!-- Loop para somar os valores dos adicionais -->
+          {% for add in adicional %}
+          {% if pedido.id_lanche == add.id and pedido.status == 0 %}
+          {% set somaAdicional = somaAdicional + add.valor_adicional %}
+          {% endif %}
+          {% endfor %}
+          
+          {% if pedido.valor_lanche != 0 and pedido.status == 0 %}
+          <span style="font-weight: bolder; padding-left: 5px;">
+            {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+          </span>
+          {% endif %}
+        </td>
+    
+        <td style="font-weight: bolder;">
+            {% for bebida in bebidas %}
+              {% if bebida.mesa == pedido.mesa and pedido.status == 0 %}
+                {% if bebida.id not in bebidas_exibidas %}              
+                    {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>              
+                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+        </td>
+    
+        <td>
+          {% for bebida in bebidas %}
+            {% if bebida.mesa == pedido.mesa and pedido.status == 0 %}
+              {% if bebida.chave not in chaves_exibidas %}
+                <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  {% endfor %}
+  </div>
+
+</body>
+
+<script src="{{ url('/templates/comanda/assets/js/pedidosFechados.js') }}" defer></script>
+
+{% endblock %}

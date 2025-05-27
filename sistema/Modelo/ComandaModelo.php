@@ -246,8 +246,8 @@ class ComandaModelo
 
         if (!empty($dados['controleTotal']) && $dados['controleTotal'] === 'controleTotal') { 
             $stmtAtualizar->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);  
         }else{
             $stmt->execute([$mesa, $total]);
@@ -266,8 +266,8 @@ class ComandaModelo
 
             if (!empty($hora)) {
                 $stmt->execute([
-                    ':data_hora' => $hora,
-                    ':mesa' => $mesa
+                    'data_hora' => $hora,
+                    'mesa' => $mesa
                 ]);
             }
         }
@@ -282,8 +282,8 @@ class ComandaModelo
 
             $stmt = Conexao::getInstancia()->prepare($query);
             $stmt->execute([
-                ':mesaNova' => $novaMesa,
-                ':mesaAtual' => $mesaAtual
+                'mesaNova' => $novaMesa,
+                'mesaAtual' => $mesaAtual
             ]);
         }
     }
@@ -323,8 +323,8 @@ class ComandaModelo
         $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);
     }
 
@@ -356,10 +356,10 @@ class ComandaModelo
 
         $stmtAdicional = Conexao::getInstancia()->prepare($queryAdicional);
         $stmtAdicional->execute([
-            ':chave' => $chave,
-            ':nome_adicional' => $nomeAdicional,
-            ':valor_adicional' => $valorAdicional,
-            ':tipo' => $tipo
+            'chave' => $chave,
+            'nome_adicional' => $nomeAdicional,
+            'valor_adicional' => $valorAdicional,
+            'tipo' => $tipo
         ]);
 
         // Busca o total atual da mesa
@@ -371,8 +371,8 @@ class ComandaModelo
         $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);
     }
 
@@ -406,10 +406,10 @@ class ComandaModelo
 
         $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
         $stmtBebida->execute([
-            ':nome_bebida' => $nomeBebida,
-            ':tamanho_bebida' => $tamanhoBebida,
-            ':valor_bebida' => $valorBebida,
-            ':chave' => $chave
+            'nome_bebida' => $nomeBebida,
+            'tamanho_bebida' => $tamanhoBebida,
+            'valor_bebida' => $valorBebida,
+            'chave' => $chave
         ]);
 
         // Atualizar total da mesa
@@ -421,8 +421,8 @@ class ComandaModelo
         $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);
     }
 
@@ -446,7 +446,7 @@ class ComandaModelo
         $stmtLanche = Conexao::getInstancia()->prepare($queryLanche);
 
         $stmtLanche->execute([
-            ':id' => $id
+            'id' => $id
         ]);
 
         $queryAdicional = "DELETE FROM adicionais WHERE id = :idAdicional";
@@ -454,7 +454,7 @@ class ComandaModelo
         $stmtAdcional = Conexao::getInstancia()->prepare($queryAdicional);
 
         $stmtAdcional->execute([
-            ':idAdicional' => $idAdicional
+            'idAdicional' => $idAdicional
         ]);
 
         // Atualizar total da mesa
@@ -466,8 +466,8 @@ class ComandaModelo
         $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);
     }
 
@@ -481,7 +481,7 @@ class ComandaModelo
         $stmtAdicional = Conexao::getInstancia()->prepare($queryAdicional);
 
         $stmtAdicional->execute([
-            ':chave' => $chave
+            'chave' => $chave
         ]);
 
         // Atualizar total da mesa
@@ -493,8 +493,8 @@ class ComandaModelo
         $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);
     }
 
@@ -509,7 +509,7 @@ class ComandaModelo
         $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
 
         $stmtBebida->execute([
-            ':chave' => $chave
+            'chave' => $chave
         ]);
 
         // Atualizar total da mesa
@@ -521,8 +521,8 @@ class ComandaModelo
         $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
-            ':novoTotal' => $totalFinal,
-            ':mesa' => $mesa
+            'novoTotal' => $totalFinal,
+            'mesa' => $mesa
         ]);
     }
 
@@ -535,10 +535,26 @@ class ComandaModelo
             $query = "DELETE FROM {$tabela} WHERE mesa = :mesaApagar";
             $stmt = Conexao::getInstancia()->prepare($query);
             $stmt->execute([
-                ':mesaApagar' => $mesa
+                'mesaApagar' => $mesa
             ]);
         } 
     }
+
+    public function abrirMesa(int $mesa)
+    {
+        $tabelas = ['lanches', 'bebidas'];
+
+        foreach ($tabelas as $tabela)
+        {
+            $query = "UPDATE {$tabela} SET status = :ativado WHERE mesa = :mesa";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                'ativado' => 1,
+                'mesa' => $mesa
+            ]);
+        } 
+    }
+
 
 }
 

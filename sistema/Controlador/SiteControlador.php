@@ -92,6 +92,24 @@ class SiteControlador extends Controlador
         ]));
     }
 
+    public function pedidosFechados(): void
+    {
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
+        $total = (new ComandaModelo())->ler("total", "total", "DESC");
+        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+
+        echo ($this->template->renderizar('pedidosFechados.html', [
+            'titulo' => 'pedidos_abertos',
+            'adicional' => $adicional,
+            'pedidos' => $pedidos,
+            'bebidas' => $bebidas,
+            'mesa' => $mesa,
+            'total' => $total
+        ]));
+    }
+
     public function adicionarNaMesa(int $mesa): void
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
@@ -174,7 +192,6 @@ class SiteControlador extends Controlador
             'tamanhoBebida' => $tamanho_bebida
         ]));
     }
-    
 
     public function busca(int $id)
     {

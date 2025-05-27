@@ -17,9 +17,8 @@
   </div>
 
   {% set mesas_exibidas = [] %}
-  {% set bebidas_exibidas = [] %}
-  {% set chaves_exibidas = [] %}
 
+  
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
@@ -44,181 +43,155 @@
     style="width: 97%; margin-top: 20px; justify-content: center; margin: auto; padding: 10px; margin-bottom: 20px;">
     
     {% set mesas_exibidas = [] %}
-
     {% set cont = 0 %}
 
     {% for pedido in pedidos %}
-    {% if pedido.status == 1 %}
-    {% if pedido.mesa not in mesas_exibidas %}
-  <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
-    <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">   
-        
-        {% if pedido.mesa < 10 %} 
-        <div>
-          <a href="#"
-            class="editar-mesa"
-            data-mesa-atual="{{url('editarMesa/'~ pedido.mesa)}}"
-            style="color: white; margin-left: 5px; text-decoration: none;">
-            MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
-          </a>      
-        </div>
-        {% else %}
-        <div>
-          <a href="#"
-            class="editar-mesa"
-            data-mesa-atual="{{url('editarMesa/'~ pedido.mesa)}}"
-            style="color: white; margin-left: 5px; text-decoration: none;">
-            MESA: <span style="color: lime">{{ pedido.mesa }}</span>
-          </a>       
-        </div>
-        {% endif %}
+      {% if pedido.status == 1 %}
+        {% if pedido.mesa not in mesas_exibidas %}
+          {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
+          {% set bebidas_exibidas = [] %}
+          {% set chaves_exibidas = [] %}
 
-      <div>
-        STATUS: <span style="color: chartreuse;">ABERTA</span>
-      </div>
+          <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
+            <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px;">   
 
-      {% set mostrado = false %}
+              {% if pedido.mesa < 10 %} 
+                <div>
+                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.mesa) }}"
+                    style="color: white; margin-left: 5px; text-decoration: none;">
+                    MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+                  </a>      
+                </div>
+              {% else %}
+                <div>
+                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.mesa) }}"
+                    style="color: white; margin-left: 5px; text-decoration: none;">
+                    MESA: <span style="color: lime">{{ pedido.mesa }}</span>
+                  </a>       
+                </div>
+              {% endif %}
 
-      {% for valor in total %}
-        {% if pedido.mesa == valor.mesa and not mostrado %}
-          <div>
-            TOTAL: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
-          </div>
-          {% set mostrado = true %}
-        {% endif %}
-      {% endfor %}
+              <div>STATUS: <span style="color: chartreuse;">ABERTA</span></div>
 
-      <div>
-        Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
-      </div>
-
-      <div>
-        <a href="{{url('adicionarNaMesa/'~ pedido.mesa)}}" id="addLanche" class="btn fs-5 btn-primary" style="font-weight: bolder; color: white;  margin-right: 5px;">
-          Adicionar
-        </a>
-        <a href="#" 
-          class="btn fs-5 btn-danger excluir-mesa" 
-          data-url="{{ url('excluirMesa/' ~ pedido.mesa) }}" 
-          style="font-weight: bolder; color: white; margin-left: 5px;">
-          Excluir Mesa
-        </a>
-      </div>
-    </div>
-  </div>
-  {% set cont = 0 %}
-  {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
-  {% endif %}
-
-  <table style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;" class="tablePedido"
-    data-mesa="{{ pedido.mesa }}">
-    <thead>
-      <tr>
-        <th class="thTableAberto" scope="col">
-          {% if cont == 0 %}
-          LANCHES
-          {% set cont = 1 %}
-          {% endif %}
-        </th>
-        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
-          {% if cont == 1 %}
-          VALOR
-          {% set cont = 2 %}
-          {% endif %}
-        </th>
-        <th class="thTableAberto" scope="col">
-          {% if cont == 2 %}
-          BEBIDAS
-          {% set cont = 3 %}
-          {% endif %}
-        </th>
-        <th class="thTableAberto" scope="col" style="padding-left: 5px;">
-          {% if cont == 3 %}
-          VALOR
-          {% set cont = 4 %}
-          {% endif %}
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-weight: bolder;">
-          {% if pedido.nome_lanche == 'Em escolha...' %}
-              <a href="{{url('editarLanche/'~pedido.id)}}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</i></a> <br>
-            {% else %}
-            <span>
-              <a href="{{url('editarLanche/'~pedido.id)}}" style="text-decoration: none;  color: inherit;">{{ pedido.nome_lanche }}</i></a> <br>
-            </span>
-          {% endif %}
-
-          {% for add in adicional %}
-          {% if pedido.id_lanche == add.id %}
-          <div style="margin-top: 5px">
-            {% if add.tipo == '+' %}
-            <span style="color: green; font-weight: bolder;">
-              <a href="{{url('editarAdicional/'~add.chave)}}" style="text-decoration: none;  color: inherit;">+{{ add.nome_adicional }}</a>
-            </span>        
-            {% elseif add.tipo == '-' %}
-            <span style="color: red; font-weight: bolder;">
-              <a href="{{url('editarAdicional/'~add.chave)}}" style="text-decoration: none;  color: inherit;">-{{ add.nome_adicional }}</a>
-            </span>
-            {% endif %}
-          </div>
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-
-          <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" id="addLanche" class="primary">
-            <i class="fa-solid fa-square-plus"></i>
-          </a>
-        </td>
-    
-        <td>
-          {% set somaAdicional = 0 %}
-          <!-- Loop para somar os valores dos adicionais -->
-          {% for add in adicional %}
-          {% if pedido.id_lanche == add.id %}
-          {% set somaAdicional = somaAdicional + add.valor_adicional %}
-          {% endif %}
-          {% endfor %}
-          
-          {% if pedido.valor_lanche != 0 %}
-          <span style="font-weight: bolder; padding-left: 5px;">
-            {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
-          </span>
-          {% endif %}
-        </td>
-    
-        <td style="font-weight: bolder;">
-            {% for bebida in bebidas %}
-              {% if bebida.mesa == pedido.mesa %}
-                {% if bebida.id not in bebidas_exibidas %}
-                  <a href="{{url('editarBebida/'~bebida.chave)}}" style="text-decoration: none;  color: inherit;">
-                    {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
-                  </a>
-                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
+              {% set mostrado = false %}
+              {% for valor in total %}
+                {% if pedido.mesa == valor.mesa and not mostrado %}
+                  <div>
+                    TOTAL: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
+                  </div>
+                  {% set mostrado = true %}
                 {% endif %}
-              {% endif %}
-            {% endfor %}
-        </td>
-    
-        <td>
-          {% for bebida in bebidas %}
-            {% if bebida.mesa == pedido.mesa %}
-              {% if bebida.chave not in chaves_exibidas %}
-                <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
-                {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
-              {% endif %}
-            {% endif %}
-          {% endfor %}
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  {% endfor %}
-  </div>
+              {% endfor %}
 
+              <div>
+                Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
+              </div>
+
+              <div>
+                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 btn-primary"
+                  style="font-weight: bolder; color: white; margin-right: 5px;">
+                  Adicionar
+                </a>
+                <a href="#" class="btn fs-5 btn-danger excluir-mesa"
+                  data-url="{{ url('excluirMesa/' ~ pedido.mesa) }}"
+                  style="font-weight: bolder; color: white; margin-left: 5px;">
+                  Excluir Mesa
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {% set cont = 0 %}
+          {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
+        {% endif %}
+
+        <table class="tablePedido" data-mesa="{{ pedido.mesa }}"
+          style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;">
+          <thead>
+            <tr>
+              <th class="thTableAberto" scope="col">{% if cont == 0 %}LANCHES{% set cont = 1 %}{% endif %}</th>
+              <th class="thTableAberto" scope="col" style="padding-left: 5px;">{% if cont == 1 %}VALOR{% set cont = 2 %}{% endif %}</th>
+              <th class="thTableAberto" scope="col">{% if cont == 2 %}BEBIDAS{% set cont = 3 %}{% endif %}</th>
+              <th class="thTableAberto" scope="col" style="padding-left: 5px;">{% if cont == 3 %}VALOR{% set cont = 4 %}{% endif %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight: bolder;">
+                {% if pedido.nome_lanche == 'Em escolha...' %}
+                  <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
+                {% else %}
+                  <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: inherit;">{{ pedido.nome_lanche }}</a> <br>
+                {% endif %}
+
+                {% for add in adicional %}
+                  {% if pedido.id_lanche == add.id %}
+                    <div style="margin-top: 5px">
+                      {% if add.tipo == '+' %}
+                        <span style="color: green; font-weight: bolder;">
+                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: inherit;">+{{ add.nome_adicional }}</a>
+                        </span>        
+                      {% elseif add.tipo == '-' %}
+                        <span style="color: red; font-weight: bolder;">
+                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: inherit;">-{{ add.nome_adicional }}</a>
+                        </span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+
+                {% if pedido.status == 1 %}
+                  <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
+                    <i class="fa-solid fa-square-plus"></i>
+                  </a>
+                {% endif %}
+              </td>
+
+              <td>
+                {% set somaAdicional = 0 %}
+                {% for add in adicional %}
+                  {% if pedido.id_lanche == add.id and pedido.status == 1 %}
+                    {% set somaAdicional = somaAdicional + add.valor_adicional %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if pedido.valor_lanche != 0 and pedido.status == 1 %}
+                  <span style="font-weight: bolder; padding-left: 5px;">
+                    {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+                  </span>
+                {% endif %}
+              </td>
+
+              <td style="font-weight: bolder;">
+                {% for bebida in bebidas %}
+                  {% if bebida.mesa == pedido.mesa and pedido.status == 1 %}
+                    {% if bebida.chave not in bebidas_exibidas %}
+                      <a href="{{ url('editarBebida/' ~ bebida.chave) }}" style="text-decoration: none; color: inherit;">
+                        {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                      </a>
+                      {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </td>
+
+              <td>
+                {% for bebida in bebidas %}
+                  {% if bebida.mesa == pedido.mesa and pedido.status == 1 %}
+                    {% if bebida.chave not in chaves_exibidas %}
+                      <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                      {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      {% endif %}
+    {% endfor %}
+  </div>
 </body>
 
 <script src="{{ url('/templates/comanda/assets/js/pedidosAbertos.js') }}" defer></script>
-
 {% endblock %}

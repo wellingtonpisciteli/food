@@ -4,6 +4,7 @@ const tablePedido = document.querySelectorAll(".tablePedido");
 const mesaButtonsContainer = document.getElementById("mesaButtonsContainer");
 const btnMostrarMesas = document.querySelector(".btnMostrarMesas"); 
 const botoesExcluir = document.querySelectorAll(".excluir-mesa");
+const botoesAbrirMesa = document.querySelectorAll(".abrir-mesa");
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
@@ -98,46 +99,26 @@ botoesExcluir.forEach(botao => {
     });
 });
 
-const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
-
-
-document.querySelectorAll('.editar-mesa').forEach(botao => {
-    botao.addEventListener('click', function (e) {
+botoesAbrirMesa.forEach(botao => {
+    botao.addEventListener("click", function (e) {
         e.preventDefault();
-        
-        const mesaAtual = this.getAttribute('data-mesa-atual');
+        const url = this.getAttribute("data-url");
 
         Swal.fire({
-            title: 'Editar Mesa',
-            icon: 'question',
-            html: `
-                <input type="text" id="novaMesa" class="swal2-input" placeholder="Nova mesa">
-            `,
+            title: 'Tem certeza?',
+            text: "Esta ação não pode ser desfeita!",
+            icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Atualizar',
-            cancelButtonText: 'Cancelar',
-            preConfirm: () => {
-                const novaMesa = document.getElementById('novaMesa').value;
-                if (!novaMesa) {
-                    Swal.showValidationMessage('Você precisa informar a nova mesa');
-                }
-      
-                controleMesa.forEach(num => {
-                    if (novaMesa == num.value) {
-                        Swal.showValidationMessage('Ops! Essa mesa já está ocupada. Tente outro número.');
-                    }
-                })
-
-                return novaMesa;
-            }
-        }).then(result => {
+            confirmButtonText: 'Sim, abrir mesa!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
             if (result.isConfirmed) {
-                const novaMesa = result.value;
-                const url = `${mesaAtual}/${novaMesa}`;
                 window.location.href = url;
             }
         });
     });
 });
+
+

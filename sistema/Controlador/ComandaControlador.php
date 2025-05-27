@@ -107,4 +107,13 @@ class ComandaControlador extends Controlador
 
         Helpers::redirecionar('pedidosAbertos');
     }
+
+    public function abrirMesa(int $mesa): void
+    {
+        if ($mesa) {
+            (new ComandaModelo())->abrirMesa($mesa);
+        }
+
+       Helpers::redirecionar('pedidosAbertos');
+    }
 }
