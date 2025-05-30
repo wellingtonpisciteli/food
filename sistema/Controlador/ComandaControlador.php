@@ -40,7 +40,7 @@ class ComandaControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            $mesa = $dados['mesa'];
+            $id_mesa = $dados['id_mesa'];
 
             if (!empty($dados['id_cardapio'])) {
                 $dadosPedido = [
@@ -51,7 +51,7 @@ class ComandaControlador extends Controlador
 
                 $idCardapio = $dados['id_cardapio'];
     
-                (new ComandaModelo())->atualizarLanche($dadosPedido, $id, $idCardapio, $mesa);
+                (new ComandaModelo())->atualizarLanche($dadosPedido, $id, $idCardapio, $id_mesa);
             }
             
             if (!empty($dados['idCardapio_bebida'])) {
@@ -59,7 +59,7 @@ class ComandaControlador extends Controlador
                 $idCardapio_bebida = $dados['idCardapio_bebida'];
                 $idTamanhoValor = $dados['idTamanhoValor'];
 
-                (new ComandaModelo())->atualizarBebida($id, $idCardapio_bebida, $idTamanhoValor, $mesa);
+                (new ComandaModelo())->atualizarBebida($id, $idCardapio_bebida, $idTamanhoValor, $id_mesa);
             }
 
             if (!empty($dados['idCardapio_adicional'])) {
@@ -67,13 +67,13 @@ class ComandaControlador extends Controlador
                 $idCardapio_adicional = $dados['idCardapio_adicional'];
                 $tipo = $dados['tipo'];
 
-                (new ComandaModelo())->atualizarAdicional($id, $idCardapio_adicional, $tipo, $mesa);
+                (new ComandaModelo())->atualizarAdicional($id, $idCardapio_adicional, $tipo, $id_mesa);
             }
 
             if (($dados['apagar'])=='preenchido'){
                 $idApagarAdicional = $dados['idApagarAdicional'];
 
-                (new ComandaControlador())->excluir($id, $idApagarAdicional, $mesa);
+                (new ComandaControlador())->excluir($id, $idApagarAdicional, $id_mesa);
             }
         }
 
@@ -81,20 +81,20 @@ class ComandaControlador extends Controlador
     }
     
 
-    public function excluir(int $id, int $idApagarAdicional, int $mesa)
+    public function excluir(int $id, int $idApagarAdicional, int $id_mesa)
     {   
-        (new ComandaModelo())->apagarLanche($id, $idApagarAdicional, $mesa);
+        (new ComandaModelo())->apagarLanche($id, $idApagarAdicional, $id_mesa);
 
-        (new ComandaModelo())->apagarAdicional($id, $mesa);
+        (new ComandaModelo())->apagarAdicional($id, $id_mesa);
 
-        (new ComandaModelo())->apagarBebida($id, $mesa);
+        (new ComandaModelo())->apagarBebida($id, $id_mesa);
 
         Helpers::redirecionar('pedidosAbertos');
     }
 
-    public function excluirMesa(int $mesa)
+    public function excluirMesa(int $id_mesa)
     {
-        (new ComandaModelo())->apagarMesa($mesa);
+        (new ComandaModelo())->apagarMesa($id_mesa);
 
         Helpers::redirecionar('pedidosAbertos');
     }

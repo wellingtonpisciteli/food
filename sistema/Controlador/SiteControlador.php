@@ -101,7 +101,7 @@ class SiteControlador extends Controlador
         $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
 
         echo ($this->template->renderizar('pedidosFechados.html', [
-            'titulo' => 'pedidos_abertos',
+            'titulo' => 'pedidos_fechados',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,

@@ -175,7 +175,9 @@ enviarLancheBtns.forEach(btn => {
         const id_mesaInput = document.createElement('input');
         id_mesaInput.type = 'hidden';
         id_mesaInput.name = 'id_mesa[]';
-        id_mesaInput.value = proximoId_mesa + 1;
+        id_mesaInput.value = proximoId_mesa + 2;
+
+        console.log('id_mesa lanche', id_mesaInput.value)
 
         const idLancheInput = document.createElement('input');
         idLancheInput.type = 'hidden';
@@ -316,7 +318,9 @@ enviarBebidaBtns.forEach(btn => {
         const id_mesaInputBebida = document.createElement('input');
         id_mesaInputBebida.type = 'hidden';
         id_mesaInputBebida.name = 'id_mesaBebida[]';
-        id_mesaInputBebida.value = proximoId_mesa + 1;
+        id_mesaInputBebida.value = proximoId_mesa + 2;
+
+        console.log('id_mesa lanche', id_mesaInputBebida.value)
 
         const idBebidaInput = document.createElement('input');
         idBebidaInput.type = 'hidden';
@@ -450,6 +454,11 @@ enviarIngredienteBtns.forEach(btn => {
         mesaInput.name = 'mesa_adicional[]';
         mesaInput.value = mesaPedido;
 
+        const id_mesaInput = document.createElement('input');
+        id_mesaInput.type = 'hidden';
+        id_mesaInput.name = 'id_mesaAdicional[]';
+        id_mesaInput.value = proximoId_mesa + 2;
+
         const idIngredieteInput = document.createElement('input');
         idIngredieteInput.type = 'hidden';
         idIngredieteInput.name = 'id_ingredi[]';
@@ -468,6 +477,7 @@ enviarIngredienteBtns.forEach(btn => {
         console.log(idAdicionalInput)
 
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(id_mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);
         pedidosDiv.appendChild(tipoInput);
         pedidosDiv.appendChild(idAdicionalInput);
@@ -579,6 +589,11 @@ removerIngredienteBtns.forEach(btn => {
         mesaInput.name = 'mesa_adicional[]';
         mesaInput.value = mesaPedido;
 
+        const id_mesaInput = document.createElement('input');
+        id_mesaInput.type = 'hidden';
+        id_mesaInput.name = 'id_mesaAdicional[]';
+        id_mesaInput.value = proximoId_mesa + 2;
+
         const idIngredieteInput = document.createElement('input');
         idIngredieteInput.type = 'hidden';
         idIngredieteInput.name = 'id_ingredi[]';
@@ -595,6 +610,7 @@ removerIngredienteBtns.forEach(btn => {
         idAdicionalInput.value = idIAdicional;
 
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(id_mesaInput);
         pedidosDiv.appendChild(idIngredieteInput);
         pedidosDiv.appendChild(tipoInput);
         pedidosDiv.appendChild(idAdicionalInput);

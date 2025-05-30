@@ -133,11 +133,12 @@ class ComandaModelo
 
     public function armazenarAdicional(array $adicional)
     {
-        $query = "INSERT INTO adicionais (id, mesa, nome_adicional, valor_adicional, tipo) VALUES (?, ?, ?, ?, ?)";
+        $query = "INSERT INTO adicionais (id, id_mesa, mesa, nome_adicional, valor_adicional, tipo) VALUES (?, ?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
         if (!empty($adicional['id_ingredi']) && is_array($adicional['id_ingredi'])) {
             foreach ($adicional['id_ingredi'] as $index => $id_ingredi) {
+                $id_mesa = $adicional['id_mesaAdicional'][$index] ?? null;
                 $mesa = $adicional['mesa_adicional'][$index] ?? null;
                 $tipo = $adicional['tipo'][$index] ?? null;
                 $id = $adicional['idAdd'][$index] ?? null;
@@ -157,6 +158,7 @@ class ComandaModelo
                     if (!empty($id_ingredi)) {
                         $stmt->execute([
                             $id_ingredi,
+                            $id_mesa,
                             $mesa,
                             $nomeAdicional,
                             $valorAdicional,
@@ -207,7 +209,9 @@ class ComandaModelo
     public function armazenarEatualizarTotal(array $dados): void
     {
         $mesa = $dados['mesa'][0] ?? $dados['mesa_bebida'][0] ?? $dados['mesa_adicional'][0];
-        $id_mesa = $dados['id_mesa'][0] ?? null;
+        $id_mesaBebida = $dados['id_mesaBebida'][0] ?? null;
+        $id_mesaAdicional = $dados['id_mesaAdicional'][0] ?? null;
+        $id_mesa = $dados['id_mesa'][0] ?? $id_mesaBebida ?? $id_mesaAdicional;
 
         $valorAtual = 0;
 
@@ -303,7 +307,7 @@ class ComandaModelo
         }
     }
 
-    public function atualizarLanche(array $dados, int $id, int $idCardapio, int $mesa)
+    public function atualizarLanche(array $dados, int $id, int $idCardapio, int $id_mesa)
     {
         $dados['id'] = $id;
 
@@ -330,20 +334,20 @@ class ComandaModelo
         $stmtLanche->execute($dados);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorLancheAtual) + $dados['valor_lanche'];
 
-        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);
     }
 
-    public function atualizarAdicional(int $chave, int $idCardapio, string $tipo, $mesa)
+    public function atualizarAdicional(int $chave, int $idCardapio, string $tipo, $id_mesa)
     {
         // Buscar dados do adicional atual
         $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
@@ -378,20 +382,20 @@ class ComandaModelo
         ]);
 
         // Busca o total atual da mesa
-        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorAdicionalAtual) + $valorAdicional;
 
-        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);
     }
 
-    public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho, $mesa)
+    public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho, $id_mesa)
     {  
         // Buscar dados da bebida atual
         $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
@@ -428,21 +432,21 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorBebidaAtual) + $valorBebida;
 
-        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);
     }
 
 
-    public function apagarLanche(int $id, int $idAdicional, int $mesa){
+    public function apagarLanche(int $id, int $idAdicional, int $id_mesa){
 
         $lancheAtual = $this->buscaPorId('lanches', $id);
         $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
@@ -473,20 +477,20 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorLancheAtual - $valorAdicionalAtual);
 
-        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);
     }
 
-    public function apagarAdicional(int $chave, $mesa){
+    public function apagarAdicional(int $chave, $id_mesa){
 
         $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
         $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
@@ -500,20 +504,20 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorAdicionalAtual);
 
-        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);
     }
 
-    public function apagarBebida(int $chave, $mesa){
+    public function apagarBebida(int $chave, $id_mesa){
 
         // Buscar dados da bebida atual
         $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
@@ -528,36 +532,36 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaTotal('total', $mesa);
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorBebidaAtual);
 
-        $queryTotal = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
         $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
         $stmtTotal->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);
     }
 
-    public function apagarMesa(int $mesa)
+    public function apagarMesa(int $id_mesa)
     {
         $tabelas = ['lanches', 'adicionais', 'bebidas', 'total'];
 
         foreach ($tabelas as $tabela)
         {
-            $query = "DELETE FROM {$tabela} WHERE mesa = :mesaApagar";
+            $query = "DELETE FROM {$tabela} WHERE id_mesa = :mesaApagar";
             $stmt = Conexao::getInstancia()->prepare($query);
             $stmt->execute([
-                'mesaApagar' => $mesa
+                'mesaApagar' => $id_mesa
             ]);
         } 
     }
 
     public function abrirMesa(int $mesa)
     {
-        $tabelas = ['lanches', 'bebidas'];
+        $tabelas = ['lanches', 'bebidas', 'total'];
 
         foreach ($tabelas as $tabela)
         {
