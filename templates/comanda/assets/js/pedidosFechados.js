@@ -8,10 +8,10 @@ const botoesAbrirMesa = document.querySelectorAll(".abrir-mesa");
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
-    const firstMesa = buttons[0].getAttribute("data-mesa");
+    const firstMesa = buttons[0].getAttribute("data-id-mesa");
 
     mesaComanda.forEach(item => {
-        if (item.getAttribute("data-mesa") === firstMesa) {
+        if (item.getAttribute("data-id-mesa") === firstMesa) {
             item.style.display = "block";  // Torna visível o conteúdo da primeira mesa
         } else {
             item.style.display = "none";   // Esconde o conteúdo das outras mesas
@@ -19,7 +19,7 @@ if (buttons.length > 0) {
     });
 
     tablePedido.forEach(item => {
-        if (item.getAttribute("data-mesa") === firstMesa) {
+        if (item.getAttribute("data-id-mesa") === firstMesa) {
             item.style.display = "block";  // Torna visível a tabela do pedido correspondente
         } else {
             item.style.display = "none";   // Esconde as tabelas de outros pedidos
@@ -30,11 +30,11 @@ if (buttons.length > 0) {
 // Itera sobre cada botão .btnAbrirAberto
 buttons.forEach(button => {
     button.addEventListener("click", () => {
-        const mesa = button.getAttribute("data-mesa");  // Obtém o número da mesa clicada
+        const mesa = button.getAttribute("data-id-mesa");  // Obtém o número da mesa clicada
 
         // Itera sobre as divs de pedidos e as tabelas de pedidos
         mesaComanda.forEach(item => {
-            if (item.getAttribute("data-mesa") === mesa) {
+            if (item.getAttribute("data-id-mesa") === mesa) {
                 item.style.display = "block";  // Torna visível o conteúdo da mesa correspondente
             } else {
                 item.style.display = "none";   // Esconde o conteúdo de outras mesas
@@ -42,7 +42,7 @@ buttons.forEach(button => {
         });
 
         tablePedido.forEach(item => {
-            if (item.getAttribute("data-mesa") === mesa) {
+            if (item.getAttribute("data-id-mesa") === mesa) {
                 item.style.display = "block";  // Torna visível a tabela do pedido correspondente
             } else {
                 item.style.display = "none";   // Esconde a tabela de outros pedidos

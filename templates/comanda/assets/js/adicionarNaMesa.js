@@ -34,10 +34,12 @@ function getDataHoraAtual() {
   
 
 const idIngredi = document.querySelectorAll('.idLancheNovo')
+const id_mesa = document.getElementById('id_mesa').value
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
 let proximoValor = parseInt(ultimoInput) || 0;
 let proximoValorBebida = parseInt(ultimoInput) || 0;
+
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
@@ -142,6 +144,11 @@ enviarLancheBtns.forEach(btn => {
         mesaInput.name = 'mesa[]';
         mesaInput.value = mesaPedido;
 
+        const id_mesaInput = document.createElement('input');
+        id_mesaInput.type = 'hidden';
+        id_mesaInput.name = 'id_mesa[]';
+        id_mesaInput.value = id_mesa;
+
         const idLancheInput = document.createElement('input');
         idLancheInput.type = 'hidden';
         idLancheInput.name = 'id_lanche[]';
@@ -158,6 +165,7 @@ enviarLancheBtns.forEach(btn => {
         idCardapioInput.value = idCardapio;
 
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(id_mesaInput);
         pedidosDiv.appendChild(idLancheInput);
         pedidosDiv.appendChild(detalhesLancheInput);
         pedidosDiv.appendChild(idCardapioInput);

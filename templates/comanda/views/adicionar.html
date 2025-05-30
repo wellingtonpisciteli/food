@@ -2,7 +2,9 @@
 {% block conteudo %}
 
 {% for num in mesa %}
+{% if num.status == 1 %}
 <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+{% endif %}
 {% endfor %}
 
 <header class="text-center bg-dark" id="adicionarHeader">
@@ -13,6 +15,7 @@
 
 {% for item in pedido %}
 <input type="hidden" value="{{ item.id_lanche }}" id="idLancheTeste" class="idLancheTeste">
+<input type="hidden" value="{{ item.id_mesa }} " id="id_mesa" class="id_mesa">
 {% endfor %}
 
 <div class="w-100 bg-dark" id="adicionarLanches">

@@ -20,9 +20,9 @@
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
-      {% if pedido.status == 0 and pedido.mesa not in mesas_exibidas %}
+      {% if pedido.status == 0 and pedido.id_mesa not in mesas_exibidas %}
         <button class="btnAbrirAberto btn fs-5 btn-success" style="font-weight: bolder; color: white; margin-bottom: 10px;"
-          data-mesa="{{ pedido.mesa }}">
+          data-id-mesa="{{ pedido.id_mesa }}">
           MESA:
           <span style="color: chartreuse; font-weight: bolder;">
             {% if pedido.mesa < 10 %}
@@ -32,7 +32,7 @@
             {% endif %}
           </span>
         </button>
-        {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
+        {% set mesas_exibidas = mesas_exibidas | merge([pedido.id_mesa]) %}
       {% endif %}
     {% endfor %}
   </div>
@@ -46,8 +46,8 @@
 
     {% for pedido in pedidos %}
     {% if pedido.status == 0 %}
-    {% if pedido.mesa not in mesas_exibidas %}
-  <div class="mesaAberta" style="display: none;" data-mesa="{{ pedido.mesa }}">
+    {% if pedido.id_mesa not in mesas_exibidas %}
+  <div class="mesaAberta" style="display: none;" data-id-mesa="{{ pedido.id_mesa }}">
     <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px; ">   
         
         {% if pedido.mesa < 10 %} 
@@ -67,7 +67,7 @@
       {% set mostrado = false %}
 
       {% for valor in total %}
-        {% if pedido.mesa == valor.mesa and not mostrado %}
+        {% if pedido.id_mesa == valor.id_mesa and not mostrado and valor.status == 0 %}
           <div>
             TOTAL: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
           </div>
@@ -96,11 +96,11 @@
     </div>
   </div>
   {% set cont = 0 %}
-  {% set mesas_exibidas = mesas_exibidas | merge([pedido.mesa]) %}
+  {% set mesas_exibidas = mesas_exibidas | merge([pedido.id_mesa]) %}
   {% endif %}
 
   <table style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;" class="tablePedido"
-    data-mesa="{{ pedido.mesa }}">
+    data-id-mesa="{{ pedido.id_mesa }}">
     <thead>
       <tr>
         <th class="thTableAberto" scope="col">
@@ -178,7 +178,7 @@
     
         <td style="font-weight: bolder;">
             {% for bebida in bebidas %}
-              {% if bebida.mesa == pedido.mesa and pedido.status == 0 %}
+              {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 0 %}
                 {% if bebida.id not in bebidas_exibidas %}              
                     {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>              
                   {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
@@ -189,7 +189,7 @@
     
         <td>
           {% for bebida in bebidas %}
-            {% if bebida.mesa == pedido.mesa and pedido.status == 0 %}
+            {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 0 %}
               {% if bebida.chave not in chaves_exibidas %}
                 <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
                 {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}

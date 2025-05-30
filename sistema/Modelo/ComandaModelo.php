@@ -72,6 +72,16 @@ class ComandaModelo
         return $resultado;
     }
 
+    public function buscaId_mesa(string $tabela, int $id_mesa): object
+    {
+        $query = "SELECT * FROM {$tabela} WHERE id_mesa={$id_mesa}";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetch();
+        return $resultado;
+    }
+
+
+
     public function lerRelacao(string $tabela, string $parametro, int $id): array | object
     {
         $querry = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
@@ -83,12 +93,13 @@ class ComandaModelo
 
     public function armazenarLanche(array $dados): void
     {
-        $query = "INSERT INTO lanches (mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, data_hora) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO lanches (id_mesa, mesa, id_lanche, nome_lanche, valor_lanche, detalhes_lanche, data_hora) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
         if (!empty($dados['id_lanche']) && is_array($dados['id_lanche'])) {
             foreach ($dados['mesa'] as $index => $mesa) {
+                $id_mesa = $dados['id_mesa'][$index] ?? null;
                 $id_lanche = $dados['id_lanche'][$index] ?? null;
                 $data_hora = $dados['data_hora'][$index] ?? date('Y-m-d H:i:s');
                 $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
@@ -106,6 +117,7 @@ class ComandaModelo
 
                     if (!empty($nome_lanche)) {
                         $stmt->execute([
+                            $id_mesa,
                             $mesa,
                             $id_lanche,
                             $nome_lanche,
@@ -158,11 +170,12 @@ class ComandaModelo
 
     public function armazenarBebida(array $bebida)
     {
-        $query = "INSERT INTO bebidas (mesa, id, nome_bebida, tamanho_bebida, detalhes_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO bebidas (id_mesa, mesa, id, nome_bebida, tamanho_bebida, detalhes_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
         if (!empty($bebida['mesa_bebida']) && is_array($bebida['mesa_bebida'])) {
             foreach ($bebida['mesa_bebida'] as $index => $mesa_bebida) {
+                $id_mesa = $bebida['id_mesaBebida'][$index] ?? null;
                 $idBebida = $bebida['id_bebida'][$index] ?? null;
                 $detalhes_bebida = $bebida['detalhes_bebida'][$index] ?? null;
                 $idMarca = $bebida['idMarcaBebida'][$index] ?? null;
@@ -178,6 +191,7 @@ class ComandaModelo
                     $valorBebida = $buscaTamanho->valor ?? null;
 
                     $stmt->execute([
+                        $id_mesa,
                         $mesa_bebida,
                         $idBebida,
                         $nomeBebida,
@@ -193,18 +207,19 @@ class ComandaModelo
     public function armazenarEatualizarTotal(array $dados): void
     {
         $mesa = $dados['mesa'][0] ?? $dados['mesa_bebida'][0] ?? $dados['mesa_adicional'][0];
+        $id_mesa = $dados['id_mesa'][0] ?? null;
 
         $valorAtual = 0;
 
         if (!empty($dados['controleTotal']) && $dados['controleTotal'] === 'controleTotal') { 
-            $queryAtualizar = "UPDATE total SET total = :novoTotal WHERE mesa = :mesa";
+            $queryAtualizar = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
             $stmtAtualizar = Conexao::getInstancia()->prepare($queryAtualizar);
 
             // Recupera o valor atual
-            $buscaTotal = $this->buscaTotal('total', $mesa);
+            $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
             $valorAtual = $buscaTotal->total ?? 0;
         }else{
-            $query = "INSERT INTO total (mesa, total) VALUES (?, ?)";
+            $query = "INSERT INTO total (id_mesa, mesa, total) VALUES (?, ?, ?)";
             $stmt = Conexao::getInstancia()->prepare($query);
         }   
 
@@ -247,10 +262,10 @@ class ComandaModelo
         if (!empty($dados['controleTotal']) && $dados['controleTotal'] === 'controleTotal') { 
             $stmtAtualizar->execute([
             'novoTotal' => $totalFinal,
-            'mesa' => $mesa
+            'id_mesa' => $id_mesa
         ]);  
         }else{
-            $stmt->execute([$mesa, $total]);
+            $stmt->execute([$id_mesa, $mesa, $total]);
         }
     }
 

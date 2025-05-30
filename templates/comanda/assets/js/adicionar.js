@@ -39,7 +39,6 @@ let idIngrediente = 0
 let idBebida = 0
 let controleBebida = false
 let controleCont = 0
-let nome_lanche = ""
 
 function getDataHoraAtual() {
     const agora = new Date();
@@ -56,10 +55,14 @@ function getDataHoraAtual() {
 }
 
 const idIngredi = document.querySelectorAll('.idLancheTeste')
+const id_mesa = document.querySelectorAll('.id_mesa')
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
 let proximoValor = parseInt(ultimoInput) || 0;
 let proximoValorBebida = parseInt(ultimoInput) || 0;
+
+let ultimoId_mesa = id_mesa.length > 0 ? id_mesa[id_mesa.length - 1].value : null;
+let proximoId_mesa = parseInt(ultimoId_mesa) || 0;
 
 enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
@@ -169,6 +172,11 @@ enviarLancheBtns.forEach(btn => {
         mesaInput.name = 'mesa[]';
         mesaInput.value = mesaPedido;
 
+        const id_mesaInput = document.createElement('input');
+        id_mesaInput.type = 'hidden';
+        id_mesaInput.name = 'id_mesa[]';
+        id_mesaInput.value = proximoId_mesa + 1;
+
         const idLancheInput = document.createElement('input');
         idLancheInput.type = 'hidden';
         idLancheInput.name = 'id_lanche[]';
@@ -188,6 +196,7 @@ enviarLancheBtns.forEach(btn => {
         console.log(total)
 
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(id_mesaInput);
         pedidosDiv.appendChild(idLancheInput);
         pedidosDiv.appendChild(detalhesLancheInput);
         pedidosDiv.appendChild(idCardapioInput);
@@ -304,6 +313,11 @@ enviarBebidaBtns.forEach(btn => {
         mesaInput.name = 'mesa_bebida[]';
         mesaInput.value = mesaPedido;
 
+        const id_mesaInputBebida = document.createElement('input');
+        id_mesaInputBebida.type = 'hidden';
+        id_mesaInputBebida.name = 'id_mesaBebida[]';
+        id_mesaInputBebida.value = proximoId_mesa + 1;
+
         const idBebidaInput = document.createElement('input');
         idBebidaInput.type = 'hidden';
         idBebidaInput.name = 'id_bebida[]';
@@ -325,6 +339,7 @@ enviarBebidaBtns.forEach(btn => {
         idTamanhoInput.value = idTamanhoValorBebida;
 
         pedidosDiv.appendChild(mesaInput);
+        pedidosDiv.appendChild(id_mesaInputBebida);
         pedidosDiv.appendChild(idBebidaInput);
         pedidosDiv.appendChild(detalhesBebidaInput);
         pedidosDiv.appendChild(idMarcaInput);
@@ -699,6 +714,7 @@ btnDiv.addEventListener("click", (e) => {
         horaInput.value = hora;
 
         pedidosDiv.appendChild(horaInput);
+
     }
 })
 
