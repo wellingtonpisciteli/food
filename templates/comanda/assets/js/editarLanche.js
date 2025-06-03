@@ -49,6 +49,7 @@ window.onload = function() {
         if (result.isConfirmed) {
           if (cont === 1) {
             document.getElementById('id_cardapio').value = 999;
+            document.getElementById('apagar').value = 'preenchido999';
           }else {
             document.getElementById('apagar').value = 'preenchido';
           }

@@ -5,6 +5,20 @@ const mesaButtonsContainer = document.getElementById("mesaButtonsContainer");
 const btnMostrarMesas = document.querySelector(".btnMostrarMesas"); 
 const botoesExcluir = document.querySelectorAll(".excluir-mesa");
 const botoesAbrirMesa = document.querySelectorAll(".abrir-mesa");
+const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
+
+function verificarMesa(mesaFechada) {
+    let mesaExiste = false;
+
+    controleMesa.forEach(mesaAberta => {
+        if (mesaAberta.value == mesaFechada) {
+            mesaExiste = true;
+        }
+    });
+
+    return mesaExiste;
+}
+
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
@@ -30,7 +44,7 @@ if (buttons.length > 0) {
 // Itera sobre cada botão .btnAbrirAberto
 buttons.forEach(button => {
     button.addEventListener("click", () => {
-        const mesa = button.getAttribute("data-id-mesa");  // Obtém o número da mesa clicada
+        const mesa = button.getAttribute("data-id-mesa");  // Obtém o id da mesa clicada
 
         // Itera sobre as divs de pedidos e as tabelas de pedidos
         mesaComanda.forEach(item => {
@@ -103,6 +117,18 @@ botoesAbrirMesa.forEach(botao => {
     botao.addEventListener("click", function (e) {
         e.preventDefault();
         const url = this.getAttribute("data-url");
+        const mesaFechada = this.getAttribute("data-mesa");
+
+         // Verifica se a mesa já existe
+        if (verificarMesa(mesaFechada)) {
+            Swal.fire({
+                title: 'Mesa inválida',
+                text: 'Esta mesa já está aberta!',
+                icon: 'info',
+                confirmButtonText: 'OK'
+            });
+            return; 
+        }
 
         Swal.fire({
             title: 'Tem certeza?',

@@ -3,7 +3,13 @@
 {% block conteudo %}
 
 <body class="w-100 bg-dark">
- 
+
+  {% for num in mesa %}
+  {% if num.status == 1 %}
+    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+  {% endif %}
+  {% endfor %}
+  
   <header class="bg-dark text-white fw-bolder fs-3"
     style="margin-top: 15px; margin-bottom: 20px; justify-content: center; display: flex;">Pedidos Fechados</header>
 
@@ -82,13 +88,14 @@
       <div>
         <a href="#"  
           class="btn fs-5 btn-primary abrir-mesa" 
-          data-url="{{ url('abrirMesa/' ~ pedido.mesa) }}"
+          data-url="{{ url('abrirMesa/' ~ pedido.id_mesa) }}"
+          data-mesa="{{ pedido.mesa }}"
           style="font-weight: bolder; color: white;  margin-right: 5px;">
           Abrir Mesa
         </a>
         <a href="#" 
           class="btn fs-5 btn-danger excluir-mesa" 
-          data-url="{{ url('excluirMesa/' ~ pedido.mesa) }}" 
+          data-url="{{ url('excluirMesa/' ~ pedido.id_mesa) }}" 
           style="font-weight: bolder; color: white; margin-left: 5px;">
           Excluir Mesa
         </a>

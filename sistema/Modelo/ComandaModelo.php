@@ -275,7 +275,8 @@ class ComandaModelo
 
 
     public function armazenarHora(array $dados){
-        $query = "UPDATE lanches SET data_hora = :data_hora WHERE mesa = :mesa";
+        
+        $query = "UPDATE lanches SET data_hora = :data_hora WHERE mesa = :mesa AND status = 1";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
@@ -292,17 +293,17 @@ class ComandaModelo
         }
     }
 
-    public function atualizarMesa(int $mesaAtual, int $novaMesa)
+    public function atualizarMesa(int $id_mesa, int $novaMesa)
     {
         $tabelas = ['lanches', 'adicionais', 'bebidas', 'total'];
 
         foreach ($tabelas as $tabela) {
-            $query = "UPDATE {$tabela} SET mesa = :mesaNova WHERE mesa = :mesaAtual";
+            $query = "UPDATE {$tabela} SET mesa = :mesaNova WHERE id_mesa = :idMesa";
 
             $stmt = Conexao::getInstancia()->prepare($query);
             $stmt->execute([
                 'mesaNova' => $novaMesa,
-                'mesaAtual' => $mesaAtual
+                'idMesa' => $id_mesa
             ]);
         }
     }
@@ -490,6 +491,39 @@ class ComandaModelo
         ]);
     }
 
+    public function apagar999(int $idAdicional, int $id_mesa){
+
+        $adicionalAtual = $this->buscaPorIdS('adicionais', $idAdicional);
+
+        $valorAdicionalAtual = 0;
+        if (is_array($adicionalAtual)) {
+            foreach ($adicionalAtual as $adicional) {
+                $valorAdicionalAtual += $adicional->valor_adicional ?? 0;
+            }
+        }
+
+        $queryAdicional = "DELETE FROM adicionais WHERE id = :idAdicional";
+
+        $stmtAdcional = Conexao::getInstancia()->prepare($queryAdicional);
+
+        $stmtAdcional->execute([
+            'idAdicional' => $idAdicional
+        ]);
+
+        // Atualizar total da mesa
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $totalAtual = $buscaTotal->total ?? 0;
+
+        $totalFinal = ($totalAtual - $valorAdicionalAtual);
+
+        $queryTotal = "UPDATE total SET total = :novoTotal WHERE id_mesa = :id_mesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            'novoTotal' => $totalFinal,
+            'id_mesa' => $id_mesa
+        ]);
+    }
+
     public function apagarAdicional(int $chave, $id_mesa){
 
         $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
@@ -559,17 +593,17 @@ class ComandaModelo
         } 
     }
 
-    public function abrirMesa(int $mesa)
+    public function abrirMesa(int $id_mesa)
     {
         $tabelas = ['lanches', 'bebidas', 'total'];
 
         foreach ($tabelas as $tabela)
         {
-            $query = "UPDATE {$tabela} SET status = :ativado WHERE mesa = :mesa";
+            $query = "UPDATE {$tabela} SET status = :ativado WHERE id_mesa = :idMesa";
             $stmt = Conexao::getInstancia()->prepare($query);
             $stmt->execute([
                 'ativado' => 1,
-                'mesa' => $mesa
+                'idMesa' => $id_mesa
             ]);
         } 
     }

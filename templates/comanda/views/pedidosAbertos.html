@@ -59,14 +59,14 @@
 
               {% if pedido.mesa < 10 %} 
                 <div>
-                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.mesa) }}"
+                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
                     style="color: white; margin-left: 5px; text-decoration: none;">
                     MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
                   </a>      
                 </div>
               {% else %}
                 <div>
-                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.mesa) }}"
+                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
                     style="color: white; margin-left: 5px; text-decoration: none;">
                     MESA: <span style="color: lime">{{ pedido.mesa }}</span>
                   </a>       

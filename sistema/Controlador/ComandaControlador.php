@@ -70,10 +70,14 @@ class ComandaControlador extends Controlador
                 (new ComandaModelo())->atualizarAdicional($id, $idCardapio_adicional, $tipo, $id_mesa);
             }
 
-            if (($dados['apagar'])=='preenchido'){
+            if (($dados['apagar']) == 'preenchido'){
                 $idApagarAdicional = $dados['idApagarAdicional'];
 
                 (new ComandaControlador())->excluir($id, $idApagarAdicional, $id_mesa);
+            }elseif ($dados['apagar'] == 'preenchido999'){
+                $idApagarAdicional = $dados['idApagarAdicional'];
+
+                (new ComandaControlador())->excluir999($idApagarAdicional, $id_mesa);
             }
         }
 
@@ -92,6 +96,13 @@ class ComandaControlador extends Controlador
         Helpers::redirecionar('pedidosAbertos');
     }
 
+    public function excluir999(int $idApagarAdicional, int $id_mesa)
+    {   
+        (new ComandaModelo())->apagar999($idApagarAdicional, $id_mesa);
+
+        Helpers::redirecionar('pedidosAbertos');
+    }
+
     public function excluirMesa(int $id_mesa)
     {
         (new ComandaModelo())->apagarMesa($id_mesa);
@@ -99,19 +110,19 @@ class ComandaControlador extends Controlador
         Helpers::redirecionar('pedidosAbertos');
     }
 
-    public function editarMesa(int $mesaAtual, int $novaMesa)
+    public function editarMesa(int $id_mesa, int $novaMesa)
     {
         if ($novaMesa) {
-            (new ComandaModelo())->atualizarMesa($mesaAtual, $novaMesa);
+            (new ComandaModelo())->atualizarMesa($id_mesa, $novaMesa);
         }
 
         Helpers::redirecionar('pedidosAbertos');
     }
 
-    public function abrirMesa(int $mesa): void
+    public function abrirMesa(int $id_mesa): void
     {
-        if ($mesa) {
-            (new ComandaModelo())->abrirMesa($mesa);
+        if ($id_mesa) {
+            (new ComandaModelo())->abrirMesa($id_mesa);
         }
 
        Helpers::redirecionar('pedidosAbertos');
