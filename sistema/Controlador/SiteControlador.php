@@ -81,6 +81,11 @@ class SiteControlador extends Controlador
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
         $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'pedidos_abertos',
@@ -88,6 +93,11 @@ class SiteControlador extends Controlador
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
             'mesa' => $mesa,
+            'cardapioLanche' => $cardapioLanche,
+            'ingredientes' => $ingredientes,
+            'cardapioBebida' => $cardapioBebida,
+            'tamanhoBebida' => $tamanho_bebida,
+            'ingred' => $ingredi,
             'total' => $total
         ]));
     }
@@ -99,6 +109,11 @@ class SiteControlador extends Controlador
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
         $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('pedidosFechados.html', [
             'titulo' => 'pedidos_fechados',
@@ -106,6 +121,11 @@ class SiteControlador extends Controlador
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
             'mesa' => $mesa,
+            'cardapioLanche' => $cardapioLanche,
+            'ingredientes' => $ingredientes,
+            'cardapioBebida' => $cardapioBebida,
+            'tamanhoBebida' => $tamanho_bebida,
+            'ingred' => $ingredi,
             'total' => $total
         ]));
     }

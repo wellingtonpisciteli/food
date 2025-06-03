@@ -195,6 +195,10 @@ body{
     padding: 20px;
 }
 
+.cardapio-pedidos-abertos{
+    background-color: #f8f9fa;
+}
+
 /* Container da tabela */
 .table-responsive {
     width: 97%;
@@ -437,6 +441,18 @@ body{
   transition: all 0.2s ease-in-out;
 }
 
+.dropdown-fake-abertos {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 16px;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
 /* Botão/resumo do dropdown */
 .dropdown-fake summary {
   cursor: pointer;
@@ -479,6 +495,12 @@ body{
     padding: 6px 8px;
   }
 
+  .dropdown-fake-abertos {
+    font-size: 14px;
+    max-width: 100%;
+    padding: 6px 8px;
+  }
+
   .dropdown-list span {
     font-size: 13px;
   }
@@ -496,6 +518,12 @@ body{
     padding: 8px 10px;
   }
 
+  .dropdown-fake-abertos {
+    font-size: 15px;
+    max-width: 100%;
+    padding: 8px 10px;
+  }
+
   .dropdown-list span {
     font-size: 14px;
   }
@@ -503,6 +531,30 @@ body{
   .cardapio-th-item{
     width: 215px;
   }
+}
+
+.linha-com-texto {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 98%;
+  margin: 20px auto;
+  color: white;
+  font-weight: bold;
+  position: relative;
+}
+
+.linha-com-texto span {
+  position: relative;
+  z-index: 1;
+}
+
+.linha-com-texto::before,
+.linha-com-texto::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid white;
+  margin: 0 10px;
 }
 
 
