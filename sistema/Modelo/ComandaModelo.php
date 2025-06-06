@@ -55,7 +55,6 @@ class ComandaModelo
         return $resultado;
     }
 
-
     public function buscaPorMesa(string $tabela, int $mesa): array
     {
         $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
@@ -80,15 +79,29 @@ class ComandaModelo
         return $resultado;
     }
 
-
-
     public function lerRelacao(string $tabela, string $parametro, int $id): array | object
     {
-        $querry = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
-        $stmt = Conexao::getInstancia()->query($querry);
+        $query = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
+        $stmt = Conexao::getInstancia()->query($query);
         $resultado = $stmt->fetchAll();
         return $resultado;
     }
+
+    public function maisVendido(string $tabela, string $item, string $param, string $dataAtual)
+{
+    $query = "SELECT {$item}, COUNT(*) AS total_vendas
+              FROM {$tabela}
+              WHERE DATE(data_hora) = :dataAtual
+              GROUP BY {$item}
+              ORDER BY total_vendas {$param}";
+
+    $stmt = Conexao::getInstancia()->prepare($query);
+    $stmt->execute([
+        'dataAtual' => $dataAtual
+    ]);
+
+    return $stmt->fetchAll();
+}
 
 
     public function armazenarLanche(array $dados): void

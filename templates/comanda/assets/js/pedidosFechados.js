@@ -67,27 +67,26 @@ buttons.forEach(button => {
 
 // Evento para mostrar/ocultar os botões das mesas ao clicar no botão "Mostrar Todos"
 btnMostrarMesas.addEventListener("click", function () {
-    // Verifica se os botões das mesas estão visíveis ou não
     if (mesaButtonsContainer.style.display === "none" || mesaButtonsContainer.style.display === "") {
-        // Torna os botões das mesas visíveis
         mesaButtonsContainer.style.display = "flex";
-
-        // Muda o texto do botão para "Fechar Todos"
         btnMostrarMesas.textContent = "Fechar Todos";
 
-        // Altera o estilo do botão para "btn-danger"
-        btnMostrarMesas.classList.remove("btn-primary"); // Remove a classe btn-primary
-        btnMostrarMesas.classList.add("btn-danger"); // Adiciona a classe btn-danger
-    } else {
-        // Esconde os botões das mesas
-        mesaButtonsContainer.style.display = "none";
+        // Remove azul inline para não conflitar com o darkred
+        btnMostrarMesas.style.backgroundColor = 'darkred';
+        btnMostrarMesas.style.color = 'white';
 
-        // Muda o texto do botão para "Mostrar Todos"
+        // Remove qualquer classe que possa interferir
+        btnMostrarMesas.classList.remove("btn-danger");
+    } else {
+        mesaButtonsContainer.style.display = "none";
         btnMostrarMesas.textContent = "Mostrar Todos";
 
-        // Altera o estilo do botão para "btn-primary"
-        btnMostrarMesas.classList.remove("btn-danger"); // Remove a classe btn-danger
-        btnMostrarMesas.classList.add("btn-primary"); // Adiciona a classe btn-primary
+        // Volta pro azul inline
+        btnMostrarMesas.style.backgroundColor = "blue";
+        btnMostrarMesas.style.color = "white";
+
+        // Remove classe btn-danger só por garantia
+        btnMostrarMesas.classList.remove("btn-danger");
     }
 });
 
@@ -101,8 +100,8 @@ botoesExcluir.forEach(botao => {
             text: "Esta ação não pode ser desfeita!",
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            confirmButtonColor: 'darkred',
+            cancelButtonColor: 'blue',
             confirmButtonText: 'Sim, excluir mesa!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
@@ -125,7 +124,8 @@ botoesAbrirMesa.forEach(botao => {
                 title: 'Mesa inválida',
                 text: 'Esta mesa já está aberta!',
                 icon: 'info',
-                confirmButtonText: 'OK'
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'
             });
             return; 
         }

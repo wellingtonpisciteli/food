@@ -2,22 +2,22 @@
 
 {% block conteudo %}
 
-<body class="w-100 bg-dark">
+<body class="w-100" style="background-color: black;">
   {% for num in mesa %}
   {% if num.status == 1 %}
     <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
   {% endif %}
   {% endfor %}
 
-  <header class="bg-dark text-white fw-bolder fs-3"
-    style="margin-top: 15px; margin-bottom: 20px; justify-content: center; display: flex;">
+  <header class="cardapio-header"
+    style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
     <div class="linha-com-texto">
-      <span>Abertos</span>
+      <span>MESAS ABERTAS</span>
     </div>
   </header>
 
   <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <button class="btnMostrarMesas btn fs-5 btn-primary" style="font-weight: bolder; color: white;">
+    <button class="btnMostrarMesas btn fs-5" style="font-weight: bolder; color: white; background-color: blue;">
       Mostrar Todos
     </button>
   </div>
@@ -29,7 +29,7 @@
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
       {% if pedido.status == 1 and pedido.id_mesa not in mesas_exibidas %}
-        <button class="btnAbrirAberto btn fs-5 btn-success" style="font-weight: bolder; color: white;"
+        <button class="btnAbrirAberto btn fs-5" style="font-weight: bolder; color: white; background-color: darkgreen; margin-bottom: 5px;"
           data-id-mesa="{{ pedido.id_mesa }}">
           MESA:
           <span style="color: chartreuse; font-weight: bolder;">
@@ -94,13 +94,13 @@
               </div>
 
               <div>
-                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 btn-primary"
-                  style="font-weight: bolder; color: white; margin-right: 5px;">
+                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5"
+                  style="font-weight: bolder; color: white; margin-right: 5px; background-color: blue;">
                   Adicionar
                 </a>
-                <a href="#" class="btn fs-5 btn-danger excluir-mesa"
+                <a href="#" class="btn fs-5 excluir-mesa"
                   data-url="{{ url('excluirMesa/' ~ pedido.id_mesa) }}"
-                  style="font-weight: bolder; color: white; margin-left: 5px;">
+                  style="font-weight: bolder; color: white; margin-left: 5px; background-color: darkred;">
                   Excluir Mesa
                 </a>
               </div>
@@ -205,14 +205,14 @@
   </header>
 
   <div class="bg-light cardapio-pedidos-abertos"
-    style="width: 97%; justify-content: center; margin: auto; padding: 5px; margin-bottom: 30px;">
+    style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 30px;">
 
     <!-- Cardápio de Lanches -->
-    <table class="table cardapio-lanche">
+    <table class="table cardapio-lanche" style="margin-top: 2px;">
       <thead class="thead-dark">
         <tr>
-          <th class="cardapio-th bg-dark text-white">LANCHES</th>
-          <th class="cardapio-th bg-dark text-white">VALOR</th>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">LANCHES</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
         </tr>
       </thead>
       {% for cardapio in cardapioLanche %}
@@ -243,8 +243,8 @@
     <table class="table cardapio-bebida">
       <thead class="thead-dark">
         <tr>
-          <th class="cardapio-th bg-dark text-white">BEBIDAS</th>
-          <th class="cardapio-th bg-dark text-white">VALOR</th>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">BEBIDAS</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
         </tr>
       </thead>
       {% for bebidas in cardapioBebida %}
@@ -271,8 +271,8 @@
     <table class="table cardapio-adicionais">
       <thead class="thead-dark">
         <tr>
-          <th class="cardapio-th bg-dark text-white">ADICIONAIS</th>
-          <th class="cardapio-th bg-dark text-white">VALOR</th>
+          <th class="cardapio-th  text-white" id="cardapio-th-naovalor">ADICIONAIS</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
         </tr>
       </thead>
       {% for ingredi in ingred %}

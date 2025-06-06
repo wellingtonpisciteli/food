@@ -28,6 +28,7 @@ class SiteControlador extends Controlador
 
     public function comanda(): void
     {
+        $dataAtual = (new Helpers())->dataAtual('Y-m-d');
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
@@ -37,6 +38,8 @@ class SiteControlador extends Controlador
         $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
         $total = (new ComandaModelo())->ler("total", "total", "DESC");
         $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $lancheMaisVendido = (new ComandaModelo())->maisVendido('lanches', 'nome_lanche', 'DESC', $dataAtual);
+        
 
         echo ($this->template->renderizar('comanda.html', [
             'titulo' => 'Sistema_Food',
@@ -47,8 +50,9 @@ class SiteControlador extends Controlador
             'ingred' => $ingredi,
             'adicional' => $adicional,
             'bebidas' => $bebidas,
+            'ingredientes' => $ingredientes,
+            'maisVendido' => $lancheMaisVendido,
             'total' => $total,
-            'ingredientes' => $ingredientes
         ]));
     }
 

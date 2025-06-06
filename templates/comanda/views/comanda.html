@@ -2,27 +2,35 @@
 
 {% block conteudo %}
 
-<body class="w-100 bg-dark">
+<body class="w-100" style="background-color: black;">
+
+  {% set controleUltimos = 0 %}
   
-  <header class="bg-dark text-white fw-bolder fs-3" style="margin-top: 15px; text-indent: 2.5%;">Ultimos Pedidos
+  {% for pedido in pedidos %}
+  {% set controleUltimos = controleUltimos + 1 %}
+  {% if controleUltimos == 1 %}
+  <header class="cardapio-header">
+    <div class="linha-com-texto">
+      <span>ULTIMOS PEDIDOS</span>
+    </div>
   </header>
+  {% endif %}
+  {% endfor %}
 
-
-  <div class="bg-light" style="height: 550px; width: 600px; margin-left: 2.5%; margin-top: 20px; margin-bottom: 20px; display: none; align-items: center; justify-content: center;">
-    <h4>Ultimos Pedidos apareceram aqui...</h4>
-  </div>
-
-  <div id="divTable" class="bg-light table-responsive">
+ 
+  <div class="bg-light cardapio-pedidos-abertos"
+    style="width: 97%; justify-content: center; margin: auto; margin-bottom: 70px;">
     {% set mesas_exibidas = [] %}
     {% set bebidas_exibidas = [] %}
     {% set cont = 0 %}
+    {% set contando = 0 %}
     {% set ultimosTres = 0 %}
 
     {% for pedido in pedidos %}
     {% if pedido.status == 1 and pedido.id_mesa not in mesas_exibidas %}
 
-    {% if cont > 0 %}
-    <div class="bg-dark" style="height: 15px;"></div> <!-- Ajuste no espaçamento -->
+    {% if contando == 1 or contando == 2 %}
+      <div  style="height: 15px; background-color: black;"></div>
     {% endif %}
 
     {% set ultimosTres = ultimosTres + 1 %}
@@ -62,6 +70,7 @@
 
   {% set mesas_exibidas = mesas_exibidas | merge([pedido.id_mesa]) %}
   {% set cont = 0 %}
+  {% set contando = contando + 1 %}
   {% endif %}
 
   {% if ultimosTres <= 3 and pedido.status == 1 %} {% if pedido.nome_lanche %} <!-- Verifica se há algum lanche ou bebida
@@ -125,91 +134,141 @@
     {% endfor %}
     </div> 
     </div>
+    {% set contando = 0 %}
 
-    <div class="cardapio-wrapper">
-      <div class="cardapio-container">
-        <div class="table-responsive">
-          <!-- Cardápio de Lanches -->
-          <table class="table cardapio-lanche">
-            <header class="cardapio-header">CARDÁPIO</header>
-            <thead class="thead-dark">
-              <tr>
-                <th class="cardapio-th bg-dark text-white">LANCHES</th>
-                <th class="cardapio-th bg-dark text-white">VALOR</th>
-              </tr>
-            </thead>
-            {% for cardapio in cardapioLanche %}
-            <tbody>
-              <tr>
-                {% if cardapio.lanche != 'Em escolha...' %}
-                  <th class="cardapio-th-item" style="width: 360px;">
-                    <details class="dropdown-fake">
-                      <summary class="dropdown-label">{{ cardapio.lanche }}</summary>
-                      <ul class="dropdown-list">
-                        {% for ingred in ingredientes %}
-                          {% if ingred.lanche_id == cardapio.id %}
-                            <span>{{ ingred.ingredientes }}</span>
-                          {% endif %}
-                        {% endfor %}
-                      </ul>
-                    </details>
-                  </th>
-                  
-                  <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
-                {% endif %}
-              </tr>
-            </tbody>
-            {% endfor %}
-          </table>
 
-          <!-- Cardápio de Bebidas -->
-          <table class="table cardapio-bebida">
-            <thead class="thead-dark">
-              <tr>
-                <th class="cardapio-th bg-dark text-white">BEBIDAS</th>
-                <th class="cardapio-th bg-dark text-white">VALOR</th>
-              </tr>
-            </thead>
-            {% for bebidas in cardapioBebida %}
-            <tbody>
-              <tr>
-                <th class="cardapio-th-item">{{ bebidas.marca }}</th>
-                <td class="cardapio-valor">
-                  <select class="form-select" id="valor_lanche">
-                    {% for tamanho in tamanhoBebida %}
-                    {% if tamanho.marca_bebida_id == bebidas.id %}
-                    <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
-                      {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
-                    </option>
-                    {% endif %}
-                    {% endfor %}
-                  </select>
-                </td>
-              </tr>
-            </tbody>
-            {% endfor %}
-          </table>
-
-          <!-- Cardápio de Adicionais -->
-          <table class="table cardapio-adicionais">
-            <thead class="thead-dark">
-              <tr>
-                <th class="cardapio-th bg-dark text-white">ADICIONAIS</th>
-                <th class="cardapio-th bg-dark text-white">VALOR</th>
-              </tr>
-            </thead>
-            {% for ingredi in ingred %}
-            <tbody>
-              <tr>
-                <th class="cardapio-th-item">{{ ingredi.ingrediente }}</th>
-                <th id="valor_lanche" class="cardapio-th-item">{{ ingredi.valor | number_format(2, ',', '.') }}</th>
-              </tr>
-            </tbody>
-            {% endfor %}
-          </table>
-        </div>
-      </div>
+    <header class="cardapio-header" style="margin-top: -30px;">
+    <div class="linha-com-texto">
+      <span>CARDÁPIO</span>
     </div>
+  </header>
+
+  <div class="bg-light cardapio-pedidos-abertos"
+    style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 40px;">
+
+    <!-- Cardápio de Lanches -->
+    <table class="table cardapio-lanche" style="margin-top: 2px;">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">LANCHES</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
+        </tr>
+      </thead>
+      {% for cardapio in cardapioLanche %}
+      <tbody>
+        <tr>
+          {% if cardapio.lanche != 'Em escolha...' %}
+            <th class="cardapio-th-item" style="width: 600px;">
+              <details class="dropdown-fake-abertos">
+                <summary class="dropdown-label">{{ cardapio.lanche }}</summary>
+                <ul class="dropdown-list">
+                  {% for ingred in ingredientes %}
+                    {% if ingred.lanche_id == cardapio.id %}
+                      <span>{{ ingred.ingredientes }}</span>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </details>
+            </th>
+            
+            <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
+          {% endif %}
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+
+    <!-- Cardápio de Bebidas -->
+    <table class="table cardapio-bebida">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">BEBIDAS</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
+        </tr>
+      </thead>
+      {% for bebidas in cardapioBebida %}
+      <tbody>
+        <tr>
+          <th class="cardapio-th-item">{{ bebidas.marca }}</th>
+          <td class="cardapio-valor">
+            <select class="form-select" id="valor_lanche">
+              {% for tamanho in tamanhoBebida %}
+              {% if tamanho.marca_bebida_id == bebidas.id %}
+              <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
+              </option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+
+    <!-- Cardápio de Adicionais -->
+    <table class="table cardapio-adicionais">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th  text-white" id="cardapio-th-naovalor">ADICIONAIS</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
+        </tr>
+      </thead>
+      {% for ingredi in ingred %}
+      <tbody>
+        <tr>
+          <th class="cardapio-th-item">{{ ingredi.ingrediente }}</th>
+          <th id="valor_lanche" class="cardapio-th-item">{{ ingredi.valor | number_format(2, ',', '.') }}</th>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+
+  {% if controleUltimos != 0 %}
+  <header class="cardapio-header">
+    <div class="linha-com-texto">
+      <span>MAIS VENDIDOS {{ dataAtual() }}</span>
+    </div>
+  </header>
+
+  <div class="bg-light cardapio-pedidos-abertos"
+      style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 50px;">
+    <table class="table cardapio-lanche" style="margin-top: 2px;">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">POSIÇÃO</th>
+          <th class="cardapio-th text-white" style="background-color: #FF4500;">LANCHES</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VENDAS</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for venda in maisVendido %}
+        {% if venda.nome_lanche != "Em escolha..." %}
+        <tr>
+          <td class="thTable" style="text-align: center;">
+            {% if loop.index == 1 %}
+              🥇
+            {% elseif loop.index == 2 %}
+              🥈
+            {% elseif loop.index == 3 %}
+              🥉
+            {% else %}
+              {{ loop.index }}º
+            {% endif %}
+          </td>
+          <td class="thTable" style="text-align: center;">{{ venda.nome_lanche }}</td>
+          <td class="thTable" style="text-align: center;">{{ venda.total_vendas }}</td>
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endif %}
+
+
+    
 </body>
 
 

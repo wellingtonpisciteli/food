@@ -11,7 +11,8 @@ if (numMesaInput) {
                     title: 'Mesa inválida',
                     text: 'Escolha outro número',
                     icon: 'info',
-                    confirmButtonText: 'OK'
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'blue'
                 });
             }
         })
@@ -130,7 +131,7 @@ enviarLancheBtns.forEach(btn => {
 
         const obsLancheBtnApagar = document.createElement('button');
         obsLancheBtnApagar.className = 'text-center align-middle text-white';
-        obsLancheBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsLancheBtnApagar.style = 'border-radius: 2px; background-color: darkred; border: black; width: 30px;'
         obsLancheBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsLancheBtnApagar.onclick = () => {
 
@@ -278,7 +279,7 @@ enviarBebidaBtns.forEach(btn => {
 
         const obsBebidaBtnApagar = document.createElement('button');
         obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
-        obsBebidaBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsBebidaBtnApagar.style = 'border-radius: 2px; background-color: darkred !important; border: black; width: 30px;'
         obsBebidaBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsBebidaBtnApagar.onclick = () => {
             row.remove(); // Remove a linha inteira do DOM
@@ -415,7 +416,7 @@ enviarIngredienteBtns.forEach(btn => {
 
         const obsIngredienteBtnApagar = document.createElement('button');
         obsIngredienteBtnApagar.className = 'text-center align-middle text-white';
-        obsIngredienteBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsIngredienteBtnApagar.style = 'border-radius: 2px; background-color: darkred; border: black; width: 30px;'
         obsIngredienteBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsIngredienteBtnApagar.onclick = () => {
 
@@ -554,7 +555,7 @@ removerIngredienteBtns.forEach(btn => {
 
         const obsIngredienteBtnApagar = document.createElement('button');
         obsIngredienteBtnApagar.className = 'text-center align-middle text-white';
-        obsIngredienteBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsIngredienteBtnApagar.style = 'border-radius: 2px; background-color: darkred; border: black; width: 30px;'
         obsIngredienteBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsIngredienteBtnApagar.onclick = () => {
 
@@ -678,11 +679,8 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
         confirmButtonText: '✅ Enviar Pedido',
         cancelButtonText: '🛑 Manter Pedido',
         reverseButtons: true,
-        customClass: {
-            confirmButton: 'btn btn-primary mx-2',
-            cancelButton: 'btn btn-danger mx-2'
-        },
-        buttonsStyling: false
+        confirmButtonColor: 'blue',      // azul para confirmar
+        cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
     });
 }
 
@@ -693,7 +691,8 @@ btnDiv.addEventListener("click", (e) => {
             title: 'Comanda Vazia!',
             text: 'Selecione um item do cárdapio.',
             icon: 'info',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: 'blue' 
         });
         return
     }
@@ -704,7 +703,8 @@ btnDiv.addEventListener("click", (e) => {
             title: 'Lanche em escolha?',
             text: 'Selecione "Em ecolha..."',
             icon: 'info',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: 'blue' 
         });
         return
     }
@@ -735,21 +735,20 @@ btnDiv.addEventListener("click", (e) => {
 })
 
 btnDivCancelar.addEventListener('click', () => {
-    // Usando Swal.fire para confirmação com a opção de "Sim" e "Não"
     Swal.fire({
         title: 'Cancelar?',
         text: "Tem certeza que deseja cancelar?",
         icon: 'warning',
-        showCancelButton: true,  // Exibe o botão de cancelamento
+        showCancelButton: true,
         confirmButtonText: 'Sim, cancelar',
         cancelButtonText: 'Não, manter',
-        reverseButtons: true  // Coloca os botões na ordem: "Sim, cancelar" e "Não, manter"
+        reverseButtons: true,
+        confirmButtonColor: 'darkred',  // cor do botão confirmar
+        cancelButtonColor: 'blue'       // cor do botão cancelar
     }).then((result) => {
         if (result.isConfirmed) {
-            // Se o usuário confirmar (clicar em "Sim, cancelar")
-            location.reload();  // Recarregar a página
+            location.reload();
         } else {
-            // Caso o usuário cancele, não faz nada
             console.log("Cancelado");
         }
     });

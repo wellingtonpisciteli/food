@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 body{
-    background-color: rgba(165, 42, 42, 0.048);
+    background-color: black;
 }
 
 #menuComanda{
@@ -553,8 +553,16 @@ body{
 .linha-com-texto::after {
   content: '';
   flex: 1;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid yellow;
   margin: 0 10px;
+}
+
+#cardapio-th-naovalor{
+    background-image: linear-gradient(to left, #FF4500, black);
+}
+
+#cardapio-th-valor{
+    background-image: linear-gradient(to left, black, #FF4500);
 }
 
 
