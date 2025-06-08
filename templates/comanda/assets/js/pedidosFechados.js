@@ -96,7 +96,7 @@ botoesExcluir.forEach(botao => {
         const url = this.getAttribute("data-url");
 
         Swal.fire({
-            title: 'Tem certeza?',
+            title: '<span style="color: black;">Tem certeza?</span>',
             text: "Esta ação não pode ser desfeita!",
             icon: 'warning',
             showCancelButton: true,
@@ -121,7 +121,7 @@ botoesAbrirMesa.forEach(botao => {
          // Verifica se a mesa já existe
         if (verificarMesa(mesaFechada)) {
             Swal.fire({
-                title: 'Mesa inválida',
+                title: '<span style="color: black;">Mesa inválida</span>',
                 text: 'Esta mesa já está aberta!',
                 icon: 'info',
                 confirmButtonText: 'OK',

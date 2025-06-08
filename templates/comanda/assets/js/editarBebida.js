@@ -28,12 +28,12 @@ window.onload = function() {
         event.preventDefault(); 
 
         Swal.fire({
-            title: 'Apagar?',
+            title: '<span style="color: black;">Apagar?</span>',
             text: 'Deseja apagar este lanche?',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
+            confirmButtonColor: 'darkred',
+            cancelButtonColor: 'blue',
             confirmButtonText: 'Sim',
             cancelButtonText: 'Não',
             reverseButtons: true
@@ -64,27 +64,27 @@ window.onload = function() {
             text: 'Escolha uma bebida antes de enviar.',
             icon: 'info',
             confirmButtonText: 'OK',
-            confirmButtonColor: '#0d6efd'
+            confirmButtonColor: 'blue'
         });
         return;
         }
 
         Swal.fire({
-        title: '📋 Confirmar Edição?',
+        title: '<span style="color: black;">📋 Confirmar Edição?</span>',
         html: `
             <div style="text-align: left;">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                 <thead>
                 <tr style="background-color: #f0f0f0;">
-                    <th style="padding: 6px 10px; text-align: left;">Item</th>
-                    <th style="padding: 6px 10px; text-align: center;">Tamanho</th>
-                    <th style="padding: 6px 10px; text-align: right;">Valor</th>
+                    <th style="padding: 6px 10px; text-align: left; color: black;">Item</th>
+                    <th style="padding: 6px 10px; text-align: center; color: black;">Tamanho</th>
+                    <th style="padding: 6px 10px; text-align: right; color: black;">Valor</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr style="border-bottom: 1px solid #ccc;">
-                    <td style="padding: 6px 10px;">🥤 ${nome}</td>
-                    <td style="padding: 6px 10px; text-align: center;">${tamanho}</td>
+                    <td style="padding: 6px 10px; color: black;"><strong>🥤 ${nome}</strong></td>
+                    <td style="padding: 6px 10px; text-align: center; color: black;"><strong>${tamanho}</strong></td>
                     <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>R$ ${valor}</strong></td>
                 </tr>
                 </tbody>
@@ -93,14 +93,11 @@ window.onload = function() {
         `,
         icon: 'question',
         showCancelButton: true,
-        confirmButtonText: '✅ Enviar Pedido',
+        confirmButtonText: '✅ Confirmar',
         cancelButtonText: '🛑 Cancelar',
         reverseButtons: true,
-        customClass: {
-            confirmButton: 'btn btn-primary mx-2',
-            cancelButton: 'btn btn-danger mx-2'
-        },
-        buttonsStyling: false
+        confirmButtonColor: 'blue',      // azul para confirmar
+        cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
         }).then((result) => {
         if (result.isConfirmed) {
             form.submit();

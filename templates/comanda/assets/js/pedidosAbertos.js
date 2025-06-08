@@ -81,7 +81,7 @@ botoesExcluir.forEach(botao => {
         const url = this.getAttribute("data-url");
 
         Swal.fire({
-            title: 'Tem certeza?',
+            title: '<span style="color: black;">Tem certeza?</span>',
             text: "Esta ação não pode ser desfeita!",
             icon: 'warning',
             showCancelButton: true,
@@ -107,7 +107,7 @@ document.querySelectorAll('.editar-mesa').forEach(botao => {
         const mesaAtual = this.getAttribute('data-mesa-atual');
 
         Swal.fire({
-            title: 'Editar Mesa',
+            title: '<span style="color: black;">Editar Mesa</span>',
             icon: 'question',
             html: `
                 <input type="text" id="novaMesa" class="swal2-input" placeholder="Nova mesa">

@@ -17,6 +17,7 @@ let total = 0
 let idIngrediente = 0
 let idBebida = 0
 let controleBebida = false
+let controleCont = 0
 
 function getDataHoraAtual() {
     const agora = new Date();
@@ -45,6 +46,7 @@ enviarLancheBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         controleBebida = true
         cont += 1
+        controleCont += 1
         proximoValor++;
 
         console.log('====================');
@@ -106,7 +108,7 @@ enviarLancheBtns.forEach(btn => {
 
         const obsLancheBtnApagar = document.createElement('button');
         obsLancheBtnApagar.className = 'text-center align-middle text-white';
-        obsLancheBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsLancheBtnApagar.style = 'border-radius: 2px; background-color: darkred; border: black; width: 30px;'
         obsLancheBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsLancheBtnApagar.onclick = () => {
 
@@ -122,6 +124,8 @@ enviarLancheBtns.forEach(btn => {
 
             total -= parseFloat(valorLanche);
             totalCell.textContent = `$${total.toFixed(2)}`;
+
+            controleCont -= 1
         };
 
         const obsLancheCell = document.createElement('td');
@@ -182,6 +186,7 @@ enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
         idBebida = proximoValorBebida+=30
         cont += 1;
+        controleCont += 1
 
         idBebida;
         
@@ -247,7 +252,7 @@ enviarBebidaBtns.forEach(btn => {
 
         const obsBebidaBtnApagar = document.createElement('button');
         obsBebidaBtnApagar.className = 'text-center align-middle bg-danger text-white';
-        obsBebidaBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsBebidaBtnApagar.style = 'border-radius: 2px; background-color: darkred !important; border: black; width: 30px'
         obsBebidaBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsBebidaBtnApagar.onclick = () => {
             row.remove(); // Remove a linha inteira do DOM
@@ -262,6 +267,8 @@ enviarBebidaBtns.forEach(btn => {
 
             total -= parseFloat(valorBebida);
             totalCell.textContent = `$${total.toFixed(2)}`;
+
+            controleCont -= 1
         };
 
         const obsBebidaCell = document.createElement('td');
@@ -383,7 +390,7 @@ enviarIngredienteBtns.forEach(btn => {
 
         const obsIngredienteBtnApagar = document.createElement('button');
         obsIngredienteBtnApagar.className = 'text-center align-middle text-white';
-        obsIngredienteBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsIngredienteBtnApagar.style = 'border-radius: 2px; background-color: darkred; border: black; width: 30px;'
         obsIngredienteBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsIngredienteBtnApagar.onclick = () => {
 
@@ -520,7 +527,7 @@ removerIngredienteBtns.forEach(btn => {
 
         const obsIngredienteBtnApagar = document.createElement('button');
         obsIngredienteBtnApagar.className = 'text-center align-middle text-white';
-        obsIngredienteBtnApagar.style = 'border-radius: 4px; background-color: #dc3545; border: #b02a37; width: 30px;'
+        obsIngredienteBtnApagar.style = 'border-radius: 2px; background-color: darkred; border: black; width: 30px;'
         obsIngredienteBtnApagar.innerHTML = '<i class="fa-solid fa-trash"></i>';
         obsIngredienteBtnApagar.onclick = () => {
 
@@ -605,8 +612,8 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
 
             linhasPedido += `
                 <tr style="border-bottom: 1px solid #ccc;">
-                    <td style="padding: 6px 10px;">${icone} ${nome}</td>
-                    <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>${valor}</strong></td>
+                    <td style="padding: 6px 10px; color: black;">${icone} <strong> ${nome} </strong></td>
+                    <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>${valor}</strong></td>
                     <td style="padding: 6px 10px; font-style: italic;">${detalhes || '-'}</td>
                 </tr>
             `;
@@ -620,23 +627,23 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
     const totalTexto = total.toFixed(2);
 
     return Swal.fire({
-        title: '📦 Confirmar Pedido?',
+        title: '📦 <span style="color: black;">Confirmar Pedido?</span>',
         html: `
             <div style="text-align: left;">
-                <p><strong>Mesa:</strong> ${mesa}</p>
+                <p style="color: black;"><strong>Mesa: ${mesa}</strong></p>
                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                     <thead>
                         <tr style="background-color: #f0f0f0;">
-                            <th style="padding: 6px 10px; text-align: left;">Item</th>
-                            <th style="padding: 6px 10px; text-align: right;">Valor</th>
-                            <th style="padding: 6px 10px; text-align: left;">Detalhes</th>
+                            <th style="padding: 6px 10px; text-align: left; color: black;">Item</th>
+                            <th style="padding: 6px 10px; text-align: right; color: black;">Valor</th>
+                            <th style="padding: 6px 10px; text-align: left; color: black;">Detalhes</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${linhasPedido}
                     </tbody>
                 </table>
-                <p style="margin-top: 10px;"><strong>Total:</strong> <span style="color: #198754;">R$ ${totalTexto}</span></p>
+                <p style="margin-top: 10px; color: black;"><strong>Total:</strong> <span style="color: #198754;"><strong>R$ ${totalTexto} </strong></span></p>
             </div>
         `,
         icon: 'question',
@@ -644,11 +651,8 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
         confirmButtonText: '✅ Enviar Pedido',
         cancelButtonText: '🛑 Manter Pedido',
         reverseButtons: true,
-        customClass: {
-            confirmButton: 'btn btn-primary mx-2',
-            cancelButton: 'btn btn-danger mx-2'
-        },
-        buttonsStyling: false
+        confirmButtonColor: 'blue',      // azul para confirmar
+        cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
     });
 }
 
@@ -656,10 +660,23 @@ btnDiv.addEventListener("click", (e) => {
     if (cont == 0) {
         e.preventDefault()
         Swal.fire({
-            title: 'Comanda Vazia!',
+            title: '<span style="color: black;">Comanda Vazia!</span>',
             text: 'Selecione um item do cárdapio.',
             icon: 'info',
-            confirmButtonText: 'OK'
+            confirmButtonText: 'OK',
+            confirmButtonColor: 'blue' 
+        });
+        return
+    }
+
+    if (controleCont === 0 ) {
+        e.preventDefault()
+        Swal.fire({
+            title: '<span style="color: black;">Lanche em escolha?</span>',
+            text: 'Selecione "Em ecolha..."',
+            icon: 'info',
+            confirmButtonText: 'OK',
+            confirmButtonColor: 'blue' 
         });
         return
     }
@@ -695,13 +712,15 @@ btnDiv.addEventListener("click", (e) => {
 btnDivCancelar.addEventListener('click', () => {
     // Usando Swal.fire para confirmação com a opção de "Sim" e "Não"
     Swal.fire({
-        title: 'Cancelar?',
+        title: '<span style="color: black;">Cancelar?</span>',
         text: "Tem certeza que deseja cancelar?",
         icon: 'warning',
         showCancelButton: true,  // Exibe o botão de cancelamento
         confirmButtonText: 'Sim, cancelar',
         cancelButtonText: 'Não, manter',
-        reverseButtons: true  // Coloca os botões na ordem: "Sim, cancelar" e "Não, manter"
+        reverseButtons: true,
+        confirmButtonColor: 'darkred',  // cor do botão confirmar
+        cancelButtonColor: 'blue'       // cor do botão cancelar
     }).then((result) => {
         if (result.isConfirmed) {
             // Se o usuário confirmar (clicar em "Sim, cancelar")

@@ -7,13 +7,15 @@
   {% set controleUltimos = 0 %}
   
   {% for pedido in pedidos %}
+  {% if pedido.status == 1 %}
   {% set controleUltimos = controleUltimos + 1 %}
   {% if controleUltimos == 1 %}
   <header class="cardapio-header">
     <div class="linha-com-texto">
-      <span>ULTIMOS PEDIDOS</span>
+      <span>ULTIMOS PEDIDOS {{ dataAtual() }}</span>
     </div>
   </header>
+  {% endif %}
   {% endif %}
   {% endfor %}
 

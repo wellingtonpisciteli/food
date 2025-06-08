@@ -102,7 +102,8 @@ enviarLancheBtns.forEach(btn => {
         const row = document.createElement('tr');
 
         const nomeLancheCell = document.createElement('th');
-        nomeLancheCell.className = 'bg-light text-primary';
+        nomeLancheCell.className = 'bg-light';
+        nomeLancheCell.style = 'color: black';
         nomeLancheCell.textContent = nomeLanche;
         row.appendChild(nomeLancheCell);
 
@@ -640,8 +641,8 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
 
             linhasPedido += `
                 <tr style="border-bottom: 1px solid #ccc;">
-                    <td style="padding: 6px 10px;">${icone} ${nome}</td>
-                    <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>${valor}</strong></td>
+                    <td style="padding: 6px 10px; color: black;">${icone} <strong> ${nome} </strong></td>
+                    <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>${valor}</strong></td>
                     <td style="padding: 6px 10px; font-style: italic;">${detalhes || '-'}</td>
                 </tr>
             `;
@@ -655,23 +656,23 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
     const totalTexto = total.toFixed(2);
 
     return Swal.fire({
-        title: '📦 Confirmar Pedido?',
+        title: '📦 <span style="color: black;">Confirmar Pedido?</span>',
         html: `
             <div style="text-align: left;">
-                <p><strong>Mesa:</strong> ${mesa}</p>
+                <p style="color: black;"><strong>Mesa: ${mesa}</strong></p>
                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                     <thead>
                         <tr style="background-color: #f0f0f0;">
-                            <th style="padding: 6px 10px; text-align: left;">Item</th>
-                            <th style="padding: 6px 10px; text-align: right;">Valor</th>
-                            <th style="padding: 6px 10px; text-align: left;">Detalhes</th>
+                            <th style="padding: 6px 10px; text-align: left; color: black;">Item</th>
+                            <th style="padding: 6px 10px; text-align: right; color: black;">Valor</th>
+                            <th style="padding: 6px 10px; text-align: left; color: black;">Detalhes</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${linhasPedido}
                     </tbody>
                 </table>
-                <p style="margin-top: 10px;"><strong>Total:</strong> <span style="color: #198754;">R$ ${totalTexto}</span></p>
+                <p style="margin-top: 10px; color: black;"><strong>Total:</strong> <span style="color: #198754;"><strong>R$ ${totalTexto} </strong></span></p>
             </div>
         `,
         icon: 'question',
@@ -688,7 +689,7 @@ btnDiv.addEventListener("click", (e) => {
     if (cont === 0 ) {
         e.preventDefault()
         Swal.fire({
-            title: 'Comanda Vazia!',
+            title: '<span style="color: black;">Comanda Vazia!</span>',
             text: 'Selecione um item do cárdapio.',
             icon: 'info',
             confirmButtonText: 'OK',
@@ -700,7 +701,7 @@ btnDiv.addEventListener("click", (e) => {
     if (controleCont === 0 ) {
         e.preventDefault()
         Swal.fire({
-            title: 'Lanche em escolha?',
+            title: '<span style="color: black;">Lanche em escolha?</span>',
             text: 'Selecione "Em ecolha..."',
             icon: 'info',
             confirmButtonText: 'OK',
@@ -736,7 +737,7 @@ btnDiv.addEventListener("click", (e) => {
 
 btnDivCancelar.addEventListener('click', () => {
     Swal.fire({
-        title: 'Cancelar?',
+        title: '<span style="color: black;">Cancelar?</span>',
         text: "Tem certeza que deseja cancelar?",
         icon: 'warning',
         showCancelButton: true,
