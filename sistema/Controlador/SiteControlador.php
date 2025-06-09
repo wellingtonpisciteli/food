@@ -42,7 +42,7 @@ class SiteControlador extends Controlador
         
 
         echo ($this->template->renderizar('comanda.html', [
-            'titulo' => 'Sistema_Food',
+            'titulo' => 'Home',
             'cardapioBebida' => $cardapioBebida,
             'cardapioLanche' => $cardapioLanche,
             'pedidos' => $pedidos,
@@ -92,7 +92,7 @@ class SiteControlador extends Controlador
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
-            'titulo' => 'pedidos_abertos',
+            'titulo' => 'Pedidos_abertos',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
@@ -120,7 +120,7 @@ class SiteControlador extends Controlador
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('pedidosFechados.html', [
-            'titulo' => 'pedidos_fechados',
+            'titulo' => 'Pedidos_fechados',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
             'bebidas' => $bebidas,
@@ -144,7 +144,7 @@ class SiteControlador extends Controlador
         $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
 
         echo ($this->template->renderizar('adicionarNaMesa.html', [
-            'titulo' => 'Adicionar',
+            'titulo' => 'Adicionar_na_mesa',
             'cardapio' => $cardapio,
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
@@ -163,7 +163,7 @@ class SiteControlador extends Controlador
         $idLanche = (new ComandaModelo())->buscaPorId_lanche("lanches", $id_lanche);
 
         echo ($this->template->renderizar('adicionarAdicional.html', [
-            'titulo' => 'Adicionar',
+            'titulo' => 'Adicionar_adicional',
             'cardapio' => $cardapio,
             'pedido' => $pedido,
             'ingredientes' => $ingredi,
@@ -181,7 +181,7 @@ class SiteControlador extends Controlador
         $lanches = (new ComandaModelo())->ler("lanches", "nome_lanche", "ASC");
 
         echo ($this->template->renderizar('editarLanche.html', [
-            'titulo' => 'editar_lanche',
+            'titulo' => 'Editar_lanche',
             'editar' => $pedidoMesa,
             'cardapio' => $cardapio,
             'ingredientes' => $ingredi,
@@ -196,7 +196,7 @@ class SiteControlador extends Controlador
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('editarAdicional.html', [
-            'titulo' => 'editar_adicional',
+            'titulo' => 'Editar_adicional',
             'editar' => $adicional,
             'ingredientes' => $ingredi
         ]));
@@ -210,7 +210,7 @@ class SiteControlador extends Controlador
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
 
         echo ($this->template->renderizar('editarBebida.html', [
-            'titulo' => 'editar_bebida',
+            'titulo' => 'Editar_bebida',
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida

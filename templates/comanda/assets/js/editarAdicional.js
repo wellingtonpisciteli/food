@@ -46,12 +46,12 @@ window.onload = function() {
             event.preventDefault();
     
             Swal.fire({
-                title: 'Apagar?',
+                title: '<span style="color: black;">Apagar?</span>',
                 text: 'Deseja apagar este lanche?',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
+                confirmButtonColor: 'darkred',
+                cancelButtonColor: 'blue',
                 confirmButtonText: 'Sim',
                 cancelButtonText: 'Não',
                 reverseButtons: true
@@ -75,9 +75,14 @@ window.onload = function() {
     const nome = document.getElementById('nome-adicional').textContent.trim();
     const valor = document.getElementById('valor-adicional').textContent.trim();
     const tipo = document.getElementById('tipo').value;
-    const icone = tipo === '+' ? '➕' : '❌';
-    const cor = tipo === '+' ? 'green' : 'red';
+    const icone = tipo === '' ? '' :
+                  tipo === '+' ? '➕' :
+                  tipo === '-' ? '❌' : '';
 
+    const cor = tipo === '' ? 'black' :
+            tipo === '+' ? 'green' :
+            tipo === '-' ? 'red' : 'black';
+            
     if (!nome || !valor) {
       Swal.fire({
         title: '⚠️ Nenhum adicional selecionado!',
@@ -90,20 +95,20 @@ window.onload = function() {
     }
 
     Swal.fire({
-      title: '📋 Confirmar Edição?',
+      title: '<span style="color: black;">📋 Confirmar Edição?</span>',
       html: `
         <div style="text-align: left;">
           <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
             <thead>
               <tr style="background-color: #f0f0f0;">
-                <th style="padding: 6px 10px; text-align: left;">Item</th>
-                <th style="padding: 6px 10px; text-align: right;">Valor</th>
+                <th style="padding: 6px 10px; text-align: left; color: black;">Item</th>
+                <th style="padding: 6px 10px; text-align: right; color: black;">Valor</th>
               </tr>
             </thead>
             <tbody>
               <tr style="border-bottom: 1px solid #ccc;">
-                <td style="padding: 6px 10px; color: ${cor};">${icone} ${nome}</td>
-                <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>R$ ${valor}</strong></td>
+                <td style="padding: 6px 10px; color: ${cor};"> <strong>${icone} ${nome}</strong></td>
+                <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>R$ ${valor}</strong></td>
               </tr>
             </tbody>
           </table>
@@ -114,11 +119,8 @@ window.onload = function() {
       confirmButtonText: '✅ Enviar Pedido',
       cancelButtonText: '🛑 Cancelar',
       reverseButtons: true,
-      customClass: {
-        confirmButton: 'btn btn-primary mx-2',
-        cancelButton: 'btn btn-danger mx-2'
-      },
-      buttonsStyling: false
+      confirmButtonColor: 'blue',      // azul para confirmar
+      cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
     }).then((result) => {
       if (result.isConfirmed) {
         form.submit();

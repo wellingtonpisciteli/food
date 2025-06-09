@@ -127,7 +127,7 @@
                 {% if pedido.nome_lanche == 'Em escolha...' %}
                   <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
                 {% else %}
-                  <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: inherit;">{{ pedido.nome_lanche }}</a> <br>
+                  <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</a> <br>
                 {% endif %}
 
                 {% for add in adicional %}
@@ -135,11 +135,11 @@
                     <div style="margin-top: 5px">
                       {% if add.tipo == '+' %}
                         <span style="color: green; font-weight: bolder;">
-                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: inherit;">+{{ add.nome_adicional }}</a>
+                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: green;">+{{ add.nome_adicional }}</a>
                         </span>        
                       {% elseif add.tipo == '-' %}
                         <span style="color: red; font-weight: bolder;">
-                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: inherit;">-{{ add.nome_adicional }}</a>
+                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: red;">-{{ add.nome_adicional }}</a>
                         </span>
                       {% endif %}
                     </div>
@@ -162,7 +162,7 @@
                 {% endfor %}
 
                 {% if pedido.valor_lanche != 0 and pedido.status == 1 %}
-                  <span style="font-weight: bolder; padding-left: 5px;">
+                  <span style="font-weight: bolder; padding-left: 5px; color: black;">
                     {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
                   </span>
                 {% endif %}
@@ -172,7 +172,7 @@
                 {% for bebida in bebidas %}
                   {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
                     {% if bebida.chave not in bebidas_exibidas %}
-                      <a href="{{ url('editarBebida/' ~ bebida.chave) }}" style="text-decoration: none; color: inherit;">
+                      <a href="{{ url('editarBebida/' ~ bebida.chave) }}" style="text-decoration: none; color: black;">
                         {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
                       </a>
                       {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
@@ -185,7 +185,7 @@
                 {% for bebida in bebidas %}
                   {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
                     {% if bebida.chave not in chaves_exibidas %}
-                      <span style="font-weight: bolder; padding-left: 5px;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                      <span style="font-weight: bolder; padding-left: 5px; color:black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
                       {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
                     {% endif %}
                   {% endif %}

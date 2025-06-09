@@ -30,6 +30,9 @@
 
     {% for pedido in pedidos %}
     {% if pedido.status == 1 and pedido.id_mesa not in mesas_exibidas %}
+    {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
+          {% set bebidas_exibidas = [] %}
+          {% set chaves_exibidas = [] %}
 
     {% if contando == 1 or contando == 2 %}
       <div  style="height: 15px; background-color: black;"></div>
@@ -89,8 +92,22 @@
 
           <th class="thTable" scope="col" style="padding-left: 15px;">
             {% if cont == 1 %}
-            BEBIDAS
+            VALOR
             {% set cont = 2 %}
+            {% endif %}
+          </th>
+
+          <th class="thTable" scope="col" style="padding-left: 15px;">
+            {% if cont == 2 %}
+            BEBIDAS
+            {% set cont = 3 %}
+            {% endif %}
+          </th>
+
+          <th class="thTable" scope="col" style="padding-left: 15px;">
+            {% if cont == 3 %}
+            VALOR
+            {% set cont = 4 %}
             {% endif %}
           </th>
         </tr>
@@ -102,7 +119,7 @@
             {% if pedido.nome_lanche == 'Em escolha...' %}
               <span style="padding-left: 5px; color: gray; font-style: italic;">Em escolha...</span>
             {% elseif pedido.status == 1 %}
-              <span style="padding-left: 5px;">{{ pedido.nome_lanche }}</span>
+              <span style="padding-left: 5px; color: black;">{{ pedido.nome_lanche }}</span>
             {% endif %}
 
             {% for add in adicional %}
@@ -118,16 +135,44 @@
             {% endfor %}
           </td>
 
+          <td>
+            {% set somaAdicional = 0 %}
+            {% for add in adicional %}
+              {% if pedido.id_lanche == add.id and pedido.status == 1 %}
+                {% set somaAdicional = somaAdicional + add.valor_adicional %}
+              {% endif %}
+            {% endfor %}
+
+            {% if pedido.valor_lanche != 0 and pedido.status == 1 %}
+              <span style="font-weight: bolder; padding-left: 15px; color: black;">
+                {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+              </span>
+            {% endif %}
+          </td>
+
           <td style="font-weight: bolder; padding-left: 15px;">
             {% for bebida in bebidas %}
               {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
                 {% if bebida.id not in bebidas_exibidas %}
-                  {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                  <span style="color: black;">
+                    {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                  </span>
                   {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
                 {% endif %}
               {% endif %}
             {% endfor %}
           </td>
+
+          <td>
+                {% for bebida in bebidas %}
+                  {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
+                    {% if bebida.chave not in chaves_exibidas %}
+                      <span style="font-weight: bolder; padding-left: 15px; color:black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                      {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </td>
         </tr>
       </tbody>
     </table>

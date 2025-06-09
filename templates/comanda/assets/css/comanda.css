@@ -565,6 +565,23 @@ body{
     background-image: linear-gradient(to left, black, #FF4500);
 }
 
+.swal2-icon.swal2-question {
+  color: blue; /* Azul personalizado */
+  border-color: blue;
+}
+
+.swal2-icon.swal2-info {
+  color: blue; /* Azul personalizado */
+  border-color: blue;
+}
+
+.swal2-icon.swal2-warning {
+  color: darkred; /* Azul personalizado */
+  border-color: darkred;
+}
+
+
+
 
 
 

@@ -66,10 +66,11 @@ enviarLancheBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
             cont = 0
             return;
@@ -79,7 +80,8 @@ enviarLancheBtns.forEach(btn => {
         const row = document.createElement('tr');
 
         const nomeLancheCell = document.createElement('th');
-        nomeLancheCell.className = 'bg-light text-primary';
+        nomeLancheCell.className = 'bg-light';
+        nomeLancheCell.style = 'color: black';
         nomeLancheCell.textContent = nomeLanche;
         row.appendChild(nomeLancheCell);
 
@@ -210,12 +212,13 @@ enviarBebidaBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
-            cont = 0;
+            cont = 0
             return;
         }
 
@@ -223,7 +226,8 @@ enviarBebidaBtns.forEach(btn => {
         const row = document.createElement('tr');
 
         const nomeBebidaCell = document.createElement('th');
-        nomeBebidaCell.className = 'bg-light text-primary';
+        nomeBebidaCell.className = 'bg-light';
+        nomeBebidaCell.style = 'color: black';
         nomeBebidaCell.textContent = `${nomeBebida} (${tamanhoBebida})`;
         row.appendChild(nomeBebidaCell);
 
@@ -347,10 +351,11 @@ enviarIngredienteBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
             cont = 0
             return;
@@ -484,10 +489,11 @@ removerIngredienteBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
             cont = 0
             return;
@@ -652,7 +658,7 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
         cancelButtonText: '🛑 Manter Pedido',
         reverseButtons: true,
         confirmButtonColor: 'blue',      // azul para confirmar
-        cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
+        cancelButtonColor: 'darkred',       
     });
 }
 

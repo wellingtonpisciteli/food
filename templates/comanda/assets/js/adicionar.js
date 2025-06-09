@@ -8,7 +8,7 @@ if (numMesaInput) {
         controleMesa.forEach(num => {
             if (numMesaInput.value == num.value) {
                 Swal.fire({
-                    title: 'Mesa inválida',
+                    title: '<span style="color: black;">Mesa Inválida</span>',
                     text: 'Escolha outro número',
                     icon: 'info',
                     confirmButtonText: 'OK',
@@ -89,10 +89,11 @@ enviarLancheBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
             cont = 0
             return;
@@ -238,12 +239,13 @@ enviarBebidaBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
-            cont = 0;
+            cont = 0
             return;
         }
 
@@ -251,7 +253,8 @@ enviarBebidaBtns.forEach(btn => {
         const row = document.createElement('tr');
 
         const nomeBebidaCell = document.createElement('th');
-        nomeBebidaCell.className = 'bg-light text-primary';
+        nomeBebidaCell.className = 'bg-light';
+        nomeBebidaCell.style = 'color: black';
         nomeBebidaCell.textContent = `${nomeBebida} (${tamanhoBebida})`;
         row.appendChild(nomeBebidaCell);
 
@@ -374,10 +377,11 @@ enviarIngredienteBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
             cont = 0
             return;
@@ -513,10 +517,11 @@ removerIngredienteBtns.forEach(btn => {
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
             Swal.fire({
-                title: 'Número da Mesa!',
+                title: '<span style="color: black;">Numero da Mesa?</span>',
                 text: 'Selecione um número',
-                icon: 'info',
-                confirmButtonText: 'OK'
+                icon: 'question',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'  
             });
             cont = 0
             return;
@@ -681,7 +686,7 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
         cancelButtonText: '🛑 Manter Pedido',
         reverseButtons: true,
         confirmButtonColor: 'blue',      // azul para confirmar
-        cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
+        cancelButtonColor: 'darkred',  
     });
 }
 
@@ -693,7 +698,7 @@ btnDiv.addEventListener("click", (e) => {
             text: 'Selecione um item do cárdapio.',
             icon: 'info',
             confirmButtonText: 'OK',
-            confirmButtonColor: 'blue' 
+            confirmButtonColor: 'blue',   
         });
         return
     }
@@ -703,9 +708,9 @@ btnDiv.addEventListener("click", (e) => {
         Swal.fire({
             title: '<span style="color: black;">Lanche em escolha?</span>',
             text: 'Selecione "Em ecolha..."',
-            icon: 'info',
+            icon: 'question',
             confirmButtonText: 'OK',
-            confirmButtonColor: 'blue' 
+            confirmButtonColor: 'blue',  
         });
         return
     }
@@ -745,7 +750,7 @@ btnDivCancelar.addEventListener('click', () => {
         cancelButtonText: 'Não, manter',
         reverseButtons: true,
         confirmButtonColor: 'darkred',  // cor do botão confirmar
-        cancelButtonColor: 'blue'       // cor do botão cancelar
+        cancelButtonColor: 'blue',
     }).then((result) => {
         if (result.isConfirmed) {
             location.reload();
