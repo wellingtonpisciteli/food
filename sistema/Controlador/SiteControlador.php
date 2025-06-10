@@ -134,6 +134,30 @@ class SiteControlador extends Controlador
         ]));
     }
 
+    public function caixa(int $id_mesa): void
+    {
+        $lanchesMesa = (new ComandaModelo())->buscaIds_mesa("lanches", $id_mesa);
+        $bebidasMesa = (new ComandaModelo())->buscaIds_mesa("bebidas", $id_mesa);
+        $totalMesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+
+        echo ($this->template->renderizar('caixa.html', [
+            'titulo' => 'Adicionar_na_mesa',
+            'cardapio' => $cardapio,
+            'cardapio_bebida' => $bebidasMesa,
+            'tamanhoBebida' => $tamanho_bebida,
+            'pedido' => $pedido,
+            'ingredientes' => $ingredi,
+            'lanchesMesa' => $lanchesMesa,
+            'adicional' => $adicional,
+            'totalMesa' => $totalMesa
+        ]));
+    }
+
     public function adicionarNaMesa(int $mesa): void
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");

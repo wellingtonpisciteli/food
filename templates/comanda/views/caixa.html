@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block conteudo %}
+
+{% set cont = 0 %}
+{% for num in lanchesMesa %}
+{% if num.status == 1 %}
+{% set cont = cont + 1 %}
+{% if cont == 1  %}
+<header class="text-center" id="adicionarHeader" style="background-color: black;">
+    <h3 class="text-white text-center">
+        Mesa: <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="number" class="fw-bolder bg-light text-center" readonly>
+    </h3>
+    <input type="hidden" value="{{ num.id_mesa }} " id="id_mesa" class="id_mesa">
+</header>
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for item in pedido %}
+    <input type="hidden" value="{{ item.id_lanche }}" id="idLancheNovo" class="idLancheNovo">
+{% endfor %}
+
+<div class="w-100" id="adicionarLanches" style="background-color: black;">
+    <div class="table-responsive">
+        <table class="table" id="adicionarTabela">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light" style="width: 120px;">LANCHES</th>
+                    <th scope="col" class="text-center bg-light" style="width: 75px;">PREÇO</th>
+                    <th scope="col" class="text-center bg-light" style="width: 100px;">SELECIONAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in lanchesMesa %}        
+                <tr>
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
+
+                    <th class="bg-light">
+                        <span>{{ item.nome_lanche }}</span>
+                        <input type="hidden" id="lanche" name="lanche" value="{{ item.nome_lanche }}">
+                        <input type="hidden" id="id_lanche" name="id_lanche" value="{{ item.id_lanche }}">
+
+                        {% for add in adicional %}
+                        {% if item.id_lanche == add.id %}
+                            <div style="margin-top: 5px">
+                            {% if add.tipo == '+' %}
+                                <span style="color: green; font-weight: bolder;">
+                                    +{{ add.nome_adicional }}
+                                </span>        
+                            {% elseif add.tipo == '-' %}
+                                <span style="color: red; font-weight: bolder;">
+                                -{{ add.nome_adicional }}
+                            {% endif %}
+                            </div>
+                            {% set adicionados = adicionados + add.nome_lanche %}
+                        {% endif %}
+                        {% endfor %}
+                    </th>
+                    <td class="text-center align-middle bg-light fw-bold" style="color: blue;">
+                        {% set somaAdicional = 0 %}
+                        {% for add in adicional %}
+                        {% if item.id_lanche == add.id and item.status == 1 %}
+                            {% set somaAdicional = somaAdicional + add.valor_adicional %}
+                        {% endif %}
+                        {% endfor %}
+
+                        {% set totalAddLanche = somaAdicional + item.valor_lanche %}
+
+                        {% if item.valor_lanche != 0 and item.status == 1 %}
+                        <span style="color: blue;">
+                            {{ (totalAddLanche) | number_format(2, ',', '.') }}
+                        </span>
+                        {% endif %}
+                        
+                        <input type="hidden" value="{{ totalAddLanche }}" id="valor_lanche" name="valor_lanche">
+                    </td>
+    
+                    <td class="text-center align-middle bg-light">
+                        <div class="enviarLanche">
+                            <input type="checkbox" class="check-toggle" value="1">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <table class="table" id="adicionarTabela" style="margin-bottom: 20px;">
+            <thead>
+                <tr>
+                    <th scope="col" class="bg-light">BEBIDAS</th>
+                    <th scope="col" class="text-center bg-light">TAM</th>
+                    <th scope="col" class="text-center bg-light">SELECIONAR</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cardapio_bebida %}
+                <tr>
+                    <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
+                    <input value="{{ item.id }}" id="idMarca" name="idMarca" type="hidden">
+
+                    <th class="bg-light" style="width: 33%;">{{ item.nome_bebida }}</th>
+                    <input type="hidden" id="bebida" name="bebida" value="{{ item.nome_bebida }}">
+                    <input type="hidden" id="id_bebida" name="id_bebida" value="{{ item.id}}">
+                    
+                    <td class="text-center align-middle bg-light" style="width: 20%;">
+                        <select class="form-select text-center bg-light fw-bolder text-black" id="tamanho_valor">
+                            <option value="{{ item.id }} | {{ item.valor_bebida }}|{{ item.tamanho_bebida }}">
+                                {{ item.tamanho_bebida }} -
+                                ${{ item.valor_bebida | number_format(2, ',', '.') }}
+                            </option>
+                        </select>
+                    </td>
+            
+                    <td class="text-center align-middle bg-light" style="width: 30%;">
+                        <div class="enviarBebida">
+                            <input type="checkbox" class="check-toggle" value="1">
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3 class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+            {% for total in totalMesa %}
+            Total: <span style="color: aqua;">${{ total.total | number_format(2, ',', '.') }}</span>
+            {% endfor %}
+        </h3>
+
+        <table>
+            <form action="{{ url('cadastrar') }}" method="post" class="bg-light" id="pedidos">
+                <table class="table" id="tabelaPedidos">
+                    <tbody id="listaPedidos">
+                        <!-- Os itens serão adicionados aqui dinamicamente -->
+                    </tbody>
+                    <tbody id="listaBebidas">
+                        <!-- Os itens serão adicionados aqui dinamicamente -->
+                    </tbody>
+                </table>
+
+                <h3 id="totalMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+                    SubTotal: <span style="color: yellow;">$0,00</span>
+                </h3>
+                
+                <div class="text-center mt-3">
+                    <input class="btn" type="submit" value="Total" id="btnDiv"
+                        style="margin-bottom: 25px; background-color: aqua; color: black; font-weight: bolder;">
+                        
+                    <input class="btn" type="button" value="SubTotal" id="btnDivCancelar"
+                        style="margin-bottom: 25px; background-color: yellow; color: black; font-weight: bolder;">
+                </div>
+            </form>
+        </table>
+    </div>
+</div>
+
+<script src="{{ url('/templates/comanda/assets/js/caixa.js') }}" defer></script>
+
+{% endblock %}

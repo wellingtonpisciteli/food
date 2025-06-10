@@ -79,6 +79,14 @@ class ComandaModelo
         return $resultado;
     }
 
+    public function buscaIds_mesa(string $tabela, int $id_mesa): array
+    {
+        $query = "SELECT * FROM {$tabela} WHERE id_mesa={$id_mesa}";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetchAll();
+        return $resultado;
+    }
+
     public function lerRelacao(string $tabela, string $parametro, int $id): array | object
     {
         $query = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";

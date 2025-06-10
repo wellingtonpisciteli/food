@@ -580,6 +580,39 @@ body{
   border-color: darkred;
 }
 
+.check-toggle {
+    appearance: none;
+    width: 30px;
+    height: 30px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 4px;
+    font-weight: bold;
+    color: darkgreen;
+    text-align: center;
+    line-height: 26px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.check-toggle:checked {
+    background-color: white;
+    color: white;
+}
+
+.check-toggle::after {
+    content: "+";
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.check-toggle:checked::after {
+    content: "✔";
+}
+
+    
+
 
 
 
