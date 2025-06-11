@@ -96,7 +96,7 @@ botoesExcluir.forEach(botao => {
         const url = this.getAttribute("data-url");
 
         Swal.fire({
-            title: '<span style="color: black;">Tem certeza?</span>',
+            title: '<span style="color: black;">Excluir Mesa?</span>',
             text: "Esta ação não pode ser desfeita!",
             icon: 'warning',
             showCancelButton: true,
@@ -131,12 +131,12 @@ botoesAbrirMesa.forEach(botao => {
         }
 
         Swal.fire({
-            title: 'Tem certeza?',
+            title: '<span style="color: black;">Abrir Mesa?</span>',
             text: "Esta ação não pode ser desfeita!",
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
+            confirmButtonColor: 'blue',
+            cancelButtonColor: 'darkred',
             confirmButtonText: 'Sim, abrir mesa!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {

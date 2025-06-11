@@ -74,6 +74,7 @@ class ComandaControlador extends Controlador
                 $idApagarAdicional = $dados['idApagarAdicional'];
 
                 (new ComandaControlador())->excluir($id, $idApagarAdicional, $id_mesa);
+                
             }elseif ($dados['apagar'] == 'preenchido999'){
                 $idApagarAdicional = $dados['idApagarAdicional'];
 

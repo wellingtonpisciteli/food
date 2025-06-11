@@ -153,11 +153,11 @@
           <td style="font-weight: bolder; padding-left: 15px;">
             {% for bebida in bebidas %}
               {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
-                {% if bebida.id not in bebidas_exibidas %}
+                {% if bebida.chave not in bebidas_exibidas and bebida.status == 1 %}
                   <span style="color: black;">
                     {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
                   </span>
-                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.id]) %}
+                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
                 {% endif %}
               {% endif %}
             {% endfor %}
@@ -166,7 +166,7 @@
           <td>
                 {% for bebida in bebidas %}
                   {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
-                    {% if bebida.chave not in chaves_exibidas %}
+                    {% if bebida.chave not in chaves_exibidas and bebida.status == 1 %}
                       <span style="font-weight: bolder; padding-left: 15px; color:black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
                       {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
                     {% endif %}

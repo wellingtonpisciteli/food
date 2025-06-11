@@ -16,9 +16,6 @@
 {% endif %}
 {% endfor %}
 
-{% for item in pedido %}
-    <input type="hidden" value="{{ item.id_lanche }}" id="idLancheNovo" class="idLancheNovo">
-{% endfor %}
 
 <div class="w-100" id="adicionarLanches" style="background-color: black;">
     <div class="table-responsive">
@@ -32,7 +29,11 @@
             </thead>
             <tbody>
                 {% for item in lanchesMesa %}
-                {% if item.status == 1 %}        
+                {% if item.status == 1 %} 
+                
+                
+                <div class="lanches">{{ item.nome_lanche }}</div>
+                   
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
                     <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
