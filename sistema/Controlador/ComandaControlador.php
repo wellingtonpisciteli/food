@@ -127,4 +127,19 @@ class ComandaControlador extends Controlador
 
        Helpers::redirecionar('pedidosAbertos');
     }
+
+    public function fecharMesa(int $id_mesa): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);            
+
+            if($dados['subtotal']){
+                (new ComandaModelo())->caixaSubTotal($dados, $id_mesa);
+            }else{
+                (new ComandaModelo())->caixaTotal($id_mesa, $dados);
+            }
+        }
+
+        Helpers::redirecionar('pedidosAbertos');
+    }
 }

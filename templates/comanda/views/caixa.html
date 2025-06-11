@@ -31,18 +31,20 @@
                 </tr>
             </thead>
             <tbody>
-                {% for item in lanchesMesa %}        
+                {% for item in lanchesMesa %}
+                {% if item.status == 1 %}        
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
                     <input type="hidden" value="{{ item.id }}" name="idCardapio" id="idCardapio">
 
                     <th class="bg-light">
                         <span>{{ item.nome_lanche }}</span>
-                        <input type="hidden" id="lanche" name="lanche" value="{{ item.nome_lanche }}">
                         <input type="hidden" id="id_lanche" name="id_lanche" value="{{ item.id_lanche }}">
 
                         {% for add in adicional %}
                         {% if item.id_lanche == add.id %}
+                            <input type="hidden" id="id_adicional" name="id_adicional" value="{{ add.id }}">
+
                             <div style="margin-top: 5px">
                             {% if add.tipo == '+' %}
                                 <span style="color: green; font-weight: bolder;">
@@ -82,6 +84,7 @@
                         </div>
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
@@ -96,9 +99,10 @@
             </thead>
             <tbody>
                 {% for item in cardapio_bebida %}
+                {% if item.status == 1 %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
-                    <input value="{{ item.id }}" id="idMarca" name="idMarca" type="hidden">
+                    <input value="{{ item.chave }}" id="chave" name="chave" type="hidden">
 
                     <th class="bg-light" style="width: 33%;">{{ item.nome_bebida }}</th>
                     <input type="hidden" id="bebida" name="bebida" value="{{ item.nome_bebida }}">
@@ -119,6 +123,7 @@
                         </div>
                     </td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>
@@ -126,11 +131,12 @@
         <h3 class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
             {% for total in totalMesa %}
             Total: <span style="color: aqua;">${{ total.total | number_format(2, ',', '.') }}</span>
+            <input type="hidden" id="totalTotal" value="{{ total.total }}">
             {% endfor %}
         </h3>
 
         <table>
-            <form action="{{ url('cadastrar') }}" method="post" class="bg-light" id="pedidos">
+            <form action="{{ url('fecharMesa/'~id_mesa.id_mesa) }}" method="post" class="bg-light" id="pedidos">
                 <table class="table" id="tabelaPedidos">
                     <tbody id="listaPedidos">
                         <!-- Os itens serão adicionados aqui dinamicamente -->
@@ -148,7 +154,7 @@
                     <input class="btn" type="submit" value="Total" id="btnDiv"
                         style="margin-bottom: 25px; background-color: aqua; color: black; font-weight: bolder;">
                         
-                    <input class="btn" type="button" value="SubTotal" id="btnDivCancelar"
+                    <input class="btn" type="submit" value="SubTotal" id="btnDivCancelar"
                         style="margin-bottom: 25px; background-color: yellow; color: black; font-weight: bolder;">
                 </div>
             </form>

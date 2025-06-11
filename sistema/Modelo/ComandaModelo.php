@@ -618,6 +618,10 @@ class ComandaModelo
     {
         $tabelas = ['lanches', 'bebidas', 'total'];
 
+        $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
+        $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
+        $subTotal = $valorAtualSub;
+
         foreach ($tabelas as $tabela)
         {
             $query = "UPDATE {$tabela} SET status = :ativado WHERE id_mesa = :idMesa";
@@ -627,6 +631,132 @@ class ComandaModelo
                 'idMesa' => $id_mesa
             ]);
         } 
+
+        $querySub = "UPDATE total SET subTotal = :sub WHERE id_mesa = :idMesa";
+        $stmtSub = Conexao::getInstancia()->prepare($querySub);
+        $stmtSub->execute([
+            'sub' => 0,
+            'idMesa' => $id_mesa
+        ]);
+
+        $queryTotal = "UPDATE total SET total = :tot WHERE id_mesa = :idMesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            'tot' => $subTotal,
+            'idMesa' => $id_mesa
+        ]);
+    }
+
+    function caixaTotal(int $id_mesa):void
+    {
+        $tabelas = ['lanches', 'bebidas', 'total'];
+
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $valorAtual = $buscaTotal->total ?? 0;
+        $total = $valorAtual;
+
+        $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
+        $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
+        $subTotal = $valorAtualSub;
+
+        $totalFinal = $total + $subTotal;
+
+        foreach ($tabelas as $tabela)
+        {
+            $query = "UPDATE {$tabela} SET status = :desativado WHERE id_mesa = :idMesa";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                'desativado' => 0,
+                'idMesa' => $id_mesa
+            ]);
+            
+        } 
+
+        $querySub = "UPDATE total SET subTotal = :sub WHERE id_mesa = :idMesa";
+        $stmtSub = Conexao::getInstancia()->prepare($querySub);
+        $stmtSub->execute([
+            'sub' => $totalFinal,
+            'idMesa' => $id_mesa
+        ]);
+
+        $queryTotal = "UPDATE total SET total = :tot WHERE id_mesa = :idMesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            'tot' => 0,
+            'idMesa' => $id_mesa
+        ]);
+    }
+
+    function caixaSubTotal(array $dados, int $id_mesa):void
+    {
+        // Recupera o valor atual
+        $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
+        $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
+        $subTotal = $valorAtualSub;
+
+        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $valorAtual = $buscaTotal->total ?? 0;
+        $total = $valorAtual;
+
+        if (!empty($dados['id_lanche']) && is_array($dados['id_lanche'])) {
+            foreach ($dados['id_lanche'] as $index => $id) {
+                $id_lanche = trim($id);
+                $id_cardapio = (int) ($dados['id_cardapio'][$index] ?? 0);
+                $id_adicional = (int) ($dados['id_adicional'][$index] ?? 0);
+
+                // Buscar dados do lanche atual pelo id_cardapio correspondente
+                $lancheAtual = $this->buscaPorId('lanches', $id_cardapio);
+                $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
+
+                $adicionalAtual = $this->buscaPorId('adicionais', $id_adicional);
+                $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
+
+                $subTotal += ($valorLancheAtual + $valorAdicionalAtual);
+                $total -= ($valorLancheAtual + $valorAdicionalAtual);
+
+                $query = "UPDATE lanches SET status = :desativado WHERE id_lanche = :idLanche";
+                $stmt = Conexao::getInstancia()->prepare($query);
+                $stmt->execute([
+                    'desativado' => 0,
+                    'idLanche' => $id_lanche
+                ]);
+            }
+        }
+
+        if (!empty($dados['id_bebida']) && is_array($dados['id_bebida'])) {
+            foreach ($dados['id_bebida'] as $index => $idBebida) {
+                $id_bebida = trim($idBebida); 
+                $chave = (int) ($dados['chave'][$index] ?? 0);
+
+                $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
+                $valorBebidaAtual = $bebidaAtual->valor_bebida ?? 0;
+
+                $subTotal += $valorBebidaAtual;
+                $total -= $valorBebidaAtual;
+
+                $queryBebida = "UPDATE bebidas SET status = :desativado WHERE id = :idBebida";
+                $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
+                $stmtBebida->execute([
+                    'desativado' => 0,
+                    'idBebida' => $id_bebida
+                ]);
+            }
+        }
+
+        $querySub = "UPDATE total SET subTotal = :sub WHERE id_mesa = :idMesa";
+        $stmtSub = Conexao::getInstancia()->prepare($querySub);
+        $stmtSub->execute([
+            'sub' => $subTotal,
+            'idMesa' => $id_mesa
+        ]);
+
+        $queryTotal = "UPDATE total SET total = :tot WHERE id_mesa = :idMesa";
+        $stmtTotal = Conexao::getInstancia()->prepare($queryTotal);
+        $stmtTotal->execute([
+            'tot' => $total,
+            'idMesa' => $id_mesa
+        ]);
+   
     }
 
 

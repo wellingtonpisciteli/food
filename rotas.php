@@ -17,6 +17,7 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirMesa/{id_mesa}', 'ComandaControlador@excluirMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarMesa/{id_mesa}/{mesaNova}', 'ComandaControlador@editarMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirMesa/{id_mesa}', 'comandaControlador@abrirMesa');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'fecharMesa/{id_mesa}', 'ComandaControlador@fecharMesa');
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');

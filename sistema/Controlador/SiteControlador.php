@@ -136,6 +136,7 @@ class SiteControlador extends Controlador
 
     public function caixa(int $id_mesa): void
     {
+        $idMesa = (new ComandaModelo())->buscaId_mesa("total", $id_mesa);
         $lanchesMesa = (new ComandaModelo())->buscaIds_mesa("lanches", $id_mesa);
         $bebidasMesa = (new ComandaModelo())->buscaIds_mesa("bebidas", $id_mesa);
         $totalMesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
@@ -154,7 +155,8 @@ class SiteControlador extends Controlador
             'ingredientes' => $ingredi,
             'lanchesMesa' => $lanchesMesa,
             'adicional' => $adicional,
-            'totalMesa' => $totalMesa
+            'totalMesa' => $totalMesa,
+            'id_mesa' => $idMesa
         ]));
     }
 
