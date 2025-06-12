@@ -714,10 +714,10 @@ class ComandaModelo
                 $subTotal += ($valorLancheAtual + $valorAdicionalAtual);
                 $total -= ($valorLancheAtual + $valorAdicionalAtual);
 
-                $query = "UPDATE lanches SET status = :desativado WHERE id_lanche = :idLanche";
-                $stmt = Conexao::getInstancia()->prepare($query);
-                $stmt->execute([
-                    'desativado' => 0,
+                $queryCobrado = "UPDATE lanches SET status = :cobrado WHERE id_lanche = :idLanche";
+                $stmtCobrado = Conexao::getInstancia()->prepare($queryCobrado);
+                $stmtCobrado->execute([
+                    'cobrado' => 2,
                     'idLanche' => $id_lanche
                 ]);
             }
@@ -734,10 +734,10 @@ class ComandaModelo
                 $subTotal += $valorBebidaAtual;
                 $total -= $valorBebidaAtual;
 
-                $queryBebida = "UPDATE bebidas SET status = :desativado WHERE id = :idBebida";
+                $queryBebida = "UPDATE bebidas SET status = :cobrado WHERE id = :idBebida";
                 $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
                 $stmtBebida->execute([
-                    'desativado' => 0,
+                    'cobrado' => 2,
                     'idBebida' => $id_bebida
                 ]);
             }

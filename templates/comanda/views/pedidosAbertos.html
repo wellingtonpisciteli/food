@@ -17,7 +17,7 @@
   </header>
 
   <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <button class="btnMostrarMesas btn fs-5" style="font-weight: bolder; color: white; background-color: blue;">
+    <button class="btnMostrarMesas btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
       Mostrar Todos
     </button>
   </div>
@@ -28,7 +28,7 @@
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
-      {% if pedido.status == 1 and pedido.id_mesa not in mesas_exibidas %}
+      {% if (pedido.status == 1 or pedido.status == 2) and pedido.id_mesa not in mesas_exibidas %}
         <button class="btnAbrirAberto btn fs-5" style="font-weight: bolder; color: white; background-color: darkgreen; margin-bottom: 5px;"
           data-id-mesa="{{ pedido.id_mesa }}">
           MESA:
@@ -52,7 +52,7 @@
     {% set cont = 0 %}
 
     {% for pedido in pedidos %}
-      {% if pedido.status == 1 %}
+      {% if pedido.status == 1 or pedido.status == 2 %}
         {% if pedido.id_mesa not in mesas_exibidas %}
           {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
           {% set bebidas_exibidas = [] %}
@@ -93,19 +93,20 @@
                 Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
               </div>
 
-              <div>
-                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5"
-                  style="font-weight: bolder; color: white; margin-right: 5px; background-color: blue;">
+              <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 teste"
+                  style="background-color: darkblue; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Adicionar
                 </a>
-                <a href="#" class="btn fs-5 excluir-mesa"
+
+                <a href="#" class="btn fs-5 excluir-mesa teste"
                   data-url="{{ url('excluirMesa/' ~ pedido.id_mesa) }}"
-                  style="font-weight: bolder; color: white; margin-left: 5px; background-color: darkred;">
-                  Excluir Mesa
+                  style="background-color: darkred; border-radius: 4px; border: none; color: white; font-weight: bold;">
+                  Excluir
                 </a>
 
-                <a href="{{ url('caixa/' ~ pedido.id_mesa) }}" class="btn fs-5"
-                  style="font-weight: bolder; color: white; margin-left: 5px; background-color: green;">
+                <a href="{{ url('caixa/' ~ pedido.id_mesa) }}" class="btn fs-5 teste"
+                  style="background-color: darkgreen; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Cobrar
                 </a>
               </div>
@@ -131,8 +132,10 @@
               <td style="font-weight: bolder;">
                 {% if pedido.nome_lanche == 'Em escolha...' %}
                   <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
-                {% else %}
+                {% elseif pedido.status == 1 %}
                   <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</a> <br>
+                {% else %}
+                  <span style="text-decoration: none; color: gray;">{{ pedido.nome_lanche }}</span> <br>
                 {% endif %}
 
                 {% for add in adicional %}
@@ -170,16 +173,25 @@
                   <span style="font-weight: bolder; padding-left: 5px; color: black;">
                     {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
                   </span>
+                {% elseif pedido.status == 2 %}
+                  <span style="font-weight: bolder; padding-left: 5px; color: gray;">
+                      {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+                  </span>
                 {% endif %}
               </td>
 
               <td style="font-weight: bolder;">
                 {% for bebida in bebidas %}
-                  {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
+                  {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
                     {% if bebida.chave not in bebidas_exibidas and bebida.status == 1 %}
                       <a href="{{ url('editarBebida/' ~ bebida.chave) }}" style="text-decoration: none; color: black;">
                         {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
                       </a>
+                      {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
+                    {% elseif bebida.chave not in bebidas_exibidas and bebida.status == 2  %}
+                      <span style="color: gray;">
+                        {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                      </span>
                       {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
                     {% endif %}
                   {% endif %}
@@ -188,9 +200,16 @@
 
               <td>
                 {% for bebida in bebidas %}
-                  {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
+                  {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
                     {% if bebida.chave not in chaves_exibidas and bebida.status == 1 %}
-                      <span style="font-weight: bolder; padding-left: 5px; color:black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                      <span style="font-weight: bolder; padding-left: 5px; color:black;">
+                        {{ bebida.valor_bebida | number_format(2, ',', '.') }}
+                      </span> <br>
+                      {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                    {% elseif bebida.chave not in chaves_exibidas and bebida.status == 2 %}
+                      <span style="font-weight: bolder; padding-left: 5px; color:gray;">
+                        {{ bebida.valor_bebida | number_format(2, ',', '.') }}
+                      </span> <br>
                       {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
                     {% endif %}
                   {% endif %}

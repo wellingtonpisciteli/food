@@ -3,7 +3,7 @@
 
 {% set cont = 0 %}
 {% for num in lanchesMesa %}
-{% if num.status == 1 %}
+{% if num.status == 1 or num.status == 2%}
 {% set cont = cont + 1 %}
 {% if cont == 1  %}
 <header class="text-center" id="adicionarHeader" style="background-color: black;">
@@ -32,7 +32,7 @@
                 {% if item.status == 1 %} 
                 
                 
-                <div class="lanches">{{ item.nome_lanche }}</div>
+                <div class="lanches"></div>
                    
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
@@ -101,6 +101,9 @@
             <tbody>
                 {% for item in cardapio_bebida %}
                 {% if item.status == 1 %}
+
+                <div class="bebidas"></div>
+
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
                     <input value="{{ item.chave }}" id="chave" name="chave" type="hidden">
@@ -111,7 +114,7 @@
                     
                     <td class="text-center align-middle bg-light" style="width: 20%;">
                         <select class="form-select text-center bg-light fw-bolder text-black" id="tamanho_valor">
-                            <option value="{{ item.id }} | {{ item.valor_bebida }}|{{ item.tamanho_bebida }}">
+                            <option value="{{ item.valor_bebida }}">
                                 {{ item.tamanho_bebida }} -
                                 ${{ item.valor_bebida | number_format(2, ',', '.') }}
                             </option>

@@ -60,7 +60,7 @@ const id_mesa = document.querySelectorAll('.id_mesa')
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
 let proximoValor = parseInt(ultimoInput) || 0;
-let proximoValorBebida = parseInt(ultimoInput) || 0;
+let proximoValorBebida = parseInt(ultimoInput) + 30 || 0;
 
 let ultimoId_mesa = id_mesa.length > 0 ? id_mesa[id_mesa.length - 1].value : null;
 let proximoId_mesa = parseInt(ultimoId_mesa) || 0;

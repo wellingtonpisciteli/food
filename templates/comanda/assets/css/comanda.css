@@ -611,6 +611,23 @@ body{
     content: "✔";
 }
 
+
+
+/* Tablet (largura até 900px) */
+@media (max-width: 900px) {
+  .teste {
+    flex: 1 1 120px; /* um pouco maior no tablet */
+  }
+}
+
+/* Mobile (largura até 600px) */
+@media (max-width: 600px) {
+  .teste {
+    flex: 1 1 100%;
+    width: 100%;  /* ocupa toda a largura disponível */
+  }
+}
+
     
 
 

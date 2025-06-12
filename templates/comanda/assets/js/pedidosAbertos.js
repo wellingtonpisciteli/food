@@ -67,7 +67,7 @@ btnMostrarMesas.addEventListener("click", function () {
         btnMostrarMesas.textContent = "Mostrar Todos";
 
         // Volta pro azul inline
-        btnMostrarMesas.style.backgroundColor = "blue";
+        btnMostrarMesas.style.backgroundColor = "darkblue";
         btnMostrarMesas.style.color = "white";
 
         // Remove classe btn-danger só por garantia

@@ -4,17 +4,32 @@ const totalMesa = document.getElementById('totalMesa');
 const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
 const totalTotal = document.getElementById('totalTotal');
+const mesa = document.getElementById('nummesa');
 const lanches = document.querySelectorAll('.lanches')
+const bebidas = document.querySelectorAll('.bebidas')
+
 
 let cont = 0
+let contBebidas = 0
 
 lanches.forEach(function(lanche){
     cont += 1
     console.log(cont)
 })
 
+bebidas.forEach(function(bebidas){
+    contBebidas += 1
+    console.log(contBebidas)
+})
+
 let total = 0;
 const lanchesSelecionados = [];
+const bebidasSelecionados = [];
+
+let totLanches = lanchesSelecionados.length
+let totBebidas = bebidasSelecionados.length
+
+let tot = totLanches + totBebidas;
 
 function getDataHoraAtual() {
     const agora = new Date();
@@ -41,8 +56,6 @@ enviarLancheBtns.forEach(btn => {
         const id_cardapio = form.querySelector('input[name="idCardapio"]').value;
 
         if (!lanchesSelecionados.includes(id_lanche)) {
-            cont -= 1
-            console.log(cont)
 
             lanchesSelecionados.push(id_lanche);
             total += parseFloat(valorLanche);
@@ -59,12 +72,6 @@ enviarLancheBtns.forEach(btn => {
 
             pedidosDiv.appendChild(idLancheInput);
             pedidosDiv.appendChild(idCardapioInput);
-
-            // ✅ Verifica se todos os lanches foram removidos
-            if (lanchesSelecionados.length === cont) {
-                console.log("🚨 Último lanche removido. Só restam bebidas na mesa!");
-                
-            }
 
         } else {
             const index = lanchesSelecionados.indexOf(id_lanche);
@@ -114,10 +121,10 @@ enviarBebidaBtns.forEach(btn => {
         const id_bebida = form.querySelector('input[name="id_bebida"]').value;
         const chave = form.querySelector('input[name="chave"]').value;
         const select = form.querySelector('select#tamanho_valor');
-        const [idTamanhoValorBebida, valorBebida, tamanhoBebida] = select.value.split('|');
+        const [valorBebida] = select.value;
 
-        if (!lanchesSelecionados.includes(id_bebida)) {
-            lanchesSelecionados.push(id_bebida);
+        if (!bebidasSelecionados.includes(id_bebida)) {
+            bebidasSelecionados.push(id_bebida);
             total += parseFloat(valorBebida);
 
             const idBebidaInput = document.createElement('input');
@@ -133,9 +140,9 @@ enviarBebidaBtns.forEach(btn => {
             pedidosDiv.appendChild(idBebidaInput);
             pedidosDiv.appendChild(idCardapioBebidaInput);
         } else {
-            const index = lanchesSelecionados.indexOf(id_bebida);
+            const index = bebidasSelecionados.indexOf(id_bebida);
             if (index > -1) {
-                lanchesSelecionados.splice(index, 1);
+                bebidasSelecionados.splice(index, 1);
                 total -= parseFloat(valorBebida);
 
                 const inputsToRemove = pedidosDiv.querySelectorAll('input[type="hidden"]');
@@ -224,10 +231,25 @@ btnDivCancelar.addEventListener('click', (e) => {
         }
     });
 
-    const controleTotal = document.createElement('input');
-    controleTotal.type = 'hidden';
-    controleTotal.name = 'subtotal';
-    controleTotal.value = 'subtotal';
+    const subtotalInput = document.querySelector('input[name="subtotal"]');
 
-    pedidosDiv.appendChild(controleTotal);
+    if (lanchesSelecionados.length === cont && bebidasSelecionados.length === contBebidas) {
+        console.log("Total");
+
+        if (subtotalInput) {
+            subtotalInput.remove();
+        }
+    } else {
+        if (!subtotalInput) {
+            const controleTotal = document.createElement('input');
+            controleTotal.type = 'hidden';
+            controleTotal.name = 'subtotal';
+            controleTotal.value = 'subtotal';
+
+            console.log(controleTotal);
+
+            pedidosDiv.appendChild(controleTotal);
+        }
+    }
+    
 });

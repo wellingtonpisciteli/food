@@ -39,7 +39,7 @@ const id_mesa = document.getElementById('id_mesa').value
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
 let proximoValor = parseInt(ultimoInput) || 0;
-let proximoValorBebida = parseInt(ultimoInput) || 0;
+let proximoValorBebida = parseInt(ultimoInput) + 100 || 0;
 
 
 enviarLancheBtns.forEach(btn => {
@@ -189,8 +189,6 @@ enviarBebidaBtns.forEach(btn => {
         idBebida = proximoValorBebida+=30
         cont += 1;
         controleCont += 1
-
-        idBebida;
         
         console.log('====================');
         console.log('🚀 Início dos dados:');
@@ -303,7 +301,9 @@ enviarBebidaBtns.forEach(btn => {
         const idBebidaInput = document.createElement('input');
         idBebidaInput.type = 'hidden';
         idBebidaInput.name = 'id_bebida[]';
-        idBebidaInput.value = idBebida;
+        idBebidaInput.value = idBebida + 10;
+
+        console.log(idBebidaInput)
 
         const detalhesBebidaInput = document.createElement('input');
         detalhesBebidaInput.type = 'hidden';
