@@ -63,6 +63,7 @@ class SiteControlador extends Controlador
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "id", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
 
@@ -72,6 +73,7 @@ class SiteControlador extends Controlador
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
             'pedido' => $pedido,
+            'bebidas' => $bebidas,
             'ingredientes' => $ingredi,
             'mesa' => $mesa
         ]));
@@ -147,7 +149,7 @@ class SiteControlador extends Controlador
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
 
         echo ($this->template->renderizar('caixa.html', [
-            'titulo' => 'Adicionar_na_mesa',
+            'titulo' => 'Caixa',
             'cardapio' => $cardapio,
             'cardapio_bebida' => $bebidasMesa,
             'tamanhoBebida' => $tamanho_bebida,
@@ -166,6 +168,7 @@ class SiteControlador extends Controlador
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "id", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
 
@@ -175,6 +178,7 @@ class SiteControlador extends Controlador
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida,
             'pedido' => $pedido,
+            'bebidas' => $bebidas,
             'ingredientes' => $ingredi,
             'mesa' => $mesa
         ]));

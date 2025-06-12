@@ -104,11 +104,15 @@ class ComandaControlador extends Controlador
         Helpers::redirecionar('pedidosAbertos');
     }
 
-    public function excluirMesa(int $id_mesa)
+    public function excluirMesa(int $id_mesa, int $status)
     {
         (new ComandaModelo())->apagarMesa($id_mesa);
 
-        Helpers::redirecionar('pedidosAbertos');
+        if($status == 1 ){
+            Helpers::redirecionar('pedidosAbertos');
+        }else{
+            Helpers::redirecionar('pedidosFechados');
+        }
     }
 
     public function editarMesa(int $id_mesa, int $novaMesa)

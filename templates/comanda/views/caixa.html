@@ -31,7 +31,6 @@
                 {% for item in lanchesMesa %}
                 {% if item.status == 1 %} 
                 
-                
                 <div class="lanches"></div>
                    
                 <tr>
@@ -70,7 +69,7 @@
 
                         {% set totalAddLanche = somaAdicional + item.valor_lanche %}
 
-                        {% if item.valor_lanche != 0 and item.status == 1 %}
+                        {% if item.status == 1 %}
                         <span style="color: blue;">
                             {{ (totalAddLanche) | number_format(2, ',', '.') }}
                         </span>

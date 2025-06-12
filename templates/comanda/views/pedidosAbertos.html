@@ -29,10 +29,10 @@
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
       {% if (pedido.status == 1 or pedido.status == 2) and pedido.id_mesa not in mesas_exibidas %}
-        <button class="btnAbrirAberto btn fs-5" style="font-weight: bolder; color: white; background-color: darkgreen; margin-bottom: 5px;"
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
           data-id-mesa="{{ pedido.id_mesa }}">
           MESA:
-          <span style="color: chartreuse; font-weight: bolder;">
+          <span style="color: chartreuse; font-weight: bold;">
             {% if pedido.mesa < 10 %}
               0{{ pedido.mesa }}
             {% else %}
@@ -100,7 +100,7 @@
                 </a>
 
                 <a href="#" class="btn fs-5 excluir-mesa teste"
-                  data-url="{{ url('excluirMesa/' ~ pedido.id_mesa) }}"
+                  data-url="{{ url('excluirMesa/' ~ pedido.id_mesa ~ '/' ~ 1) }}"
                   style="background-color: darkred; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Excluir
                 </a>

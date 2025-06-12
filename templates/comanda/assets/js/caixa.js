@@ -223,6 +223,18 @@ btnDiv.addEventListener("click", (e) => {
 
 btnDivCancelar.addEventListener('click', (e) => {
     e.preventDefault();
+
+    if (lanchesSelecionados.length === 0 && bebidasSelecionados.length === 0){
+        Swal.fire({
+            title: '<span style="color: black;">Vazio!</span>',
+            text: 'Selecione um item',
+            icon: 'info',
+            confirmButtonText: 'OK',
+            confirmButtonColor: 'blue'  
+        });
+        return
+    }
+
     mostrarSubTotal(total).then((result) => {
         if (result.isConfirmed) {
             document.getElementById('pedidos').submit();

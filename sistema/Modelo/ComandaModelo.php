@@ -96,21 +96,20 @@ class ComandaModelo
     }
 
     public function maisVendido(string $tabela, string $item, string $param, string $dataAtual)
-{
-    $query = "SELECT {$item}, COUNT(*) AS total_vendas
-              FROM {$tabela}
-              WHERE DATE(data_hora) = :dataAtual
-              GROUP BY {$item}
-              ORDER BY total_vendas {$param}";
+    {
+        $query = "SELECT {$item}, COUNT(*) AS total_vendas
+                FROM {$tabela}
+                WHERE DATE(data_hora) = :dataAtual
+                GROUP BY {$item}
+                ORDER BY total_vendas {$param}";
 
-    $stmt = Conexao::getInstancia()->prepare($query);
-    $stmt->execute([
-        'dataAtual' => $dataAtual
-    ]);
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute([
+            'dataAtual' => $dataAtual
+        ]);
 
-    return $stmt->fetchAll();
-}
-
+        return $stmt->fetchAll();
+    }
 
     public function armazenarLanche(array $dados): void
     {

@@ -20,6 +20,10 @@
     <input type="hidden" value="{{ item.id_lanche }}" id="idLancheNovo" class="idLancheNovo">
 {% endfor %}
 
+{% for item in bebidas %}
+    <input type="hidden" value="{{ item.id }}" id="idBebidaNova" class="idBebidaNova">
+{% endfor %}
+
 <div class="w-100" id="adicionarLanches" style="background-color: black;">
     <div class="table-responsive">
         <table class="table" id="adicionarTabela">

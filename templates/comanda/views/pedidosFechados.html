@@ -18,7 +18,7 @@
   </header>
 
   <div style="display: flex; justify-content: center; margin-bottom: 20px;">
-    <button class="btnMostrarMesas btn fs-5" style="font-weight: bolder; color: white; background-color: blue;">
+    <button class="btnMostrarMesas btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
       Mostrar Todos
     </button>
   </div>
@@ -31,10 +31,10 @@
     id="mesaButtonsContainer">
     {% for pedido in pedidos %}
       {% if pedido.status == 0 and pedido.id_mesa not in mesas_exibidas %}
-        <button class="btnAbrirAberto btn fs-5" style="font-weight: bolder; color: white; margin-bottom: 10px; background-color: darkgreen"
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
           data-id-mesa="{{ pedido.id_mesa }}">
           MESA:
-          <span style="color: chartreuse; font-weight: bolder;">
+          <span style="color: chartreuse; font-weight: bold;">
             {% if pedido.mesa < 10 %}
               0{{ pedido.mesa }}
             {% else %}
@@ -92,18 +92,18 @@
         Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
       </div>
 
-      <div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
         <a href="#"  
-          class="btn fs-5 abrir-mesa" 
+          class="btn fs-5 abrir-mesa teste" 
           data-url="{{ url('abrirMesa/' ~ pedido.id_mesa) }}"
           data-mesa="{{ pedido.mesa }}"
-          style="font-weight: bolder; color: white;  margin-right: 5px; background-color: blue;">
+          style="background-color: darkblue; border-radius: 4px; border: none; color: white; font-weight: bold;">
           Abrir Mesa
         </a>
         <a href="#" 
-          class="btn fs-5 excluir-mesa" 
-          data-url="{{ url('excluirMesa/' ~ pedido.id_mesa) }}" 
-          style="font-weight: bolder; color: white; margin-left: 5px; background-color: darkred;">
+          class="btn fs-5 excluir-mesa teste" 
+          data-url="{{ url('excluirMesa/' ~ pedido.id_mesa ~ '/' ~ 0) }}" 
+          style="background-color: darkred; border-radius: 4px; border: none; color: white; font-weight: bold;">
           Excluir Mesa
         </a>
       </div>

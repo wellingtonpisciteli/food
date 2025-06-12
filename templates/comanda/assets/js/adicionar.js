@@ -56,11 +56,14 @@ function getDataHoraAtual() {
 }
 
 const idIngredi = document.querySelectorAll('.idLancheTeste')
+const idBebidaNova = document.querySelectorAll('.idBebidaNova')
 const id_mesa = document.querySelectorAll('.id_mesa')
 
 let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
+let ultimoInputBebida = idBebidaNova.length > 0 ? idBebidaNova[idBebidaNova.length - 1].value : null;
+
 let proximoValor = parseInt(ultimoInput) || 0;
-let proximoValorBebida = parseInt(ultimoInput) + 30 || 0;
+let proximoValorBebida = parseInt(ultimoInputBebida) || 0;
 
 let ultimoId_mesa = id_mesa.length > 0 ? id_mesa[id_mesa.length - 1].value : null;
 let proximoId_mesa = parseInt(ultimoId_mesa) || 0;
@@ -216,12 +219,12 @@ const listaBebidas = document.getElementById('listaBebidas');
 
 enviarBebidaBtns.forEach(btn => {
     btn.addEventListener('click', (event) => {
-        idBebida = proximoValorBebida+=30
+        proximoValorBebida++
         cont += 1;
         
         console.log('====================');
         console.log('🚀 Início dos dados:');
-        console.log('Novo IdBebida:', idBebida);
+        console.log('Novo IdBebida:', proximoValorBebida);
         
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -330,7 +333,7 @@ enviarBebidaBtns.forEach(btn => {
         const idBebidaInput = document.createElement('input');
         idBebidaInput.type = 'hidden';
         idBebidaInput.name = 'id_bebida[]';
-        idBebidaInput.value = idBebida;
+        idBebidaInput.value = proximoValorBebida;
 
         const detalhesBebidaInput = document.createElement('input');
         detalhesBebidaInput.type = 'hidden';

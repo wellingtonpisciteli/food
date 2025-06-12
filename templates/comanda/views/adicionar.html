@@ -14,8 +14,12 @@
 </header>
 
 {% for item in pedido %}
-<input type="hidden" value="{{ item.id_lanche }}" id="idLancheTeste" class="idLancheTeste">
-<input type="hidden" value="{{ item.id_mesa }} " id="id_mesa" class="id_mesa">
+    <input type="hidden" value="{{ item.id_lanche }}" id="idLancheTeste" class="idLancheTeste">
+    <input type="hidden" value="{{ item.id_mesa }} " id="id_mesa" class="id_mesa">
+{% endfor %}
+
+{% for item in bebidas %}
+    <input type="hidden" value="{{ item.id }}" id="idBebidaNova" class="idBebidaNova">
 {% endfor %}
 
 <div class="w-100" id="adicionarLanches" style="background-color: black;">
