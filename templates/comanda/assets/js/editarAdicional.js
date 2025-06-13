@@ -8,11 +8,18 @@ window.onload = function() {
             const linha = botao.closest('tr'); 
             
             const adicional = linha.querySelector('input[name="nomeIngrediente"]').value; 
-            const preco = linha.querySelector('input[name="valorIngrediente"]').value; 
+            const precoRaw = linha.querySelector('input[name="valorIngrediente"]').value; 
             const idCardapio = linha.querySelector('input[name="idAdicional"]').value;
+
+            const preco = parseFloat(precoRaw.replace(',', '.'));
+
+            const valorFormatado = preco.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
             
             document.getElementById('nome-adicional').innerHTML = "+ "+ adicional;
-            document.getElementById('valor-adicional').innerHTML = preco + ",00";
+            document.getElementById('valor-adicional').innerHTML = `$${valorFormatado}`;
             document.getElementById('idCardapio_adicional').value = idCardapio;
             document.getElementById('tipo').value = "+";
 
@@ -28,10 +35,15 @@ window.onload = function() {
 
             const adicional = linha.querySelector('input[name="nomeIngrediente"]').value;
             const idCardapio = linha.querySelector('input[name="idAdicional"]').value; 
-            const preco = 0  
+            const preco = 0 
+            
+            const valorFormatado = preco.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
                         
             document.getElementById('nome-adicional').innerHTML = "- "+ adicional;
-            document.getElementById('valor-adicional').innerHTML = preco + ",00"; 
+            document.getElementById('valor-adicional').innerHTML = `$${valorFormatado}`; 
             document.getElementById('idCardapio_adicional').value = idCardapio;
             document.getElementById('tipo').value = "-";
 
@@ -47,7 +59,7 @@ window.onload = function() {
     
             Swal.fire({
                 title: '<span style="color: black;">Apagar?</span>',
-                text: 'Deseja apagar este lanche?',
+                text: 'Deseja apagar este adicional?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: 'darkred',
@@ -108,7 +120,7 @@ window.onload = function() {
             <tbody>
               <tr style="border-bottom: 1px solid #ccc;">
                 <td style="padding: 6px 10px; color: ${cor};"> <strong>${icone} ${nome}</strong></td>
-                <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>R$ ${valor}</strong></td>
+                <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>${valor}</strong></td>
               </tr>
             </tbody>
           </table>
@@ -116,7 +128,7 @@ window.onload = function() {
       `,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonText: '✅ Enviar Pedido',
+      confirmButtonText: '✅ Confirmar',
       cancelButtonText: '🛑 Cancelar',
       reverseButtons: true,
       confirmButtonColor: 'blue',      // azul para confirmar

@@ -54,7 +54,7 @@ buttons.forEach(button => {
 btnMostrarMesas.addEventListener("click", function () {
     if (mesaButtonsContainer.style.display === "none" || mesaButtonsContainer.style.display === "") {
         mesaButtonsContainer.style.display = "flex";
-        btnMostrarMesas.textContent = "Fechar Todos";
+        btnMostrarMesas.textContent = "Fechar Todas";
 
         // Remove azul inline para não conflitar com o darkred
         btnMostrarMesas.style.backgroundColor = 'darkred';
@@ -64,7 +64,7 @@ btnMostrarMesas.addEventListener("click", function () {
         btnMostrarMesas.classList.remove("btn-danger");
     } else {
         mesaButtonsContainer.style.display = "none";
-        btnMostrarMesas.textContent = "Mostrar Todos";
+        btnMostrarMesas.textContent = "Mostrar Todas";
 
         // Volta pro azul inline
         btnMostrarMesas.style.backgroundColor = "darkblue";

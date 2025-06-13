@@ -207,7 +207,7 @@
           {% for bebida in bebidas %}
             {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 0 %}
               {% if bebida.chave not in chaves_exibidas and bebida.status == 0 %}
-                <span style="font-weight: bolder; padding-left: 5px; color: black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color: black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
                 {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
               {% endif %}
             {% endif %}

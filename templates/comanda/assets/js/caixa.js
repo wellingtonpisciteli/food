@@ -121,7 +121,7 @@ enviarBebidaBtns.forEach(btn => {
         const id_bebida = form.querySelector('input[name="id_bebida"]').value;
         const chave = form.querySelector('input[name="chave"]').value;
         const select = form.querySelector('select#tamanho_valor');
-        const [valorBebida] = select.value;
+        const valorBebida = parseFloat(select.value);
 
         if (!bebidasSelecionados.includes(id_bebida)) {
             bebidasSelecionados.push(id_bebida);

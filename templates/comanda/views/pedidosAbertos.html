@@ -18,7 +18,7 @@
 
   <div style="display: flex; justify-content: center; margin-bottom: 20px;">
     <button class="btnMostrarMesas btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
-      Mostrar Todos
+      Mostrar Todas
     </button>
   </div>
 
@@ -202,12 +202,12 @@
                 {% for bebida in bebidas %}
                   {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
                     {% if bebida.chave not in chaves_exibidas and bebida.status == 1 %}
-                      <span style="font-weight: bolder; padding-left: 5px; color:black;">
+                      <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:black;">
                         {{ bebida.valor_bebida | number_format(2, ',', '.') }}
                       </span> <br>
                       {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
                     {% elseif bebida.chave not in chaves_exibidas and bebida.status == 2 %}
-                      <span style="font-weight: bolder; padding-left: 5px; color:gray;">
+                      <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:gray;">
                         {{ bebida.valor_bebida | number_format(2, ',', '.') }}
                       </span> <br>
                       {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}

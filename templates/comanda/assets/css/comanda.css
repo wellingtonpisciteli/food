@@ -4,6 +4,7 @@ body{
     background-color: black;
 }
 
+
 #menuComanda{
     background-image: linear-gradient(to right, darkred, black);
     padding: 10px;
@@ -616,7 +617,7 @@ body{
 /* Tablet (largura até 900px) */
 @media (max-width: 900px) {
   .teste {
-    flex: 1 1 120px; /* um pouco maior no tablet */
+    flex: 1 1 150px; /* um pouco maior no tablet */
   }
 }
 
@@ -626,6 +627,12 @@ body{
     flex: 1 1 100%;
     width: 100%;  /* ocupa toda a largura disponível */
   }
+
+    .precoBebida{
+        display: flex;
+        align-items: center;
+    }
+
 }
 
     

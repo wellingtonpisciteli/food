@@ -17,12 +17,19 @@ window.onload = function() {
       const linha = botao.closest('tr'); 
 
       const lanche = linha.querySelector('input[name="lanche"]').value; 
-      const preco = linha.querySelector('input[name="valor_lanche"]').value; 
+      const precoRaw = linha.querySelector('input[name="valor_lanche"]').value;
       const detalhes = linha.querySelector('input[name="detalhesLanche"]').value;
       const idCardapio = linha.querySelector('input[name="idCardapio"]').value;
+
+      const preco = parseFloat(precoRaw.replace(',', '.'));
+
+      const valorFormatado = preco.toLocaleString('pt-BR', {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2
+      });
       
       document.getElementById('nome-lanche').innerHTML = lanche;
-      document.getElementById('valor-lanche').innerHTML = preco;
+      document.getElementById('valor-lanche').innerHTML = `$${valorFormatado}`;
       document.getElementById('detalhes_lanche').value = detalhes;
       document.getElementById('id_cardapio').value = idCardapio;
     });
@@ -97,7 +104,7 @@ window.onload = function() {
             <tbody>
               <tr style="border-bottom: 1px solid #ccc;">
                 <td style="padding: 6px 10px; color: black;"><strong>🍔 ${nome}</strong></td>
-                <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>R$ ${valor}</strong></td>
+                <td style="padding: 6px 10px; text-align: right; color: blue;"><strong>${valor}</strong></td>
                 <td style="padding: 6px 10px; font-style: italic;">${detalhes || '-'}</td>
               </tr>
             </tbody>

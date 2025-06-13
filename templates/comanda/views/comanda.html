@@ -29,10 +29,10 @@
     {% set ultimosTres = 0 %}
 
     {% for pedido in pedidos %}
-    {% if pedido.status == 1 and pedido.id_mesa not in mesas_exibidas %}
+    {% if (pedido.status == 1 or pedido.status == 2) and pedido.id_mesa not in mesas_exibidas %}
     {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
-          {% set bebidas_exibidas = [] %}
-          {% set chaves_exibidas = [] %}
+    {% set bebidas_exibidas = [] %}
+    {% set chaves_exibidas = [] %}
 
     {% if contando == 1 or contando == 2 %}
       <div  style="height: 15px; background-color: black;"></div>
@@ -49,7 +49,7 @@
       </div>
 
       <div>
-        {% if pedido.status == 1 %}
+        {% if (pedido.status == 1 or pedido.status == 2) %}
         STATUS: <span style="color: chartreuse;">ABERTA </span>
         {% else %}
         STATUS: <span style="color: red;">FECHADA</span>
@@ -78,7 +78,7 @@
   {% set contando = contando + 1 %}
   {% endif %}
 
-  {% if ultimosTres <= 3 and pedido.status == 1 %} {% if pedido.nome_lanche %} <!-- Verifica se há algum lanche ou bebida
+  {% if ultimosTres <= 3 and (pedido.status == 1 or pedido.status == 2) %} {% if pedido.nome_lanche %} <!-- Verifica se há algum lanche ou bebida
     -->
     <table style="margin: auto; margin-bottom: 10px; width: 100%;"> <!-- Ajuste nas margens e tamanho -->
       <thead>
@@ -117,9 +117,11 @@
         <tr>
           <td style="font-weight: bolder;">
             {% if pedido.nome_lanche == 'Em escolha...' %}
-              <span style="padding-left: 5px; color: gray; font-style: italic;">Em escolha...</span>
+              <span style="color: gray; padding-left: 5px;">Em escolha...</span> <br>
             {% elseif pedido.status == 1 %}
-              <span style="padding-left: 5px; color: black;">{{ pedido.nome_lanche }}</span>
+              <span style="padding-left: 5px; color: black;">{{ pedido.nome_lanche }}</span> <br>
+            {% else %}
+              <span style="color: gray; padding-left: 5px;">{{ pedido.nome_lanche }}</span> <br>
             {% endif %}
 
             {% for add in adicional %}
@@ -147,14 +149,23 @@
               <span style="font-weight: bolder; padding-left: 15px; color: black;">
                 {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
               </span>
+            {% elseif pedido.status == 2 %}
+              <span style="font-weight: bolder; padding-left: 15px; color: gray;">
+                  {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+              </span>
             {% endif %}
           </td>
 
           <td style="font-weight: bolder; padding-left: 15px;">
             {% for bebida in bebidas %}
-              {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
+              {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
                 {% if bebida.chave not in bebidas_exibidas and bebida.status == 1 %}
                   <span style="color: black;">
+                    {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                  </span>
+                  {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
+                {% elseif bebida.chave not in bebidas_exibidas and bebida.status == 2  %}
+                  <span style="color: gray;">
                     {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
                   </span>
                   {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
@@ -165,9 +176,14 @@
 
           <td>
                 {% for bebida in bebidas %}
-                  {% if bebida.id_mesa == pedido.id_mesa and pedido.status == 1 %}
+                  {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
                     {% if bebida.chave not in chaves_exibidas and bebida.status == 1 %}
-                      <span style="font-weight: bolder; padding-left: 15px; color:black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                      <span class="precoBebida" style="font-weight: bolder; padding-left: 15px; color:black;">{{ bebida.valor_bebida | number_format(2, ',', '.') }}</span> <br>
+                      {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                    {% elseif bebida.chave not in chaves_exibidas and bebida.status == 2 %}
+                      <span class="precoBebida" style="font-weight: bolder; padding-left: 15px; color:gray;">
+                        {{ bebida.valor_bebida | number_format(2, ',', '.') }}
+                      </span> <br>
                       {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
                     {% endif %}
                   {% endif %}

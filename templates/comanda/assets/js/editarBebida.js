@@ -10,11 +10,18 @@ window.onload = function() {
             const bebida = linha.querySelector('input[name="bebida"]').value; 
             const selectTamanho = linha.querySelector('select#tamanho_valor');
             const valorTamanho = selectTamanho.value; 
-            const [idTamanhoValor, preco, tamanho] = valorTamanho.split('|');
+            const [idTamanhoValor, precoRaw, tamanho] = valorTamanho.split('|');
             const idCardapio = linha.querySelector('input[name="idCardapio"]').value;
+
+            const preco = parseFloat(precoRaw.replace(',', '.'));
+
+            const valorFormatado = preco.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
             
             document.getElementById('nome-bebida').innerHTML = bebida;
-            document.getElementById('valor-bebida').innerHTML = preco + ",00"; 
+            document.getElementById('valor-bebida').innerHTML = `$${valorFormatado}`; 
             document.getElementById('tamanho-bebida').innerHTML = tamanho; 
             document.getElementById('idCardapio_bebida').value = idCardapio;
             document.getElementById('idTamanhoValor').value = idTamanhoValor;
@@ -85,7 +92,7 @@ window.onload = function() {
                 <tr style="border-bottom: 1px solid #ccc;">
                     <td style="padding: 6px 10px; color: black;"><strong>🥤 ${nome}</strong></td>
                     <td style="padding: 6px 10px; text-align: center; color: black;"><strong>${tamanho}</strong></td>
-                    <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>R$ ${valor}</strong></td>
+                    <td style="padding: 6px 10px; text-align: right; color: #0d6efd;"><strong>${valor}</strong></td>
                 </tr>
                 </tbody>
             </table>
