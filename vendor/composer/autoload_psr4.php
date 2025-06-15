@@ -12,4 +12,5 @@ return array(
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Polyfill\\Ctype\\' => array($vendorDir . '/symfony/polyfill-ctype'),
     'Pecee\\' => array($vendorDir . '/pecee/simple-router/src/Pecee'),
+    'Mike42\\' => array($vendorDir . '/mike42/escpos-php/src/Mike42'),
 );

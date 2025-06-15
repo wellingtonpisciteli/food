@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'ceowell/sistema_food',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'bc4381cb68497c0554df7de6d8a5ace36cb6c241',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,11 +11,20 @@
     ),
     'versions' => array(
         'ceowell/sistema_food' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'bc4381cb68497c0554df7de6d8a5ace36cb6c241',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'mike42/escpos-php' => array(
+            'pretty_version' => 'v2.2',
+            'version' => '2.2.0.0',
+            'reference' => 'e5496cf819b048b11877117bd14a9cea4fb17c03',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mike42/escpos-php',
             'aliases' => array(),
             'dev_requirement' => false,
         ),

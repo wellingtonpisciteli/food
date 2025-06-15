@@ -19,6 +19,7 @@
     "require": {
         "php": ">=8.0",
         "pecee/simple-router": "^5.4",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.0",
+        "mike42/escpos-php": "^2.2"
     }
 }

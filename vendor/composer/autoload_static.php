@@ -37,6 +37,10 @@ class ComposerStaticInit6e05db03d4e5f475e2d3baf8f61f8436
         array (
             'Pecee\\' => 6,
         ),
+        'M' => 
+        array (
+            'Mike42\\' => 7,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
@@ -63,6 +67,10 @@ class ComposerStaticInit6e05db03d4e5f475e2d3baf8f61f8436
         'Pecee\\' => 
         array (
             0 => __DIR__ . '/..' . '/pecee/simple-router/src/Pecee',
+        ),
+        'Mike42\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mike42/escpos-php/src/Mike42',
         ),
     );
 

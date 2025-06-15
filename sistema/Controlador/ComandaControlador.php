@@ -6,6 +6,8 @@ use sistema\Nucleo\Controlador;
 use sistema\Nucleo\Helpers;
 use sistema\Modelo\ComandaModelo;
 use sistema\Nucleo\Conexao;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 
 class ComandaControlador extends Controlador
 {
@@ -146,5 +148,49 @@ class ComandaControlador extends Controlador
         }
 
         Helpers::redirecionar('pedidosAbertos');
+    }
+
+    public function imprimir($id_mesa)
+    {
+        $comandaModelo = new ComandaModelo();
+
+        $buscaMesa = $comandaModelo->buscaId_mesa("total", $id_mesa);
+        $mesa = $buscaMesa->mesa ?? 0;
+
+        $lanches = $comandaModelo->buscaIds_mesa("lanches", $id_mesa);
+        $adicionais = $comandaModelo->buscaIds_mesa("adicionais", $id_mesa);
+        $bebidas = $comandaModelo->buscaIds_mesa("bebidas", $id_mesa);
+
+        $connector = new FilePrintConnector("php://output");
+        $printer = new Printer($connector);
+
+        $printer->text("LANCHONETE DO ZÉ\r\n");
+        $printer->text("Mesa: $mesa\r\n");
+        $printer->text("----------------------\r\n");
+
+        // 🥪 Lanches + Adicionais
+        foreach ($lanches as $lanche) {
+            $printer->text($lanche->nome_lanche . "\r\n");
+
+            // Encontra adicionais relacionados a esse lanche
+            foreach ($adicionais as $adicional) {
+                if ($adicional->id == $lanche->id_lanche) {
+                    $printer->text("  " . $adicional->nome_adicional . "\r\n");
+                }
+            }
+        }
+
+        // 🥤 Bebidas
+        if (!empty($bebidas)) {
+            $printer->text("Bebidas:\r\n");
+            foreach ($bebidas as $bebida) {
+                $printer->text($bebida->nome_bebida . " - " . $bebida->tamanho_bebida . "\r\n");
+            }
+        }
+
+        $printer->text("----------------------\r\n");
+        $printer->text("Obrigado pela preferência!\r\n");
+        $printer->cut();
+        $printer->close();
     }
 }

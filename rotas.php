@@ -25,6 +25,7 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarNaMesa/{mesa}', 'SiteControlador@adicionarNaMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarAdicional/{mesa}/{id_lanche}', 'SiteControlador@adicionarAdicional');
     SimpleRouter::get(URL_SITE . 'caixa/{id_mesa}', 'SiteControlador@caixa');
+    SimpleRouter::get(URL_SITE . 'imprimir/{id_mesa}', 'SiteControlador@imprimir');
 
     SimpleRouter::get(URL_SITE . '404', 'SiteControlador@erro404');
 

@@ -6,6 +6,8 @@ use sistema\Nucleo\Controlador;
 use sistema\Nucleo\Helpers;
 use sistema\Modelo\ComandaModelo;
 use sistema\Nucleo\Conexao;
+use Mike42\Escpos\Printer;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 
 /**
  * Controlador para a seção pública do site.
@@ -82,16 +84,19 @@ class SiteControlador extends Controlador
 
     public function pedidosAbertos(): void
     {
+
+        $obj = new ComandaModelo();
+
         $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
-        $total = (new ComandaModelo())->ler("total", "total", "DESC");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $pedidos = $obj->ler("lanches", "data_hora", "DESC");
+        $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
+        $total = $obj->ler("total", "total", "DESC");
+        $mesa = $obj->ler("lanches", "mesa", "DESC");
+        $cardapioLanche = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $ingredientes = $obj->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $cardapioBebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('pedidosAbertos.html', [
             'titulo' => 'Pedidos_abertos',
@@ -245,6 +250,59 @@ class SiteControlador extends Controlador
             'cardapio_bebida' => $cardapio_bebida,
             'tamanhoBebida' => $tamanho_bebida
         ]));
+    }
+
+    public function imprimir($id_mesa)
+    {
+        $comandaModelo = new ComandaModelo();
+
+        $buscaMesa = $comandaModelo->buscaId_mesa("total", $id_mesa);
+        $mesa = $buscaMesa->mesa ?? 0;
+
+        $lanches = $comandaModelo->buscaIds_mesa("lanches", $id_mesa);
+        $adicionais = $comandaModelo->buscaIds_mesa("adicionais", $id_mesa);
+        $bebidas = $comandaModelo->buscaIds_mesa("bebidas", $id_mesa);
+
+        $connector = new FilePrintConnector("php://output");
+        $printer = new Printer($connector);
+
+        $printer->text("LANCHONETE DO ZÉ\r\n");
+        $printer->text("Mesa: $mesa\r\n");
+        $printer->text("----------------------\r\n");
+
+        // 🥪 Lanches + Adicionais
+        foreach ($lanches as $lanche) {
+            $printer->text($lanche->nome_lanche . "\r\n");
+
+            // Encontra adicionais relacionados a esse lanche
+            foreach ($adicionais as $adicional) {
+                if ($adicional->id == $lanche->id_lanche) {
+                    $printer->text("  " . $adicional->nome_adicional . "\r\n");
+                }
+            }
+        }
+
+        // 🥤 Bebidas
+        if (!empty($bebidas)) {
+            $printer->text("Bebidas:\r\n");
+            foreach ($bebidas as $bebida) {
+                $printer->text($bebida->nome_bebida . " - " . $bebida->tamanho_bebida . "\r\n");
+            }
+        }
+
+        $printer->text("----------------------\r\n");
+        $printer->text("Obrigado pela preferência!\r\n");
+        $printer->cut();
+        $printer->close();
+
+        // Envia os dados para o HTML também
+        echo $this->template->renderizar('imprimir.html', [
+            'titulo' => 'Imprimir',
+            'mesa' => $mesa,
+            'lanches' => $lanches,
+            'adicionais' => $adicionais,
+            'bebidas' => $bebidas
+        ]);
     }
 
     public function busca(int $id)
