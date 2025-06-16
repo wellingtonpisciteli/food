@@ -118,9 +118,9 @@ class ComandaModelo
         $stmt = Conexao::getInstancia()->prepare($query);
 
         if (!empty($dados['id_lanche']) && is_array($dados['id_lanche'])) {
-            foreach ($dados['mesa'] as $index => $mesa) {
+            foreach ($dados['id_lanche'] as $index => $id_lanche) {
                 $id_mesa = $dados['id_mesa'][$index] ?? null;
-                $id_lanche = $dados['id_lanche'][$index] ?? null;
+                $mesa = $dados['mesa'][$index] ?? null;
                 $data_hora = $dados['data_hora'][$index] ?? date('Y-m-d H:i:s');
                 $detalhes_lanche = $dados['detalhes_lanche'][$index] ?? null;
                 $id = $dados['idCardapioLanche'][$index] ?? null;
@@ -195,10 +195,10 @@ class ComandaModelo
         $query = "INSERT INTO bebidas (id_mesa, mesa, id, nome_bebida, tamanho_bebida, detalhes_bebida, valor_bebida) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = Conexao::getInstancia()->prepare($query);
 
-        if (!empty($bebida['mesa_bebida']) && is_array($bebida['mesa_bebida'])) {
-            foreach ($bebida['mesa_bebida'] as $index => $mesa_bebida) {
+        if (!empty($bebida['id_bebida']) && is_array($bebida['id_bebida'])) {
+            foreach ($bebida['id_bebida'] as $index => $idBebida) {
                 $id_mesa = $bebida['id_mesaBebida'][$index] ?? null;
-                $idBebida = $bebida['id_bebida'][$index] ?? null;
+                $mesa_bebida = $bebida['mesa_bebida'][$index] ?? null;
                 $detalhes_bebida = $bebida['detalhes_bebida'][$index] ?? null;
                 $idMarca = $bebida['idMarcaBebida'][$index] ?? null;
                 $idTamanho = $bebida['idTamanhoValorBebida'][$index] ?? null;
@@ -223,6 +223,27 @@ class ComandaModelo
                     ]);
                 }
             }
+        }
+    }
+
+    public function armazenarEntrega(array $dados): void
+    {
+        $query = "INSERT INTO entrega_retirada (id_pedido, tipo, cliente, bairro, endereco, taxa, contato, tipo_contato) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        // Apenas um pedido
+        if (!empty($dados['id_pedido'])) {
+            $stmt->execute([
+                $dados['id_pedido'],
+                $dados['tipo_retirada'],
+                $dados['cliente'],
+                $dados['bairro'],
+                $dados['endereco'],
+                $dados['taxa'],
+                $dados['contato'],
+                $dados['tipo_contato']
+            ]);
         }
     }
 

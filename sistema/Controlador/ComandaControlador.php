@@ -27,6 +27,8 @@ class ComandaControlador extends Controlador
 
             (new ComandaModelo())->armazenarBebida($dados);
 
+            (new ComandaModelo())->armazenarEntrega($dados);
+
             (new ComandaModelo())->armazenarEatualizarTotal($dados);
             
             (new ComandaModelo())->armazenarHora($dados);

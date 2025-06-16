@@ -12,7 +12,7 @@
   <header class="cardapio-header"
     style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
     <div class="linha-com-texto">
-      <span>MESAS ABERTAS</span>
+      <span>ENTREGAS ABERTAS</span>
     </div>
   </header>
 
@@ -27,22 +27,15 @@
   
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
-    {% for pedido in pedidos %}
-    {% if pedido.mesa != 0 %}
-      {% if (pedido.status == 1 or pedido.status == 2) and pedido.id_mesa not in mesas_exibidas %}
+    {% for item in entrega_retirada %}
+      {% if (item.status == 1 or item.status == 2) and item.id_pedido not in mesas_exibidas %}
         <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
-          data-id-mesa="{{ pedido.id_mesa }}">
-          MESA:
+          data-id-mesa="{{ item.id_pedido }}">
           <span style="color: chartreuse; font-weight: bold;">
-            {% if pedido.mesa < 10 %}
-              0{{ pedido.mesa }}
-            {% else %}
-              {{ pedido.mesa }}
-            {% endif %}
+                {{ item.cliente }}
           </span>
         </button>
-        {% set mesas_exibidas = mesas_exibidas | merge([pedido.id_mesa]) %}
-      {% endif %}
+        {% set mesas_exibidas = mesas_exibidas | merge([item.id_pedido]) %}
       {% endif %}
     {% endfor %}
   </div>
@@ -53,49 +46,42 @@
     {% set mesas_exibidas = [] %}
     {% set cont = 0 %}
 
-    {% for pedido in pedidos %}
-      {% if pedido.status == 1 or pedido.status == 2 %}
-        {% if pedido.id_mesa not in mesas_exibidas %}
+    {% for item in entrega_retirada %}
+      {% if item.status == 1 or item.status == 2 %}
+        {% if item.id_pedido not in mesas_exibidas %}
           {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
           {% set bebidas_exibidas = [] %}
           {% set chaves_exibidas = [] %}
 
-          <div class="mesaAberta" style="display: none;" data-id-mesa="{{ pedido.id_mesa }}">
+          <div class="mesaAberta" style="display: none;" data-id-mesa="{{ item.id_pedido }}">
             <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px;">   
 
-              {% if pedido.mesa < 10 %} 
                 <div>
-                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
+                    <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
                     style="color: white; margin-left: 5px; text-decoration: none;">
-                    Mesa: <span style="color: lime"> 0{{ pedido.mesa }}</span>
-                  </a>      
+                    Cliente: <span style="color: lime"> {{ item.cliente }}</span>
+                    </a>      
                 </div>
-              {% else %}
-                <div>
-                  <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
-                    style="color: white; margin-left: 5px; text-decoration: none;">
-                    Mesa: <span style="color: lime">{{ pedido.mesa }}</span>
-                  </a>       
-                </div>
-              {% endif %}
 
-              <div>Status: <span style="color: chartreuse;">Aberta</span></div>
+                <div>Contato: <span style="color: chartreuse;">{{ item.contato }}</span></div>
+     
+              <div>Bairro: <span style="color: chartreuse;">{{ item.bairro }}</span></div>
+
+              <div>Rua: <span style="color: lightseagreen;">{{ item.endereco }}</span></div>
 
               {% set mostrado = false %}
               {% for valor in total %}
-                {% if pedido.id_mesa == valor.id_mesa and not mostrado and valor.status == 1 %}
+                {% if item.id_pedido == valor.id_mesa and not mostrado and valor.status == 1 %}
                   <div>
-                    Total: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
+                    {{ item.tipo_pagamento }}: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
                   </div>
                   {% set mostrado = true %}
                 {% endif %}
-              {% endfor %}
+              {% endfor %} 
 
-              <div>
-                Ás: <span style="color: lightseagreen;">{{ pedido.data_hora | date('H:i') }}</span>
-              </div>
+              <div>Onde: <span style="color: lightseagreen;">{{ item.tipo_contato }}</span></div>
 
-              <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+              <!-- <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
                 <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 teste"
                   style="background-color: darkblue; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Adicionar
@@ -109,22 +95,22 @@
 
                 <a href="{{ url('caixa/' ~ pedido.id_mesa) }}" class="btn fs-5 teste"
                   style="background-color: darkgreen; border-radius: 4px; border: none; color: white; font-weight: bold;">
-                  Cobrar
+                  Despachar
                 </a>
 
                 <a href="{{ url('imprimir/' ~ pedido.id_mesa) }}" class="btn fs-5 teste"
                   style="background-color: darkslategray; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Imprimir
                 </a>
-              </div>
+              </div> -->
             </div>
           </div>
 
           {% set cont = 0 %}
-          {% set mesas_exibidas = mesas_exibidas | merge([pedido.id_mesa]) %}
+          {% set mesas_exibidas = mesas_exibidas | merge([item.id_pedido]) %}
         {% endif %}
 
-        <table class="tablePedido" data-id-mesa="{{ pedido.id_mesa }}"
+        <table class="tablePedido" data-id-mesa="{{ item.id_pedido }}"
           style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;">
           <thead>
             <tr>
@@ -137,31 +123,35 @@
           <tbody>
             <tr>
               <td style="font-weight: bolder;">
-                {% if pedido.nome_lanche == 'Em escolha...' %}
-                  <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
-                {% elseif pedido.status == 1 %}
-                  <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</a> <br>
-                {% else %}
-                  <span style="text-decoration: none; color: gray;">{{ pedido.nome_lanche }}</span> <br>
+                {% for pedido in pedidos %}
+                {% if pedido.id_mesa == item.id_pedido %}
+                    {% if pedido.nome_lanche == 'Em escolha...' %}
+                    <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
+                    {% elseif pedido.status == 1 %}
+                    <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</a> <br>
+                    {% else %}
+                    <span style="text-decoration: none; color: gray;">{{ pedido.nome_lanche }}</span> <br>
+                    {% endif %}
+
+                    {% for add in adicional %}
+                    {% if add.id == pedido.id_lanche and pedido.status == 1 %}
+                        <div style="margin-top: 5px">
+                        {% if add.tipo == '+' %}
+                            <span style="color: green; font-weight: bolder;">
+                            <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: green;">+{{ add.nome_adicional }}</a>
+                            </span>        
+                        {% elseif add.tipo == '-' %}
+                            <span style="color: red; font-weight: bolder;">
+                            <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: red;">-{{ add.nome_adicional }}</a>
+                            </span>
+                        {% endif %}
+                        </div> 
+                    {% endif %}
+                    {% endfor %}
                 {% endif %}
-
-                {% for add in adicional %}
-                  {% if pedido.id_lanche == add.id %}
-                    <div style="margin-top: 5px">
-                      {% if add.tipo == '+' %}
-                        <span style="color: green; font-weight: bolder;">
-                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: green;">+{{ add.nome_adicional }}</a>
-                        </span>        
-                      {% elseif add.tipo == '-' %}
-                        <span style="color: red; font-weight: bolder;">
-                          <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: red;">-{{ add.nome_adicional }}</a>
-                        </span>
-                      {% endif %}
-                    </div>
-                  {% endif %}
                 {% endfor %}
-
-                {% if pedido.status == 1 %}
+                    
+                {% if item.status == 1 %}
                   <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
                     <i class="fa-solid fa-square-plus"></i>
                   </a>
@@ -170,21 +160,16 @@
 
               <td>
                 {% set somaAdicional = 0 %}
-                {% for add in adicional %}
-                  {% if pedido.id_lanche == add.id and pedido.status == 1 %}
-                    {% set somaAdicional = somaAdicional + add.valor_adicional %}
-                  {% endif %}
-                {% endfor %}
 
-                {% if pedido.valor_lanche != 0 and pedido.status == 1 %}
+                {% for lanche in pedidos %}
+                {% if lanche.id_mesa == item.id_pedido %}
+                {% if lanche.valor_lanche != 0 and lanche.status == 1 %}
                   <span style="font-weight: bolder; padding-left: 5px; color: black;">
-                    {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
-                  </span>
-                {% elseif pedido.status == 2 %}
-                  <span style="font-weight: bolder; padding-left: 5px; color: gray;">
-                      {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+                    {{ (lanche.valor_lanche) | number_format(2, ',', '.') }} 
                   </span>
                 {% endif %}
+                {% endif %}
+                {% endfor %}
               </td>
 
               <td style="font-weight: bolder;">
@@ -319,5 +304,5 @@
   
 </body>
 
-<script src="{{ url('/templates/comanda/assets/js/pedidosAbertos.js') }}" defer></script>
+<script src="{{ url('/templates/comanda/assets/js/entregasAbertas.js') }}" defer></script>
 {% endblock %}

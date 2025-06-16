@@ -10,6 +10,8 @@ try {
     SimpleRouter::get(URL_SITE . 'adicionar', 'SiteControlador@adicionar');
     SimpleRouter::get(URL_SITE . 'pedidosAbertos', 'SiteControlador@pedidosAbertos');
     SimpleRouter::get(URL_SITE . 'pedidosFechados', 'SiteControlador@pedidosFechados');
+    SimpleRouter::get(URL_SITE . 'entregasAbertas', 'SiteControlador@entregasAbertas');
+
 
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'ComandaControlador@cadastrar');

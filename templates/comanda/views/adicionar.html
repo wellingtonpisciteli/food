@@ -201,6 +201,9 @@
                     Entrega ou Retirada
                 </h3>
 
+                <input type="hidden" name="tipo_retirada" id="tipo_retirada">
+                <input type="hidden" name="id_pedido" id="id_pedido">
+
                 <table class="table" id="tabelaPedidos">
                     <thead>
                         <tr>
@@ -218,7 +221,7 @@
                                 <input type="text" class="form-control" name="contato" placeholder="Número">
                             </td>
                             <td>
-                                <select class="form-select" name="tipoContato">
+                                <select name="tipo_contato" class="form-select">
                                     <option value="whatsapp">WhatsApp</option>
                                     <option value="telefone">Telefone</option>
                                     <option value="ifood">iFood</option>

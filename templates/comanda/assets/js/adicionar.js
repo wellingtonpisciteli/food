@@ -21,6 +21,9 @@ if (numMesaInput) {
 }
 
 
+const tipo_retirada = document.getElementById('tipo_retirada'); 
+const id_pedido = document.getElementById('id_pedido'); 
+
 // Captura o botão para adicionar um lanche
 const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="button"]');
 
@@ -385,19 +388,21 @@ enviarIngredienteBtns.forEach(btn => {
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
         const idIAdicional = form.querySelector('input[name="idAdicional"]').value;
 
-        // Verifica se o valor da mesa está presente
-        if (!mesaPedido || mesaPedido < 0) {
-            Swal.fire({
-                title: '<span style="color: black;">Numero da Mesa?</span>',
-                text: 'Selecione um número',
-                icon: 'question',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'blue'  
-            });
-            cont = 0
-            return;
+        if(selectTipo.value == 'mesa'){
+           if (!mesaPedido || mesaPedido < 0) {
+                Swal.fire({
+                    title: '<span style="color: black;">Numero da Mesa?</span>',
+                    text: 'Selecione um número',
+                    icon: 'question',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'blue'  
+                });
+                cont = 0
+                return;
+            } 
+        }else{
+            console.log("Retirada ou Entrega")
         }
-
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
@@ -525,19 +530,21 @@ removerIngredienteBtns.forEach(btn => {
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
         const idIAdicional = form.querySelector('input[name="idAdicional"]').value;
 
-        // Verifica se o valor da mesa está presente
-        if (!mesaPedido || mesaPedido < 0) {
-            Swal.fire({
-                title: '<span style="color: black;">Numero da Mesa?</span>',
-                text: 'Selecione um número',
-                icon: 'question',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'blue'  
-            });
-            cont = 0
-            return;
+        if(selectTipo.value == 'mesa'){
+           if (!mesaPedido || mesaPedido < 0) {
+                Swal.fire({
+                    title: '<span style="color: black;">Numero da Mesa?</span>',
+                    text: 'Selecione um número',
+                    icon: 'question',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'blue'  
+                });
+                cont = 0
+                return;
+            } 
+        }else{
+            console.log("Retirada ou Entrega")
         }
-
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
 
@@ -702,6 +709,13 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
 }
 
 btnDiv.addEventListener("click", (e) => {
+
+    tipo_retirada.value = selectTipo.value
+    id_pedido.value = proximoId_mesa + 2
+   
+    console.log(id_pedido)
+    console.log(tipo)
+
     if (cont === 0 ) {
         e.preventDefault()
         Swal.fire({
