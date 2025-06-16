@@ -1,6 +1,7 @@
 const numMesaInput = document.getElementById('nummesa'); // Campo principal da mesa
 const mesaInputs = document.querySelectorAll('input[name="mesa_pedido"]');
 const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
+const selectTipo = document.getElementById('selectTipo'); // Campo principal da mesa
 
 // Atualiza o valor de todos os campos "mesa_pedido" ao digitar no campo "nummesa"
 if (numMesaInput) {
@@ -89,18 +90,22 @@ enviarLancheBtns.forEach(btn => {
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
         const idCardapio = form.querySelector('input[name="idCardapio"]').value;
 
-        // Verifica se o valor da mesa está presente
-        if (!mesaPedido || mesaPedido < 0) {
-            Swal.fire({
-                title: '<span style="color: black;">Numero da Mesa?</span>',
-                text: 'Selecione um número',
-                icon: 'question',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'blue'  
-            });
-            cont = 0
-            return;
+        if(selectTipo.value == 'mesa'){
+           if (!mesaPedido || mesaPedido < 0) {
+                Swal.fire({
+                    title: '<span style="color: black;">Numero da Mesa?</span>',
+                    text: 'Selecione um número',
+                    icon: 'question',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'blue'  
+                });
+                cont = 0
+                return;
+            } 
+        }else{
+            console.log("Retirada ou Entrega")
         }
+        
 
         // Cria uma nova linha na tabela do formulário
         const row = document.createElement('tr');
@@ -239,17 +244,20 @@ enviarBebidaBtns.forEach(btn => {
         const select = form.querySelector('select#tamanho_valor');
         const [idTamanhoValorBebida, valorBebida, tamanhoBebida] = select.value.split('|'); // Divide pelo separador "|"
 
-        // Verifica se o valor da mesa está presente
-        if (!mesaPedido || mesaPedido < 0) {
-            Swal.fire({
-                title: '<span style="color: black;">Numero da Mesa?</span>',
-                text: 'Selecione um número',
-                icon: 'question',
-                confirmButtonText: 'OK',
-                confirmButtonColor: 'blue'  
-            });
-            cont = 0
-            return;
+        if(selectTipo.value == 'mesa'){
+           if (!mesaPedido || mesaPedido < 0) {
+                Swal.fire({
+                    title: '<span style="color: black;">Numero da Mesa?</span>',
+                    text: 'Selecione um número',
+                    icon: 'question',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: 'blue'  
+                });
+                cont = 0
+                return;
+            } 
+        }else{
+            console.log("Retirada ou Entrega")
         }
 
         // Cria uma nova linha na tabela do formulário

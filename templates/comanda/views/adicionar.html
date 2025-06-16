@@ -9,7 +9,13 @@
 
 <header class="text-center" id="adicionarHeader" style="background-color: black;">
     <h3 class="text-white text-center">
-        Mesa: <input id="nummesa" name="nummesa" type="number" class="fw-bolder bg-light text-center">
+        <select id="selectTipo" class="bg-light fw-bold text-center fs-4" style="width: auto;">
+            <option class="fs-5" value="mesa">Mesa</option>
+            <option class="fs-5" value="retirada">Retirada</option>
+            <option class="fs-5" value="entrega">Entrega</option>
+        </select>
+
+        <input id="nummesa" name="nummesa" type="number" class="fw-bold bg-light text-center fs-4">
     </h3>
 </header>
 
@@ -160,7 +166,7 @@
             </tbody>
         </table>
 
-        <h3 id="comandaMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+        <h3 id="comandaMesa" class="text-center text-white fw-bold" style="margin-bottom: 20px;">
             Comanda:
         </h3>
 
@@ -191,12 +197,66 @@
                     </tbody>
                 </table>
 
-                <h3 id="totalMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
+                <h3 class="text-center text-white fw-bold" style="margin-bottom: 20px; margin-top: 20px;">
+                    Entrega ou Retirada
+                </h3>
+
+                <table class="table" id="tabelaPedidos">
+                    <thead>
+                        <tr>
+                            <th class="bg-light">CLIENTE</th>
+                            <th class="bg-light">CONTATO</th>
+                            <th class="bg-light">TIPO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="text" class="form-control" name="cliente" placeholder="Nome" required>
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="contato" placeholder="Número">
+                            </td>
+                            <td>
+                                <select class="form-select" name="tipoContato">
+                                    <option value="whatsapp">WhatsApp</option>
+                                    <option value="telefone">Telefone</option>
+                                    <option value="ifood">iFood</option>
+                                    <option value="aiqfome">AiqFome</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+
+                    <thead>
+                        <tr>
+                            <th class="bg-light">BAIRRO</th>
+                            <th class="bg-light">ENDEREÇO</th>
+                            <th class="bg-light">TAXA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center align-middle bg-light">
+                                <input type="search" class="form-control" name="bairro" placeholder="Digite o bairro...">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="endereco" placeholder="Rua, número, complemento">
+                            </td>
+                            <td>
+                                <input type="text" class="form-control" name="taxa" placeholder="R$ 0,00">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3 id="totalMesa" class="text-center text-white fw-bold" style="margin-bottom: 20px;">
                     Total:
                 </h3>
+                
                 <div class="text-center mt-3">
                     <input class="btn " type="submit" value="Enviar" id="btnDiv"
-                        style="margin-bottom: 25px; background-color: blue; color: white;">
+                        style="margin-bottom: 25px; background-color: blue; color: #ffffff;">
                     <input class="btn" type="button" value="Cancelar" id="btnDivCancelar"
                         style="margin-bottom: 25px; background-color: darkred; color: white;">
                 </div>
