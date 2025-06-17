@@ -199,7 +199,7 @@ class SiteControlador extends Controlador
         ]));
     }
 
-    public function adicionarNaMesa(int $mesa): void
+    public function adicionarNaMesa(int $id_mesa): void
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
@@ -207,7 +207,8 @@ class SiteControlador extends Controlador
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
         $bebidas = (new ComandaModelo())->ler("bebidas", "id", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
+        $mesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
+        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_pedido", "DESC");
 
         echo ($this->template->renderizar('adicionarNaMesa.html', [
             'titulo' => 'Adicionar_na_mesa',
@@ -217,7 +218,8 @@ class SiteControlador extends Controlador
             'pedido' => $pedido,
             'bebidas' => $bebidas,
             'ingredientes' => $ingredi,
-            'mesa' => $mesa
+            'mesa' => $mesa,
+            'entregas' => $entrega_retirada
         ]));
     }
 

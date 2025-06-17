@@ -35,7 +35,12 @@ class ComandaControlador extends Controlador
 
         }
 
-        Helpers::redirecionar('pedidosAbertos');
+        if ($dados['mesa'][0] != 0){
+            Helpers::redirecionar('pedidosAbertos');
+        }else{
+            Helpers::redirecionar('entregasAbertas');
+
+        }
     }
 
 

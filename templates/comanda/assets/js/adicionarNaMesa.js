@@ -8,6 +8,8 @@ const comandaMesa = document.getElementById('comandaMesa');
 const totalMesa = document.getElementById('totalMesa');
 const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
+const cliente = document.getElementById('cliente');
+
 
 let cont = 0
 let apagarLanche = false
@@ -65,6 +67,8 @@ enviarLancheBtns.forEach(btn => {
         const detalhesLanche = form.querySelector('input[name="detalhesLanche"]').value;
         const mesaPedido = form.querySelector('input[name="mesa_pedido"]').value || numMesaInput.value; // Garante que o valor será capturado
         const idCardapio = form.querySelector('input[name="idCardapio"]').value;
+
+        console.log(mesaPedido)
 
         // Verifica se o valor da mesa está presente
         if (!mesaPedido || mesaPedido < 0) {
@@ -139,9 +143,15 @@ enviarLancheBtns.forEach(btn => {
         row.appendChild(obsLancheCell);
 
         if (cont == 1) {
-            const mesaCell = document.createElement('span');
-            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
-            comandaMesa.appendChild(mesaCell);
+            if (!cliente){
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Comanda: " + mesaPedido; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }else{
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }    
         }
 
         // Adiciona a nova linha à tabela
@@ -152,6 +162,8 @@ enviarLancheBtns.forEach(btn => {
         mesaInput.type = 'hidden';
         mesaInput.name = 'mesa[]';
         mesaInput.value = mesaPedido;
+
+        console.log(mesaInput)
 
         const id_mesaInput = document.createElement('input');
         id_mesaInput.type = 'hidden';
@@ -282,9 +294,15 @@ enviarBebidaBtns.forEach(btn => {
         row.appendChild(obsBebidaCell);
 
         if (cont == 1) {
-            const mesaCell = document.createElement('span');
-            mesaCell.textContent = mesaPedido;
-            comandaMesa.appendChild(mesaCell);
+            if (!cliente){
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Comanda: " + mesaPedido; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }else{
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }    
         }
 
         // Adiciona a nova linha à tabela

@@ -24,7 +24,7 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarBebida/{chave}', 'SiteControlador@editarBebida');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarNaMesa/{mesa}', 'SiteControlador@adicionarNaMesa');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarNaMesa/{id_mesa}', 'SiteControlador@adicionarNaMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarAdicional/{mesa}/{id_lanche}', 'SiteControlador@adicionarAdicional');
     SimpleRouter::get(URL_SITE . 'caixa/{id_mesa}', 'SiteControlador@caixa');
     SimpleRouter::get(URL_SITE . 'imprimir/{id_mesa}', 'SiteControlador@imprimir');

@@ -67,25 +67,25 @@
                 <div>
                   <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
                     style="color: white; margin-left: 5px; text-decoration: none;">
-                    Mesa: <span style="color: lime"> 0{{ pedido.mesa }}</span>
+                    MESA: <span style="color: lime"> 0{{ pedido.mesa }}</span>
                   </a>      
                 </div>
               {% else %}
                 <div>
                   <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
                     style="color: white; margin-left: 5px; text-decoration: none;">
-                    Mesa: <span style="color: lime">{{ pedido.mesa }}</span>
+                    MESA: <span style="color: lime">{{ pedido.mesa }}</span>
                   </a>       
                 </div>
               {% endif %}
 
-              <div>Status: <span style="color: chartreuse;">Aberta</span></div>
+              <div>STATUS: <span style="color: chartreuse;">ABERTA</span></div>
 
               {% set mostrado = false %}
               {% for valor in total %}
                 {% if pedido.id_mesa == valor.id_mesa and not mostrado and valor.status == 1 %}
                   <div>
-                    Total: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
+                    TOTAL: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
                   </div>
                   {% set mostrado = true %}
                 {% endif %}
@@ -96,7 +96,7 @@
               </div>
 
               <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 teste"
+                <a href="{{ url('adicionarNaMesa/' ~ pedido.id_mesa) }}" class="btn fs-5 teste"
                   style="background-color: darkblue; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Adicionar
                 </a>
