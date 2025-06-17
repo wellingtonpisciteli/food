@@ -31,7 +31,7 @@
       {% if (item.status == 1 or item.status == 2) and item.id_pedido not in mesas_exibidas %}
         <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
           data-id-mesa="{{ item.id_pedido }}">
-          <span style="color: chartreuse; font-weight: bold;">
+          <span style="color: white; font-weight: bold;">
                 {{ item.cliente }}
           </span>
         </button>
@@ -56,53 +56,74 @@
           <div class="mesaAberta" style="display: none;" data-id-mesa="{{ item.id_pedido }}">
             <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px;">   
 
-                <div>
-                    <a href="#" class="editar-mesa" data-mesa-atual="{{ url('editarMesa/' ~ pedido.id_mesa) }}"
-                    style="color: white; margin-left: 5px; text-decoration: none;">
-                    Cliente: <span style="color: lime"> {{ item.cliente }}</span>
-                    </a>      
+              <div class="botoesEntrega" style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+                <!-- Cliente -->
+                <div class="teste">
+                  <button class="btn fs-5 btn-cliente"
+                    style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
+                    {{ item.cliente }}
+                  </button>
                 </div>
+                <input type="hidden" class="contato-entrega" value="{{ item.contato }}">
+                <input type="hidden" class="cliente-entrega" value="{{ item.cliente }}">
+                <input type="hidden" class="onde-entrega" value="{{ item.tipo_contato }}">
+      
+                <!-- Endereço -->
+                <div class="teste">
+                  <button class="btn fs-5 btn-endereco"
+                    style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
+                    Endereço
+                  </button>
+                </div>
+                <input type="hidden" class="bairro-entrega" value="{{ item.bairro }}">
+                <input type="hidden" class="rua-entrega" value="{{ item.endereco }}">
 
-                <div>Contato: <span style="color: chartreuse;">{{ item.contato }}</span></div>
-     
-              <div>Bairro: <span style="color: chartreuse;">{{ item.bairro }}</span></div>
-
-              <div>Rua: <span style="color: lightseagreen;">{{ item.endereco }}</span></div>
-
-              {% set mostrado = false %}
-              {% for valor in total %}
-                {% if item.id_pedido == valor.id_mesa and not mostrado and valor.status == 1 %}
-                  <div>
-                    {{ item.tipo_pagamento }}: <span style="color: dodgerblue;">${{ valor.total | number_format(2, ',', '.') }}</span>
+                {% set mostrado = false %}
+                {% for valor in total %}
+                  {% if item.id_pedido == valor.id_mesa and not mostrado and valor.status == 1 %}
+                  <!-- Total -->
+                  <div class="teste">
+                    <button class="btn fs-5 btn-total"
+                      style="background-color: #f8f9fa; color: #212529; font-weight: bold; border-radius: 4px;">
+                      ${{ valor.total | number_format(2, ',', '.') }}
+                    </button>
                   </div>
-                  {% set mostrado = true %}
-                {% endif %}
-              {% endfor %} 
+                  <input type="hidden" class="forma-entrega" value="{{ item.tipo_pagamento }}">
+                  <input type="hidden" class="total-entrega" value="{{ valor.total | number_format(2, ',', '.') }}">          
+                    {% set mostrado = true %}
+                  {% endif %}
+                {% endfor %} 
 
-              <div>Onde: <span style="color: lightseagreen;">{{ item.tipo_contato }}</span></div>
+                <button class="btn fs-1 toggle-acoes-mobile d-md-none linha-com-texto"
+                  style="
+                    border: none;
+                    transition: background-color 0.3s ease;
+                    padding: 0%;
+                  ">
+                  🛠️
+                </button>
 
-              <!-- <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
-                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 teste"
+                <a href="{{ url('adicionarNaMesa/' ~ pedido.mesa) }}" class="btn fs-5 teste btn-acao"
                   style="background-color: darkblue; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Adicionar
                 </a>
 
-                <a href="#" class="btn fs-5 excluir-mesa teste"
+                <a href="#" class="btn fs-5 excluir-mesa teste btn-acao"
                   data-url="{{ url('excluirMesa/' ~ pedido.id_mesa ~ '/' ~ 1) }}"
                   style="background-color: darkred; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Excluir
                 </a>
 
-                <a href="{{ url('caixa/' ~ pedido.id_mesa) }}" class="btn fs-5 teste"
+                <a href="{{ url('caixa/' ~ pedido.id_mesa) }}" class="btn fs-5 teste btn-acao"
                   style="background-color: darkgreen; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Despachar
                 </a>
 
-                <a href="{{ url('imprimir/' ~ pedido.id_mesa) }}" class="btn fs-5 teste"
+                <a href="{{ url('imprimir/' ~ pedido.id_mesa) }}" class="btn fs-5 teste btn-acao"
                   style="background-color: darkslategray; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Imprimir
                 </a>
-              </div> -->
+              </div>
             </div>
           </div>
 
@@ -121,93 +142,97 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td style="font-weight: bolder;">
-                {% for pedido in pedidos %}
-                {% if pedido.id_mesa == item.id_pedido %}
+            {% for pedido in pedidos %}
+              {% if pedido.id_mesa == item.id_pedido %}
+                <tr class="thTrAberto">
+                  <td  style="font-weight: bolder;">
                     {% if pedido.nome_lanche == 'Em escolha...' %}
-                    <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
+                      <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</a> <br>
                     {% elseif pedido.status == 1 %}
-                    <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</a> <br>
+                      <a href="{{ url('editarLanche/' ~ pedido.id) }}" style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</a> <br>
                     {% else %}
-                    <span style="text-decoration: none; color: gray;">{{ pedido.nome_lanche }}</span> <br>
+                      <span style="text-decoration: none; color: gray;">{{ pedido.nome_lanche }}</span> <br>
                     {% endif %}
 
                     {% for add in adicional %}
-                    {% if add.id == pedido.id_lanche and pedido.status == 1 %}
+                      {% if add.id == pedido.id_lanche and pedido.status == 1 %}
                         <div style="margin-top: 5px">
-                        {% if add.tipo == '+' %}
+                          {% if add.tipo == '+' %}
                             <span style="color: green; font-weight: bolder;">
-                            <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: green;">+{{ add.nome_adicional }}</a>
+                              <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: green;">+{{ add.nome_adicional }}</a> <br>
                             </span>        
-                        {% elseif add.tipo == '-' %}
+                          {% elseif add.tipo == '-' %}
                             <span style="color: red; font-weight: bolder;">
-                            <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: red;">-{{ add.nome_adicional }}</a>
+                              <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: red;">-{{ add.nome_adicional }}</a> <br>
                             </span>
-                        {% endif %}
-                        </div> 
-                    {% endif %}
+                          {% endif %}
+                        </div>
+                      {% endif %}
                     {% endfor %}
-                {% endif %}
-                {% endfor %}
-                    
-                {% if item.status == 1 %}
-                  <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
-                    <i class="fa-solid fa-square-plus"></i>
-                  </a>
-                {% endif %}
-              </td>
 
-              <td>
-                {% set somaAdicional = 0 %}
-
-                {% for lanche in pedidos %}
-                {% if lanche.id_mesa == item.id_pedido %}
-                {% if lanche.valor_lanche != 0 and lanche.status == 1 %}
-                  <span style="font-weight: bolder; padding-left: 5px; color: black;">
-                    {{ (lanche.valor_lanche) | number_format(2, ',', '.') }} 
-                  </span>
-                {% endif %}
-                {% endif %}
-                {% endfor %}
-              </td>
-
-              <td style="font-weight: bolder;">
-                {% for bebida in bebidas %}
-                  {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
-                    {% if bebida.chave not in bebidas_exibidas and bebida.status == 1 %}
-                      <a href="{{ url('editarBebida/' ~ bebida.chave) }}" style="text-decoration: none; color: black;">
-                        {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
+                    {% if item.status == 1 %}
+                      <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
+                        <i class="fa-solid fa-square-plus" style="margin-bottom: 15px;"></i>
                       </a>
-                      {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
-                    {% elseif bebida.chave not in bebidas_exibidas and bebida.status == 2  %}
-                      <span style="color: gray;">
-                        {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }} <br>
-                      </span>
-                      {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
                     {% endif %}
-                  {% endif %}
-                {% endfor %}
-              </td>
+                  </td>
 
-              <td>
-                {% for bebida in bebidas %}
-                  {% if bebida.id_mesa == pedido.id_mesa and (pedido.status == 1 or pedido.status == 2) %}
-                    {% if bebida.chave not in chaves_exibidas and bebida.status == 1 %}
-                      <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:black;">
-                        {{ bebida.valor_bebida | number_format(2, ',', '.') }}
-                      </span> <br>
-                      {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
-                    {% elseif bebida.chave not in chaves_exibidas and bebida.status == 2 %}
-                      <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:gray;">
-                        {{ bebida.valor_bebida | number_format(2, ',', '.') }}
-                      </span> <br>
-                      {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                  <td>
+                    {% set somaAdicional = 0 %}
+                    {% for add in adicional %}
+                      {% if add.id == pedido.id_lanche and pedido.status == 1 %}
+                        {% set somaAdicional = somaAdicional + add.valor_adicional %}
+                      {% endif %}
+                    {% endfor %}
+                    {% if pedido.valor_lanche != 0 and pedido.status == 1 %}
+                      <span style="font-weight: bolder; padding-left: 5px; color: black;">
+                        {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+                      </span>
+                    {% elseif pedido.status == 2 %}
+                      <span style="font-weight: bolder; padding-left: 5px; color: gray;">
+                        {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+                      </span>
                     {% endif %}
-                  {% endif %}
-                {% endfor %}
-              </td>
-            </tr>
+                  </td>
+
+                  <td style="font-weight: bolder;">
+                    {% for bebida in bebidas %}
+                      {% if bebida.id_mesa == item.id_pedido and bebida.status in [1, 2] %}
+                        {% if bebida.chave not in bebidas_exibidas %}
+                          {% if bebida.status == 1 %}
+                            <a href="{{ url('editarBebida/' ~ bebida.chave) }}" style="text-decoration: none; color: black;">
+                              {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }}
+                            </a> <br>
+                          {% else %}
+                            <span style="color: gray;">{{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }}</span> <br>
+                          {% endif %}
+                          {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+
+                  <td>
+                    {% for bebida in bebidas %}
+                      {% if bebida.id_mesa == item.id_pedido and bebida.status in [1, 2] %}
+                        {% if bebida.chave not in chaves_exibidas %}
+                          {% if bebida.status == 1 %}
+                            <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:black;">
+                              {{ bebida.valor_bebida | number_format(2, ',', '.') }}
+                            </span> <br>
+                          {% else %}
+                            <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:gray;">
+                              {{ bebida.valor_bebida | number_format(2, ',', '.') }}
+                            </span> <br>
+                          {% endif %}
+                          {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
           </tbody>
         </table>
       {% endif %}

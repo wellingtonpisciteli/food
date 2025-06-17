@@ -339,6 +339,13 @@ body{
     border-bottom: 1.3px solid #0000002f; /* Borda inferior */
 }
 
+.thTrAberto{
+    color: darkblue;
+    width: 340px;
+    border-top: 1.3px solid #0000002f; /* Borda inferior */
+   
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
     /* Estilos específicos para tablets */
     .thTableAberto {
@@ -613,11 +620,26 @@ body{
 }
 
 
+.botoesEntrega {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 60px;
+  margin-top: 10px;
+}
 
 /* Tablet (largura até 900px) */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .teste {
     flex: 1 1 150px; /* um pouco maior no tablet */
+  }
+
+  .teste button,
+  .teste a {
+    width: 100%;
+  }
+
+  .botoesEntrega{
+    gap: 10px;
   }
 }
 
@@ -625,16 +647,33 @@ body{
 @media (max-width: 600px) {
   .teste {
     flex: 1 1 100%;
-    width: 100%;  /* ocupa toda a largura disponível */
+    width: 100%;
   }
 
-    .precoBebida{
-        display: flex;
-        align-items: center;
-    }
+  .teste button,
+  .teste a {
+    width: 100%;
+  }
 
+  .botoesEntrega{
+    gap: 10px;
+  }
+
+  .precoBebida {
+    display: flex;
+    align-items: center;
+  }
 }
 
+@media (max-width: 600px) {
+  .btn-acao {
+    display: none;
+  }
+
+  .btn-acao.show {
+    display: inline-block;
+  }
+}
     
 
 

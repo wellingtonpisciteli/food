@@ -140,3 +140,113 @@ document.querySelectorAll('.editar-mesa').forEach(botao => {
         });
     });
 });
+
+const botoesEndereco = document.querySelectorAll('.btn-endereco');
+
+botoesEndereco.forEach(function (botao) {
+    botao.addEventListener('click', function () {
+    const container = botao.parentElement.parentElement;
+    const bairro = container.querySelector('.bairro-entrega')?.value || 'Não informado';
+    const rua = container.querySelector('.rua-entrega')?.value || 'Não informado';
+
+    Swal.fire({
+        title: '📍 Endereço de Entrega',
+        html: `
+        <div style="background: #f1f1f1; padding: 20px; border-radius: 8px; text-align: left; font-size: 16px;">
+            <p style="margin-bottom: 10px;">
+            <strong>Bairro:</strong> <span style="color: #333;">${bairro}</span>
+            </p>
+            <p>
+            <strong>Rua e Número:</strong> <span style="color: #333;">${rua}</span>
+            </p>
+        </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Fechar',
+        confirmButtonColor: 'darkblue',
+        background: '#fff',
+        color: '#222',
+        width: 400,
+        customClass: {
+        popup: 'swal-endereco-popup'
+        }
+    });
+    });
+});
+
+const botoesCliente = document.querySelectorAll('.btn-cliente');
+
+botoesCliente.forEach(function (botao) {
+    botao.addEventListener('click', function () {
+    const container = botao.parentElement.parentElement;
+    const cliente = container.querySelector('.cliente-entrega')?.value || 'Não informado';
+    const contato = container.querySelector('.contato-entrega')?.value || 'Não informado';
+    const onde = container.querySelector('.onde-entrega')?.value || 'Não informado';
+
+    Swal.fire({
+        title: '<strong>'+cliente+'</strong>',
+        html: `
+        <div style="background: #f1f1f1; padding: 20px; border-radius: 8px; text-align: left; font-size: 16px;">
+            <p style="margin-bottom: 10px;">
+            <strong>Contato:</strong> <span style="color: #333;">${contato}</span>
+            </p>
+            <p>
+            <strong>Retirado no: </strong> <span style="color: #333;">${onde}</span>
+            </p>
+        </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Fechar',
+        confirmButtonColor: 'darkblue',
+        background: '#fff',
+        color: '#222',
+        width: 400,
+        customClass: {
+        popup: 'swal-endereco-popup'
+        }
+    });
+    });
+});
+
+const botoesTotal = document.querySelectorAll('.btn-total');
+
+botoesTotal.forEach(function (botao) {
+    botao.addEventListener('click', function () {
+    const container = botao.parentElement.parentElement;
+    const total = container.querySelector('.total-entrega')?.value || 'Não informado';
+    const forma = container.querySelector('.forma-entrega')?.value || 'Não informado';
+
+    Swal.fire({
+        title: '🧾 Total: $'+'<strong>'+total+'</strong>',
+        html: `
+        <div style="background: #f1f1f1; padding: 20px; border-radius: 8px; text-align: left; font-size: 16px;">
+            <p style="margin-bottom: 10px;">
+            <strong>Forma de Pagamento:</strong> <span style="color: #333;">${forma}</span>
+            </p>
+        </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Fechar',
+        confirmButtonColor: 'darkblue',
+        background: '#fff',
+        color: '#222',
+        width: 400,
+        customClass: {
+        popup: 'swal-endereco-popup'
+        }
+    });
+    });
+});
+
+const toggleButtons = document.querySelectorAll('.toggle-acoes-mobile');
+
+toggleButtons.forEach(toggle => {
+    toggle.addEventListener('click', function () {
+    const acoes = document.querySelectorAll('.btn-acao');
+    const mostrando = acoes[0].classList.contains('show');
+
+    acoes.forEach(btn => btn.classList.toggle('show'));
+
+    this.textContent = mostrando ? '🛠️' : '🛠️';
+    });
+});
