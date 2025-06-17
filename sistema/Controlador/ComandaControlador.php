@@ -27,7 +27,9 @@ class ComandaControlador extends Controlador
 
             (new ComandaModelo())->armazenarBebida($dados);
 
-            (new ComandaModelo())->armazenarEntrega($dados);
+            if ($dados["tipo_retirada"] != "mesa"){
+                (new ComandaModelo())->armazenarEntrega($dados);
+            }
 
             (new ComandaModelo())->armazenarEatualizarTotal($dados);
             
@@ -124,6 +126,17 @@ class ComandaControlador extends Controlador
         }
     }
 
+    public function excluirEntrega(int $id_pedido, int $status)
+    {
+        (new ComandaModelo())->apagarEntrega($id_pedido);
+
+        if($status == 1 ){
+            Helpers::redirecionar('entregasAbertas');
+        }else{
+            Helpers::redirecionar('pedidosFechados');
+        }
+    }
+
     public function editarMesa(int $id_mesa, int $novaMesa)
     {
         if ($novaMesa) {
@@ -140,6 +153,15 @@ class ComandaControlador extends Controlador
         }
 
        Helpers::redirecionar('pedidosAbertos');
+    }
+
+    public function despachar(int $id_mesa): void
+    {
+        if ($id_mesa) {
+            (new ComandaModelo())->despachar($id_mesa);
+        }
+
+       Helpers::redirecionar('entregasAbertas');
     }
 
     public function fecharMesa(int $id_mesa): void

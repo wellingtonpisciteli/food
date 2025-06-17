@@ -642,6 +642,30 @@ removerIngredienteBtns.forEach(btn => {
     });
 });
 
+ function atualizarPagamentoFinal(select) {
+    const trocoInput = document.getElementById("campoTroco");
+    const campoFinal = document.getElementById("tipoPagamentoFinal");
+
+    if (select.value === "troco") {
+        trocoInput.style.display = "block";
+        campoFinal.value = trocoInput.value
+            ? `Troco para: ${trocoInput.value}`
+            : "";
+    } else {
+        trocoInput.style.display = "none";
+        trocoInput.value = "";
+        campoFinal.value = select.options[select.selectedIndex].text;
+    }
+}
+
+function formatarMoeda(campo) {
+    let valor = campo.value.replace(/\D/g, "");
+    valor = (parseInt(valor, 10) / 100).toFixed(2);
+
+    // Adiciona "R$" e formata com vírgula
+    campo.value = "$" + valor.replace(".", ",");
+}
+
 function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa) {
     let linhasPedido = '';
 
@@ -714,7 +738,7 @@ btnDiv.addEventListener("click", (e) => {
     id_pedido.value = proximoId_mesa + 2
    
     console.log(id_pedido)
-    console.log(tipo)
+    console.log(tipo_retirada)
 
     if (cont === 0 ) {
         e.preventDefault()

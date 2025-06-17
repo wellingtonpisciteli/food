@@ -228,7 +228,7 @@ class ComandaModelo
 
     public function armazenarEntrega(array $dados): void
     {
-        $query = "INSERT INTO entrega_retirada (id_pedido, tipo, cliente, bairro, endereco, taxa, contato, tipo_contato) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $query = "INSERT INTO entrega_retirada (id_mesa, tipo, cliente, bairro, endereco, taxa, tipo_pagamento, contato, tipo_contato, app) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
@@ -241,8 +241,11 @@ class ComandaModelo
                 $dados['bairro'],
                 $dados['endereco'],
                 $dados['taxa'],
+                $dados['tipo_pagamento'],
                 $dados['contato'],
-                $dados['tipo_contato']
+                $dados['tipo_contato'],
+                $dados['app']
+
             ]);
         }
     }
@@ -634,6 +637,20 @@ class ComandaModelo
         } 
     }
 
+    public function apagarEntrega(int $id_mesa)
+    {
+        $tabelas = ['lanches', 'adicionais', 'bebidas', 'total', 'entrega_retirada'];
+
+        foreach ($tabelas as $tabela)
+        {
+            $query = "DELETE FROM {$tabela} WHERE id_mesa = :mesaApagar";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                'mesaApagar' => $id_mesa
+            ]);
+        } 
+    }
+
     public function abrirMesa(int $id_mesa)
     {
         $tabelas = ['lanches', 'bebidas', 'total'];
@@ -777,6 +794,21 @@ class ComandaModelo
             'idMesa' => $id_mesa
         ]);
    
+    }
+
+    public function despachar(int $id_mesa)
+    {
+        $tabelas = ['lanches', 'bebidas', 'total', 'entrega_retirada'];
+
+        foreach ($tabelas as $tabela)
+        {
+            $query = "UPDATE {$tabela} SET status = :desativado WHERE id_mesa = :idMesa";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                'desativado' => 0,
+                'idMesa' => $id_mesa
+            ]);
+        } 
     }
 
 

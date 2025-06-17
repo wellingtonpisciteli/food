@@ -210,20 +210,27 @@
                             <th class="bg-light">CLIENTE</th>
                             <th class="bg-light">CONTATO</th>
                             <th class="bg-light">TIPO</th>
+                            <th class="bg-light">APP</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>
-                                <input type="text" class="form-control" name="cliente" placeholder="Nome" required>
+                                <input type="text" class="form-control" name="cliente" placeholder="Nome">
                             </td>
                             <td>
                                 <input type="text" class="form-control" name="contato" placeholder="Número">
                             </td>
                             <td>
                                 <select name="tipo_contato" class="form-select">
+                                    <option value="indefinido">Não</option>
                                     <option value="whatsapp">WhatsApp</option>
                                     <option value="telefone">Telefone</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="app" class="form-select">
+                                    <option value="indefinido">Não</option>
                                     <option value="ifood">iFood</option>
                                     <option value="aiqfome">AiqFome</option>
                                 </select>
@@ -236,6 +243,7 @@
                             <th class="bg-light">BAIRRO</th>
                             <th class="bg-light">ENDEREÇO</th>
                             <th class="bg-light">TAXA</th>
+                            <th class="bg-light">PAGAMENTO</th> <!-- Novo cabeçalho -->
                         </tr>
                     </thead>
                     <tbody>
@@ -248,6 +256,18 @@
                             </td>
                             <td>
                                 <input type="text" class="form-control" name="taxa" placeholder="R$ 0,00">
+                            </td>
+                            <td>
+                                <select class="form-select" id="selectPagamento" onchange="atualizarPagamentoFinal(this)">
+                                    <option value="cartao">Cartão</option>
+                                    <option value="pix">Pix</option>
+                                    <option value="troco">Troco para:</option>
+                                </select>
+
+                                <input type="text" class="form-control mt-2" id="campoTroco" placeholder="Digite o valor" style="display: none;" oninput="formatarMoeda(this); atualizarPagamentoFinal(document.getElementById('selectPagamento'))">
+
+                                <!-- Campo oculto enviado ao backend -->
+                                <input type="hidden" name="tipo_pagamento" id="tipoPagamentoFinal">
                             </td>
                         </tr>
                     </tbody>

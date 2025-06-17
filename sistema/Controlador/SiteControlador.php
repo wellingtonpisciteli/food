@@ -155,7 +155,7 @@ class SiteControlador extends Controlador
         $cardapioBebida = $obj->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
-        $entrega_retirada = $obj->ler("entrega_retirada", "id_pedido", "DESC");
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('entregasAbertas.html', [
             'titulo' => 'Pedidos_abertos',
@@ -208,7 +208,7 @@ class SiteControlador extends Controlador
         $bebidas = (new ComandaModelo())->ler("bebidas", "id", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $mesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_pedido", "DESC");
+        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('adicionarNaMesa.html', [
             'titulo' => 'Adicionar_na_mesa',

@@ -21,11 +21,15 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirMesa/{id_mesa}', 'comandaControlador@abrirMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'fecharMesa/{id_mesa}', 'ComandaControlador@fecharMesa');
 
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirEntrega/{id_pedido}/{status}', 'ComandaControlador@excluirEntrega');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'despachar/{id_mesa}', 'comandaControlador@despachar');
+
+
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarBebida/{chave}', 'SiteControlador@editarBebida');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarNaMesa/{id_mesa}', 'SiteControlador@adicionarNaMesa');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarAdicional/{mesa}/{id_lanche}', 'SiteControlador@adicionarAdicional');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarAdicional/{id_mesa}/{id_lanche}', 'SiteControlador@adicionarAdicional');
     SimpleRouter::get(URL_SITE . 'caixa/{id_mesa}', 'SiteControlador@caixa');
     SimpleRouter::get(URL_SITE . 'imprimir/{id_mesa}', 'SiteControlador@imprimir');
 

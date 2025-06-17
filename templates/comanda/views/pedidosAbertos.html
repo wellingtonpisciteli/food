@@ -162,7 +162,7 @@
                 {% endfor %}
 
                 {% if pedido.status == 1 %}
-                  <a href="{{ url('adicionarAdicional/' ~ pedido.mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
+                  <a href="{{ url('adicionarAdicional/' ~ pedido.id_mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
                     <i class="fa-solid fa-square-plus"></i>
                   </a>
                 {% endif %}

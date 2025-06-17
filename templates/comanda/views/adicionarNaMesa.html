@@ -12,12 +12,13 @@
             Mesa: <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="number" class="fw-bolder bg-light text-center" readonly>
         {% else %}
             {% for item in entregas %}
-            {% if item.id_pedido == num.id_mesa %}
+            {% if item.id_mesa == num.id_mesa %}
                 Cliente: 
                 <span style="color: chartreuse;"> 
                     {{ item.cliente }}
                 </span>
                 <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="hidden" class="fw-bolder bg-light text-center" readonly>
+                
                 <input id="cliente"  value="{{ item.cliente }}" type="hidden" class="fw-bolder bg-light text-center" readonly>
             {% endif %}
             {% endfor %}
