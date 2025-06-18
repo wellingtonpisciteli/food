@@ -101,7 +101,7 @@ botoesExcluir.forEach(botao => {
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: 'darkred',
-            cancelButtonColor: 'blue',
+            cancelButtonColor: 'darkblue',
             confirmButtonText: 'Sim, excluir mesa!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {

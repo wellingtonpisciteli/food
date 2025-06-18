@@ -4,13 +4,14 @@ const tablePedido = document.querySelectorAll(".tablePedido");
 const mesaButtonsContainer = document.getElementById("mesaButtonsContainer");
 const btnMostrarMesas = document.querySelector(".btnMostrarMesas"); 
 const botoesExcluir = document.querySelectorAll(".excluir-mesa");
-const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
 const botoesEndereco = document.querySelectorAll('.btn-endereco');
 const botoesCliente = document.querySelectorAll('.btn-cliente');
 const botoesTotal = document.querySelectorAll('.btn-total');
+const botoesAbrirMesa = document.querySelectorAll(".abrir-mesa");
 const toggleButtons = document.querySelectorAll('.toggle-acoes-mobile');
-const botoesDespachar = document.querySelectorAll(".btn-despachar");
+const controleMesa = document.querySelectorAll('input[name="controleMesa"]');
 
+// Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
     const firstMesa = buttons[0].getAttribute("data-id-mesa");
 
@@ -55,7 +56,7 @@ buttons.forEach(button => {
     });
 });
 
-// Evento para mostrar/ocultar os botões das mesas ao clicar no botão "Mostrar Todos"
+
 btnMostrarMesas.addEventListener("click", function () {
     if (mesaButtonsContainer.style.display === "none" || mesaButtonsContainer.style.display === "") {
         mesaButtonsContainer.style.display = "flex";
@@ -204,19 +205,45 @@ toggleButtons.forEach(toggle => {
     });
 });
 
-botoesDespachar.forEach(botao => {
+
+function verificarMesa(mesaFechada) {
+    let mesaExiste = false;
+
+    controleMesa.forEach(mesaAberta => {
+        if (mesaAberta.value == mesaFechada) {
+            mesaExiste = true;
+        }
+    });
+
+    return mesaExiste;
+}
+
+botoesAbrirMesa.forEach(botao => {
     botao.addEventListener("click", function (e) {
         e.preventDefault();
         const url = this.getAttribute("data-url");
+        const mesaFechada = this.getAttribute("data-mesa");
+
+         // Verifica se a mesa já existe
+        if (verificarMesa(mesaFechada)) {
+            Swal.fire({
+                title: '<span style="color: black;">Mesa inválida</span>',
+                text: 'Este pedido já está aberto!',
+                icon: 'info',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue'
+            });
+            return; 
+        }
 
         Swal.fire({
-            title: '🚚💨 <span style="color: black;">Despachar Entrega?</span>',
-            text: "Pedido pronto para sair?",
-            icon: 'info',
+            title: '<span style="color: black;">Abrir Entrega?</span>',
+            text: "Esta ação não pode ser desfeita!",
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: 'darkblue',
+            confirmButtonColor: 'blue',
             cancelButtonColor: 'darkred',
-            confirmButtonText: 'Sim, despachar!',
+            confirmButtonText: 'Sim, abrir entrega!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {

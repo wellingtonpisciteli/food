@@ -11,6 +11,9 @@ try {
     SimpleRouter::get(URL_SITE . 'pedidosAbertos', 'SiteControlador@pedidosAbertos');
     SimpleRouter::get(URL_SITE . 'pedidosFechados', 'SiteControlador@pedidosFechados');
     SimpleRouter::get(URL_SITE . 'entregasAbertas', 'SiteControlador@entregasAbertas');
+    SimpleRouter::get(URL_SITE . 'entregasFechadas', 'SiteControlador@entregasFechadas');
+    SimpleRouter::get(URL_SITE . 'retiradasAbertas', 'SiteControlador@retiradasAbertas');
+    SimpleRouter::get(URL_SITE . 'retiradasFechadas', 'SiteControlador@retiradasFechadas');
 
 
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
@@ -23,6 +26,7 @@ try {
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirEntrega/{id_pedido}/{status}', 'ComandaControlador@excluirEntrega');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'despachar/{id_mesa}', 'comandaControlador@despachar');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirEntrega/{id_mesa}', 'comandaControlador@abrirEntrega');
 
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');

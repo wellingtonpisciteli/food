@@ -627,8 +627,16 @@ body{
   margin-top: 10px;
 }
 
+.teste button{
+  width: 120px;
+}
+
+.btn-acao{
+    width: 120px;
+}
+
 /* Tablet (largura até 900px) */
-@media (max-width: 1024px) {
+@media (max-width: 1315px) {
   .teste {
     flex: 1 1 150px; /* um pouco maior no tablet */
   }

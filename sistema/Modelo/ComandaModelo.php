@@ -684,6 +684,21 @@ class ComandaModelo
         ]);
     }
 
+    public function abrirEntrega(int $id_mesa)
+    {
+        $tabelas = ['lanches', 'bebidas', 'total', 'entrega_retirada'];
+
+        foreach ($tabelas as $tabela)
+        {
+            $query = "UPDATE {$tabela} SET status = :ativado WHERE id_mesa = :idMesa";
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                'ativado' => 1,
+                'idMesa' => $id_mesa
+            ]);
+        } 
+    }
+
     function caixaTotal(int $id_mesa):void
     {
         $tabelas = ['lanches', 'bebidas', 'total'];

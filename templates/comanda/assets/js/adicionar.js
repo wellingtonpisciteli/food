@@ -736,9 +736,9 @@ btnDiv.addEventListener("click", (e) => {
 
     tipo_retirada.value = selectTipo.value
     id_pedido.value = proximoId_mesa + 2
-   
-    console.log(id_pedido)
+    
     console.log(tipo_retirada)
+    console.log(id_pedido)
 
     if (cont === 0 ) {
         e.preventDefault()
@@ -783,6 +783,13 @@ btnDiv.addEventListener("click", (e) => {
         horaInput.type = 'hidden';
         horaInput.name = 'data_hora[]';
         horaInput.value = hora;
+
+        const controleAdcInput = document.createElement('input');
+        controleAdcInput.type = 'hidden';
+        controleAdcInput.name = 'controleAdicionar';
+        controleAdcInput.value = 'controleAdicionar';
+
+        pedidosDiv.appendChild(controleAdcInput);
 
         pedidosDiv.appendChild(horaInput);
 

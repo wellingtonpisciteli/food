@@ -37,10 +37,14 @@ class ComandaControlador extends Controlador
 
         }
 
-        if (!empty($dados['controleDestino'])){
-            Helpers::redirecionar('entregasAbertas');
+        if (!empty($dados['controleAdicionar'])){
+            Helpers::redirecionar('comanda');
         }else{
-            Helpers::redirecionar('pedidosAbertos');
+            if (!empty($dados['controleDestino'])){
+                Helpers::redirecionar('entregasAbertas');
+            }else{
+                Helpers::redirecionar('pedidosAbertos');
+            }
         }
     }
 
@@ -108,14 +112,16 @@ class ComandaControlador extends Controlador
     }
     
 
-    public function excluir(int $id, int $idApagarAdicional, int $id_mesa, ?string $controleDestino = null, string $controleAdicional)
+    public function excluir(int $id, int $idApagarAdicional, int $id_mesa, ?string $controleDestino = null, ?string $controleAdicional = null)
     {   
         (new ComandaModelo())->apagarLanche($id, $idApagarAdicional, $id_mesa);
 
-        if ($controleAdicional === 'controlBebida') {
-            (new ComandaModelo())->apagarBebida($id, $id_mesa);
-        } elseif ($controleAdicional === 'controlAdicional') {
-            (new ComandaModelo())->apagarAdicional($id, $id_mesa);
+        if($controleAdicional){
+            if ($controleAdicional === 'controlBebida') {
+                (new ComandaModelo())->apagarBebida($id, $id_mesa);
+            } elseif ($controleAdicional === 'controlAdicional') {
+                (new ComandaModelo())->apagarAdicional($id, $id_mesa);
+            }
         }
 
         if (!empty($controleDestino)){
@@ -174,6 +180,15 @@ class ComandaControlador extends Controlador
         }
 
        Helpers::redirecionar('pedidosAbertos');
+    }
+
+    public function abrirEntrega(int $id_mesa): void
+    {
+        if ($id_mesa) {
+            (new ComandaModelo())->abrirEntrega($id_mesa);
+        }
+
+       Helpers::redirecionar('entregasAbertas');
     }
 
     public function despachar(int $id_mesa): void

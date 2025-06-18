@@ -9,7 +9,6 @@ const botoesEndereco = document.querySelectorAll('.btn-endereco');
 const botoesCliente = document.querySelectorAll('.btn-cliente');
 const botoesTotal = document.querySelectorAll('.btn-total');
 const toggleButtons = document.querySelectorAll('.toggle-acoes-mobile');
-const botoesDespachar = document.querySelectorAll(".btn-despachar");
 
 if (buttons.length > 0) {
     const firstMesa = buttons[0].getAttribute("data-id-mesa");
@@ -92,7 +91,7 @@ botoesExcluir.forEach(botao => {
             showCancelButton: true,
             confirmButtonColor: 'darkred',
             cancelButtonColor: 'darkblue',
-            confirmButtonText: 'Sim, excluir entrega!',
+            confirmButtonText: 'Sim, excluir!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -201,27 +200,5 @@ toggleButtons.forEach(toggle => {
     acoes.forEach(btn => btn.classList.toggle('show'));
 
     this.textContent = mostrando ? '🛠️' : '🛠️';
-    });
-});
-
-botoesDespachar.forEach(botao => {
-    botao.addEventListener("click", function (e) {
-        e.preventDefault();
-        const url = this.getAttribute("data-url");
-
-        Swal.fire({
-            title: '🚚💨 <span style="color: black;">Despachar Entrega?</span>',
-            text: "Pedido pronto para sair?",
-            icon: 'info',
-            showCancelButton: true,
-            confirmButtonColor: 'darkblue',
-            cancelButtonColor: 'darkred',
-            confirmButtonText: 'Sim, despachar!',
-            cancelButtonText: 'Cancelar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                window.location.href = url;
-            }
-        });
     });
 });

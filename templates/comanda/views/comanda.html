@@ -12,7 +12,7 @@
   {% if controleUltimos == 1 %}
   <header class="cardapio-header">
     <div class="linha-com-texto">
-      <span>ULTIMOS PEDIDOS {{ dataAtual() }}</span>
+      <span>ULTIMAS MESAS {{ dataAtual() }}</span>
     </div>
   </header>
   {% endif %}
@@ -29,7 +29,7 @@
     {% set ultimosTres = 0 %}
 
     {% for pedido in pedidos %}
-    {% if (pedido.status == 1 or pedido.status == 2) and pedido.id_mesa not in mesas_exibidas %}
+    {% if (pedido.status == 1 or pedido.status == 2) and pedido.mesa != 0 and pedido.id_mesa not in mesas_exibidas %}
     {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
     {% set bebidas_exibidas = [] %}
     {% set chaves_exibidas = [] %}
@@ -78,7 +78,7 @@
   {% set contando = contando + 1 %}
   {% endif %}
 
-  {% if ultimosTres <= 3 and (pedido.status == 1 or pedido.status == 2) %} {% if pedido.nome_lanche %} <!-- Verifica se há algum lanche ou bebida
+  {% if ultimosTres <= 3 and (pedido.status == 1 or pedido.status == 2) %} {% if pedido.nome_lanche and pedido.mesa != 0 %} <!-- Verifica se há algum lanche ou bebida
     -->
     <table style="margin: auto; margin-bottom: 10px; width: 100%;"> <!-- Ajuste nas margens e tamanho -->
       <thead>

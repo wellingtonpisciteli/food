@@ -12,7 +12,7 @@
   <header class="cardapio-header"
     style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
     <div class="linha-com-texto">
-      <span>ENTREGAS ABERTAS</span>
+      <span>RETIRADAS ABERTAS</span>
     </div>
   </header>
 
@@ -28,7 +28,7 @@
   <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
     id="mesaButtonsContainer">
     {% for item in entrega_retirada %}
-    {% if item.tipo == "entrega" %}
+    {% if item.tipo == "retirada" %}
       {% if (item.status == 1 or item.status == 2) and item.id_mesa not in mesas_exibidas %}
         <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
           data-id-mesa="{{ item.id_mesa }}">
@@ -74,16 +74,6 @@
                   <input type="hidden" class="onde-entrega" value="{{ item.app }}">
                 {% endif %}
       
-                <!-- Endereço -->
-                <div class="teste">
-                  <button class="btn fs-5 btn-endereco"
-                    style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
-                    Endereço
-                  </button>
-                </div>
-                <input type="hidden" class="bairro-entrega" value="{{ item.bairro }}">
-                <input type="hidden" class="rua-entrega" value="{{ item.endereco }}">
-
                 {% set mostrado = false %}
                 {% for valor in total %}
                   {% if item.id_mesa == valor.id_mesa and not mostrado and valor.status == 1 %}
@@ -125,10 +115,9 @@
                   Excluir
                 </a>
 
-                <a href="#" class="btn fs-5 teste btn-acao btn-despachar"
-                  data-url="{{ url('despachar/' ~ item.id_mesa) }}"
+                <a href="{{ url('caixa/' ~ item.id_mesa) }}" class="btn fs-5 teste btn-acao"
                   style="background-color: darkgreen; border-radius: 4px; border: none; color: white; font-weight: bold;">
-                  Despachar
+                  Cobrar
                 </a>
               </div>
             </div>
@@ -177,7 +166,7 @@
                       {% endif %}
                     {% endfor %}
 
-                    {% if item.status == 1 %}
+                    {% if pedido.status == 1 %}
                       <a href="{{ url('adicionarAdicional/' ~ item.id_mesa ~ '/' ~ pedido.id_lanche) }}" class="primary">
                         <i class="fa-solid fa-square-plus" style="margin-bottom: 15px;"></i>
                       </a>
@@ -336,5 +325,5 @@
   
 </body>
 
-<script src="{{ url('/templates/comanda/assets/js/entregasAbertas.js') }}" defer></script>
+<script src="{{ url('/templates/comanda/assets/js/retiradasAbertas.js') }}" defer></script>
 {% endblock %}
