@@ -6,14 +6,31 @@
 <div id="adicionarLanches" style="margin-bottom: 25px;">
 
     <header class="text-center" id="adicionarHeader" style="background-color: black;">
-        <h3 class="text-white text-center fw-bolder" style="margin-top: 10px;">
+        <h3 class="text-white text-center" style="margin-top: 10px;">
+        {% if editar.mesa != 0 %}
             Mesa: {{ editar.mesa }}
+        {% else %}
+            {% for item in entregas %}
+            {% if item.id_mesa == editar.id_mesa %}
+                Cliente: 
+                <span style="color: chartreuse;"> 
+                    {{ item.cliente }}
+                </span>
+                
+                <input id="cliente"  value="{{ item.cliente }}" type="hidden" class="fw-bolder bg-light text-center" readonly>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
         </h3>
     </header>
 
     <div>
         <table>
             <form action="{{ url('atualizar/'~editar.chave) }}" method="post" class="bg-light" id="pedidos">
+
+                {% if editar.mesa == 0 %}
+                    <input type="hidden" name="controleDestino" id="controleDestino" value="controleDestino">
+                {% endif %}
 
                 <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="hidden">
 
@@ -51,6 +68,8 @@
                             <td class="apagarPedidoTd">
                                 <a class="apagarPedido" href="{{url('atualizar/' ~ editar.chave)}}">
                                     <input type="hidden" name="apagar" id="apagar">
+                                    <input type="hidden" name="controleAdicional" id="controleAdicional" value="controlAdicional">
+
                                     <button  style="background-color: darkred; border-radius: 2px; border: black; width: 30px;">
                                         <i class="fa-solid fa-trash" style="color: white;"></i>
                                     </button>                     

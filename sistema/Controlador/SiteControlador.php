@@ -223,13 +223,15 @@ class SiteControlador extends Controlador
         ]));
     }
 
-    public function adicionarAdicional(int $mesa, int  $id_lanche): void
+    public function adicionarAdicional(int $id_mesa, int  $id_lanche): void
     {
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = (new ComandaModelo())->buscaPorMesa("total", $mesa);
+        $mesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
         $idLanche = (new ComandaModelo())->buscaPorId_lanche("lanches", $id_lanche);
+        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+
 
         echo ($this->template->renderizar('adicionarAdicional.html', [
             'titulo' => 'Adicionar_adicional',
@@ -237,7 +239,9 @@ class SiteControlador extends Controlador
             'pedido' => $pedido,
             'ingredientes' => $ingredi,
             'mesa' => $mesa,
-            'idLanche' => $idLanche
+            'idLanche' => $idLanche,
+            'entregas' => $entrega_retirada
+
         ]));
     }
 
@@ -248,13 +252,15 @@ class SiteControlador extends Controlador
         $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $lanches = (new ComandaModelo())->ler("lanches", "nome_lanche", "ASC");
+        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('editarLanche.html', [
             'titulo' => 'Editar_lanche',
             'editar' => $pedidoMesa,
             'cardapio' => $cardapio,
             'ingredientes' => $ingredi,
-            'lanches' => $lanches
+            'lanches' => $lanches,
+            'entregas' => $entrega_retirada
         ]));
     }
 
@@ -263,11 +269,13 @@ class SiteControlador extends Controlador
     {
         $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('editarAdicional.html', [
             'titulo' => 'Editar_adicional',
             'editar' => $adicional,
-            'ingredientes' => $ingredi
+            'ingredientes' => $ingredi,
+            'entregas' => $entrega_retirada
         ]));
     }
 
@@ -277,12 +285,14 @@ class SiteControlador extends Controlador
         $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
         $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('editarBebida.html', [
             'titulo' => 'Editar_bebida',
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,
-            'tamanhoBebida' => $tamanho_bebida
+            'tamanhoBebida' => $tamanho_bebida,
+            'entregas' => $entrega_retirada
         ]));
     }
 

@@ -809,6 +809,11 @@ btnDivCancelar.addEventListener('click', () => {
     });
 });
 
+window.onload = function () {
+    const select = document.getElementById('selectPagamento');
+    atualizarPagamentoFinal(select); // atualiza o hidden com o valor inicial (cartao)
+};
+
 
 
 

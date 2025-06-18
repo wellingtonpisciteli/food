@@ -6,13 +6,26 @@
 <div id="adicionarLanches" style="margin-bottom: 25px;">
 
     <header class="text-center" id="adicionarHeader" style="background-color: black;">
-        <h3 class="text-white text-center fw-bolder" style="margin-top: 10px;">
+    <h3 class="text-white text-center" style="margin-top: 10px;">
+        {% if editar.mesa != 0 %}
             Mesa: {{ editar.mesa }}
-        </h3>
+        {% else %}
+            {% for item in entregas %}
+            {% if item.id_mesa == editar.id_mesa %}
+                Cliente: 
+                <span style="color: chartreuse;"> 
+                    {{ item.cliente }}
+                </span>
+                
+                <input id="cliente"  value="{{ item.cliente }}" type="hidden" class="fw-bolder bg-light text-center" readonly>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+    </h3>
     </header>
 
     {% for item in lanches %}
-        {% if item.mesa == editar.mesa %}
+        {% if item.id_mesa == editar.id_mesa %}
             <div class="lanches"></div>
         {% endif %}
     {% endfor %}
@@ -20,6 +33,10 @@
     <div>
         <table class="table" id="adicionarTabela">
             <form action="{{ url('atualizar/'~editar.id) }}" method="post" class="bg-light" id="pedidos">
+
+                {% if editar.mesa == 0 %}
+                    <input type="hidden" name="controleDestino" id="controleDestino" value="controleDestino">
+                {% endif %}
 
                 <input type="hidden" name="mesa" id="mesa" value="{{ editar.mesa }}">
 

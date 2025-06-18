@@ -151,6 +151,15 @@ enviarLancheBtns.forEach(btn => {
                 const mesaCell = document.createElement('span');
                 mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
                 comandaMesa.appendChild(mesaCell);
+
+                const controleDestino = document.createElement('input');
+                controleDestino.type = 'hidden';
+                controleDestino.name = 'controleDestino';
+                controleDestino.value = 'controleDestino';
+
+                console.log(controleDestino)
+
+                pedidosDiv.appendChild(controleDestino);
             }    
         }
 
@@ -302,6 +311,15 @@ enviarBebidaBtns.forEach(btn => {
                 const mesaCell = document.createElement('span');
                 mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
                 comandaMesa.appendChild(mesaCell);
+
+                const controleDestino = document.createElement('input');
+                controleDestino.type = 'hidden';
+                controleDestino.name = 'controleDestino';
+                controleDestino.value = 'controleDestino';
+
+                console.log(controleDestino)
+
+                pedidosDiv.appendChild(controleDestino);
             }    
         }
 
@@ -441,9 +459,24 @@ enviarIngredienteBtns.forEach(btn => {
         row.appendChild(obsIngredienteCell);
 
         if (cont == 1) {
-            const mesaCell = document.createElement('span');
-            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
-            comandaMesa.appendChild(mesaCell);
+            if (!cliente){
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Comanda: " + mesaPedido; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }else{
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+
+                const controleDestino = document.createElement('input');
+                controleDestino.type = 'hidden';
+                controleDestino.name = 'controleDestino';
+                controleDestino.value = 'controleDestino';
+
+                console.log(controleDestino)
+
+                pedidosDiv.appendChild(controleDestino);
+            }    
         }
 
         // Adiciona a nova linha à tabela
@@ -575,9 +608,24 @@ removerIngredienteBtns.forEach(btn => {
         row.appendChild(obsIngredienteCell);
 
         if (cont == 1) {
-            const mesaCell = document.createElement('span');
-            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
-            comandaMesa.appendChild(mesaCell);
+            if (!cliente){
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Comanda: " + mesaPedido; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }else{
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+
+                const controleDestino = document.createElement('input');
+                controleDestino.type = 'hidden';
+                controleDestino.name = 'controleDestino';
+                controleDestino.value = 'controleDestino';
+
+                console.log(controleDestino)
+
+                pedidosDiv.appendChild(controleDestino);
+            }    
         }
 
         // Adiciona a nova linha à tabela

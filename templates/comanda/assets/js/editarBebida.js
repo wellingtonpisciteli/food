@@ -1,5 +1,8 @@
 window.onload = function() {
+    const teste = document.getElementById('controleAdicional')
 
+    console.log(teste)
+    
     const botoesAdicionarBebida = document.querySelectorAll('.enviarBebida input[type="button"]');
 
     botoesAdicionarBebida.forEach(function(botao) {

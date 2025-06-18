@@ -5,6 +5,8 @@ const comandaMesa = document.getElementById('comandaMesa');
 const totalMesa = document.getElementById('totalMesa');
 const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
+const cliente = document.getElementById('cliente');
+
 
 let cont = 0
 let total = 0
@@ -36,7 +38,6 @@ enviarIngredienteBtns.forEach(btn => {
         cont += 1
         idIngrediente = idIngredi.value
         console.log('IdIngredi: ', idIngrediente);
-
 
         // Pega a linha relacionada ao botão
         const form = btn.closest('tr');
@@ -122,9 +123,24 @@ enviarIngredienteBtns.forEach(btn => {
         row.appendChild(obsIngredienteCell);
 
         if (cont == 1) {
-            const mesaCell = document.createElement('span');
-            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
-            comandaMesa.appendChild(mesaCell);
+            if (!cliente){
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Comanda: " + mesaPedido; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }else{
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+
+                const controleDestino = document.createElement('input');
+                controleDestino.type = 'hidden';
+                controleDestino.name = 'controleDestino';
+                controleDestino.value = 'controleDestino';
+
+                console.log(controleDestino)
+
+                pedidosDiv.appendChild(controleDestino);
+            }    
         }
 
         // Adiciona a nova linha à tabela
@@ -251,9 +267,24 @@ removerIngredienteBtns.forEach(btn => {
         row.appendChild(obsIngredienteCell);
 
         if (cont == 1) {
-            const mesaCell = document.createElement('span');
-            mesaCell.textContent = mesaPedido; // Adiciona o valor da mesa
-            comandaMesa.appendChild(mesaCell);
+            if (!cliente){
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Comanda: " + mesaPedido; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+            }else{
+                const mesaCell = document.createElement('span');
+                mesaCell.textContent = "Cliente: " + cliente.value; // Adiciona o valor da mesa
+                comandaMesa.appendChild(mesaCell);
+
+                const controleDestino = document.createElement('input');
+                controleDestino.type = 'hidden';
+                controleDestino.name = 'controleDestino';
+                controleDestino.value = 'controleDestino';
+
+                console.log(controleDestino)
+
+                pedidosDiv.appendChild(controleDestino);
+            }    
         }
 
         // Adiciona a nova linha à tabela

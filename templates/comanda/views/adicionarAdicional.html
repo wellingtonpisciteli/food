@@ -7,7 +7,21 @@
 {% if cont == 1 %}
 <header class="text-center" id="adicionarHeader" style="background-color: black;">
     <h3 class="text-white text-center">
-        Mesa: <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="number" class="fw-bolder bg-light text-center" readonly>
+        {% if num.mesa != 0 %}
+            Mesa: <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="number" class="fw-bolder bg-light text-center" readonly>
+        {% else %}
+            {% for item in entregas %}
+            {% if item.id_mesa == num.id_mesa %}
+                Cliente: 
+                <span style="color: chartreuse;"> 
+                    {{ item.cliente }}
+                </span>
+                <input id="nummesa" name="nummesa" value="{{ num.mesa }}" type="hidden" class="fw-bolder bg-light text-center" readonly>
+                
+                <input id="cliente"  value="{{ item.cliente }}" type="hidden" class="fw-bolder bg-light text-center" readonly>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
     </h3>
     <input type="hidden" value="{{ num.id_mesa }} " id="id_mesa" class="id_mesa">
 </header>
@@ -61,7 +75,7 @@
         </table>
 
         <h3 id="comandaMesa" class="text-center text-white fw-bolder" style="margin-bottom: 20px;">
-            Comanda:
+            
         </h3>
 
         <table>

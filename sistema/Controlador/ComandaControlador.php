@@ -37,11 +37,10 @@ class ComandaControlador extends Controlador
 
         }
 
-        if ($dados['mesa'][0] != 0){
-            Helpers::redirecionar('pedidosAbertos');
-        }else{
+        if (!empty($dados['controleDestino'])){
             Helpers::redirecionar('entregasAbertas');
-
+        }else{
+            Helpers::redirecionar('pedidosAbertos');
         }
     }
 
@@ -50,6 +49,14 @@ class ComandaControlador extends Controlador
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+            if(!empty($dados['controleDestino'])){
+                $controleDestino = $dados['controleDestino'];
+            }
+
+            if(!empty($dados['controleAdicional'])){
+                $controleAdicional = $dados['controleAdicional'];
+            }
 
             $id_mesa = $dados['id_mesa'];
 
@@ -84,35 +91,49 @@ class ComandaControlador extends Controlador
             if (($dados['apagar']) == 'preenchido'){
                 $idApagarAdicional = $dados['idApagarAdicional'];
 
-                (new ComandaControlador())->excluir($id, $idApagarAdicional, $id_mesa);
+                (new ComandaControlador())->excluir($id, $idApagarAdicional, $id_mesa, $controleDestino, $controleAdicional);
                 
             }elseif ($dados['apagar'] == 'preenchido999'){
                 $idApagarAdicional = $dados['idApagarAdicional'];
 
-                (new ComandaControlador())->excluir999($idApagarAdicional, $id_mesa);
+                (new ComandaControlador())->excluir999($idApagarAdicional, $id_mesa, $controleDestino);
             }
         }
 
-        Helpers::redirecionar('pedidosAbertos');
+        if (!empty($dados['controleDestino'])){
+            Helpers::redirecionar('entregasAbertas');
+        }else{
+            Helpers::redirecionar('pedidosAbertos');
+        }    
     }
     
 
-    public function excluir(int $id, int $idApagarAdicional, int $id_mesa)
+    public function excluir(int $id, int $idApagarAdicional, int $id_mesa, ?string $controleDestino = null, string $controleAdicional)
     {   
         (new ComandaModelo())->apagarLanche($id, $idApagarAdicional, $id_mesa);
 
-        (new ComandaModelo())->apagarAdicional($id, $id_mesa);
+        if ($controleAdicional === 'controlBebida') {
+            (new ComandaModelo())->apagarBebida($id, $id_mesa);
+        } elseif ($controleAdicional === 'controlAdicional') {
+            (new ComandaModelo())->apagarAdicional($id, $id_mesa);
+        }
 
-        (new ComandaModelo())->apagarBebida($id, $id_mesa);
-
-        Helpers::redirecionar('pedidosAbertos');
+        if (!empty($controleDestino)){
+            Helpers::redirecionar('entregasAbertas');
+        }else{
+            Helpers::redirecionar('pedidosAbertos');
+        }  
     }
 
-    public function excluir999(int $idApagarAdicional, int $id_mesa)
+    public function excluir999(int $idApagarAdicional, int $id_mesa, ?string $controleDestino = null)
     {   
         (new ComandaModelo())->apagar999($idApagarAdicional, $id_mesa);
 
-        Helpers::redirecionar('pedidosAbertos');
+        if (!empty($controleDestino)){
+            Helpers::redirecionar('entregasAbertas');
+        }else{
+            Helpers::redirecionar('pedidosAbertos');
+        }  
     }
 
     public function excluirMesa(int $id_mesa, int $status)
