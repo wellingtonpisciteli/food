@@ -237,6 +237,38 @@ class SiteControlador extends Controlador
         ]));
     }
 
+    public function retiradasFechadas(): void
+    {
+        $obj = new ComandaModelo();
+
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $pedidos = $obj->ler("lanches", "data_hora", "DESC");
+        $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
+        $total = $obj->ler("total", "total", "DESC");
+        $mesa = $obj->ler("lanches", "mesa", "DESC");
+        $cardapioLanche = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $ingredientes = $obj->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $cardapioBebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
+
+        echo ($this->template->renderizar('retiradasFechadas.html', [
+            'titulo' => 'Retiradas Fechadas',
+            'adicional' => $adicional,
+            'pedidos' => $pedidos,
+            'bebidas' => $bebidas,
+            'mesa' => $mesa,
+            'cardapioLanche' => $cardapioLanche,
+            'ingredientes' => $ingredientes,
+            'cardapioBebida' => $cardapioBebida,
+            'tamanhoBebida' => $tamanho_bebida,
+            'ingred' => $ingredi,
+            'entrega_retirada' => $entrega_retirada,
+            'total' => $total
+        ]));
+    }
+
     public function caixa(int $id_mesa): void
     {
         $idMesa = (new ComandaModelo())->buscaId_mesa("total", $id_mesa);

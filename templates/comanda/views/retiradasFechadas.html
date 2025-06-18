@@ -1,0 +1,319 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+<body class="w-100" style="background-color: black;">
+  {% for num in mesa %}
+  {% if num.status == 1 %}
+    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+  {% endif %}
+  {% endfor %}
+
+  <header class="cardapio-header"
+    style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
+    <div class="linha-com-texto">
+      <span>RETIRADAS FECHADAS</span>
+    </div>
+  </header>
+
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarMesas btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
+      Mostrar Todas
+    </button>
+  </div>
+
+  {% set mesas_exibidas = [] %}
+
+  
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="mesaButtonsContainer">
+    {% for item in entrega_retirada %}
+    {% if item.tipo == "retirada" %}
+      {% if (item.status == 0) and item.id_mesa not in mesas_exibidas %}
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
+          data-id-mesa="{{ item.id_mesa }}">
+          <span style="color: white; font-weight: bold;">
+                {{ item.cliente }}
+          </span>
+        </button>
+        {% set mesas_exibidas = mesas_exibidas | merge([item.id_mesa]) %}
+      {% endif %}
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="bg-light table-responsive"
+    style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 50px;">
+    
+    {% set mesas_exibidas = [] %}
+    {% set cont = 0 %}
+
+    {% for item in entrega_retirada %}
+      {% if item.status == 0 %}
+        {% if item.id_mesa not in mesas_exibidas %}
+          {# RESET DE CONTROLE DE BEBIDAS POR MESA #}
+          {% set bebidas_exibidas = [] %}
+          {% set chaves_exibidas = [] %}
+
+          <div class="mesaAberta" style="display: none;" data-id-mesa="{{ item.id_mesa }}">
+            <div style="display: flex; justify-content: space-evenly; align-items: center; padding: 10px;">   
+
+              <div class="botoesEntrega" style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+                <!-- Cliente -->
+                <div class="teste">
+                  <button class="btn fs-5 btn-cliente"
+                    style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
+                    {{ item.cliente }}
+                  </button>
+                </div>
+                <input type="hidden" class="contato-entrega" value="{{ item.contato }}">
+                <input type="hidden" class="cliente-entrega" value="{{ item.cliente }}">
+                {% if item.tipo_contato != "indefinido" %}
+                  <input type="hidden" class="onde-entrega" value="{{ item.tipo_contato }}">
+                {% else %}
+                  <input type="hidden" class="onde-entrega" value="{{ item.app }}">
+                {% endif %}
+      
+                <!-- Endereço -->
+                <div class="teste">
+                  <button class="btn fs-5 btn-endereco"
+                    style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
+                    Endereço
+                  </button>
+                </div>
+                <input type="hidden" class="bairro-entrega" value="{{ item.bairro }}">
+                <input type="hidden" class="rua-entrega" value="{{ item.endereco }}">
+
+                {% set mostrado = false %}
+                {% for valor in total %}
+                  {% if item.id_mesa == valor.id_mesa and not mostrado and valor.status == 0 %}
+                  <!-- Total -->
+                  <div class="teste">
+                    <button class="btn fs-5 btn-total"
+                      style="background-color: #f8f9fa; color: #212529; font-weight: bold; border-radius: 4px;">
+                      ${{ valor.subTotal | number_format(2, ',', '.') }}
+                    </button>
+                  </div>
+                  <input type="hidden" class="forma-entrega" value="{{ item.tipo_pagamento }}">
+                  <input type="hidden" class="total-entrega" value="{{ valor.total | number_format(2, ',', '.') }}">          
+                    {% set mostrado = true %}
+                  {% endif %}
+                {% endfor %} 
+
+                <button class="btn fs-1 toggle-acoes-mobile d-md-none linha-com-texto"
+                  style="
+                    border: none;
+                    transition: background-color 0.3s ease;
+                    padding: 0%;
+                  ">
+                  🛠️
+                </button>
+
+                <a href="#"  
+                    class="btn fs-5 abrir-mesa teste btn-acao" 
+                    data-url="{{ url('abrirMesa/' ~ item.id_mesa) }}"
+                    data-mesa="{{ item.id_mesa }}"
+                    style="background-color: darkgreen; border-radius: 4px; border: none; color: white; font-weight: bold;">
+                    Abrir 
+                </a>
+
+                <a href="#" class="btn fs-5 excluir-mesa teste btn-acao"
+                  data-url="{{ url('excluirEntrega/' ~ item.id_mesa ~ '/' ~ 1) }}"
+                  style="background-color: darkred; border-radius: 4px; border: none; color: white; font-weight: bold;">
+                  Excluir
+                </a>
+
+              </div>
+            </div>
+          </div>
+
+          {% set cont = 0 %}
+          {% set mesas_exibidas = mesas_exibidas | merge([item.id_mesa]) %}
+        {% endif %}
+
+        <table class="tablePedido" data-id-mesa="{{ item.id_mesa }}"
+          style="justify-content: center; margin-bottom: 5px; width: 100%; display: none;">
+          <thead>
+            <tr>
+              <th class="thTableAberto" scope="col">{% if cont == 0 %}LANCHES{% set cont = 1 %}{% endif %}</th>
+              <th class="thTableAberto" scope="col" style="padding-left: 5px;">{% if cont == 1 %}VALOR{% set cont = 2 %}{% endif %}</th>
+              <th class="thTableAberto" scope="col">{% if cont == 2 %}BEBIDAS{% set cont = 3 %}{% endif %}</th>
+              <th class="thTableAberto" scope="col" style="padding-left: 5px;">{% if cont == 3 %}VALOR{% set cont = 4 %}{% endif %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for pedido in pedidos %}
+              {% if pedido.id_mesa == item.id_mesa %}
+                <tr class="thTrAberto">
+                  <td  style="font-weight: bolder;">
+                    {% if pedido.nome_lanche == 'Em escolha...' %}
+                      <span style="color: gray; font-style: italic; text-decoration: none;">Em escolha...</span> <br>
+                    {% elseif pedido.status == 0 %}
+                      <span style="text-decoration: none; color: black;">{{ pedido.nome_lanche }}</span> <br>
+                    {% else %}
+                      <span style="text-decoration: none; color: gray;">{{ pedido.nome_lanche }}</span> <br>
+                    {% endif %}
+
+                    {% for add in adicional %}
+                      {% if add.id == pedido.id_lanche and pedido.status == 0 %}
+                        <div style="margin-top: 5px">
+                          {% if add.tipo == '+' %}
+                            <span style="color: green; font-weight: bolder;">
+                              +{{ add.nome_adicional }} <br>
+                            </span>        
+                          {% elseif add.tipo == '-' %}
+                            <span style="color: red; font-weight: bolder;">
+                              -{{ add.nome_adicional }} <br>
+                            </span>
+                          {% endif %}
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+
+                  </td>
+
+                  <td>
+                    {% set somaAdicional = 0 %}
+                    {% for add in adicional %}
+                      {% if add.id == pedido.id_lanche and pedido.status == 0 %}
+                        {% set somaAdicional = somaAdicional + add.valor_adicional %}
+                      {% endif %}
+                    {% endfor %}
+
+                    {% if pedido.valor_lanche != 0 and pedido.status == 0 %}
+                      <span style="font-weight: bolder; padding-left: 5px; color: black;">
+                        {{ (somaAdicional + pedido.valor_lanche) | number_format(2, ',', '.') }}
+                      </span>
+                    {% endif %}
+                  </td>
+
+                  <td style="font-weight: bolder;">
+                    {% for bebida in bebidas %}
+                      {% if bebida.id_mesa == item.id_mesa and bebida.status == 0 %}
+                        {% if bebida.chave not in bebidas_exibidas %}
+                          {% if bebida.status == 0 %}
+                            <span style="text-decoration: none; color: black;">
+                              {{ bebida.nome_bebida }} {{ bebida.tamanho_bebida }}
+                            </span> <br>
+                          {% endif %}
+                          {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.chave]) %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+
+                  <td>
+                    {% for bebida in bebidas %}
+                      {% if bebida.id_mesa == item.id_mesa and bebida.status == 0 %}
+                        {% if bebida.chave not in chaves_exibidas %}
+                          {% if bebida.status == 0 %}
+                            <span class="precoBebida" style="font-weight: bolder; padding-left: 5px; color:black;">
+                              {{ bebida.valor_bebida | number_format(2, ',', '.') }}
+                            </span> <br>
+                          {% endif %}
+                          {% set chaves_exibidas = chaves_exibidas | merge([bebida.chave]) %}
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </td>
+                </tr>
+              {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <header class="cardapio-header">
+    <div class="linha-com-texto">
+      <span>CARDÁPIO</span>
+    </div>
+  </header>
+
+  <div class="bg-light cardapio-pedidos-abertos"
+    style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 30px;">
+
+    <!-- Cardápio de Lanches -->
+    <table class="table cardapio-lanche" style="margin-top: 2px;">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">LANCHES</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
+        </tr>
+      </thead>
+      {% for cardapio in cardapioLanche %}
+      <tbody>
+        <tr>
+          {% if cardapio.lanche != 'Em escolha...' %}
+            <th class="cardapio-th-item" style="width: 600px;">
+              <details class="dropdown-fake-abertos">
+                <summary class="dropdown-label">{{ cardapio.lanche }}</summary>
+                <ul class="dropdown-list">
+                  {% for ingred in ingredientes %}
+                    {% if ingred.lanche_id == cardapio.id %}
+                      <span>{{ ingred.ingredientes }}</span>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </details>
+            </th>
+            
+            <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
+          {% endif %}
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+
+    <!-- Cardápio de Bebidas -->
+    <table class="table cardapio-bebida">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th text-white" id="cardapio-th-naovalor">BEBIDAS</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
+        </tr>
+      </thead>
+      {% for bebidas in cardapioBebida %}
+      <tbody>
+        <tr>
+          <th class="cardapio-th-item">{{ bebidas.marca }}</th>
+          <td class="cardapio-valor">
+            <select class="form-select" id="valor_lanche">
+              {% for tamanho in tamanhoBebida %}
+              {% if tamanho.marca_bebida_id == bebidas.id %}
+              <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
+                {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
+              </option>
+              {% endif %}
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+
+    <!-- Cardápio de Adicionais -->
+    <table class="table cardapio-adicionais">
+      <thead class="thead-dark">
+        <tr>
+          <th class="cardapio-th  text-white" id="cardapio-th-naovalor">ADICIONAIS</th>
+          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
+        </tr>
+      </thead>
+      {% for ingredi in ingred %}
+      <tbody>
+        <tr>
+          <th class="cardapio-th-item">{{ ingredi.ingrediente }}</th>
+          <th id="valor_lanche" class="cardapio-th-item">{{ ingredi.valor | number_format(2, ',', '.') }}</th>
+        </tr>
+      </tbody>
+      {% endfor %}
+    </table>
+  </div>
+  
+</body>
+
+<script src="{{ url('/templates/comanda/assets/js/retiradasFechadas.js') }}" defer></script>
+{% endblock %}

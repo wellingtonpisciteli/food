@@ -653,7 +653,7 @@ class ComandaModelo
 
     public function abrirMesa(int $id_mesa)
     {
-        $tabelas = ['lanches', 'bebidas', 'total'];
+        $tabelas = ['lanches', 'bebidas', 'total', 'entrega_retirada'];
 
         $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
         $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
@@ -701,7 +701,7 @@ class ComandaModelo
 
     function caixaTotal(int $id_mesa):void
     {
-        $tabelas = ['lanches', 'bebidas', 'total'];
+        $tabelas = ['lanches', 'bebidas', 'total', 'entrega_retirada'];
 
         $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
         $valorAtual = $buscaTotal->total ?? 0;
