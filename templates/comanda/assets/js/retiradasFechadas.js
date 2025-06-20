@@ -93,7 +93,7 @@ botoesExcluir.forEach(botao => {
             showCancelButton: true,
             confirmButtonColor: 'darkred',
             cancelButtonColor: 'darkblue',
-            confirmButtonText: 'Sim, excluir entrega!',
+            confirmButtonText: 'Sim, excluir!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -243,7 +243,7 @@ botoesAbrirMesa.forEach(botao => {
             showCancelButton: true,
             confirmButtonColor: 'blue',
             cancelButtonColor: 'darkred',
-            confirmButtonText: 'Sim, abrir entrega!',
+            confirmButtonText: 'Sim, abrir!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {

@@ -97,7 +97,7 @@
       <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
         <a href="#"  
           class="btn fs-5 abrir-mesa teste" 
-          data-url="{{ url('abrirMesa/' ~ pedido.id_mesa) }}"
+          data-url="{{ url('abrirMesa/' ~ pedido.id_mesa ~ '/' ~ 1) }}"
           data-mesa="{{ pedido.mesa }}"
           style="background-color: darkblue; border-radius: 4px; border: none; color: white; font-weight: bold;">
           Abrir Mesa

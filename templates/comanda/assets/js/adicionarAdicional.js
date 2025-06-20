@@ -6,6 +6,7 @@ const totalMesa = document.getElementById('totalMesa');
 const btnDivCancelar = document.getElementById('btnDivCancelar');
 const btnDiv = document.getElementById('btnDiv');
 const cliente = document.getElementById('cliente');
+const tipoControle = document.getElementById('tipoControle');
 
 
 let cont = 0
@@ -135,7 +136,7 @@ enviarIngredienteBtns.forEach(btn => {
                 const controleDestino = document.createElement('input');
                 controleDestino.type = 'hidden';
                 controleDestino.name = 'controleDestino';
-                controleDestino.value = 'controleDestino';
+                controleDestino.value = tipoControle.value;
 
                 console.log(controleDestino)
 
@@ -279,7 +280,7 @@ removerIngredienteBtns.forEach(btn => {
                 const controleDestino = document.createElement('input');
                 controleDestino.type = 'hidden';
                 controleDestino.name = 'controleDestino';
-                controleDestino.value = 'controleDestino';
+                controleDestino.value = tipoControle.value;
 
                 console.log(controleDestino)
 

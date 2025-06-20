@@ -39,4 +39,15 @@ class Helpers{
     {
         return date($formato);
     }
+
+    public static function controleDestino(?string $destino=Null):void
+    {
+        if (!empty($destino == "entrega")){
+            Helpers::redirecionar('entregasAbertas');
+        }elseif (!empty($destino == "retirada")){
+            Helpers::redirecionar('retiradasAbertas');
+        }else{
+            Helpers::redirecionar('pedidosAbertos');
+        }
+    }
 }

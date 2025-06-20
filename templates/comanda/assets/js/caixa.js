@@ -7,6 +7,7 @@ const totalTotal = document.getElementById('totalTotal');
 const mesa = document.getElementById('nummesa');
 const lanches = document.querySelectorAll('.lanches')
 const bebidas = document.querySelectorAll('.bebidas')
+const cliente = document.getElementById('controleDestino');
 
 
 let cont = 0
@@ -219,6 +220,17 @@ btnDiv.addEventListener("click", (e) => {
             console.log("Envio cancelado");
         }
     });
+
+    if(cliente){
+        const controleDestino = document.createElement('input');
+        controleDestino.type = 'hidden';
+        controleDestino.name = 'controleDestino';
+        controleDestino.value = 'controleDestino';
+
+        console.log(controleDestino);
+
+        pedidosDiv.appendChild(controleDestino);
+    }
 });
 
 btnDivCancelar.addEventListener('click', (e) => {
@@ -262,6 +274,17 @@ btnDivCancelar.addEventListener('click', (e) => {
 
             pedidosDiv.appendChild(controleTotal);
         }
+    }
+
+    if(cliente){
+        const controleDestino = document.createElement('input');
+        controleDestino.type = 'hidden';
+        controleDestino.name = 'controleDestino';
+        controleDestino.value = 'controleDestino';
+
+        console.log(controleDestino);
+
+        pedidosDiv.appendChild(controleDestino);
     }
     
 });

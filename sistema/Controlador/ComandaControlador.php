@@ -40,11 +40,7 @@ class ComandaControlador extends Controlador
         if (!empty($dados['controleAdicionar'])){
             Helpers::redirecionar('comanda');
         }else{
-            if (!empty($dados['controleDestino'])){
-                Helpers::redirecionar('entregasAbertas');
-            }else{
-                Helpers::redirecionar('pedidosAbertos');
-            }
+            Helpers::controleDestino($dados['controleDestino']);
         }
     }
 
@@ -104,11 +100,7 @@ class ComandaControlador extends Controlador
             }
         }
 
-        if (!empty($dados['controleDestino'])){
-            Helpers::redirecionar('entregasAbertas');
-        }else{
-            Helpers::redirecionar('pedidosAbertos');
-        }    
+        Helpers::controleDestino($controleDestino);
     }
     
 
@@ -124,22 +116,14 @@ class ComandaControlador extends Controlador
             }
         }
 
-        if (!empty($controleDestino)){
-            Helpers::redirecionar('entregasAbertas');
-        }else{
-            Helpers::redirecionar('pedidosAbertos');
-        }  
+        Helpers::controleDestino($controleDestino);
     }
 
     public function excluir999(int $idApagarAdicional, int $id_mesa, ?string $controleDestino = null)
     {   
         (new ComandaModelo())->apagar999($idApagarAdicional, $id_mesa);
 
-        if (!empty($controleDestino)){
-            Helpers::redirecionar('entregasAbertas');
-        }else{
-            Helpers::redirecionar('pedidosAbertos');
-        }  
+        Helpers::controleDestino($controleDestino);
     }
 
     public function excluirMesa(int $id_mesa, int $status)
@@ -159,8 +143,14 @@ class ComandaControlador extends Controlador
 
         if($status == 1 ){
             Helpers::redirecionar('entregasAbertas');
-        }else{
-            Helpers::redirecionar('pedidosFechados');
+        }elseif ($status == 2){
+            Helpers::redirecionar('entregasFechadas');
+        }
+
+        if($status == 3){
+            Helpers::redirecionar('retiradasAbertas');
+        }elseif ($status == 4){
+            Helpers::redirecionar('retiradasFechadas');
         }
     }
 
@@ -173,13 +163,17 @@ class ComandaControlador extends Controlador
         Helpers::redirecionar('pedidosAbertos');
     }
 
-    public function abrirMesa(int $id_mesa): void
+    public function abrirMesa(int $id_mesa, int $param): void
     {
         if ($id_mesa) {
             (new ComandaModelo())->abrirMesa($id_mesa);
         }
 
-       Helpers::redirecionar('pedidosAbertos');
+        if ($param == 1) {
+            Helpers::redirecionar('pedidosFechados');
+        }else{
+            Helpers::redirecionar('retiradasFechadas');
+        } 
     }
 
     public function abrirEntrega(int $id_mesa): void
@@ -188,7 +182,7 @@ class ComandaControlador extends Controlador
             (new ComandaModelo())->abrirEntrega($id_mesa);
         }
 
-       Helpers::redirecionar('entregasAbertas');
+       Helpers::redirecionar('entregasFechadas');
     }
 
     public function despachar(int $id_mesa): void
@@ -212,7 +206,11 @@ class ComandaControlador extends Controlador
             }
         }
 
-        Helpers::redirecionar('pedidosAbertos');
+        if(!empty($dados['controleDestino'])){
+            Helpers::redirecionar('retiradasAbertas');            
+        }else{
+            Helpers::redirecionar('pedidosAbertos');
+        }
     }
 
     public function imprimir($id_mesa)

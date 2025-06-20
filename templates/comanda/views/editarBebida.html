@@ -28,9 +28,11 @@
         <table class="table" id="adicionarTabela">
             <form action="{{ url('atualizar/'~editar.chave) }}" method="post" class="bg-light" id="pedidos">
 
-                {% if editar.mesa == 0 %}
-                    <input type="hidden" name="controleDestino" id="controleDestino" value="controleDestino">
+                {% for item in entregas %}
+                {% if editar.id_mesa == item.id_mesa %}
+                    <input type="hidden" name="controleDestino" id="controleDestino" value="{{item.tipo}}" class="bg-light">
                 {% endif %}
+                {% endfor %}
                 
                 <input value="{{ editar.mesa }}" id="mesa" name="mesa" type="hidden">
 

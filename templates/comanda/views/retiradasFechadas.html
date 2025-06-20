@@ -5,7 +5,7 @@
 <body class="w-100" style="background-color: black;">
   {% for num in mesa %}
   {% if num.status == 1 %}
-    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">
+    <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.id_mesa }}">
   {% endif %}
   {% endfor %}
 
@@ -73,16 +73,6 @@
                 {% else %}
                   <input type="hidden" class="onde-entrega" value="{{ item.app }}">
                 {% endif %}
-      
-                <!-- Endereço -->
-                <div class="teste">
-                  <button class="btn fs-5 btn-endereco"
-                    style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
-                    Endereço
-                  </button>
-                </div>
-                <input type="hidden" class="bairro-entrega" value="{{ item.bairro }}">
-                <input type="hidden" class="rua-entrega" value="{{ item.endereco }}">
 
                 {% set mostrado = false %}
                 {% for valor in total %}
@@ -111,14 +101,14 @@
 
                 <a href="#"  
                     class="btn fs-5 abrir-mesa teste btn-acao" 
-                    data-url="{{ url('abrirMesa/' ~ item.id_mesa) }}"
+                    data-url="{{ url('abrirMesa/' ~ item.id_mesa ~ '/' ~ 2) }}"
                     data-mesa="{{ item.id_mesa }}"
                     style="background-color: darkgreen; border-radius: 4px; border: none; color: white; font-weight: bold;">
                     Abrir 
                 </a>
 
                 <a href="#" class="btn fs-5 excluir-mesa teste btn-acao"
-                  data-url="{{ url('excluirEntrega/' ~ item.id_mesa ~ '/' ~ 1) }}"
+                  data-url="{{ url('excluirEntrega/' ~ item.id_mesa ~ '/' ~ 4) }}"
                   style="background-color: darkred; border-radius: 4px; border: none; color: white; font-weight: bold;">
                   Excluir
                 </a>
