@@ -22,7 +22,13 @@ if (numMesaInput) {
 
 
 const tipo_retirada = document.getElementById('tipo_retirada'); 
+const cliente_retirada = document.getElementById('cliente'); 
+const contato_retirada = document.getElementById('contato'); 
+const taxa = document.querySelectorAll('input[name="taxa"]');
+
 const id_pedido = document.getElementById('id_pedido'); 
+
+console.log(tipo_retirada)
 
 // Captura o botão para adicionar um lanche
 const enviarLancheBtns = document.querySelectorAll('.enviarLanche input[type="button"]');
@@ -666,7 +672,7 @@ function formatarMoeda(campo) {
     campo.value = "$" + valor.replace(".", ",");
 }
 
-function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa) {
+function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa, dadosEntrega) {
     let linhasPedido = '';
 
     function gerarLinhas(trs, tipo) {
@@ -700,45 +706,149 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
     gerarLinhas(listaBebidas.querySelectorAll('tr'), 'bebida');
 
     const mesa = comandaMesa.textContent || "Não definida";
-    const totalTexto = total.toFixed(2);
+    const totalTexto = total.toFixed(2).replace('.', ',');
+
+    // Monta bloco extra para entrega/retirada
+    let infoEntrega = '';
+    if (dadosEntrega.tipo === 'entrega') {
+        infoEntrega = `
+            <p style="color: black;"><strong>Tipo:</strong> Entrega</p>
+            <p style="color: black;"><strong>Cliente:</strong> ${dadosEntrega.nome || '-'}</p>
+            <p style="color: black;"><strong>Contato:</strong> ${dadosEntrega.contato || '-'}</p>
+            <p style="color: black;"><strong>Bairro:</strong> ${dadosEntrega.bairro || '-'}</p>
+            <p style="color: black;"><strong>Endereço:</strong> ${dadosEntrega.endereco || '-'}</p>
+            <p style="color: black;"><strong>Taxa:</strong> R$ ${dadosEntrega.taxa.toFixed(2).replace('.', ',')}</p>
+        `;
+    } else if (dadosEntrega.tipo === 'retirada') {
+        infoEntrega = `
+            <p style="color: black;"><strong>Tipo:</strong> Retirada</p>
+            <p style="color: black;"><strong>Cliente:</strong> ${dadosEntrega.nome || '-'}</p>
+            <p style="color: black;"><strong>Contato:</strong> ${dadosEntrega.contato || '-'}</p>
+        `;
+    } else {
+        infoEntrega = `<p style="color: black;"><strong>Tipo:</strong> Não definido</p>`;
+    }
+
+    const identificador = (dadosEntrega.tipo === 'entrega' || dadosEntrega.tipo === 'retirada') 
+    ? `Cliente: ${dadosEntrega.nome || '-'}` 
+    : `${mesa || 'Não definida'}`;
 
     return Swal.fire({
-        title: '📦 <span style="color: black;">Confirmar Pedido?</span>',
-        html: `
-            <div style="text-align: left;">
-                <p style="color: black;"><strong>Mesa: ${mesa}</strong></p>
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead>
-                        <tr style="background-color: #f0f0f0;">
-                            <th style="padding: 6px 10px; text-align: left; color: black;">Item</th>
-                            <th style="padding: 6px 10px; text-align: right; color: black;">Valor</th>
-                            <th style="padding: 6px 10px; text-align: left; color: black;">Detalhes</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${linhasPedido}
-                    </tbody>
-                </table>
-                <p style="margin-top: 10px; color: black;"><strong>Total:</strong> <span style="color: #198754;"><strong>R$ ${totalTexto} </strong></span></p>
+    title: '📦 <span style="color: black;">Confirmar Pedido?</span>',
+    html: `
+        <div style="text-align: left;">
+            <p style="color: black;"><strong>${identificador}</strong></p>
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <thead>
+                    <tr style="background-color: #f0f0f0;">
+                        <th style="padding: 6px 10px; text-align: left; color: black;">Item</th>
+                        <th style="padding: 6px 10px; text-align: right; color: black;">Valor</th>
+                        <th style="padding: 6px 10px; text-align: left; color: black;">Detalhes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${linhasPedido}
+                </tbody>
+            </table>
+            <div style="margin-top: 10px;">
+                ${infoEntrega}
+                <p style="margin-top: 10px; color: black;"><strong>Total:</strong> <span style="color: #198754;"><strong>R$ ${totalTexto}</strong></span></p>
             </div>
-        `,
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: '✅ Enviar Pedido',
-        cancelButtonText: '🛑 Manter Pedido',
-        reverseButtons: true,
-        confirmButtonColor: 'blue',      // azul para confirmar
-        cancelButtonColor: 'darkred',  
-    });
+        </div>
+    `,
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: '✅ Enviar Pedido',
+    cancelButtonText: '🛑 Manter Pedido',
+    reverseButtons: true,
+    confirmButtonColor: 'blue',
+    cancelButtonColor: 'darkred',
+});
 }
 
 btnDiv.addEventListener("click", (e) => {
 
+    let totalCell = document.querySelector('#totalMesa span'); // Verifica se já existe um <span> no totalMesa
+
+    if (!totalCell) {
+        // Se não existir, cria um novo elemento
+        totalCell = document.createElement('span');
+        totalMesa.appendChild(totalCell);
+    }
+
+    // Pega o valor do input de taxa
+    let taxaInput = document.querySelector('#taxa');
+    let taxaValor = taxaInput.value.trim();
+
+    // Remove "R$", espaços, e converte para número
+    let taxa = parseFloat(taxaValor.replace("R$", "").replace(",", ".").trim()) || 0;
+
+    let totalEtaxa = total + taxa;
+
+    total = totalEtaxa
+    
+    // Soma total + taxa e atualiza a célula
+    totalCell.textContent = `R$ ${(total).toFixed(2).replace('.', ',')}`;
+
+
     tipo_retirada.value = selectTipo.value
     id_pedido.value = proximoId_mesa + 2
+
+    if (tipo_retirada.value == "retirada"){
+        if (cliente_retirada.value == "" && contato_retirada.value == ""){
+            e.preventDefault()
+            Swal.fire({
+                title: '<span style="color: black;">Dados para Retirada?</span>',
+                text: 'Defina um nome e um número para retirada.',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue',   
+        });
+        return
+        }
+    }else if(tipo_retirada.value == "entrega"){
+        const inputs = document.querySelectorAll('.controleEntregas input');
+
+        let algumCampoVazio = false;
+
+        // Verifica se há algum input vazio
+        inputs.forEach(input => {
+            if (input.type !== 'hidden' && input.style.display !== 'none' && input.value.trim() === '') {
+                algumCampoVazio = true;
+            }
+        });
+
+        if (algumCampoVazio) {
+            e.preventDefault(); // Impede o envio do formulário
+            Swal.fire({
+                title: '<span style="color: black;">Preencha todos os dados!</span>',
+                text: 'Para entrega, todos os campos devem estar preenchidos corretamente.',
+                icon: 'warning',
+                confirmButtonText: 'OK',
+                confirmButtonColor: 'blue',
+            });
+            return;
+        }
+
+        const taxaInput = document.createElement('input');
+        taxaInput.type = 'hidden';
+        taxaInput.name = 'valorTaxa';
+        taxaInput.value = taxa;
+
+        console.log(taxaInput)
+
+        pedidosDiv.appendChild(taxaInput);
+    }
     
-    console.log(tipo_retirada)
-    console.log(id_pedido)
+    // Dados de entrega/retirada para exibir na confirmação
+    const dadosEntrega = {
+        tipo: tipo_retirada.value,
+        nome: document.getElementById('cliente').value.trim(),
+        contato: document.getElementById('contato').value.trim(),
+        endereco: document.querySelector('[name="endereco"]').value.trim(),
+        bairro: document.querySelector('[name="bairro"]').value.trim(),
+        taxa: taxa
+    };
 
     if (cont === 0 ) {
         e.preventDefault()
@@ -766,7 +876,7 @@ btnDiv.addEventListener("click", (e) => {
 
     if (cont != 0) {
         e.preventDefault();
-        mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa)
+        mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa, dadosEntrega)
             .then((result) => {
                 if (result.isConfirmed) {
                     if (controleCont != 0){

@@ -256,6 +256,7 @@ class ComandaModelo
         $id_mesaBebida = $dados['id_mesaBebida'][0] ?? null;
         $id_mesaAdicional = $dados['id_mesaAdicional'][0] ?? null;
         $id_mesa = $dados['id_mesa'][0] ?? $id_mesaBebida ?? $id_mesaAdicional;
+        $valorTaxa = (float)$dados['valorTaxa'] ?? 0;
 
         $valorAtual = 0;
 
@@ -305,7 +306,7 @@ class ComandaModelo
             }
         }
 
-        $totalFinal = $total + $valorAtual;
+        $totalFinal = ($total + $valorAtual + $valorTaxa);
 
         if (!empty($dados['controleTotal']) && $dados['controleTotal'] === 'controleTotal') { 
             $stmtAtualizar->execute([
@@ -313,7 +314,7 @@ class ComandaModelo
             'id_mesa' => $id_mesa
         ]);  
         }else{
-            $stmt->execute([$id_mesa, $mesa, $total]);
+            $stmt->execute([$id_mesa, $mesa, ($total + $valorTaxa)]);
         }
     }
 
