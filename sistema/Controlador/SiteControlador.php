@@ -69,7 +69,7 @@ class SiteControlador extends Controlador
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
 
-        echo ($this->template->renderizar('adicionar.html', [
+        echo ($this->template->renderizar('adicionar/adicionar.html', [
             'titulo' => 'Adicionar',
             'cardapio' => $cardapio,
             'cardapio_bebida' => $cardapio_bebida,
@@ -98,7 +98,7 @@ class SiteControlador extends Controlador
         $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
 
-        echo ($this->template->renderizar('pedidosAbertos.html', [
+        echo ($this->template->renderizar('visualizar/pedidosAbertos.html', [
             'titulo' => 'Mesas Abertas',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
@@ -126,7 +126,7 @@ class SiteControlador extends Controlador
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
-        echo ($this->template->renderizar('pedidosFechados.html', [
+        echo ($this->template->renderizar('visualizar/pedidosFechados.html', [
             'titulo' => 'Mesas Fechadas',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
@@ -157,7 +157,7 @@ class SiteControlador extends Controlador
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('entregasAbertas.html', [
+        echo ($this->template->renderizar('visualizar/entregasAbertas.html', [
             'titulo' => 'Entregas Abertas',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
@@ -189,7 +189,7 @@ class SiteControlador extends Controlador
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('entregasFechadas.html', [
+        echo ($this->template->renderizar('visualizar/entregasFechadas.html', [
             'titulo' => 'Entregas Fechadas',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
@@ -221,7 +221,7 @@ class SiteControlador extends Controlador
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('retiradasAbertas.html', [
+        echo ($this->template->renderizar('visualizar/retiradasAbertas.html', [
             'titulo' => 'Retiradas Abertas',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
@@ -253,7 +253,7 @@ class SiteControlador extends Controlador
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('retiradasFechadas.html', [
+        echo ($this->template->renderizar('visualizar/retiradasFechadas.html', [
             'titulo' => 'Retiradas Fechadas',
             'adicional' => $adicional,
             'pedidos' => $pedidos,
@@ -308,7 +308,7 @@ class SiteControlador extends Controlador
         $mesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
         $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('adicionarNaMesa.html', [
+        echo ($this->template->renderizar('adicionar/adicionarNaMesa.html', [
             'titulo' => 'Adicionar Novo',
             'cardapio' => $cardapio,
             'cardapio_bebida' => $cardapio_bebida,
@@ -331,7 +331,7 @@ class SiteControlador extends Controlador
         $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
 
-        echo ($this->template->renderizar('adicionarAdicional.html', [
+        echo ($this->template->renderizar('adicionar/adicionarAdicional.html', [
             'titulo' => 'Adicionar Adicional',
             'cardapio' => $cardapio,
             'pedido' => $pedido,
@@ -352,7 +352,7 @@ class SiteControlador extends Controlador
         $lanches = (new ComandaModelo())->ler("lanches", "nome_lanche", "ASC");
         $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('editarLanche.html', [
+        echo ($this->template->renderizar('editar/editarLanche.html', [
             'titulo' => 'Editar Lanche',
             'editar' => $pedidoMesa,
             'cardapio' => $cardapio,
@@ -369,7 +369,7 @@ class SiteControlador extends Controlador
         $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
         $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('editarAdicional.html', [
+        echo ($this->template->renderizar('editar/editarAdicional.html', [
             'titulo' => 'Editar Adicional',
             'editar' => $adicional,
             'ingredientes' => $ingredi,
@@ -385,7 +385,7 @@ class SiteControlador extends Controlador
         $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
         $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
 
-        echo ($this->template->renderizar('editarBebida.html', [
+        echo ($this->template->renderizar('editar/editarBebida.html', [
             'titulo' => 'Editar Bebida',
             'editar' => $bebida,
             'cardapio_bebida' => $cardapio_bebida,

@@ -706,7 +706,7 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
         title: '📦 <span style="color: black;">Confirmar Pedido?</span>',
         html: `
             <div style="text-align: left;">
-                <p style="color: black;"><strong>Mesa: ${mesa}</strong></p>
+                <p style="color: black;"><strong>${mesa}</strong></p>
                 <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
                     <thead>
                         <tr style="background-color: #f0f0f0;">

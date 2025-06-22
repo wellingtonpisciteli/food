@@ -16,6 +16,9 @@ try {
     SimpleRouter::get(URL_SITE . 'retiradasFechadas', 'SiteControlador@retiradasFechadas');
 
 
+    SimpleRouter::get(URL_SITE . 'cadastrarLanche', 'AdminControlador@cadastrarLanche');
+
+
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'ComandaControlador@cadastrar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'atualizar/{id}', 'ComandaControlador@atualizar');

@@ -1,8 +1,8 @@
 <!-- Navbar Header -->
-<nav class="navbar navbar-expand-lg navbar-dark" id="menuComanda">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="menuComanda">
     <div class="container-fluid">
         <!-- Logo -->
-        <a class="navbar-brand fs-2 " href="{{url('comanda')}}">PedeFacil</a>
+        <a class="navbar-brand fs-2" href="{{url('comanda')}}">PedeFacil</a>
 
         <!-- Botão para Mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
@@ -23,69 +23,76 @@
 
                 <!-- Dropdown de Categorias -->
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdownMesas" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Mesas
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item fs-5" href="{{url('pedidosAbertos')}}">Abertas</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item fs-5" href="{{url('pedidosFechados')}}">Fechadas</a>
-                        </li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMesas">
+                        <li><a class="dropdown-item fs-5" href="{{url('pedidosAbertos')}}">Abertas</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{url('pedidosFechados')}}">Fechadas</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdownEntregas" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Entregas
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item fs-5" href="{{url('entregasAbertas')}}">Abertas</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item fs-5" href="{{url('entregasFechadas')}}">Fechadas</a>
-                        </li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownEntregas">
+                        <li><a class="dropdown-item fs-5" href="{{url('entregasAbertas')}}">Abertas</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{url('entregasFechadas')}}">Fechadas</a></li>
                     </ul>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle fs-4" href="#" id="navbarDropdownRetiradas" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">
                         Retiradas
                     </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li>
-                            <a class="dropdown-item fs-5" href="{{url('retiradasAbertas')}}">Abertas</a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item fs-5" href="{{url('retiradasFechadas')}}">Fechadas</a>
-                        </li>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownRetiradas">
+                        <li><a class="dropdown-item fs-5" href="{{url('retiradasAbertas')}}">Abertas</a></li>
+                        <li><a class="dropdown-item fs-5" href="{{url('retiradasFechadas')}}">Fechadas</a></li>
                     </ul>
                 </li>
             </ul>
 
-            <!-- Pesquisa e Botão de Sair -->
+            <!-- Botão de Perfil -->
             <div class="d-flex align-items-center">
-                <!-- <form class="d-flex me-2" role="search">
-                    <input class="form-control me-2 fs-5" type="search" placeholder="Buscar mesa" aria-label="Search">
-                    <button class="btn btn-outline-light fs-5" type="submit">Buscar</button>
-                </form> -->
-
-                <!-- Botão de Perfil com Dropdown -->
-                <div class="dropdown">
-                    <button class="btn btn-outline-light dropdown-toggle fs-5" type="button" id="dropdownProfile"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-person-circle">Wellington</i>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownProfile">
-                        <li><a class="dropdown-item fs-5" href="#">Sair</a></li>
-                    </ul>
-                </div>
+                <button class="btn btn-outline-light fs-5" id="btnSidebar">
+                    <i class="bi bi-person-circle"></i> Wellington
+                </button>
             </div>
         </div>
     </div>
 </nav>
+
+<!-- Sidebar -->
+<div id="sidebarProfile" class="sidebar">
+    <div class="sidebar-header">
+        <h3>⚙️ Administração</h3>
+        <button id="closeSidebar" class="btn-close-custom" title="Fechar">&times;</button>
+    </div>
+    <hr>
+    <a href="{{url('cadastrarLanche')}}"><i class="bi bi-person-badge-fill"></i>Cadastrar Lanche</a>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Cadastrar Adicional</a>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Cadastrar Bebida</a>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Editar Lanche</a>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Editar Adicional</a>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Editar Bebida</a>
+    <hr>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Cadastrar Usuários</a>
+    <a href="#"><i class="bi bi-person-badge-fill"></i>Editar Usuários</a>
+    <a href="#"><i class="bi bi-box-arrow-right"></i> Sair</a>
+</div>
+
+<script>
+    // Abrir sidebar
+    document.getElementById('btnSidebar').addEventListener('click', function () {
+        document.getElementById('sidebarProfile').classList.add('show');
+    });
+
+    // Fechar sidebar
+    document.getElementById('closeSidebar').addEventListener('click', function () {
+        document.getElementById('sidebarProfile').classList.remove('show');
+    });
+</script>
