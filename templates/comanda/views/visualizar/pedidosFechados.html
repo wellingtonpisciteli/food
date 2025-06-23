@@ -221,95 +221,9 @@
   </table>
   {% endfor %}
   </div>
-
-  <header class="cardapio-header">
-    <div class="linha-com-texto">
-      <span>CARDÁPIO</span>
-    </div>
-  </header>
-
-  <div class="bg-light cardapio-pedidos-abertos"
-    style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 30px;">
-
-    <!-- Cardápio de Lanches -->
-    <table class="table cardapio-lanche" style="margin-top: 2px;">
-      <thead class="thead-dark">
-        <tr>
-          <th class="cardapio-th text-white" id="cardapio-th-naovalor">LANCHES</th>
-          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
-        </tr>
-      </thead>
-      {% for cardapio in cardapioLanche %}
-      <tbody>
-        <tr>
-          {% if cardapio.lanche != 'Em escolha...' %}
-            <th class="cardapio-th-item" style="width: 600px;">
-              <details class="dropdown-fake-abertos">
-                <summary class="dropdown-label">{{ cardapio.lanche }}</summary>
-                <ul class="dropdown-list">
-                  {% for ingred in ingredientes %}
-                    {% if ingred.lanche_id == cardapio.id %}
-                      <span>{{ ingred.ingredientes }}</span>
-                    {% endif %}
-                  {% endfor %}
-                </ul>
-              </details>
-            </th>
-            
-            <th id="valor_lanche" class="cardapio-th-item ">{{ cardapio.valor | number_format(2, ',', '.') }}</th>
-          {% endif %}
-        </tr>
-      </tbody>
-      {% endfor %}
-    </table>
-
-    <!-- Cardápio de Bebidas -->
-    <table class="table cardapio-bebida">
-      <thead class="thead-dark">
-        <tr>
-          <th class="cardapio-th text-white" id="cardapio-th-naovalor">BEBIDAS</th>
-          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
-        </tr>
-      </thead>
-      {% for bebidas in cardapioBebida %}
-      <tbody>
-        <tr>
-          <th class="cardapio-th-item">{{ bebidas.marca }}</th>
-          <td class="cardapio-valor">
-            <select class="form-select" id="valor_lanche">
-              {% for tamanho in tamanhoBebida %}
-              {% if tamanho.marca_bebida_id == bebidas.id %}
-              <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
-                {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
-              </option>
-              {% endif %}
-              {% endfor %}
-            </select>
-          </td>
-        </tr>
-      </tbody>
-      {% endfor %}
-    </table>
-
-    <!-- Cardápio de Adicionais -->
-    <table class="table cardapio-adicionais">
-      <thead class="thead-dark">
-        <tr>
-          <th class="cardapio-th  text-white" id="cardapio-th-naovalor">ADICIONAIS</th>
-          <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
-        </tr>
-      </thead>
-      {% for ingredi in ingred %}
-      <tbody>
-        <tr>
-          <th class="cardapio-th-item">{{ ingredi.ingrediente }}</th>
-          <th id="valor_lanche" class="cardapio-th-item">{{ ingredi.valor | number_format(2, ',', '.') }}</th>
-        </tr>
-      </tbody>
-      {% endfor %}
-    </table>
-  </div>
-
+    
+  {% include 'cardapio.html' %}
+  
 </body>
 
 <script src="{{ url('/templates/comanda/assets/js/pedidosFechados.js') }}" defer></script>

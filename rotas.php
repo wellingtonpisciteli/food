@@ -7,6 +7,7 @@ try {
     SimpleRouter::setDefaultNamespace('sistema\Controlador');
 
     SimpleRouter::get(URL_SITE . 'comanda', 'SiteControlador@comanda');
+    SimpleRouter::get(URL_SITE . 'cardapio', 'SiteControlador@cardapio');
     SimpleRouter::get(URL_SITE . 'adicionar', 'SiteControlador@adicionar');
     SimpleRouter::get(URL_SITE . 'pedidosAbertos', 'SiteControlador@pedidosAbertos');
     SimpleRouter::get(URL_SITE . 'pedidosFechados', 'SiteControlador@pedidosFechados');
@@ -16,7 +17,9 @@ try {
     SimpleRouter::get(URL_SITE . 'retiradasFechadas', 'SiteControlador@retiradasFechadas');
 
 
-    SimpleRouter::get(URL_SITE . 'cadastrarLanche', 'AdminControlador@cadastrarLanche');
+    SimpleRouter::get(URL_SITE . 'cadastrarLanche', 'AdminViewControlador@cadastrarLanche');
+
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'novoLanche', 'AdminActionControlador@novoLanche');
 
 
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');

@@ -58,6 +58,29 @@ class SiteControlador extends Controlador
         ]));
     }
 
+    public function cardapio(): void
+    {
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
+        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
+        
+
+        echo ($this->template->renderizar('cardapio.html', [
+            'titulo' => 'Cardapio',
+            'cardapioBebida' => $cardapioBebida,
+            'cardapioLanche' => $cardapioLanche,
+            'tamanhoBebida' => $tamanho_bebida,
+            'ingred' => $ingredi,
+            'adicional' => $adicional,
+            'bebidas' => $bebidas,
+            'ingredientes' => $ingredientes,
+        ]));
+    }
+
 
     public function adicionar(): void
     {

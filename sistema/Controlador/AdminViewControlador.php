@@ -15,7 +15,7 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
  * 
  * @author Wellington Borges
  */
-class AdminControlador extends Controlador
+class AdminViewControlador extends Controlador
 {
     /**
      * Construtor da classe.
@@ -30,8 +30,17 @@ class AdminControlador extends Controlador
 
     public function cadastrarLanche(){
 
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
+        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
+
         echo ($this->template->renderizar('admin/cadastrarLanche.html', [
-            'titulo' => 'Admin'
+            'titulo' => 'Cadastrar Lanche',
+            'cardapio' => $cardapioLanche,
+            'cardapioLanche' => $cardapio,
+            'adicional' => $adicional,
+            'ingredientes' => $ingredientes,
         ]));
     }
 }

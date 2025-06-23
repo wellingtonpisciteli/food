@@ -51,6 +51,23 @@ body{
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 }
 
+.tabelaAdmin{
+    width: 70%; 
+    margin: auto; 
+    margin-bottom: 80px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+@media (max-width: 1024px) { 
+  .tabelaAdmin{
+    width: 95%;
+    padding: 10px;
+  }
+}
+
+
+
 #adicionarTabelaIngrediente{
     display: none;
     opacity: 0;
