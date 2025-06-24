@@ -9,7 +9,7 @@
 {% for item in bebidas %}
     <input type="hidden" value="{{ item.bebida_id }}" id="idBebidaNova" class="idBebidaNova">
 
-    <input type="hidden" value="{{ item.marca }}" id="bebidaIgual" class="bebidaIgua">
+    <input type="hidden" value="{{ item.marca }}" class="bebidaIgual">
 {% endfor %}
 
 <div class="bg-dark tabelaAdmin">
@@ -82,6 +82,7 @@
                     <option value="Sprite">Sprite</option>
                     <option value="Del Valle">Del Valle</option>
                     <option value="Água Mineral">Água Mineral</option>
+                    <option value="Suco Práts">Suco Práts</option>
                 </select>
             </div>
 
@@ -90,6 +91,7 @@
                 <select class="form-select" id="tamanho" name="tamanho" required style="background-color: gainsboro; border-radius: 0px;">
                     <option value="">Selecione o tamanho</option>
                     <option value="Lata">Lata</option>
+                    <option value="330ml">330ml</option>
                     <option value="600ml">600ml</option>
                     <option value="1L">1L</option>
                     <option value="1.5L">1.5L</option>
@@ -108,7 +110,11 @@
             <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">
                 <h3 class="text-white text-center">
                     <div class="linha-com-texto">
-                        <input type="submit" class="btn" value="CADASTRAR" style="background-color: darkgrey; border-radius: 2px; border: black; width: 150px; color: black; font-weight: bold; margin-top: 10px;">
+                        <input type="submit" 
+                        id="btnCadastrar"
+                        class="btn" 
+                        value="CADASTRAR" 
+                        style="background-color: darkgrey; border-radius: 2px; border: black; width: 150px; color: black; font-weight: bold; margin-top: 10px;">
                     </div>
                 </h3>
             </header>
@@ -117,75 +123,7 @@
     </div>
 </div>
 
+<script src="{{ url('/templates/comanda/assets/js/cadastrarItem.js') }}" defer></script>
 
-<script>
-    const form = document.getElementById('form');
-
-    const idBebidaNova = document.querySelectorAll('.idBebidaNova')
-
-    let ultimoInputBebida = idBebidaNova.length > 0 ? idBebidaNova[idBebidaNova.length - 1].value : null;
-
-    let proximoValorBebida = parseInt(ultimoInputBebida) || 0;
-
-    const idIngredi = document.querySelectorAll('.idLancheTeste')
-    
-    let ultimoInput = idIngredi.length > 0 ? idIngredi[idIngredi.length - 1].value : null;
-
-    let proximoValor = parseInt(ultimoInput) || 0;
-
-    const idBebidaInput = document.createElement('input');
-    idBebidaInput.type = 'hidden';
-    idBebidaInput.name = 'id_bebida';
-    idBebidaInput.value = proximoValorBebida + 10;
-
-    console.log(idBebidaInput)
-
-    form.appendChild(idBebidaInput)
-
-    const idLancheInput = document.createElement('input');
-    idLancheInput.type = 'hidden';
-    idLancheInput.name = 'id_referencia';
-    idLancheInput.value = proximoValor + 10;
-
-    console.log(idLancheInput)
-
-    form.appendChild(idLancheInput)
-
-//     document.getElementById('form').addEventListener('submit', function (event) {
-//     event.preventDefault(); // Impede o envio padrão
-
-//     const lanche = document.getElementById('lanche').value.trim();
-//     const ingredientes = document.getElementById('ingredientes').value.trim();
-//     const valor = document.getElementById('valor').value.trim();
-
-//     if (!lanche || !ingredientes || !valor) {
-//         Swal.fire({
-//             title: '<span style="color: black;">Campos Obrigatórios!</span>',
-//             text: 'Preencha todos os campos para cadastrar o lanche.',
-//             icon: 'warning',
-//             confirmButtonText: 'Entendido',
-//             confirmButtonColor: 'darkblue',
-//         });
-//     } else {
-//         Swal.fire({
-//             title: '<span style="color: black;">Cadastrar Lanche?</span>',
-//             text: 'Cadastrar novo lanche.',
-//             icon: 'question',
-//             showCancelButton: true,
-//             confirmButtonText: '✅ Sim, cadastrar!',
-//             cancelButtonText: '🛑 Cancelar',
-//             confirmButtonColor: 'darkblue',
-//             cancelButtonColor: 'darkred'
-//         }).then((result) => {
-//             if (result.isConfirmed) {
-//                 // Envia o formulário manualmente
-//                 event.target.submit();
-//             }
-//         });
-//     }
-// });
-    
-    
-</script>
 
 {% endblock %}

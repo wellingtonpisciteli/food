@@ -1,17 +1,42 @@
 <!-- Rodapé -->
-<footer class="text-white bg-danger" id="rodapeComanda">
-    <div class="container py-2">
-        <div class="row justify-content-between align-items-center">
-            <div class="col-12 col-md-8">
-                <p class="mb-0">Desenvolvido por <strong>Wellington Borges</strong></p>
-            </div>
-            <div class="col-12 col-md-4 text-md-end">
-                <p class="mb-0">
-                    <a href="mailto:email@exemplo.com" class="text-white text-decoration-none">
-                        Suporte: wellborges98@gmail.com
-                    </a>
-                </p>
-            </div>
-        </div>
+<footer class="text-white bg-danger pt-4" id="rodapeComanda" style="margin-top: 50px;">
+  <div class="container">
+    <div class="row">
+      <!-- Coluna: Desenvolvedor -->
+      <div class="col-md-4 mb-3">
+        <h5>Desenvolvido por</h5>
+        <p class="mb-1">Wellington Borges</p>
+        <p class="mb-0">
+          <a href="mailto:wellborges98@gmail.com" class="text-white text-decoration-none">
+            <i class="bi bi-envelope-fill"></i> wellborges98@gmail.com
+          </a>
+        </p>
+      </div>
+
+      <!-- Coluna: Navegação rápida -->
+      <div class="col-md-4 mb-3">
+        <h5>Navegação</h5>
+        <ul class="list-unstyled">
+          <li><a href="{{ url('comanda') }}" class="text-white text-decoration-none"> Home</a></li>
+          <li><a href="{{ url('adicionar') }}" class="text-white text-decoration-none">Adicionar</a></li>
+          <li><a href="{{ url('pedidosAbertos') }}" class="text-white text-decoration-none">Mesas Abertas</a></li>
+          <li><a href="{{ url('entregasAbertas') }}" class="text-white text-decoration-none">Entregas Abertas</a></li>
+        </ul>
+      </div>
+
+      <!-- Coluna: Redes sociais (opcional) -->
+      <div class="col-md-4 mb-3">
+        <h5>Redes Sociais</h5>
+        <a href="#" class="text-white me-3 text-decoration-none">🐱 <i class="bi bi-github"></i> GitHub</a><br>
+        <a href="#" class="text-white me-3 text-decoration-none">💼 <i class="bi bi-linkedin"></i> LinkedIn</a><br>
+        <a href="#" class="text-white text-decoration-none">📸 <i class="bi bi-instagram"></i> Instagram</a>
+      </div>
     </div>
+
+    <hr class="bg-light">
+
+    <div class="text-center pb-3">
+        <small>&copy; {{ "now"|date("Y") }} Todos os direitos reservados.</small>
+    </div>
+  </div>
 </footer>

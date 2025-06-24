@@ -176,7 +176,9 @@ botoesTotal.forEach(function (botao) {
         html: `
         <div style="background: #f1f1f1; padding: 20px; border-radius: 8px; text-align: left; font-size: 16px;">
             <p style="margin-bottom: 10px;">
-            <strong>Forma de Pagamento:</strong> <span style="color: #333;">${forma}</span>
+            <strong>Forma de Pagamento:<br></strong> <span style="color: #333;">${forma}</span>
+            <br>
+            <strong>Troco:<br></strong> <span style="color: #333;">${forma}</span>
             </p>
         </div>
         `,
