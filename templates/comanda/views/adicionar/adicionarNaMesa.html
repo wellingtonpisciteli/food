@@ -91,7 +91,10 @@
                 </tr>
             </thead>
             <tbody>
+                {% set bebidas_exibidas = [] %}
+
                 {% for item in cardapio_bebida %}
+                {% if item.bebida_id not in bebidas_exibidas %}
                 <tr>
                     <input id="mesa_pedido" name="mesa_pedido" type="hidden" class="fw-bolder bg-light text-center">
                     <input value="{{ item.id }}" id="idMarca" name="idMarca" type="hidden">
@@ -101,7 +104,7 @@
                     <td class="text-center align-middle w-40 bg-light">
                         <select class="form-select text-center bg-light fw-bolder" id="tamanho_valor">
                             {% for tamanho in tamanhoBebida %}
-                            {% if tamanho.marca_bebida_id==item.id %}
+                            {% if tamanho.marca_bebida_id==item.bebida_id %}
                             <option value="{{ tamanho.id }} | {{ tamanho.valor }}|{{ tamanho.tamanho }}">
                                 {{ tamanho.tamanho }} -
                                 ${{ tamanho.valor | number_format(2, ',', '.') }}
@@ -120,6 +123,8 @@
                         </div>
                     </td>
                 </tr>
+                {% set bebidas_exibidas = bebidas_exibidas | merge([item.bebida_id]) %}
+                {% endif %}
                 {% endfor %}
             </tbody>
         </table>

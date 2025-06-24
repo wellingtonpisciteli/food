@@ -28,16 +28,26 @@ class AdminActionControlador extends Controlador
         parent::__construct('templates\comanda\views');
     }
 
-    public function novoLanche(): void
+    public function novoItem(): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-          
-            (new AdminModelo())->cadastrarLanche($dados);
 
+            if(!empty($dados['lanche'])){
+                (new AdminModelo())->cadastrarLanche($dados);
+            }
+
+            if(!empty($dados['adicional'])){
+                (new AdminModelo())->cadastrarAdicional($dados);
+            }
+
+            if(!empty($dados['bebida'])){
+                (new AdminModelo())->cadastrarBebida($dados);
+            }
+        
         }
 
-        Helpers::redirecionar('cadastrarLanche');
+        Helpers::redirecionar('cadastrarItem');
     }
 
 }

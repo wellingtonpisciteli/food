@@ -6,8 +6,8 @@
     </div>
   </header>
 
-  <div class="bg-light cardapio-pedidos-abertos"
-    style="width: 97%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 40px;">
+  <div class="cardapio-pedidos-abertos"
+    style="width: 99%; justify-content: center; margin: auto; padding: 10px; margin-bottom: 40px; background-color: black;">
 
     <!-- Cardápio de Lanches -->
     <table class="table cardapio-lanche" style="margin-top: 2px;">
@@ -49,14 +49,18 @@
           <th class="cardapio-th text-white" id="cardapio-th-valor">VALOR</th>
         </tr>
       </thead>
+
+      {% set bebidas_exibidas = [] %}
+
       {% for bebidas in cardapioBebida %}
+      {% if bebidas.bebida_id not in bebidas_exibidas %}
       <tbody>
         <tr>
           <th class="cardapio-th-item">{{ bebidas.marca }}</th>
           <td class="cardapio-valor">
             <select class="form-select" id="valor_lanche">
               {% for tamanho in tamanhoBebida %}
-              {% if tamanho.marca_bebida_id == bebidas.id %}
+              {% if tamanho.marca_bebida_id == bebidas.bebida_id %}
               <option value="{{ tamanho.valor }}|{{ tamanho.tamanho }}">
                 {{ tamanho.tamanho }} - ${{ tamanho.valor | number_format(2, ',', '.') }}
               </option>
@@ -66,6 +70,8 @@
           </td>
         </tr>
       </tbody>
+      {% set bebidas_exibidas = bebidas_exibidas | merge([bebidas.bebida_id]) %}
+      {% endif %}
       {% endfor %}
     </table>
 

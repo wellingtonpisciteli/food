@@ -28,19 +28,15 @@ class AdminViewControlador extends Controlador
         parent::__construct('templates\comanda\views');
     }
 
-    public function cadastrarLanche(){
+    public function cadastrarItem(){
 
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
 
-        echo ($this->template->renderizar('admin/cadastrarLanche.html', [
-            'titulo' => 'Cadastrar Lanche',
+        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+            'titulo' => 'Cadastrar',
             'cardapio' => $cardapioLanche,
-            'cardapioLanche' => $cardapio,
-            'adicional' => $adicional,
-            'ingredientes' => $ingredientes,
+            'bebidas' => $cardapioBebida
         ]));
     }
 }
