@@ -71,20 +71,44 @@
 <!-- Sidebar -->
 <div id="sidebarProfile" class="sidebar">
     <div class="sidebar-header">
-        <h3>⚙️ Administração</h3>
+        <h3>⚙️Administração</h3>
         <button id="closeSidebar" class="btn-close-custom" title="Fechar">&times;</button>
     </div>
     <hr>
-    <a href="#"><i class="bi bi-person-badge-fill"></i>Perfil</a>
-    <a href="{{url('cadastrarItem')}}"><i class="bi bi-person-badge-fill"></i>Cadastrar Itens</a>   
-    <a href="#"><i class="bi bi-person-badge-fill"></i>Editar Itens</a>
+
+    <a href="#"><i class="bi bi-person-badge-fill"></i> Perfil</a>
+    <a href="{{url('cadastrarItem')}}"><i class="bi bi-plus-square-fill"></i> Cadastrar Itens</a>
+
+    <!-- Menu com subitens -->
+    <div class="menu-item-com-subitens">
+        <a href="#" class="menu-toggle">
+            <i class="bi bi-pencil-square"></i> Editar Itens
+            <i class="bi bi-chevron-down toggle-icon"></i>
+        </a>
+        <div class="subitens">
+            <a href="{{url('editarLanches')}}">Lanches</a>
+            <a href="{{url('editarAdicionais')}}">Adicionais</a>
+            <a href="{{url('editarBebidas')}}">Bebidas</a>
+        </div>
+    </div>
+
     <hr>
-    <a href="#"><i class="bi bi-person-badge-fill"></i>Cadastrar Usuários</a>
-    <a href="#"><i class="bi bi-person-badge-fill"></i>Editar Usuários</a>
+
+    <a href="#"><i class="bi bi-person-plus-fill"></i> Cadastrar Usuários</a>
+    <a href="#"><i class="bi bi-pencil-fill"></i> Editar Usuários</a>
     <a href="#"><i class="bi bi-box-arrow-right"></i> Sair</a>
 </div>
 
 <script>
+    // Toggle do submenu
+    document.querySelectorAll('.menu-toggle').forEach(function (toggle) {
+        toggle.addEventListener('click', function (e) {
+            e.preventDefault();
+            const parent = this.closest('.menu-item-com-subitens');
+            parent.classList.toggle('active');
+        });
+    });
+
     // Abrir sidebar
     document.getElementById('btnSidebar').addEventListener('click', function () {
         document.getElementById('sidebarProfile').classList.add('show');

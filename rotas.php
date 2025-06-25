@@ -18,6 +18,9 @@ try {
 
 
     SimpleRouter::get(URL_SITE . 'cadastrarItem', 'AdminViewControlador@cadastrarItem');
+    SimpleRouter::get(URL_SITE . 'editarLanches', 'AdminViewControlador@editarLanches');
+    SimpleRouter::get(URL_SITE . 'editarAdicionais', 'AdminViewControlador@editarAdicionais');
+    SimpleRouter::get(URL_SITE . 'editarBebidas', 'AdminViewControlador@editarBebidas');
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'novoItem', 'AdminActionControlador@novoItem');
 

@@ -763,6 +763,77 @@ body{
     margin: 1rem 0;
 }
 
+/* Sidebar geral */
+.sidebar {
+    background-color: #111;
+    color: #fff;
+    width: 270px;
+    height: 100vh;
+    padding-top: 20px;
+}
+
+/* Links padrão */
+.sidebar a {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 15px;
+}
+
+/* Hover sem azul */
+.sidebar a:hover,
+.menu-toggle:hover {
+    background-color: #1a1a1a;
+    color: #fff;
+}
+
+/* Botão de abrir submenu */
+.menu-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 10px 15px;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Ícone de seta */
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.menu-item-com-subitens.active .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Subitens ocultos inicialmente */
+.subitens {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+}
+
+/* Quando ativo, subitens aparecem */
+.menu-item-com-subitens.active .subitens {
+    max-height: 500px; /* valor grande o suficiente */
+}
+
+/* Subitens estilizados */
+.subitens a {
+    color: #ccc;
+    padding: 8px 15px;
+    font-size: 17px;
+}
+
+.subitens a:hover {
+    background-color: #222;
+    color: #fff;
+}
+
 
     
 

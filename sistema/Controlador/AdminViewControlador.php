@@ -39,4 +39,40 @@ class AdminViewControlador extends Controlador
             'bebidas' => $cardapioBebida
         ]));
     }
+
+    public function editarLanches(){
+
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
+
+        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+            'titulo' => 'Editar Lanches',
+            'cardapio' => $cardapioLanche,
+            'bebidas' => $cardapioBebida
+        ]));
+    }
+
+    public function editarAdicionais(){
+
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
+
+        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+            'titulo' => 'Editar Adicionais',
+            'cardapio' => $cardapioLanche,
+            'bebidas' => $cardapioBebida
+        ]));
+    }
+
+    public function editarBebidas(){
+
+        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
+
+        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+            'titulo' => 'Editar Bebidas',
+            'cardapio' => $cardapioLanche,
+            'bebidas' => $cardapioBebida
+        ]));
+    }
 }
