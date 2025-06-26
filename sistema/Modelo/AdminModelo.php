@@ -80,6 +80,33 @@ class AdminModelo
         }
         
     }
+
+    public function editarLanche(array $dados, int $id)
+    {
+        $dados['id'] = $id;
+
+        $queryLanche = "UPDATE cardapio_lanche SET 
+            lanche = :lanche, 
+            valor = :valor 
+        WHERE id_ingredi = :id";
+
+        $stmtLanche = Conexao::getInstancia()->prepare($queryLanche);
+        $stmtLanche->execute($dados);
+    }
+
+    public function editarIngredientes(string $ingredientes, int $id)
+    {
+        $query = "UPDATE lanche_ingredientes SET 
+            ingredientes = :ingredientes
+        WHERE lanche_id = :id";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute([
+            'ingredientes' => $ingredientes,
+            'id' => $id
+        ]);
+    }
     
     
 }

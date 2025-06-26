@@ -44,11 +44,13 @@ class AdminViewControlador extends Controlador
 
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
+        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "ASC");
 
-        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+        echo ($this->template->renderizar('admin/editarLanches.html', [
             'titulo' => 'Editar Lanches',
             'cardapio' => $cardapioLanche,
-            'bebidas' => $cardapioBebida
+            'bebidas' => $cardapioBebida,
+            'ingredientes' => $ingredientes
         ]));
     }
 
@@ -57,7 +59,7 @@ class AdminViewControlador extends Controlador
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
 
-        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+        echo ($this->template->renderizar('admin/editarAdicionais.html', [
             'titulo' => 'Editar Adicionais',
             'cardapio' => $cardapioLanche,
             'bebidas' => $cardapioBebida
@@ -69,7 +71,7 @@ class AdminViewControlador extends Controlador
         $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
         $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
 
-        echo ($this->template->renderizar('admin/cadastrarItem.html', [
+        echo ($this->template->renderizar('admin/editarBebidas.html', [
             'titulo' => 'Editar Bebidas',
             'cardapio' => $cardapioLanche,
             'bebidas' => $cardapioBebida

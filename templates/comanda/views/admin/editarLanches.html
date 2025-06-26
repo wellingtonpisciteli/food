@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+  
+  <header class="cardapio-header"
+    style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
+    <div class="linha-com-texto">
+      <span>EDITAR LANCHES</span>
+    </div>
+  </header>
+
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarLanches btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
+      Mostrar Todos
+    </button>
+  </div>
+
+  {% set lanches_exibidos = [] %}
+
+  
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="lancheButtonsContainer">
+    {% for lanche in cardapio %}
+      {% if lanche.id_ingredi not in lanches_exibidos and lanche.lanche != "Em escolha..." %}
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgray; border-radius: 2px; border: black; width: auto; color: white; font-weight: bold; margin-bottom: 10px;"
+          data-id-mesa="{{ lanche.id_ingredi }}">
+          <span style="color: black; font-weight: bold;">
+            {{ lanche.lanche }}
+          </span>
+        </button>
+        {% set lanches_exibidos = lanches_exibidos | merge([lanche.id_ingredi]) %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="bg-dark tabelaAdmin"> 
+    {% set lanches_exibidos = [] %}
+    {% set cont = 0 %}
+
+    {% for lanche in cardapio %}
+        {% if lanche.id_ingredi not in lanches_exibidos %}
+          <div style="width: 100%; margin: auto;" class="lancheAberto" data-id-mesa="{{ lanche.id_ingredi }}">
+                
+            <form action="{{ url('editarItem/' ~ lanche.id_ingredi) }}" method="post" class="row g-3 needs-validation" novalidate id="form">
+
+                <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px;">
+                    <h4 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <span>{{ lanche.lanche }}</span>
+                        </div>
+                    </h4>
+                </header>
+
+                <div class="col-12">
+                    <label for="nomeLanche" class="form-label" style="color: white; font-weight: bold;">NOME DO LANCHE</label>
+
+                    <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="lanche" name="lanche" value="{{ lanche.lanche }}" required>
+                </div>
+
+                {% for ingredi in ingredientes %}
+                {% if ingredi.lanche_id == lanche.id_ingredi %}
+                <div class="col-12">
+                    <label for="ingredientes" class="form-label"  style="color: white; font-weight: bold;">INGREDIENTES DO LANCHE</label>
+
+                    <input class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="ingredientes" name="ingredientes" value="{{ ingredi.ingredientes }}" required>
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <div class="col-md-6">
+                    <label for="valorLanche" class="form-label" style="color: white; font-weight: bold;">VALOR DO LANCHE (R$)</label>
+
+                    <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valor" name="valor" value="{{ lanche.valor }}" required>
+                </div>
+
+                <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">
+                    <h3 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <input type="submit" 
+                            id="btnCadastrar"
+                            class="btn" 
+                            value="EDITAR" 
+                            style="background-color: darkgreEN; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px;">
+                        </div>
+                    </h3>
+                </section>
+            </form>            
+          </div>
+          {% set cont = 0 %}
+          {% set lanches_exibidos = lanches_exibidos | merge([lanche.id_ingredi]) %}
+        {% endif %} 
+    {% endfor %}
+  </div>
+
+<script src="{{ url('templates/comanda/assets/js/admin/editarLanches.js') }}" defer></script>
+
+{% endblock %}

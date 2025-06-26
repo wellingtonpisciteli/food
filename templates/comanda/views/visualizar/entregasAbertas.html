@@ -30,7 +30,7 @@
     {% for item in entrega_retirada %}
     {% if item.tipo == "entrega" %}
       {% if (item.status == 1 or item.status == 2) and item.id_mesa not in mesas_exibidas %}
-        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: 120px; color: white; font-weight: bold; margin-bottom: 10px;"
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgreen; border-radius: 2px; border: black; width: auto; color: white; font-weight: bold; margin-bottom: 10px;"
           data-id-mesa="{{ item.id_mesa }}">
           <span style="color: white; font-weight: bold;">
                 {{ item.cliente }}
@@ -63,7 +63,7 @@
                 <div class="teste">
                   <button class="btn fs-5 btn-cliente"
                     style="background-color: #f8f9fa; color: #212529; font-weight: 500; border-radius: 4px;">
-                    {{ item.cliente }}
+                    {{ item.cliente|split(' ')[0] }}
                   </button>
                 </div>
                 <input type="hidden" class="contato-entrega" value="{{ item.contato }}">
@@ -245,8 +245,6 @@
       {% endif %}
     {% endfor %}
   </div>
-
-  {% include 'cardapio.html' %}
   
 </body>
 

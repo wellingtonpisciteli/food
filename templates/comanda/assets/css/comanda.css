@@ -646,7 +646,7 @@ body{
 }
 
 .teste button{
-  width: 120px;
+  width: auto;
 }
 
 .btn-acao{

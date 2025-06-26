@@ -50,4 +50,30 @@ class AdminActionControlador extends Controlador
         Helpers::redirecionar('cadastrarItem');
     }
 
+    public function editarItem(int $id): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+            if (!empty($dados['lanche'])) {
+                $dadosLanche = [
+                    'lanche' => $dados['lanche'],
+                    'valor' => $dados['valor']
+                ];
+    
+                (new AdminModelo())->editarLanche($dadosLanche, $id);            
+            }
+
+            if (!empty($dados['ingredientes'])) {
+
+                $ingredientes = $dados['ingredientes'];
+    
+                (new AdminModelo())->editarIngredientes($ingredientes, $id);
+            }
+                                
+        }
+        
+        Helpers::redirecionar('editarLanches');
+    }
+
 }

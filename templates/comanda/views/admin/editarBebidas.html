@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+{% for item in cardapio %}
+    <input type="hidden" value="{{ item.id_ingredi }}" id="idLancheTeste" class="idLancheTeste">
+{% endfor %}
+
+{% for item in bebidas %}
+    <input type="hidden" value="{{ item.bebida_id }}" id="idBebidaNova" class="idBebidaNova">
+
+    <input type="hidden" value="{{ item.marca }}" class="bebidaIgual">
+{% endfor %}
+
+<div class="bg-dark tabelaAdmin">
+    <div style="width: 100%; margin: auto;">
+    {% for lanche in cardapio %}
+
+        <form action="{{ url('novoItem') }}" method="post" class="row g-3 needs-validation" novalidate id="form">
+
+            <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px;">
+                <h4 class="text-white text-center">
+                    <div class="linha-com-texto">
+                        <span>Editar {{ lanche.lanche }}</span>
+                    </div>
+                </h4>
+            </header>
+
+          <div class="col-12">
+            <label for="nomeLanche" class="form-label" style="color: white; font-weight: bold;">NOME DO LANCHE</label>
+
+            <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="lanche" name="lanche" value="{{ lanche.lanche }}" required>
+          </div>
+
+          {% for ingredi in ingredientes %}
+          {% if ingredi.lanche_id == lanche.id_ingredi %}
+          <div class="col-12">
+            <label for="ingredientes" class="form-label"  style="color: white; font-weight: bold;">INGREDIENTES DO LANCHE</label>
+
+            <input class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="ingredientes" name="ingredientes" value="{{ ingredi.ingredientes }}" required>
+          </div>
+          {% endif %}
+          {% endfor %}
+
+          <div class="col-md-6">
+            <label for="valorLanche" class="form-label" style="color: white; font-weight: bold;">VALOR DO LANCHE (R$)</label>
+
+            <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valor" name="valor" value="{{ lanche.valor }}" required>
+          </div>
+
+            <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; margin-bottom: -30px; padding: 0px;">
+                <h3 class="text-white text-center">
+                    <div class="linha-com-texto">
+                        <input type="submit" 
+                        id="btnCadastrar"
+                        class="btn" 
+                        value="CADASTRAR" 
+                        style="background-color: darkgrey; border-radius: 2px; border: black; width: 150px; color: black; font-weight: bold; margin-top: 10px;">
+                    </div>
+                </h3>
+            </section>
+        </form>
+        <div style="background-color: black; height: 25px; margin: 40px -15px;"></div>
+    {% endfor %}
+
+    </div>
+</div>
+
+<!-- <script src="{{ url('templates/comanda/assets/js/admin/cadastrarItem.js') }}" defer></script> -->
+
+{% endblock %}
