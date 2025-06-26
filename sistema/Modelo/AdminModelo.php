@@ -108,6 +108,21 @@ class AdminModelo
         ]);
     }
     
+
+    public function editarBebida(string $bebida, int $id)
+    {
+        $query = "UPDATE marcas_bebida SET 
+            marca = :bebida
+        WHERE bebida_id = :id";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute([
+            'bebida' => $bebida,
+            'id' => $id
+        ]);
+    }
+    
     
 }
 

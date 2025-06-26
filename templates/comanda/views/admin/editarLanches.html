@@ -36,7 +36,6 @@
 
   <div class="bg-dark tabelaAdmin"> 
     {% set lanches_exibidos = [] %}
-    {% set cont = 0 %}
 
     {% for lanche in cardapio %}
         {% if lanche.id_ingredi not in lanches_exibidos %}
@@ -87,7 +86,6 @@
                 </section>
             </form>            
           </div>
-          {% set cont = 0 %}
           {% set lanches_exibidos = lanches_exibidos | merge([lanche.id_ingredi]) %}
         {% endif %} 
     {% endfor %}

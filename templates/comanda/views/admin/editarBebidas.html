@@ -2,70 +2,105 @@
 
 {% block conteudo %}
 
-{% for item in cardapio %}
-    <input type="hidden" value="{{ item.id_ingredi }}" id="idLancheTeste" class="idLancheTeste">
-{% endfor %}
-
-{% for item in bebidas %}
-    <input type="hidden" value="{{ item.bebida_id }}" id="idBebidaNova" class="idBebidaNova">
-
-    <input type="hidden" value="{{ item.marca }}" class="bebidaIgual">
-{% endfor %}
-
-<div class="bg-dark tabelaAdmin">
-    <div style="width: 100%; margin: auto;">
-    {% for lanche in cardapio %}
-
-        <form action="{{ url('novoItem') }}" method="post" class="row g-3 needs-validation" novalidate id="form">
-
-            <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px;">
-                <h4 class="text-white text-center">
-                    <div class="linha-com-texto">
-                        <span>Editar {{ lanche.lanche }}</span>
-                    </div>
-                </h4>
-            </header>
-
-          <div class="col-12">
-            <label for="nomeLanche" class="form-label" style="color: white; font-weight: bold;">NOME DO LANCHE</label>
-
-            <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="lanche" name="lanche" value="{{ lanche.lanche }}" required>
-          </div>
-
-          {% for ingredi in ingredientes %}
-          {% if ingredi.lanche_id == lanche.id_ingredi %}
-          <div class="col-12">
-            <label for="ingredientes" class="form-label"  style="color: white; font-weight: bold;">INGREDIENTES DO LANCHE</label>
-
-            <input class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="ingredientes" name="ingredientes" value="{{ ingredi.ingredientes }}" required>
-          </div>
-          {% endif %}
-          {% endfor %}
-
-          <div class="col-md-6">
-            <label for="valorLanche" class="form-label" style="color: white; font-weight: bold;">VALOR DO LANCHE (R$)</label>
-
-            <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valor" name="valor" value="{{ lanche.valor }}" required>
-          </div>
-
-            <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; margin-bottom: -30px; padding: 0px;">
-                <h3 class="text-white text-center">
-                    <div class="linha-com-texto">
-                        <input type="submit" 
-                        id="btnCadastrar"
-                        class="btn" 
-                        value="CADASTRAR" 
-                        style="background-color: darkgrey; border-radius: 2px; border: black; width: 150px; color: black; font-weight: bold; margin-top: 10px;">
-                    </div>
-                </h3>
-            </section>
-        </form>
-        <div style="background-color: black; height: 25px; margin: 40px -15px;"></div>
-    {% endfor %}
-
+  
+  <header class="cardapio-header"
+    style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
+    <div class="linha-com-texto">
+      <span>EDITAR BEBIDAS</span>
     </div>
-</div>
+  </header>
 
-<!-- <script src="{{ url('templates/comanda/assets/js/admin/cadastrarItem.js') }}" defer></script> -->
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarLanches btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
+      Mostrar Todas
+    </button>
+  </div>
+
+  {% set bebidas_exibidas = [] %}
+
+  
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="lancheButtonsContainer">
+    {% for bebida in cardapio %}
+      {% if bebida.bebida_id not in bebidas_exibidas %}
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgray; border-radius: 2px; border: black; width: auto; color: white; font-weight: bold; margin-bottom: 10px;"
+          data-id-mesa="{{ bebida.bebida_id }}">
+          <span style="color: black; font-weight: bold;">
+            {{ bebida.marca }}
+          </span>
+        </button>
+        {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.bebida_id]) %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="bg-dark tabelaAdmin"> 
+    {% set bebidas_exibidas = [] %}
+
+    {% for bebida in cardapio %}
+        {% if bebida.bebida_id not in bebidas_exibidas %}
+          <div style="width: 100%; margin: auto;" class="lancheAberto" data-id-mesa="{{ bebida.bebida_id }}">
+                
+            <form action="{{ url('editarItem/' ~ bebida.bebida_id) }}" method="post" class="row g-3 needs-validation" novalidate id="form">
+
+                <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px;">
+                    <h4 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <span>{{ bebida.marca }}</span>
+                        </div>
+                    </h4>
+                </header>
+
+                <div class="col-12">
+                    <label for="nomebebida" class="form-label" style="color: white; font-weight: bold;">NOME DA BEBIDA</label>
+
+                    <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="bebida" name="bebida" value="{{ bebida.marca }}" required>
+                </div>
+
+
+                <div class="col-12">
+                    <label for="tamanho-{{ bebida.bebida_id }}" class="form-label" style="color: white; font-weight: bold;">SELECIONAR</label>
+
+                    <select class="form-select tamanho-select" id="tamanho-{{ bebida.bebida_id }}" name="tamanho" required style="background-color: gainsboro; border-radius: 0px;" data-bebida-id="{{ bebida.bebida_id }}">
+                        {% for tamanho in tamanhoBebida %}
+                            {% if tamanho.marca_bebida_id == bebida.bebida_id %}
+                                <option value="{{ tamanho.tamanho }}" data-valor="{{ tamanho.valor }}"
+                                    {% if loop.first %}selected{% endif %}>
+                                    {{ tamanho.tamanho }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="tamanhoBebida-{{ bebida.bebida_id }}" class="form-label" style="color: white; font-weight: bold;">TAMANHO</label>
+                    <input type="text" class="form-control tamanho-input" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="tamanhoBebida-{{ bebida.bebida_id }}" name="tamanhoBebida" value="" required data-bebida-id="{{ bebida.bebida_id }}">
+                </div>
+
+                <div class="col-md-6">
+                    <label for="valorBebida-{{ bebida.bebida_id }}" class="form-label" style="color: white; font-weight: bold;">VALOR (R$)</label>
+                    <input type="number" step="0.01" class="form-control valor-input" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valorBebida-{{ bebida.bebida_id }}" name="valorBebida" value="" required data-bebida-id="{{ bebida.bebida_id }}">
+                </div>
+
+                <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">
+                    <h3 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <input type="submit" 
+                            id="btnCadastrar"
+                            class="btn" 
+                            value="EDITAR" 
+                            style="background-color: darkgreEN; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px;">
+                        </div>
+                    </h3>
+                </section>
+            </form>            
+          </div>
+          {% set bebidas_exibidas = bebidas_exibidas | merge([bebida.bebida_id]) %}
+        {% endif %} 
+    {% endfor %}
+  </div>
+
+<script src="{{ url('templates/comanda/assets/js/admin/editarBebidas.js') }}" defer></script>
 
 {% endblock %}

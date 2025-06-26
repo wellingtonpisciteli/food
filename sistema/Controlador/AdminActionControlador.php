@@ -70,10 +70,23 @@ class AdminActionControlador extends Controlador
     
                 (new AdminModelo())->editarIngredientes($ingredientes, $id);
             }
+
+            if (!empty($dados['bebida'])) {
+
+                $bebida = $dados['bebida'];
+    
+                (new AdminModelo())->editarBebida($bebida, $id);
+            }
                                 
         }
         
-        Helpers::redirecionar('editarLanches');
+        if($dados['lanche']){
+            Helpers::redirecionar('editarLanches');
+        }else if($dados['bebida']){
+            Helpers::redirecionar('editarBebidas');
+        }else{
+            Helpers::redirecionar('editarAdicionais');
+        }
     }
 
 }
