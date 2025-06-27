@@ -113,7 +113,7 @@ class AdminModelo
     {
         $query = "UPDATE marcas_bebida SET 
             marca = :bebida
-        WHERE bebida_id = :id";
+        WHERE controle = :id";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
@@ -121,6 +121,78 @@ class AdminModelo
             'bebida' => $bebida,
             'id' => $id
         ]);
+    }
+
+    public function editarTamanhoBebida(string $tamanho, int $valor, int $id)
+    {
+        $query = "UPDATE tamanho_bebida SET 
+            tamanho = :tamanho,
+            valor = :valor
+        WHERE controle = :id";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute([
+            'tamanho' => $tamanho,
+            'valor' => $valor,
+            'id' => $id
+        ]);
+    }
+
+    public function editarAdicional(string $adicional, int $valor, int $id)
+    {
+        $query = "UPDATE ingredientes SET 
+            ingrediente = :adicional,
+            valor = :valor
+        WHERE id = :id";
+
+        $stmt = Conexao::getInstancia()->prepare($query);
+
+        $stmt->execute([
+            'adicional' => $adicional,
+            'valor' => $valor,
+            'id' => $id
+        ]);
+    }
+
+    public function excluirAdicional(int $id)
+    {   
+        $query = "DELETE FROM ingredientes WHERE id = :id";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute([
+            'id' => $id
+        ]);
+         
+    }
+
+    public function excluirLanche(int $id)
+    {   
+        $query = "DELETE FROM cardapio_lanche WHERE id_ingredi = :id";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+        $queryIngrediente = "DELETE FROM lanche_ingredientes WHERE lanche_id = :id";
+        $stmtIngrediente = Conexao::getInstancia()->prepare($queryIngrediente);
+        $stmtIngrediente->execute([
+            'id' => $id
+        ]);       
+    }
+
+    public function excluirBebida(int $id)
+    {   
+        $query = "DELETE FROM marcas_bebida WHERE bebida_id = :id";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute([
+            'id' => $id
+        ]);
+
+        $queryBebida = "DELETE FROM tamanho_bebida WHERE marca_bebida_id = :id";
+        $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
+        $stmtBebida->execute([
+            'id' => $id
+        ]);       
     }
     
     

@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+  
+  <header class="cardapio-header"
+    style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
+    <div class="linha-com-texto">
+      <span>EDITAR ADICIONAIS</span>
+    </div>
+  </header>
+
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarLanches btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
+      Mostrar Todos
+    </button>
+  </div>
+
+  {% set adicionais_exibidos = [] %}
+
+  
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="lancheButtonsContainer">
+    {% for adicionais in cardapio %}
+      {% if adicionais.id not in adicionais_exibidos %}
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgray; border-radius: 2px; border: black; width: auto; color: white; font-weight: bold; margin-bottom: 10px;"
+          data-id-mesa="{{ adicionais.id }}">
+          <span style="color: black; font-weight: bold;">
+            {{ adicionais.ingrediente }}
+          </span>
+        </button>
+        {% set adicionais_exibidos = adicionais_exibidos | merge([adicionais.id]) %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="bg-dark tabelaAdmin"> 
+    {% set adicionais_exibidos = [] %}
+
+    {% for adicionais in cardapio %}
+        {% if adicionais.id not in adicionais_exibidos %}
+          <div style="width: 100%; margin: auto;" class="lancheAberto" data-id-mesa="{{ adicionais.id }}">
+                
+            <form action="{{ url('editarItem/' ~ adicionais.id) }}" method="post" class="row g-3 needs-validation" novalidate id="form">
+
+                <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px;">
+                    <h4 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <span>{{ adicionais.ingrediente }}</span>
+                        </div>
+                    </h4>
+                </header>
+
+                <div class="col-12">
+                    <label for="nomeAdicional" class="form-label" style="color: white; font-weight: bold;">NOME DO ADICIONAL</label>
+
+                    <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="adicional" name="adicional" value="{{ adicionais.ingrediente }}" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="valorAdicional" class="form-label" style="color: white; font-weight: bold;">VALOR DO ADICIONAL (R$)</label>
+
+                    <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valorAdicional" name="valorAdicional" value="{{ adicionais.valor }}" required>
+                </div>
+
+                <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">
+                    <h3 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <input type="submit" 
+                            id="btnCadastrar"
+                            class="btn" 
+                            value="EDITAR" 
+                            style="background-color: darkgreen; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px; margin-right: 2.5px;">
+
+                            <a href="#" 
+                            class="btn excluir"
+                            data-url="{{ url('excluirItem/' ~ adicionais.id ~ '/' ~ 1) }}"
+                            style="background-color: darkred; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10.5px; margin-left: 2.5px;">
+                            EXCLUIR
+                            </a>
+                        </div>
+                    </h3>
+                </section>
+            </form>            
+          </div>
+          {% set adicionais_exibidos = adicionais_exibidos | merge([adicionais.id]) %}
+        {% endif %} 
+    {% endfor %}
+  </div>
+
+<script src="{{ url('templates/comanda/assets/js/admin/editarAdicionais.js') }}" defer></script>
+
+{% endblock %}

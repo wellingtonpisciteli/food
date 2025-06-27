@@ -80,7 +80,14 @@
                             id="btnCadastrar"
                             class="btn" 
                             value="EDITAR" 
-                            style="background-color: darkgreEN; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px;">
+                            style="background-color: darkgreen; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px; margin-right: 2.5px;">
+
+                            <a href="#" 
+                            class="btn excluir"
+                            data-url="{{ url('excluirItem/' ~ lanche.id_ingredi ~ '/' ~ 3) }}"
+                            style="background-color: darkred; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10.5px; margin-left: 2.5px;">
+                            EXCLUIR
+                            </a>
                         </div>
                     </h3>
                 </section>

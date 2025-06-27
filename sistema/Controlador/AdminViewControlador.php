@@ -54,13 +54,11 @@ class AdminViewControlador extends Controlador
 
     public function editarAdicionais(){
 
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
+        $adicionais = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('admin/editarAdicionais.html', [
             'titulo' => 'Editar Adicionais',
-            'cardapio' => $cardapioLanche,
-            'bebidas' => $cardapioBebida
+            'cardapio' => $adicionais
         ]));
     }
 

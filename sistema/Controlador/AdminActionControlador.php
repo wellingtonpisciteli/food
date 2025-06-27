@@ -55,7 +55,7 @@ class AdminActionControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if (!empty($dados['lanche'])) {
+            if (!empty($dados['lanche']) || !empty($dados['valor']) ) {
                 $dadosLanche = [
                     'lanche' => $dados['lanche'],
                     'valor' => $dados['valor']
@@ -77,6 +77,22 @@ class AdminActionControlador extends Controlador
     
                 (new AdminModelo())->editarBebida($bebida, $id);
             }
+
+            if (!empty($dados['tamanhoBebida']) || !empty($dados['valorBebida'])) {
+
+                $tamanho = $dados['tamanhoBebida'];
+                $valor = $dados['valorBebida'];
+    
+                (new AdminModelo())->editarTamanhoBebida($tamanho,  $valor, $id);
+            }
+
+            if (!empty($dados['adicional']) || !empty($dados['valorAdicional'])) {
+
+                $adicional = $dados['adicional'];
+                $valorAdicional = $dados['valorAdicional'];
+    
+                (new AdminModelo())->editarAdicional($adicional,  $valorAdicional, $id);
+            }
                                 
         }
         
@@ -86,6 +102,25 @@ class AdminActionControlador extends Controlador
             Helpers::redirecionar('editarBebidas');
         }else{
             Helpers::redirecionar('editarAdicionais');
+        }
+    }
+
+    public function excluirItem(int $id, int $controle)
+    {
+        if($controle == 1){
+            (new AdminModelo())->excluirAdicional($id);
+        }else if($controle == 2){
+            (new AdminModelo())->excluirBebida($id);
+        }else{
+            (new AdminModelo())->excluirLanche($id);
+        }
+
+        if($controle == 1){
+            Helpers::redirecionar('editarAdicionais');
+        }else if($controle == 2){
+            Helpers::redirecionar('editarBebidas');
+        }else{
+            Helpers::redirecionar('editarLanches');
         }
     }
 

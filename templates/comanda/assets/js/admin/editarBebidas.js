@@ -3,7 +3,7 @@ const comanda = document.querySelectorAll(".lancheAberto");
 const tablePedido = document.querySelectorAll(".tablePedido"); 
 const buttonsContainer = document.getElementById("lancheButtonsContainer");
 const btnMostrar = document.querySelector(".btnMostrarLanches"); 
-const botoesExcluir = document.querySelectorAll(".excluir-mesa");
+const botoesExcluir = document.querySelectorAll(".excluir");
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
@@ -87,7 +87,7 @@ botoesExcluir.forEach(botao => {
             showCancelButton: true,
             confirmButtonColor: 'darkred',
             cancelButtonColor: 'darkblue',
-            confirmButtonText: 'Sim, excluir mesa!',
+            confirmButtonText: 'Sim, excluir!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {

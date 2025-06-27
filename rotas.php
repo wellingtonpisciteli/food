@@ -23,7 +23,8 @@ try {
     SimpleRouter::get(URL_SITE . 'editarBebidas', 'AdminViewControlador@editarBebidas');
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'novoItem', 'AdminActionControlador@novoItem');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarItem/{id_ingredi}', 'AdminActionControlador@editarItem');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarItem/{id}', 'AdminActionControlador@editarItem');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirItem/{id}/{controle}', 'AdminActionControlador@excluirItem');
 
 
     SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
