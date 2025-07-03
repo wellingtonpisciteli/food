@@ -4,6 +4,8 @@ const tablePedido = document.querySelectorAll(".tablePedido");
 const buttonsContainer = document.getElementById("lancheButtonsContainer");
 const btnMostrar = document.querySelector(".btnMostrarLanches"); 
 const botoesExcluir = document.querySelectorAll(".excluir");
+const btnCadastrar = document.getElementById('btnCadastrar');
+const form = document.getElementById('form');
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
@@ -106,11 +108,16 @@ selects.forEach(select => {
   if (firstOption) {
     const inputValor = document.querySelector(`input[name="valorBebida"][data-bebida-id="${bebidaId}"]`);
     const inputTamanho = document.querySelector(`input[name="tamanhoBebida"][data-bebida-id="${bebidaId}"]`);
+    const inputControle = document.querySelector(`input[name="controleBebida"][data-bebida-id="${bebidaId}"]`);
+
     if (inputValor) {
       inputValor.value = firstOption.getAttribute('data-valor');
     }
     if (inputTamanho) {
       inputTamanho.value = firstOption.value;
+    }
+    if (inputControle) {
+        inputControle.value = firstOption.getAttribute('data-controle');
     }
   }
 
@@ -119,6 +126,16 @@ selects.forEach(select => {
     const selectedOption = e.target.options[e.target.selectedIndex];
     const valor = selectedOption.getAttribute('data-valor');
     const tamanho = selectedOption.value;
+    const controle = selectedOption.getAttribute('data-controle');
+
+    // (opcional) Use o valor como quiser:
+    console.log("Controle:", controle);
+
+    // Se quiser preencher em um input hidden ou usar para outra lógica, pode fazer assim:
+    const inputControle = document.querySelector(`input[name="controleBebida"][data-bebida-id="${bebidaId}"]`);
+    if (inputControle) {
+    inputControle.value = controle;
+    }
 
     const inputValor = document.querySelector(`input[name="valorBebida"][data-bebida-id="${bebidaId}"]`);
     const inputTamanho = document.querySelector(`input[name="tamanhoBebida"][data-bebida-id="${bebidaId}"]`);
@@ -128,6 +145,27 @@ selects.forEach(select => {
     }
     if (inputTamanho) {
       inputTamanho.value = tamanho;
+    }
+  });
+});
+
+// Ao clicar no botão "Cadastrar"
+btnCadastrar.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  // Confirmação com SweetAlert
+  Swal.fire({
+    title: '<span style="color: black;">Deseja editar os dados?</span>',
+    text: 'Confirme para continuar com o envio do formulário.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: '✅ Sim, Editar',
+    cancelButtonText: '❌ Cancelar',
+    confirmButtonColor: 'darkblue',
+    cancelButtonColor: 'darkred'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit(); // Envia o formulário
     }
   });
 });

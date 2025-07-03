@@ -8,8 +8,18 @@ use sistema\Modelo\ComandaModelo;
 
 class AdminModelo
 {
-   public function cadastrarLanche(array $dados)
-   {
+
+    public function buscaTodosControles()
+    {
+        $query = "SELECT * FROM tamanho_bebida";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetchAll();
+        return $resultado;
+    }
+
+    public function cadastrarLanche(array $dados)
+    {
+
 
         $id_referencia = $dados["id_referencia"] ?? 0;
         $lanche = $dados['lanche'] ?? null;
@@ -36,7 +46,7 @@ class AdminModelo
     }
 
     public function cadastrarAdicional(array $dados)
-   {
+    {
 
         $adicional = $dados['adicional'] ?? null;
         $valor = $dados['valorAdicional'] ?? 0;
@@ -54,7 +64,23 @@ class AdminModelo
     }
 
     public function cadastrarBebida(array $dados)
-   {
+    {
+
+        $tamanhos = $this->buscaTodosControles();
+        $novoControle = 0;
+
+        if (!empty($tamanhos)) {
+            $ultimo = end($tamanhos);
+            $ultimoControle = $ultimo->controle;
+            $novoControle = $ultimoControle + 1;
+
+            echo "Último controle: $ultimoControle<br>";
+            echo "Novo controle: $novoControle";
+        } else {
+            // Nenhum controle ainda, pode começar do 1
+            $novoControle = 1;
+            echo "Nenhum controle encontrado. Começando pelo controle: $novoControle";
+        }
 
         $id_referencia = $dados["id_bebida"] ?? 0;
         $bebida = $dados['bebida'] ?? null;
@@ -69,13 +95,13 @@ class AdminModelo
                 $stmt->execute([$id_referencia, $bebida]);
             }
 
-            $queryTamanho = "INSERT INTO tamanho_bebida (marca_bebida_id, tamanho, valor) VALUES (?, ?, ?)";
+            $queryTamanho = "INSERT INTO tamanho_bebida (marca_bebida_id, tamanho, valor, controle) VALUES (?, ?, ?, ?)";
             $stmtTamanho = Conexao::getInstancia()->prepare($queryTamanho);
 
             $tamanho = $dados['tamanho'] ?? null;
 
             if (!empty($tamanho)) {
-                $stmtTamanho->execute([$id_referencia, $tamanho, $valor]);
+                $stmtTamanho->execute([$id_referencia, $tamanho, $valor, $novoControle]);
             }
         }
         
@@ -107,13 +133,13 @@ class AdminModelo
             'id' => $id
         ]);
     }
-    
+
 
     public function editarBebida(string $bebida, int $id)
     {
         $query = "UPDATE marcas_bebida SET 
             marca = :bebida
-        WHERE controle = :id";
+        WHERE bebida_id = :id";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
@@ -123,19 +149,19 @@ class AdminModelo
         ]);
     }
 
-    public function editarTamanhoBebida(string $tamanho, int $valor, int $id)
+    public function editarTamanhoBebida(string $tamanho, int $valor, int $controle)
     {
         $query = "UPDATE tamanho_bebida SET 
             tamanho = :tamanho,
             valor = :valor
-        WHERE controle = :id";
+        WHERE controle = :controle";
 
         $stmt = Conexao::getInstancia()->prepare($query);
 
         $stmt->execute([
             'tamanho' => $tamanho,
             'valor' => $valor,
-            'id' => $id
+            'controle' => $controle
         ]);
     }
 
@@ -162,7 +188,7 @@ class AdminModelo
         $stmt->execute([
             'id' => $id
         ]);
-         
+            
     }
 
     public function excluirLanche(int $id)
@@ -182,19 +208,18 @@ class AdminModelo
 
     public function excluirBebida(int $id)
     {   
-        $query = "DELETE FROM marcas_bebida WHERE bebida_id = :id";
+        $query = "DELETE FROM marcas_bebida WHERE controle = :id";
         $stmt = Conexao::getInstancia()->prepare($query);
         $stmt->execute([
             'id' => $id
         ]);
 
-        $queryBebida = "DELETE FROM tamanho_bebida WHERE marca_bebida_id = :id";
+        $queryBebida = "DELETE FROM tamanho_bebida WHERE controle = :id";
         $stmtBebida = Conexao::getInstancia()->prepare($queryBebida);
         $stmtBebida->execute([
             'id' => $id
         ]);       
     }
-    
-    
+
 }
 

@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 
 {% block conteudo %}
-
   
   <header class="cardapio-header"
     style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
@@ -64,7 +63,9 @@
                     <select class="form-select tamanho-select" id="tamanho-{{ bebida.bebida_id }}" name="tamanho" required style="background-color: gainsboro; border-radius: 0px;" data-bebida-id="{{ bebida.bebida_id }}">
                         {% for tamanho in tamanhoBebida %}
                             {% if tamanho.marca_bebida_id == bebida.bebida_id %}
-                                <option value="{{ tamanho.tamanho }}" data-valor="{{ tamanho.valor }}"
+                                <option value="{{ tamanho.tamanho }}" 
+                                data-valor="{{ tamanho.valor }}"   
+                                data-controle="{{ tamanho.controle }}"
                                     {% if loop.first %}selected{% endif %}>
                                     {{ tamanho.tamanho }}
                                 </option>
@@ -75,14 +76,18 @@
 
                 <div class="col-md-6">
                     <label for="tamanhoBebida-{{ bebida.bebida_id }}" class="form-label" style="color: white; font-weight: bold;">TAMANHO</label>
+
                     <input type="text" class="form-control tamanho-input" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="tamanhoBebida-{{ bebida.bebida_id }}" name="tamanhoBebida" value="" required data-bebida-id="{{ bebida.bebida_id }}">
                 </div>
 
                 <div class="col-md-6">
                     <label for="valorBebida-{{ bebida.bebida_id }}" class="form-label" style="color: white; font-weight: bold;">VALOR (R$)</label>
-                    <input type="number" step="0.01" class="form-control valor-input" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valorBebida-{{ bebida.bebida_id }}" name="valorBebida" value="" required data-bebida-id="{{ bebida.bebida_id }}">
-                </div>
 
+                    <input type="number" step="0.01" class="form-control valor-input" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valorBebida-{{ bebida.bebida_id }}" name="valorBebida" value="" required data-bebida-id="{{ bebida.bebida_id }}">
+                </div>  
+
+                <input type="hidden" class="form-control controle-input" id="controleBebida-{{ bebida.bebida_id }}" name="controleBebida" value="" required data-bebida-id="{{ bebida.bebida_id }}">
+       
                 <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">
                     <h3 class="text-white text-center">
                         <div class="linha-com-texto">
@@ -94,7 +99,7 @@
 
                             <a href="#" 
                             class="btn excluir"
-                            data-url="{{ url('excluirItem/' ~ bebida.bebida_id ~ '/' ~ 2) }}"
+                            data-url="{{ url('excluirItem/' ~ bebida.controle ~ '/' ~ 2) }}"
                             style="background-color: darkred; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10.5px; margin-left: 2.5px;">
                             EXCLUIR
                             </a>

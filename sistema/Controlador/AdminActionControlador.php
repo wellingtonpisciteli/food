@@ -82,8 +82,9 @@ class AdminActionControlador extends Controlador
 
                 $tamanho = $dados['tamanhoBebida'];
                 $valor = $dados['valorBebida'];
+                $controle = $dados['controleBebida'];
     
-                (new AdminModelo())->editarTamanhoBebida($tamanho,  $valor, $id);
+                (new AdminModelo())->editarTamanhoBebida($tamanho,  $valor, $controle);
             }
 
             if (!empty($dados['adicional']) || !empty($dados['valorAdicional'])) {

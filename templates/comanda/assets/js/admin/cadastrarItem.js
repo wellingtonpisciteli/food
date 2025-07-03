@@ -69,7 +69,7 @@ btnCadastrar.addEventListener('click', (e) => {
     text: 'Confirme para continuar com o envio do formulário.',
     icon: 'question',
     showCancelButton: true,
-    confirmButtonText: '✅ Sim, cadastrar',
+    confirmButtonText: '✅ Sim, Cadastrar',
     cancelButtonText: '❌ Cancelar',
     confirmButtonColor: 'darkblue',
     cancelButtonColor: 'darkred'

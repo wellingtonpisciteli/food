@@ -4,6 +4,8 @@ const tablePedido = document.querySelectorAll(".tablePedido");
 const buttonsContainer = document.getElementById("lancheButtonsContainer");
 const btnMostrar = document.querySelector(".btnMostrarLanches"); 
 const botoesExcluir = document.querySelectorAll(".excluir");
+const btnCadastrar = document.getElementById('btnCadastrar');
+const form = document.getElementById('form');
 
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
@@ -95,4 +97,25 @@ botoesExcluir.forEach(botao => {
             }
         });
     });
+});
+
+// Ao clicar no botão "Cadastrar"
+btnCadastrar.addEventListener('click', (e) => {
+  e.preventDefault();
+
+  // Confirmação com SweetAlert
+  Swal.fire({
+    title: '<span style="color: black;">Deseja editar os dados?</span>',
+    text: 'Confirme para continuar com o envio do formulário.',
+    icon: 'question',
+    showCancelButton: true,
+    confirmButtonText: '✅ Sim, Editar',
+    cancelButtonText: '❌ Cancelar',
+    confirmButtonColor: 'darkblue',
+    cancelButtonColor: 'darkred'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      form.submit(); // Envia o formulário
+    }
+  });
 });
