@@ -56,9 +56,13 @@ class AdminActionControlador extends Controlador
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
             if (!empty($dados['lanche']) || !empty($dados['valor']) ) {
+                $valorNumerico = floatval(
+                    str_replace(',', '.', preg_replace('/[^\d,]/', '', $dados['valor']))
+                );
+
                 $dadosLanche = [
                     'lanche' => $dados['lanche'],
-                    'valor' => $dados['valor']
+                    'valor' => $valorNumerico
                 ];
     
                 (new AdminModelo())->editarLanche($dadosLanche, $id);            
@@ -81,7 +85,9 @@ class AdminActionControlador extends Controlador
             if (!empty($dados['tamanhoBebida']) || !empty($dados['valorBebida'])) {
 
                 $tamanho = $dados['tamanhoBebida'];
-                $valor = $dados['valorBebida'];
+                $valor = floatval(
+                    str_replace(',', '.', preg_replace('/[^\d,]/', '', $dados['valorBebida']))
+                );
                 $controle = $dados['controleBebida'];
     
                 (new AdminModelo())->editarTamanhoBebida($tamanho,  $valor, $controle);
@@ -90,7 +96,9 @@ class AdminActionControlador extends Controlador
             if (!empty($dados['adicional']) || !empty($dados['valorAdicional'])) {
 
                 $adicional = $dados['adicional'];
-                $valorAdicional = $dados['valorAdicional'];
+                $valorAdicional = floatval(
+                    str_replace(',', '.', preg_replace('/[^\d,]/', '', $dados['valorAdicional']))
+                );
     
                 (new AdminModelo())->editarAdicional($adicional,  $valorAdicional, $id);
             }

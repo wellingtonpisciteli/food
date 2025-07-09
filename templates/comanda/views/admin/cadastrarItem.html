@@ -39,7 +39,7 @@
           <div class="col-md-6">
             <label for="valorLanche" class="form-label" style="color: white; font-weight: bold;">VALOR DO LANCHE (R$)</label>
 
-            <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="valor" name="valor" step="0.01" min="0" placeholder="Valor do Lanche" required>
+            <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="valor" name="valor" step="0.01" min="0" placeholder="R$ 0,00" oninput="formatarMoeda(this)" required>
           </div>
 
             <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 30px; padding: 0px;">
@@ -59,7 +59,7 @@
             <div class="col-md-6">
                 <label for="valorAdicional" class="form-label" style="color: white; font-weight: bold;">VALOR DO ADICIONAL (R$)</label>
 
-                <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="valorAdicional" name="valorAdicional" step="0.01" min="0" placeholder="Valor do Adicional" required>
+                <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="valorAdicional" name="valorAdicional" step="0.01" min="0" placeholder="R$ 0,00" oninput="formatarMoeda(this)" required>
             </div>   
             
             <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 30px; padding: 0px;">
@@ -75,6 +75,7 @@
                 <select class="form-select" id="bebida" name="bebida" required style="background-color: gainsboro; border-radius: 0px;">
                     <option value="">Selecione uma bebida</option>
                     <option value="Coca-Cola">Coca-Cola</option>
+                    <option value="Coca-Cola Zero">Coca-Cola Zero</option>
                     <option value="Pepsi">Pepsi</option>
                     <option value="Guaraná Antarctica">Guaraná Antarctica</option>
                     <option value="Fanta Laranja">Fanta Laranja</option>
@@ -83,6 +84,10 @@
                     <option value="Del Valle">Del Valle</option>
                     <option value="Água Mineral">Água Mineral</option>
                     <option value="Suco Práts">Suco Práts</option>
+                    <option value="Skol">Skol</option>
+                    <option value="Brahma">Brahma</option>
+                    <option value="Budweiser">Budweiser</option>
+                    <option value="Heineken">Heineken</option>
                 </select>
             </div>
 
@@ -104,7 +109,7 @@
             <div class="col-md-6">
                 <label for="valorBebida" class="form-label" style="color: white; font-weight: bold;">VALOR DA BEBIDA (R$)</label>
 
-                <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="valorBebida" name="valorBebida" step="0.01" min="0" placeholder="Valor da Bebida" required>
+                <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="valorBebida" name="valorBebida" step="0.01" min="0" placeholder="R$ 0,00" oninput="formatarMoeda(this)" required>
             </div>  
 
             <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">

@@ -148,13 +148,19 @@
                 {% for add in adicional %}
                   {% if pedido.id_lanche == add.id %}
                     <div style="margin-top: 5px">
-                      {% if add.tipo == '+' %}
+                      {% if add.tipo == '+' and pedido.status == 1 %}
                         <span style="color: green; font-weight: bolder;">
                           <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: green;">+{{ add.nome_adicional }}</a>
                         </span>        
-                      {% elseif add.tipo == '-' %}
+                      {% elseif add.tipo == '-' and pedido.status == 1 %}
                         <span style="color: red; font-weight: bolder;">
                           <a href="{{ url('editarAdicional/' ~ add.chave) }}" style="text-decoration: none; color: red;">-{{ add.nome_adicional }}</a>
+                        </span>
+                      {% endif %}
+
+                      {% if pedido.status == 2 and pedido.id_lanche == add.id %}
+                        <span style="color: gray; font-weight: bolder;">
+                          <span style="text-decoration: none; color: gray;">-{{ add.nome_adicional }}</span>
                         </span>
                       {% endif %}
                     </div>

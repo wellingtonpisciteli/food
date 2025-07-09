@@ -19,19 +19,21 @@ class AdminModelo
 
     public function cadastrarLanche(array $dados)
     {
-
-
         $id_referencia = $dados["id_referencia"] ?? 0;
         $lanche = $dados['lanche'] ?? null;
-        $valor = $dados['valor'] ?? 0;
+        $valor = $_POST['valor'] ?? 'R$ 0,00';
+
+        $valorNumerico = floatval(
+            str_replace(',', '.', preg_replace('/[^\d,]/', '', $valor))
+        );
 
         if (!empty($lanche)){  
 
             $query = "INSERT INTO cardapio_lanche (id_ingredi, lanche, valor) VALUES (?, ?, ?)";
             $stmt = Conexao::getInstancia()->prepare($query);
 
-            if (!empty($lanche) && is_numeric($valor)) {
-                $stmt->execute([$id_referencia, $lanche, $valor]);
+            if (!empty($lanche) && is_numeric($valorNumerico)) {
+                $stmt->execute([$id_referencia, $lanche, $valorNumerico]);
             }
 
             $queryIngrediente = "INSERT INTO lanche_ingredientes (lanche_id, ingredientes) VALUES (?, ?)";
@@ -49,15 +51,19 @@ class AdminModelo
     {
 
         $adicional = $dados['adicional'] ?? null;
-        $valor = $dados['valorAdicional'] ?? 0;
+        $valor = $dados['valorAdicional'] ?? 'R$ 0,00';
+
+        $valorNumerico = floatval(
+            str_replace(',', '.', preg_replace('/[^\d,]/', '', $valor))
+        );
 
         if (!empty($adicional)){  
 
             $query = "INSERT INTO ingredientes (ingrediente, valor) VALUES (?, ?)";
             $stmt = Conexao::getInstancia()->prepare($query);
 
-            if (!empty($adicional) && is_numeric($valor)) {
-                $stmt->execute([$adicional, $valor]);
+            if (!empty($adicional) && is_numeric($valorNumerico)) {
+                $stmt->execute([$adicional, $valorNumerico]);
             }
         }
         
@@ -84,14 +90,18 @@ class AdminModelo
 
         $id_referencia = $dados["id_bebida"] ?? 0;
         $bebida = $dados['bebida'] ?? null;
-        $valor = $dados['valorBebida'] ?? 0;
+        $valor = $dados['valorBebida'] ?? 'R$ 0,00';
+
+        $valorNumerico = floatval(
+            str_replace(',', '.', preg_replace('/[^\d,]/', '', $valor))
+        );
 
         if (!empty($bebida)){  
 
             $query = "INSERT INTO marcas_bebida (bebida_id, marca) VALUES (?, ?)";
             $stmt = Conexao::getInstancia()->prepare($query);
 
-            if (!empty($bebida) && is_numeric($valor)) {
+            if (!empty($bebida) && is_numeric($valorNumerico)) {
                 $stmt->execute([$id_referencia, $bebida]);
             }
 
@@ -101,7 +111,7 @@ class AdminModelo
             $tamanho = $dados['tamanho'] ?? null;
 
             if (!empty($tamanho)) {
-                $stmtTamanho->execute([$id_referencia, $tamanho, $valor, $novoControle]);
+                $stmtTamanho->execute([$id_referencia, $tamanho, $valorNumerico, $novoControle]);
             }
         }
         

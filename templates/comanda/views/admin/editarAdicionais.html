@@ -60,7 +60,14 @@
                 <div class="col-md-6">
                     <label for="valorAdicional" class="form-label" style="color: white; font-weight: bold;">VALOR DO ADICIONAL (R$)</label>
 
-                    <input type="number" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="valorAdicional" name="valorAdicional" value="{{ adicionais.valor }}" required>
+                    <input type="text" 
+                    class="form-control" 
+                    style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" 
+                    id="valorAdicional" 
+                    name="valorAdicional" 
+                    value="R$ {{ adicionais.valor|number_format(2, ',', '.') }}" 
+                    oninput="formatarMoeda(this)" 
+                    required>
                 </div>
 
                 <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">

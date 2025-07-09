@@ -2,6 +2,14 @@ const form = document.getElementById('form');
 const btnCadastrar = document.getElementById('btnCadastrar');
 const bebida = document.getElementById('bebida');
 
+function formatarMoeda(campo) {
+    let valor = campo.value.replace(/\D/g, "");
+    valor = (parseInt(valor, 10) / 100).toFixed(2);
+
+    // Adiciona "R$" e formata com vírgula
+    campo.value = "R$" + valor.replace(".", ",");
+}
+
 // Mapeia bebidas existentes como objetos { marca, id }
 const bebidas = Array.from(document.querySelectorAll('.bebidaIgual')).map((el, i) => {
   return {

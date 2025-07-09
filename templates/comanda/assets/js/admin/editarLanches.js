@@ -7,6 +7,14 @@ const botoesExcluir = document.querySelectorAll(".excluir");
 const btnCadastrar = document.getElementById('btnCadastrar');
 const form = document.getElementById('form');
 
+function formatarMoeda(campo) {
+    let valor = campo.value.replace(/\D/g, "");
+    valor = (parseInt(valor, 10) / 100).toFixed(2);
+
+    // Adiciona "R$" e formata com vírgula
+    campo.value = "R$" + valor.replace(".", ",");
+}
+
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
     const firstMesa = buttons[0].getAttribute("data-id-mesa");

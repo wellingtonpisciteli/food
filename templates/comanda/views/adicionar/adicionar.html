@@ -260,7 +260,7 @@
                                 <input type="text" class="form-control" name="endereco" placeholder="Rua, número, complemento">
                             </td>
                             <td>
-                                <input type="text" class="form-control" id="taxa" name="taxa" placeholder="R$ 0,00">
+                                <input type="text" class="form-control" id="taxa" name="taxa" placeholder="R$ 0,00" oninput="formatarMoeda(this)";>
                             </td>
                             <td>
                                 <select class="form-select" id="selectPagamento" onchange="atualizarPagamentoFinal(this)">

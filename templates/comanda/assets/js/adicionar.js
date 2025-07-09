@@ -50,6 +50,7 @@ let idIngrediente = 0
 let idBebida = 0
 let controleBebida = false
 let controleCont = 0
+let ultimaTaxa = 0
 
 function getDataHoraAtual() {
     const agora = new Date();
@@ -669,7 +670,7 @@ function formatarMoeda(campo) {
     valor = (parseInt(valor, 10) / 100).toFixed(2);
 
     // Adiciona "R$" e formata com vírgula
-    campo.value = "$" + valor.replace(".", ",");
+    campo.value = "R$" + valor.replace(".", ",");
 }
 
 function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa, dadosEntrega) {
@@ -776,6 +777,8 @@ btnDiv.addEventListener("click", (e) => {
         totalMesa.appendChild(totalCell);
     }
 
+    total -= ultimaTaxa;
+
     // Pega o valor do input de taxa
     let taxaInput = document.querySelector('#taxa');
     let taxaValor = taxaInput.value.trim();
@@ -784,6 +787,7 @@ btnDiv.addEventListener("click", (e) => {
     let taxa = parseFloat(taxaValor.replace("R$", "").replace(",", ".").trim()) || 0;
 
     let totalEtaxa = total + taxa;
+    ultimaTaxa = taxa; 
 
     total = totalEtaxa
     

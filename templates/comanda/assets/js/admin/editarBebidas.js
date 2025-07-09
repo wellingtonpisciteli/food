@@ -7,6 +7,15 @@ const botoesExcluir = document.querySelectorAll(".excluir");
 const btnCadastrar = document.getElementById('btnCadastrar');
 const form = document.getElementById('form');
 
+function formatarMoeda(campo) {
+    let valor = campo.value.replace(/\D/g, "");
+    valor = (parseInt(valor, 10) / 100).toFixed(2);
+
+    // Adiciona "R$" e formata com vírgula
+    campo.value = "R$" + valor.replace(".", ",");
+}
+
+
 // Inicializa o conteúdo da primeira mesa e tabela visíveis
 if (buttons.length > 0) {
     const firstMesa = buttons[0].getAttribute("data-id-mesa");
@@ -111,7 +120,12 @@ selects.forEach(select => {
     const inputControle = document.querySelector(`input[name="controleBebida"][data-bebida-id="${bebidaId}"]`);
 
     if (inputValor) {
-      inputValor.value = firstOption.getAttribute('data-valor');
+        let valor = firstOption.getAttribute('data-valor');
+
+        if (valor) {
+            valor = parseFloat(valor).toFixed(2).replace('.', ',');
+            inputValor.value = `R$ ${valor}`;
+        }
     }
     if (inputTamanho) {
       inputTamanho.value = firstOption.value;
@@ -141,7 +155,10 @@ selects.forEach(select => {
     const inputTamanho = document.querySelector(`input[name="tamanhoBebida"][data-bebida-id="${bebidaId}"]`);
 
     if (inputValor) {
-      inputValor.value = valor;
+        if (valor) {
+            let valorFormatado = parseFloat(valor).toFixed(2).replace('.', ',');
+            inputValor.value = `R$ ${valorFormatado}`;
+        }
     }
     if (inputTamanho) {
       inputTamanho.value = tamanho;
