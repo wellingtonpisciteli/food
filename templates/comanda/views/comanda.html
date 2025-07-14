@@ -7,7 +7,7 @@
   {% set controleUltimos = 0 %}
   
   {% for pedido in pedidos %}
-  {% if pedido.status == 1 %}
+  {% if pedido.status == 1 or pedido.status == 2 %}
   {% set controleUltimos = controleUltimos + 1 %}
   {% if controleUltimos == 1 %}
   <header class="cardapio-header" style="margin-top: -15px;">
@@ -125,12 +125,18 @@
             {% endif %}
 
             {% for add in adicional %}
-              {% if pedido.id_lanche == add.id and pedido.status == 1 %}
+              {% if pedido.id_lanche == add.id %}
                 <div style="margin-top: 5px; margin-left: 5px;">
-                  {% if add.tipo == '+' %}
+                  {% if add.tipo == '+' and pedido.status == 1 %}
                     <span style="color: green; font-weight: bolder;">+{{ add.nome_adicional }}</span>
-                  {% elseif add.tipo == '-' %}
+                  {% elseif add.tipo == '-' and pedido.status == 1 %}
                     <span style="color: red; font-weight: bolder;">-{{ add.nome_adicional }}</span>
+                  {% endif %}
+
+                  {% if pedido.status == 2 and pedido.id_lanche == add.id %}
+                    <span style="color: gray; font-weight: bolder;">
+                      <span style="text-decoration: none; color: gray;">-{{ add.nome_adicional }}</span>
+                    </span>
                   {% endif %}
                 </div>
               {% endif %}
