@@ -3,6 +3,9 @@
 {% block conteudo %}
 
 <body class="w-100" style="background-color: black;">
+  
+  {{ flash() }}
+
   {% for num in mesa %}
   {% if num.status == 1 %}
     <input type="hidden" id="controleMesa" name="controleMesa" value="{{ num.mesa }}">

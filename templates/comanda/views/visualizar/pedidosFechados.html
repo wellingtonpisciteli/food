@@ -3,6 +3,7 @@
 {% block conteudo %}
 
 <body class="w-100" style="background-color: black;">
+  {{ flash() }}
 
   {% for num in mesa %}
   {% if num.status == 1 %}

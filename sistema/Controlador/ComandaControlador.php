@@ -38,8 +38,10 @@ class ComandaControlador extends Controlador
         }
 
         if (!empty($dados['controleAdicionar'])){
+            $this->mensagem->sucesso('PEDIDO ADICIONADO COM SUCESSO!')->flash();
             Helpers::redirecionar('comanda');
         }else{
+            $this->mensagem->sucesso('NOVO ITEM ADICIONADO COM SUCESSO!')->flash();
             Helpers::controleDestino($dados['controleDestino']);
         }
     }
@@ -100,6 +102,7 @@ class ComandaControlador extends Controlador
             }
         }
 
+        $this->mensagem->informa('ITEM EDITADO COM SUCESSO!')->flash();
         Helpers::controleDestino($controleDestino);
     }
     
@@ -116,6 +119,7 @@ class ComandaControlador extends Controlador
             }
         }
 
+        $this->mensagem->alerta('ITEM EXCLUIDO COM SUCESSO!')->flash();
         Helpers::controleDestino($controleDestino);
     }
 
@@ -123,6 +127,7 @@ class ComandaControlador extends Controlador
     {   
         (new ComandaModelo())->apagar999($idApagarAdicional, $id_mesa);
 
+        $this->mensagem->alerta('ITEM EXCLUIDO COM SUCESSO!')->flash();
         Helpers::controleDestino($controleDestino);
     }
 
@@ -131,8 +136,10 @@ class ComandaControlador extends Controlador
         (new ComandaModelo())->apagarMesa($id_mesa);
 
         if($status == 1 ){
+            $this->mensagem->alerta('MESA EXCLUIDA COM SUCESSO!')->flash();
             Helpers::redirecionar('pedidosAbertos');
         }else{
+            $this->mensagem->alerta('MESA EXCLUIDA COM SUCESSO!')->flash();
             Helpers::redirecionar('pedidosFechados');
         }
     }
@@ -142,14 +149,18 @@ class ComandaControlador extends Controlador
         (new ComandaModelo())->apagarEntrega($id_pedido);
 
         if($status == 1 ){
+            $this->mensagem->alerta('ENTREGA EXCLUIDA COM SUCESSO!')->flash();
             Helpers::redirecionar('entregasAbertas');
         }elseif ($status == 2){
+            $this->mensagem->alerta('ENTREGA EXCLUIDA COM SUCESSO!')->flash();
             Helpers::redirecionar('entregasFechadas');
         }
 
         if($status == 3){
+            $this->mensagem->alerta('RETIRADA EXCLUIDA COM SUCESSO!')->flash();
             Helpers::redirecionar('retiradasAbertas');
         }elseif ($status == 4){
+            $this->mensagem->alerta('RETIRADA EXCLUIDA COM SUCESSO!')->flash();
             Helpers::redirecionar('retiradasFechadas');
         }
     }
@@ -160,6 +171,7 @@ class ComandaControlador extends Controlador
             (new ComandaModelo())->atualizarMesa($id_mesa, $novaMesa);
         }
 
+        $this->mensagem->informa('MESA EDITADA COM SUCESSO!')->flash();
         Helpers::redirecionar('pedidosAbertos');
     }
 
@@ -170,8 +182,10 @@ class ComandaControlador extends Controlador
         }
 
         if ($param == 1) {
+            $this->mensagem->informa('MESA REABERTA COM SUCESSO!')->flash();
             Helpers::redirecionar('pedidosFechados');
         }else{
+            $this->mensagem->informa('PEDIDO REABERTO COM SUCESSO!')->flash();
             Helpers::redirecionar('retiradasFechadas');
         } 
     }
@@ -181,8 +195,9 @@ class ComandaControlador extends Controlador
         if ($id_mesa) {
             (new ComandaModelo())->abrirEntrega($id_mesa);
         }
-
-       Helpers::redirecionar('entregasFechadas');
+          
+        $this->mensagem->informa('ENTREGA REABERTA COM SUCESSO!')->flash();
+        Helpers::redirecionar('entregasFechadas');
     }
 
     public function despachar(int $id_mesa): void
@@ -191,7 +206,8 @@ class ComandaControlador extends Controlador
             (new ComandaModelo())->despachar($id_mesa);
         }
 
-       Helpers::redirecionar('entregasAbertas');
+        $this->mensagem->informa('ENTREGA DESPACHADA COM SUCESSO!')->flash();
+        Helpers::redirecionar('entregasAbertas');
     }
 
     public function fecharMesa(int $id_mesa): void
@@ -207,8 +223,10 @@ class ComandaControlador extends Controlador
         }
 
         if(!empty($dados['controleDestino'])){
+            $this->mensagem->informa('TRANSAÇÃO FEITA COM SUCESSO!')->flash();
             Helpers::redirecionar('retiradasAbertas');            
         }else{
+            $this->mensagem->informa('TRANSAÇÃO FEITA COM SUCESSO!')->flash();
             Helpers::redirecionar('pedidosAbertos');
         }
     }

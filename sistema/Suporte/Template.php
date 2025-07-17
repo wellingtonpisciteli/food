@@ -41,8 +41,12 @@ class Template{
                 new \Twig\TwigFunction('dataAtual', function(?string $dataAtual='d/m'){
                     return Helpers::dataAtual($dataAtual);
                 })
+            ),
+            $this->twig->addFunction(
+                new \Twig\TwigFunction('flash', function(){
+                    return Helpers::flash();
+                })
             )
-            
         );
     }
 }
