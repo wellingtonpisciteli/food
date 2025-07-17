@@ -15,7 +15,7 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
  * 
  * @author Wellington Borges
  */
-class SiteControlador extends Controlador
+class ComandaViewControlador extends Controlador
 {
     /**
      * Construtor da classe.
@@ -26,6 +26,14 @@ class SiteControlador extends Controlador
     public function __construct()
     {
         parent::__construct('templates\comanda\views');
+
+        $usuario = false;
+
+        if (!$usuario){
+            $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
+
+            Helpers::redirecionar('login');
+        }
     }
 
     public function comanda(): void
@@ -468,20 +476,5 @@ class SiteControlador extends Controlador
             'adicionais' => $adicionais,
             'bebidas' => $bebidas
         ]);
-    }
-
-    public function busca(int $id)
-    {
-        $buscaId = (new ComandaModelo())->buscaPorId("cardapio_lanche", $id);
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "DESC");
-        $ingred = (new ComandaModelo())->ler("ingredientes", "ingrediente", "DESC");
-        $lanche_ingred = (new ComandaModelo())->lerRelacao("lanche_ingredientes", "lanche_id", $id);
-
-        [
-            'busca' => $buscaId,
-            'cardapio' => $cardapio,
-            'ingredientes' => $ingred,
-            'lanche_ingredi' => $lanche_ingred
-        ];
     }
 }

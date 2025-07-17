@@ -6,15 +6,18 @@ use sistema\Nucleo\Helpers;
 try {
     SimpleRouter::setDefaultNamespace('sistema\Controlador');
 
-    SimpleRouter::get(URL_SITE . 'comanda', 'SiteControlador@comanda');
-    SimpleRouter::get(URL_SITE . 'cardapio', 'SiteControlador@cardapio');
-    SimpleRouter::get(URL_SITE . 'adicionar', 'SiteControlador@adicionar');
-    SimpleRouter::get(URL_SITE . 'pedidosAbertos', 'SiteControlador@pedidosAbertos');
-    SimpleRouter::get(URL_SITE . 'pedidosFechados', 'SiteControlador@pedidosFechados');
-    SimpleRouter::get(URL_SITE . 'entregasAbertas', 'SiteControlador@entregasAbertas');
-    SimpleRouter::get(URL_SITE . 'entregasFechadas', 'SiteControlador@entregasFechadas');
-    SimpleRouter::get(URL_SITE . 'retiradasAbertas', 'SiteControlador@retiradasAbertas');
-    SimpleRouter::get(URL_SITE . 'retiradasFechadas', 'SiteControlador@retiradasFechadas');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'login', 'LoginControlador@login');
+
+
+    SimpleRouter::get(URL_SITE . 'comanda', 'ComandaViewControlador@comanda');
+    SimpleRouter::get(URL_SITE . 'cardapio', 'ComandaViewControlador@cardapio');
+    SimpleRouter::get(URL_SITE . 'adicionar', 'ComandaViewControlador@adicionar');
+    SimpleRouter::get(URL_SITE . 'pedidosAbertos', 'ComandaViewControlador@pedidosAbertos');
+    SimpleRouter::get(URL_SITE . 'pedidosFechados', 'ComandaViewControlador@pedidosFechados');
+    SimpleRouter::get(URL_SITE . 'entregasAbertas', 'ComandaViewControlador@entregasAbertas');
+    SimpleRouter::get(URL_SITE . 'entregasFechadas', 'ComandaViewControlador@entregasFechadas');
+    SimpleRouter::get(URL_SITE . 'retiradasAbertas', 'ComandaViewControlador@retiradasAbertas');
+    SimpleRouter::get(URL_SITE . 'retiradasFechadas', 'ComandaViewControlador@retiradasFechadas');
 
 
     SimpleRouter::get(URL_SITE . 'cadastrarItem', 'AdminViewControlador@cadastrarItem');
@@ -22,35 +25,34 @@ try {
     SimpleRouter::get(URL_SITE . 'editarAdicionais', 'AdminViewControlador@editarAdicionais');
     SimpleRouter::get(URL_SITE . 'editarBebidas', 'AdminViewControlador@editarBebidas');
 
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'novoItem', 'AdminActionControlador@novoItem');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarItem/{id}', 'AdminActionControlador@editarItem');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirItem/{id}/{controle}', 'AdminActionControlador@excluirItem');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'novoItem', 'AdminControlador@novoItem');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarItem/{id}', 'AdminControlador@editarItem');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirItem/{id}/{controle}', 'AdminControlador@excluirItem');
 
 
-    SimpleRouter::get(URL_SITE . 'busca/{id}', 'SiteControlador@busca');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'ComandaControlador@cadastrar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'atualizar/{id}', 'ComandaControlador@atualizar');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirMesa/{id_mesa}/{status}', 'ComandaControlador@excluirMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarMesa/{id_mesa}/{mesaNova}', 'ComandaControlador@editarMesa');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirMesa/{id_mesa}/{param}', 'comandaControlador@abrirMesa');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirMesa/{id_mesa}/{param}', 'ComandaControlador@abrirMesa');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'fecharMesa/{id_mesa}', 'ComandaControlador@fecharMesa');
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirEntrega/{id_pedido}/{status}', 'ComandaControlador@excluirEntrega');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'despachar/{id_mesa}', 'comandaControlador@despachar');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirEntrega/{id_mesa}', 'comandaControlador@abrirEntrega');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'despachar/{id_mesa}', 'ComandaControlador@despachar');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'abrirEntrega/{id_mesa}', 'ComandaControlador@abrirEntrega');
 
 
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarLanche/{id}', 'SiteControlador@editarLanche');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarAdicional/{chave}', 'SiteControlador@editarAdicional');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'editarBebida/{chave}', 'SiteControlador@editarBebida');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarNaMesa/{id_mesa}', 'SiteControlador@adicionarNaMesa');
-    SimpleRouter::match(['get', 'post'], URL_SITE . 'adicionarAdicional/{id_mesa}/{id_lanche}', 'SiteControlador@adicionarAdicional');
-    SimpleRouter::get(URL_SITE . 'caixa/{id_mesa}', 'SiteControlador@caixa');
-    SimpleRouter::get(URL_SITE . 'imprimir/{id_mesa}', 'SiteControlador@imprimir');
+    SimpleRouter::get(URL_SITE . 'editarLanche/{id}', 'ComandaViewControlador@editarLanche');
+    SimpleRouter::get(URL_SITE . 'editarAdicional/{chave}', 'ComandaViewControlador@editarAdicional');
+    SimpleRouter::get(URL_SITE . 'editarBebida/{chave}', 'ComandaViewControlador@editarBebida');
+    SimpleRouter::get(URL_SITE . 'adicionarNaMesa/{id_mesa}', 'ComandaViewControlador@adicionarNaMesa');
+    SimpleRouter::get(URL_SITE . 'adicionarAdicional/{id_mesa}/{id_lanche}', 'ComandaViewControlador@adicionarAdicional');
+    SimpleRouter::get(URL_SITE . 'caixa/{id_mesa}', 'ComandaViewControlador@caixa');
+    SimpleRouter::get(URL_SITE . 'imprimir/{id_mesa}', 'ComandaViewControlador@imprimir');
 
-    SimpleRouter::get(URL_SITE . '404', 'SiteControlador@erro404');
+    SimpleRouter::get(URL_SITE . '404', 'ComandaViewControlador@erro404');
 
-    SimpleRouter::get(URL_SITE . 'sair', 'SiteControlador@sair');
+    SimpleRouter::get(URL_SITE . 'sair', 'ComandaViewControlador@sair');
 
     SimpleRouter::start();
 } catch (Pecee\SimpleRouter\Exceptions\NotFoundHttpException $ex) {

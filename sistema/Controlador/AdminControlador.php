@@ -15,7 +15,7 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
  * 
  * @author Wellington Borges
  */
-class AdminActionControlador extends Controlador
+class AdminControlador extends Controlador
 {
     /**
      * Construtor da classe.
@@ -26,6 +26,14 @@ class AdminActionControlador extends Controlador
     public function __construct()
     {
         parent::__construct('templates\comanda\views');
+
+        $usuario = false;
+
+        if (!$usuario){
+            $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
+
+            Helpers::redirecionar('login');
+        }
     }
 
     public function novoItem(): void
