@@ -5,6 +5,7 @@ namespace sistema\Controlador;
 use sistema\Nucleo\Controlador;
 use sistema\Nucleo\Helpers;
 use sistema\Modelo\ComandaModelo;
+use sistema\Modelo\HelpersModelo;
 use sistema\Nucleo\Conexao;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
@@ -27,28 +28,31 @@ class ComandaViewControlador extends Controlador
     {
         parent::__construct('templates\comanda\views');
 
-        $usuario = false;
+        // $usuario = false;
 
-        if (!$usuario){
-            $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
+        // if (!$usuario){
+        //     $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
 
-            Helpers::redirecionar('login');
-        }
+        //     Helpers::redirecionar('login');
+        // }
     }
 
     public function comanda(): void
     {
+        $obj = (new HelpersModelo());
+
         $dataAtual = (new Helpers())->dataAtual('Y-m-d');
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
-        $total = (new ComandaModelo())->ler("total", "total", "DESC");
-        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
-        $lancheMaisVendido = (new ComandaModelo())->maisVendido('lanches', 'nome_lanche', 'DESC', $dataAtual);
+
+        $cardapioBebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $cardapioLanche = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $pedidos = $obj->ler("lanches", "data_hora", "DESC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
+        $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
+        $total = $obj->ler("total", "total", "DESC");
+        $ingredientes = $obj->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $lancheMaisVendido = $obj->maisVendido('lanches', 'nome_lanche', 'DESC', $dataAtual);
         
 
         echo ($this->template->renderizar('comanda.html', [
@@ -68,15 +72,16 @@ class ComandaViewControlador extends Controlador
 
     public function cardapio(): void
     {
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
-        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
-        
+        $obj = (new HelpersModelo());
 
+        $cardapioBebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $cardapioLanche = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
+        $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
+        $ingredientes = $obj->ler("lanche_ingredientes", "ingredientes", "ASC");
+        
         echo ($this->template->renderizar('cardapio.html', [
             'titulo' => 'Cardapio',
             'cardapioBebida' => $cardapioBebida,
@@ -92,13 +97,15 @@ class ComandaViewControlador extends Controlador
 
     public function adicionar(): void
     {
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");    
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "id", "ASC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");    
+        $cardapio_bebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $pedido = $obj->ler("lanches", "id_lanche", "ASC");
+        $bebidas = $obj->ler("bebidas", "id", "ASC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $mesa = $obj->ler("lanches", "mesa", "DESC");
 
         echo ($this->template->renderizar('adicionar/adicionar.html', [
             'titulo' => 'Adicionar',
@@ -116,9 +123,9 @@ class ComandaViewControlador extends Controlador
     public function pedidosAbertos(): void
     {
 
-        $obj = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
         $pedidos = $obj->ler("lanches", "data_hora", "DESC");
         $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
         $total = $obj->ler("total", "total", "DESC");
@@ -146,16 +153,18 @@ class ComandaViewControlador extends Controlador
 
     public function pedidosFechados(): void
     {
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $pedidos = (new ComandaModelo())->ler("lanches", "data_hora", "DESC");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "nome_bebida", "DESC");
-        $total = (new ComandaModelo())->ler("total", "total", "DESC");
-        $mesa = (new ComandaModelo())->ler("lanches", "mesa", "DESC");
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "ingredientes", "ASC");
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $obj = (new HelpersModelo());
+
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
+        $pedidos = $obj->ler("lanches", "data_hora", "DESC");
+        $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
+        $total = $obj->ler("total", "total", "DESC");
+        $mesa = $obj->ler("lanches", "mesa", "DESC");
+        $cardapioLanche = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $ingredientes = $obj->ler("lanche_ingredientes", "ingredientes", "ASC");
+        $cardapioBebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('visualizar/pedidosFechados.html', [
             'titulo' => 'Mesas Fechadas',
@@ -174,9 +183,9 @@ class ComandaViewControlador extends Controlador
 
     public function entregasAbertas(): void
     {
-        $obj = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
         $pedidos = $obj->ler("lanches", "data_hora", "DESC");
         $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
         $total = $obj->ler("total", "total", "DESC");
@@ -206,9 +215,9 @@ class ComandaViewControlador extends Controlador
 
     public function entregasFechadas(): void
     {
-        $obj = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
         $pedidos = $obj->ler("lanches", "data_hora", "DESC");
         $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
         $total = $obj->ler("total", "total", "DESC");
@@ -238,9 +247,9 @@ class ComandaViewControlador extends Controlador
 
     public function retiradasAbertas(): void
     {
-        $obj = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
         $pedidos = $obj->ler("lanches", "data_hora", "DESC");
         $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
         $total = $obj->ler("total", "total", "DESC");
@@ -270,9 +279,9 @@ class ComandaViewControlador extends Controlador
 
     public function retiradasFechadas(): void
     {
-        $obj = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
         $pedidos = $obj->ler("lanches", "data_hora", "DESC");
         $bebidas = $obj->ler("bebidas", "nome_bebida", "DESC");
         $total = $obj->ler("total", "total", "DESC");
@@ -302,16 +311,18 @@ class ComandaViewControlador extends Controlador
 
     public function caixa(int $id_mesa): void
     {
-        $idMesa = (new ComandaModelo())->buscaId_mesa("total", $id_mesa);
-        $lanchesMesa = (new ComandaModelo())->buscaIds_mesa("lanches", $id_mesa);
-        $bebidasMesa = (new ComandaModelo())->buscaIds_mesa("bebidas", $id_mesa);
-        $totalMesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $adicional = (new ComandaModelo())->lerAdicional("adicionais", "nome_adicional");
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $idMesa = $obj->buscaId_mesa("total", $id_mesa);
+        $lanchesMesa = $obj->buscaIds_mesa("lanches", $id_mesa);
+        $bebidasMesa = $obj->buscaIds_mesa("bebidas", $id_mesa);
+        $totalMesa = $obj->buscaIds_mesa("total", $id_mesa);
+        $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $pedido = $obj->ler("lanches", "id_lanche", "ASC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $adicional = $obj->ler("adicionais", "nome_adicional", "ASC");
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('caixa.html', [
             'titulo' => 'Caixa',
@@ -330,14 +341,16 @@ class ComandaViewControlador extends Controlador
 
     public function adicionarNaMesa(int $id_mesa): void
     {
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
-        $bebidas = (new ComandaModelo())->ler("bebidas", "id", "ASC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $cardapio_bebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $pedido = $obj->ler("lanches", "id_lanche", "ASC");
+        $bebidas = $obj->ler("bebidas", "id", "ASC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $mesa = $obj->buscaIds_mesa("total", $id_mesa);
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('adicionar/adicionarNaMesa.html', [
             'titulo' => 'Adicionar Novo',
@@ -354,12 +367,14 @@ class ComandaViewControlador extends Controlador
 
     public function adicionarAdicional(int $id_mesa, int  $id_lanche): void
     {
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $pedido = (new ComandaModelo())->ler("lanches", "id_lanche", "ASC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = (new ComandaModelo())->buscaIds_mesa("total", $id_mesa);
-        $idLanche = (new ComandaModelo())->buscaPorId_lanche("lanches", $id_lanche);
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $pedido = $obj->ler("lanches", "id_lanche", "ASC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $mesa = $obj->buscaIds_mesa("total", $id_mesa);
+        $idLanche = $obj->buscaPorId_lanche("lanches", $id_lanche);
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
 
         echo ($this->template->renderizar('adicionar/adicionarAdicional.html', [
@@ -377,11 +392,13 @@ class ComandaViewControlador extends Controlador
 
     public function editarLanche(int $id): void
     {
-        $pedidoMesa = (new ComandaModelo())->buscaPorId("lanches", $id);
-        $cardapio = (new ComandaModelo())->ler("cardapio_lanche", "lanche", "ASC");
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $lanches = (new ComandaModelo())->ler("lanches", "nome_lanche", "ASC");
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $pedidoMesa = $obj->buscaPorId("lanches", $id);
+        $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $lanches = $obj->ler("lanches", "nome_lanche", "ASC");
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('editar/editarLanche.html', [
             'titulo' => 'Editar Lanche',
@@ -396,9 +413,11 @@ class ComandaViewControlador extends Controlador
 
     public function editarAdicional(int $chave): void
     {
-        $adicional = (new ComandaModelo())->buscaPorChave("adicionais", $chave );
-        $ingredi = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $adicional = $obj->buscaPorChave("adicionais", $chave );
+        $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('editar/editarAdicional.html', [
             'titulo' => 'Editar Adicional',
@@ -411,10 +430,12 @@ class ComandaViewControlador extends Controlador
 
     public function editarBebida(int $chave): void
     {
-        $bebida = (new ComandaModelo())->buscaPorChave("bebidas", $chave );
-        $cardapio_bebida = (new ComandaModelo())->ler("marcas_bebida", "marca", "ASC");
-        $tamanho_bebida = (new ComandaModelo())->ler("tamanho_bebida", "tamanho", "DESC");
-        $entrega_retirada = (new ComandaModelo())->ler("entrega_retirada", "id_mesa", "DESC");
+        $obj = (new HelpersModelo());
+
+        $bebida = $obj->buscaPorChave("bebidas", $chave );
+        $cardapio_bebida = $obj->ler("marcas_bebida", "marca", "ASC");
+        $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
+        $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('editar/editarBebida.html', [
             'titulo' => 'Editar Bebida',
@@ -427,14 +448,14 @@ class ComandaViewControlador extends Controlador
 
     public function imprimir($id_mesa)
     {
-        $comandaModelo = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $buscaMesa = $comandaModelo->buscaId_mesa("total", $id_mesa);
+        $buscaMesa = $obj->buscaId_mesa("total", $id_mesa);
         $mesa = $buscaMesa->mesa ?? 0;
 
-        $lanches = $comandaModelo->buscaIds_mesa("lanches", $id_mesa);
-        $adicionais = $comandaModelo->buscaIds_mesa("adicionais", $id_mesa);
-        $bebidas = $comandaModelo->buscaIds_mesa("bebidas", $id_mesa);
+        $lanches = $obj->buscaIds_mesa("lanches", $id_mesa);
+        $adicionais = $obj->buscaIds_mesa("adicionais", $id_mesa);
+        $bebidas = $obj->buscaIds_mesa("bebidas", $id_mesa);
 
         $connector = new FilePrintConnector("php://output");
         $printer = new Printer($connector);

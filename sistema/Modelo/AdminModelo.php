@@ -3,19 +3,11 @@
 namespace sistema\Modelo;
 
 use sistema\Nucleo\Conexao;
-use sistema\Nucleo\Helpers;
-use sistema\Modelo\ComandaModelo;
+use sistema\Modelo\HelpersModelo;
+
 
 class AdminModelo
 {
-
-    public function buscaTodosControles()
-    {
-        $query = "SELECT * FROM tamanho_bebida";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
 
     public function cadastrarLanche(array $dados)
     {
@@ -72,7 +64,7 @@ class AdminModelo
     public function cadastrarBebida(array $dados)
     {
 
-        $tamanhos = $this->buscaTodosControles();
+        $tamanhos = (new HelpersModelo())->buscaTodosControles();
         $novoControle = 0;
 
         if (!empty($tamanhos)) {

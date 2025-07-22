@@ -5,6 +5,7 @@ namespace sistema\Controlador;
 use sistema\Nucleo\Controlador;
 use sistema\Nucleo\Helpers;
 use sistema\Modelo\ComandaModelo;
+use sistema\Modelo\HelpersModelo;
 use sistema\Nucleo\Conexao;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
@@ -27,19 +28,21 @@ class AdminViewControlador extends Controlador
     {
         parent::__construct('templates\comanda\views');
 
-        $usuario = false;
+        // $usuario = false;
 
-        if (!$usuario){
-            $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
+        // if (!$usuario){
+        //     $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
 
-            Helpers::redirecionar('login');
-        }
+        //     Helpers::redirecionar('login');
+        // }
     }
 
     public function cadastrarItem(){
 
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
+        $obj = (new HelpersModelo());
+
+        $cardapioLanche = $obj->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $cardapioBebida = $obj->ler("marcas_bebida", "bebida_id", "ASC");
 
         echo ($this->template->renderizar('admin/cadastrarItem.html', [
             'titulo' => 'Cadastrar',
@@ -49,9 +52,10 @@ class AdminViewControlador extends Controlador
     }
 
     public function editarLanches(){
+        $obj = (new HelpersModelo());
 
-        $cardapioLanche = (new ComandaModelo())->ler("cardapio_lanche", "id_ingredi", "ASC");
-        $ingredientes = (new ComandaModelo())->ler("lanche_ingredientes", "lanche_id", "ASC");
+        $cardapioLanche = $obj->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $ingredientes = $obj->ler("lanche_ingredientes", "lanche_id", "ASC");
 
         echo ($this->template->renderizar('admin/editarLanches.html', [
             'titulo' => 'Editar Lanches',
@@ -62,7 +66,7 @@ class AdminViewControlador extends Controlador
 
     public function editarAdicionais(){
 
-        $adicionais = (new ComandaModelo())->ler("ingredientes", "ingrediente", "ASC");
+        $adicionais = (new HelpersModelo())->ler("ingredientes", "ingrediente", "ASC");
 
         echo ($this->template->renderizar('admin/editarAdicionais.html', [
             'titulo' => 'Editar Adicionais',
@@ -72,8 +76,10 @@ class AdminViewControlador extends Controlador
 
     public function editarBebidas(){
 
-        $cardapioBebida = (new ComandaModelo())->ler("marcas_bebida", "bebida_id", "ASC");
-        $tamanhoBebida = (new ComandaModelo())->ler("tamanho_bebida", "marca_bebida_id", "ASC");
+        $obj = (new HelpersModelo());  
+
+        $cardapioBebida = $obj->ler("marcas_bebida", "bebida_id", "ASC");
+        $tamanhoBebida = $obj->ler("tamanho_bebida", "marca_bebida_id", "ASC");
 
         echo ($this->template->renderizar('admin/editarBebidas.html', [
             'titulo' => 'Editar Bebidas',

@@ -3,113 +3,10 @@
 namespace sistema\Modelo;
 
 use sistema\Nucleo\Conexao;
-use sistema\Nucleo\Helpers;
+use sistema\Modelo\HelpersModelo;
 
 class ComandaModelo
 {
-    public function ler(string $tabela, string $nome, string $param): array | object
-    {
-        $query = "SELECT * FROM {$tabela} ORDER BY {$nome} {$param} ";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function lerAdicional(string $tabela, string $nome): array | object
-    {
-        $query = "SELECT * FROM {$tabela} ORDER BY {$nome} ASC ";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function buscaPorId(string $tabela, int $id): bool | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
-
-    public function buscaPorIdS(string $tabela, int $id): array
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function buscaPorId_lanche(string $tabela, int $id): bool | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id_lanche={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
-
-    public function buscaPorChave(string $tabela, int $id): bool | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE chave={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
-
-    public function buscaPorMesa(string $tabela, int $mesa): array
-    {
-        $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function buscaTotal(string $tabela, int $mesa): object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
-
-    public function buscaId_mesa(string $tabela, int $id_mesa): object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id_mesa={$id_mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
-
-    public function buscaIds_mesa(string $tabela, int $id_mesa): array
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id_mesa={$id_mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function lerRelacao(string $tabela, string $parametro, int $id): array | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function maisVendido(string $tabela, string $item, string $param, string $dataAtual)
-    {
-        $query = "SELECT {$item}, COUNT(*) AS total_vendas
-                FROM {$tabela}
-                WHERE DATE(data_hora) = :dataAtual
-                GROUP BY {$item}
-                ORDER BY total_vendas {$param}";
-
-        $stmt = Conexao::getInstancia()->prepare($query);
-        $stmt->execute([
-            'dataAtual' => $dataAtual
-        ]);
-
-        return $stmt->fetchAll();
-    }
 
     public function armazenarLanche(array $dados): void
     {
@@ -127,7 +24,7 @@ class ComandaModelo
 
                 if (!empty($id_lanche)){
                     // 🔍 Buscar os dados do lanche no cardápio
-                    $busca = $this->buscaPorId('cardapio_lanche', $id);
+                    $busca = (new HelpersModelo())->buscaPorId('cardapio_lanche', $id);
                 }
                 
                 // Validar se encontrou
@@ -164,7 +61,7 @@ class ComandaModelo
                 $id = $adicional['idAdd'][$index] ?? null;
 
                 // 🔍 Buscar os dados do adicional no cardápio
-                $busca = $this->buscaPorId('ingredientes', $id);
+                $busca = (new HelpersModelo())->buscaPorId('ingredientes', $id);
 
                 if ($busca) {
                     $nomeAdicional = $busca->ingrediente ?? null;
@@ -204,8 +101,8 @@ class ComandaModelo
                 $idTamanho = $bebida['idTamanhoValorBebida'][$index] ?? null;
 
                 // 🔍 Buscar os dados da bebida no cardápio
-                $buscaMarca = $this->buscaPorId('marcas_bebida', $idMarca);
-                $buscaTamanho = $this->buscaPorId('tamanho_bebida', $idTamanho);
+                $buscaMarca = (new HelpersModelo())->buscaPorId('marcas_bebida', $idMarca);
+                $buscaTamanho = (new HelpersModelo())->buscaPorId('tamanho_bebida', $idTamanho);
 
                 if ($buscaMarca) {
                     $nomeBebida = $buscaMarca->marca ?? null;
@@ -265,7 +162,7 @@ class ComandaModelo
             $stmtAtualizar = Conexao::getInstancia()->prepare($queryAtualizar);
 
             // Recupera o valor atual
-            $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+            $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
             $valorAtual = $buscaTotal->total ?? 0;
         }else{
             $query = "INSERT INTO total (id_mesa, mesa, total) VALUES (?, ?, ?)";
@@ -278,7 +175,7 @@ class ComandaModelo
         if (!empty($dados['idCardapioLanche'])) {
             foreach ($dados['idCardapioLanche'] as $idLanche) {
                 if (!empty($idLanche)) {
-                    $lanche = $this->buscaPorId('cardapio_lanche', $idLanche);
+                    $lanche = (new HelpersModelo())->buscaPorId('cardapio_lanche', $idLanche);
                     $total += $lanche->valor ?? 0;
                 }
             }
@@ -288,7 +185,7 @@ class ComandaModelo
         if (!empty($dados['idTamanhoValorBebida'])) {
             foreach ($dados['idTamanhoValorBebida'] as $idBebida) {
                 if (!empty($idBebida)) {
-                    $bebida = $this->buscaPorId('tamanho_bebida', $idBebida);
+                    $bebida = (new HelpersModelo())->buscaPorId('tamanho_bebida', $idBebida);
                     $total += $bebida->valor ?? 0;
                 }
             }
@@ -299,7 +196,7 @@ class ComandaModelo
             foreach ($dados['idAdd'] as $index => $idAdicional) {
                 if (!empty($idAdicional)) {
                     $tipo = $dados['tipo'][$index] ?? '+';
-                    $adicional = $this->buscaPorId('ingredientes', $idAdicional);
+                    $adicional = (new HelpersModelo())->buscaPorId('ingredientes', $idAdicional);
                     $valor = ($tipo === '-') ? 0 : ($adicional->valor ?? 0);
                     $total += $valor;
                 }
@@ -358,11 +255,11 @@ class ComandaModelo
         $dados['id'] = $id;
 
         // Buscar dados do lanche atual
-        $lancheAtual = $this->buscaPorId('lanches', $id);
+        $lancheAtual = (new HelpersModelo())->buscaPorId('lanches', $id);
         $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
 
         // Buscar novo lanche no cardápio
-        $novoLanche = $this->buscaPorId('cardapio_lanche', $idCardapio);
+        $novoLanche = (new HelpersModelo())->buscaPorId('cardapio_lanche', $idCardapio);
 
         // Atualizar dados do lanche
         $dados['nome_lanche'] = $novoLanche->lanche ?? 'Desconhecido';
@@ -380,7 +277,7 @@ class ComandaModelo
         $stmtLanche->execute($dados);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorLancheAtual) + $dados['valor_lanche'];
@@ -396,14 +293,14 @@ class ComandaModelo
     public function atualizarAdicional(int $chave, int $idCardapio, string $tipo, $id_mesa)
     {
         // Buscar dados do adicional atual
-        $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
+        $adicionalAtual = (new HelpersModelo())->buscaPorChave('adicionais', $chave);
         $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
         
         $nomeAdicional = null;
         $valorAdicional = null;
 
          // 🔍 Buscar os dados do adicional no cardápio
-        $busca = $this->buscaPorId('ingredientes', $idCardapio);
+        $busca = (new HelpersModelo())->buscaPorId('ingredientes', $idCardapio);
 
         if ($busca) {
             $nomeAdicional = $busca->ingrediente ?? null;
@@ -428,7 +325,7 @@ class ComandaModelo
         ]);
 
         // Busca o total atual da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorAdicionalAtual) + $valorAdicional;
@@ -444,7 +341,7 @@ class ComandaModelo
     public function atualizarBebida(int $chave, int $idCardapio, int $idTamanho, $id_mesa)
     {  
         // Buscar dados da bebida atual
-        $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
+        $bebidaAtual = (new HelpersModelo())->buscaPorChave('bebidas', $chave);
         $valorBebidaAtual = $bebidaAtual->valor_bebida ?? 0;
 
         $nomeBebida = null;
@@ -452,8 +349,8 @@ class ComandaModelo
         $valorBebida = null;
 
         // Buscar dados
-        $buscaMarca = $this->buscaPorId('marcas_bebida', $idCardapio);
-        $buscaTamanho = $this->buscaPorId('tamanho_bebida', $idTamanho);
+        $buscaMarca = (new HelpersModelo())->buscaPorId('marcas_bebida', $idCardapio);
+        $buscaTamanho = (new HelpersModelo())->buscaPorId('tamanho_bebida', $idTamanho);
 
         if ($buscaMarca) {
             $nomeBebida = $buscaMarca->marca ?? null;
@@ -478,7 +375,7 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorBebidaAtual) + $valorBebida;
@@ -494,10 +391,10 @@ class ComandaModelo
 
     public function apagarLanche(int $id, int $idAdicional, int $id_mesa){
 
-        $lancheAtual = $this->buscaPorId('lanches', $id);
+        $lancheAtual = (new HelpersModelo())->buscaPorId('lanches', $id);
         $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
 
-        $adicionalAtual = $this->buscaPorIdS('adicionais', $idAdicional);
+        $adicionalAtual = (new HelpersModelo())->buscaPorIdS('adicionais', $idAdicional);
 
         $valorAdicionalAtual = 0;
         if (is_array($adicionalAtual)) {
@@ -523,7 +420,7 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorLancheAtual - $valorAdicionalAtual);
@@ -538,7 +435,7 @@ class ComandaModelo
 
     public function apagar999(int $idAdicional, int $id_mesa){
 
-        $adicionalAtual = $this->buscaPorIdS('adicionais', $idAdicional);
+        $adicionalAtual = (new HelpersModelo())->buscaPorIdS('adicionais', $idAdicional);
 
         $valorAdicionalAtual = 0;
         if (is_array($adicionalAtual)) {
@@ -556,7 +453,7 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorAdicionalAtual);
@@ -571,7 +468,7 @@ class ComandaModelo
 
     public function apagarAdicional(int $chave, $id_mesa){
 
-        $adicionalAtual = $this->buscaPorChave('adicionais', $chave);
+        $adicionalAtual = (new HelpersModelo())->buscaPorChave('adicionais', $chave);
         $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
 
         $queryAdicional = "DELETE FROM adicionais WHERE chave = :chave";
@@ -583,7 +480,7 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorAdicionalAtual);
@@ -599,7 +496,7 @@ class ComandaModelo
     public function apagarBebida(int $chave, $id_mesa){
 
         // Buscar dados da bebida atual
-        $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
+        $bebidaAtual = (new HelpersModelo())->buscaPorChave('bebidas', $chave);
         $valorBebidaAtual = $bebidaAtual->valor_bebida ?? 0;
 
         $queryBebida = "DELETE FROM bebidas WHERE chave = :chave";
@@ -611,7 +508,7 @@ class ComandaModelo
         ]);
 
         // Atualizar total da mesa
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $totalAtual = $buscaTotal->total ?? 0;
 
         $totalFinal = ($totalAtual - $valorBebidaAtual);
@@ -656,7 +553,7 @@ class ComandaModelo
     {
         $tabelas = ['lanches', 'bebidas', 'total', 'entrega_retirada'];
 
-        $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotalSub = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
         $subTotal = $valorAtualSub;
 
@@ -704,11 +601,11 @@ class ComandaModelo
     {
         $tabelas = ['lanches', 'bebidas', 'total', 'entrega_retirada'];
 
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $valorAtual = $buscaTotal->total ?? 0;
         $total = $valorAtual;
 
-        $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotalSub = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
         $subTotal = $valorAtualSub;
 
@@ -743,11 +640,11 @@ class ComandaModelo
     function caixaSubTotal(array $dados, int $id_mesa):void
     {
         // Recupera o valor atual
-        $buscaTotalSub = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotalSub = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $valorAtualSub = $buscaTotalSub->subTotal ?? 0;
         $subTotal = $valorAtualSub;
 
-        $buscaTotal = $this->buscaId_mesa('total', $id_mesa);
+        $buscaTotal = (new HelpersModelo())->buscaId_mesa('total', $id_mesa);
         $valorAtual = $buscaTotal->total ?? 0;
         $total = $valorAtual;
 
@@ -758,10 +655,10 @@ class ComandaModelo
                 $id_adicional = (int) ($dados['id_adicional'][$index] ?? 0);
 
                 // Buscar dados do lanche atual pelo id_cardapio correspondente
-                $lancheAtual = $this->buscaPorId('lanches', $id_cardapio);
+                $lancheAtual = (new HelpersModelo())->buscaPorId('lanches', $id_cardapio);
                 $valorLancheAtual = $lancheAtual->valor_lanche ?? 0;
 
-                $adicionalAtual = $this->buscaPorId('adicionais', $id_adicional);
+                $adicionalAtual = (new HelpersModelo())->buscaPorId('adicionais', $id_adicional);
                 $valorAdicionalAtual = $adicionalAtual->valor_adicional ?? 0;
 
                 $subTotal += ($valorLancheAtual + $valorAdicionalAtual);
@@ -781,7 +678,7 @@ class ComandaModelo
                 $id_bebida = trim($idBebida); 
                 $chave = (int) ($dados['chave'][$index] ?? 0);
 
-                $bebidaAtual = $this->buscaPorChave('bebidas', $chave);
+                $bebidaAtual = (new HelpersModelo())->buscaPorChave('bebidas', $chave);
                 $valorBebidaAtual = $bebidaAtual->valor_bebida ?? 0;
 
                 $subTotal += $valorBebidaAtual;

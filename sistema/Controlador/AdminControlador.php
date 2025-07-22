@@ -27,13 +27,13 @@ class AdminControlador extends Controlador
     {
         parent::__construct('templates\comanda\views');
 
-        $usuario = false;
+        // $usuario = false;
 
-        if (!$usuario){
-            $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
+        // if (!$usuario){
+        //     $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
 
-            Helpers::redirecionar('login');
-        }
+        //     Helpers::redirecionar('login');
+        // }
     }
 
     public function novoItem(): void
