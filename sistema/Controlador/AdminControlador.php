@@ -55,6 +55,7 @@ class AdminControlador extends Controlador
         
         }
 
+        $this->mensagem->sucesso('NOVO ITEM CADASTRADO COM SUCESSO!')->flash();
         Helpers::redirecionar('cadastrarItem');
     }
 
@@ -129,10 +130,13 @@ class AdminControlador extends Controlador
         }
         
         if($dados['lanche']){
+            $this->mensagem->informa('LANCHE EDITADO COM SUCESSO!')->flash();
             Helpers::redirecionar('editarLanches');
         }else if($dados['bebida']){
+            $this->mensagem->informa('BEBIDA EDITADA COM SUCESSO!')->flash();
             Helpers::redirecionar('editarBebidas');
         }else{
+            $this->mensagem->informa('ADICIONAL EDITADO COM SUCESSO!')->flash();
             Helpers::redirecionar('editarAdicionais');
         }
     }
@@ -148,10 +152,13 @@ class AdminControlador extends Controlador
         }
 
         if($controle == 1){
+            $this->mensagem->alerta('ADICIONAL EXCLUÍDO COM SUCESSO!')->flash();
             Helpers::redirecionar('editarAdicionais');
         }else if($controle == 2){
+            $this->mensagem->alerta('BEBIDA EXCLUÍDA COM SUCESSO!')->flash();
             Helpers::redirecionar('editarBebidas');
         }else{
+            $this->mensagem->alerta('LANCHE EXCLUÍDO COM SUCESSO!')->flash();
             Helpers::redirecionar('editarLanches');
         }
     }

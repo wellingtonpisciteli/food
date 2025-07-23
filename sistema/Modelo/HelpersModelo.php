@@ -4,6 +4,8 @@ namespace sistema\Modelo;
 
 use sistema\Nucleo\Conexao;
 use sistema\Nucleo\Helpers;
+use PDO;
+
 
 class HelpersModelo
 {
@@ -111,12 +113,12 @@ class HelpersModelo
         return $resultado;
     }
 
-    public function buscaPorEmail(string $email): ?object
+    public function buscaPorEmail(string $email): object|null
     {
         $query = "SELECT * FROM usuarios WHERE email= '$email'";
         $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ); // Garante retorno como objeto
+        return $resultado ?: null;
     }
 
 }
