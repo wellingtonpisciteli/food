@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+{% for item in cardapio %}
+    <input type="hidden" value="{{ item.id_ingredi }}" id="idLancheTeste" class="idLancheTeste">
+{% endfor %}
+
+{% for item in bebidas %}
+    <input type="hidden" value="{{ item.bebida_id }}" id="idBebidaNova" class="idBebidaNova">
+
+    <input type="hidden" value="{{ item.marca }}" class="bebidaIgual">
+{% endfor %}
+
+<div class="bg-dark tabelaAdmin">
+    <div style="width: 100%; margin: auto;">
+        <form action="{{ url('novoUsuario') }}" method="post" class="row g-3 needs-validation" novalidate id="form">
+            <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px; margin-bottom: 10px;">
+                <h4 class="text-white text-center">
+                    <div class="linha-com-texto">
+                        <span>CADASTRAR USUÁRIO</span>
+                    </div>
+                </h4>
+            </header>
+
+            {{ flash() }}
+
+          <div class="col-12">
+            <label for="usuario" class="form-label" style="color: white; font-weight: bold;">NOME</label>
+
+            <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="usuario" name="usuario" placeholder="Nome do usuário" required>
+          </div>
+
+          <div class="col-12">
+            <label for="email" class="form-label"  style="color: white; font-weight: bold;">E-MAIL</label>
+
+            <textarea class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="email" name="email" rows="1" placeholder="E-mail do usuário" required></textarea>
+          </div>
+
+          <div class="col-12">
+            <label for="senha" class="form-label"  style="color: white; font-weight: bold;">SENHA</label>
+
+            <input class="form-control" style="background-color: gainsboro; border-radius: 0px;" id="senha" name="senha" rows="1" placeholder="Senha do usuário" type="password" required>
+          </div>
+
+          <div class="col-12">
+                <label for="level" class="form-label" style="color: white; font-weight: bold;">TIPO</label>
+
+                <select class="form-select" id="level" name="level" required style="background-color: gainsboro; border-radius: 0px;">
+                    <option value="">Tipo de usuário</option>
+                    <option value="3">Administrador</option>
+                    <option value="1">Atendente</option>
+                    <option value="2">Caixa</option>
+                </select>
+            </div>
+
+            <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 50px; padding: 0px;">
+                <h3 class="text-white text-center">
+                    <div class="linha-com-texto">
+                        <input type="submit" 
+                        id="btnCadastrar"
+                        class="btn" 
+                        value="CADASTRAR" 
+                        style="background-color: darkgreen; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px;">
+                    </div>
+                </h3>
+            </section>
+
+        </form>
+    </div>
+</div>
+
+<script src="{{ url('templates/comanda/assets/js/admin/cadastrarUsuario.js') }}" defer></script>
+
+
+{% endblock %}

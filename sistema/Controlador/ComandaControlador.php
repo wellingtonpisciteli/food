@@ -8,6 +8,7 @@ use sistema\Modelo\ComandaModelo;
 use sistema\Nucleo\Conexao;
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use sistema\Modelo\HelpersModelo;
 
 class ComandaControlador extends Controlador
 {
@@ -241,14 +242,14 @@ class ComandaControlador extends Controlador
 
     public function imprimir($id_mesa)
     {
-        $comandaModelo = new ComandaModelo();
+        $obj = (new HelpersModelo());
 
-        $buscaMesa = $comandaModelo->buscaId_mesa("total", $id_mesa);
+        $buscaMesa = $obj->buscaId_mesa("total", $id_mesa);
         $mesa = $buscaMesa->mesa ?? 0;
 
-        $lanches = $comandaModelo->buscaIds_mesa("lanches", $id_mesa);
-        $adicionais = $comandaModelo->buscaIds_mesa("adicionais", $id_mesa);
-        $bebidas = $comandaModelo->buscaIds_mesa("bebidas", $id_mesa);
+        $lanches = $obj->buscaIds_mesa("lanches", $id_mesa);
+        $adicionais = $obj->buscaIds_mesa("adicionais", $id_mesa);
+        $bebidas = $obj->buscaIds_mesa("bebidas", $id_mesa);
 
         $connector = new FilePrintConnector("php://output");
         $printer = new Printer($connector);

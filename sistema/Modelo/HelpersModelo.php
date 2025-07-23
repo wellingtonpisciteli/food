@@ -110,4 +110,13 @@ class HelpersModelo
         $resultado = $stmt->fetchAll();
         return $resultado;
     }
+
+    public function buscaPorEmail(string $email): ?object
+    {
+        $query = "SELECT * FROM usuarios WHERE email= '$email'";
+        $stmt = Conexao::getInstancia()->query($query);
+        $resultado = $stmt->fetch();
+        return $resultado;
+    }
+
 }

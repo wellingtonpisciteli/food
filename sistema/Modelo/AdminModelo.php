@@ -109,6 +109,34 @@ class AdminModelo
         
     }
 
+    public function cadastrarUsuario(array $dados)
+    {
+        $level = $dados["level"] ?? 1;
+        $nome = $dados['usuario'] ?? null;
+        $email = $dados['email'] ?? null;
+        $senha = $dados['senha'] ?? null;
+        $status = $dados['status'] ?? 1;
+        $cadastrado_em = $dados['cadastrado_em'] ?? date('Y-m-d H:i:s');
+
+        if (!empty($nome)){  
+
+            $query = "INSERT INTO usuarios (level, nome, email, senha, status, cadastrado_em) VALUES (?, ?, ?, ?, ?, ?)";
+
+            $stmt = Conexao::getInstancia()->prepare($query);
+
+            if (!empty($nome)) {
+                $stmt->execute([
+                    $level,
+                    $nome,
+                    $email,
+                    $senha,
+                    $status,
+                    $cadastrado_em
+                ]);
+            }
+        }     
+    }
+
     public function editarLanche(array $dados, int $id)
     {
         $dados['id'] = $id;

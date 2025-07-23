@@ -21,6 +21,7 @@ try {
 
 
     SimpleRouter::get(URL_SITE . 'cadastrarItem', 'AdminViewControlador@cadastrarItem');
+    SimpleRouter::get(URL_SITE . 'cadastrarUsuario', 'AdminViewControlador@cadastrarUsuario');
     SimpleRouter::get(URL_SITE . 'editarLanches', 'AdminViewControlador@editarLanches');
     SimpleRouter::get(URL_SITE . 'editarAdicionais', 'AdminViewControlador@editarAdicionais');
     SimpleRouter::get(URL_SITE . 'editarBebidas', 'AdminViewControlador@editarBebidas');
@@ -28,6 +29,7 @@ try {
     SimpleRouter::match(['get', 'post'], URL_SITE . 'novoItem', 'AdminControlador@novoItem');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'editarItem/{id}', 'AdminControlador@editarItem');
     SimpleRouter::match(['get', 'post'], URL_SITE . 'excluirItem/{id}/{controle}', 'AdminControlador@excluirItem');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'novoUsuario', 'AdminControlador@novoUsuario');
 
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'cadastrar', 'ComandaControlador@cadastrar');

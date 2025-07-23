@@ -51,6 +51,20 @@ class AdminViewControlador extends Controlador
         ]));
     }
 
+    public function cadastrarUsuario(){
+
+        $obj = (new HelpersModelo());
+
+        $cardapioLanche = $obj->ler("cardapio_lanche", "id_ingredi", "ASC");
+        $cardapioBebida = $obj->ler("marcas_bebida", "bebida_id", "ASC");
+
+        echo ($this->template->renderizar('admin/cadastrarUsuario.html', [
+            'titulo' => 'Cadastrar Usuário',
+            'cardapio' => $cardapioLanche,
+            'bebidas' => $cardapioBebida
+        ]));
+    }
+
     public function editarLanches(){
         $obj = (new HelpersModelo());
 

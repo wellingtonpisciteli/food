@@ -58,6 +58,21 @@ class AdminControlador extends Controlador
         Helpers::redirecionar('cadastrarItem');
     }
 
+    public function novoUsuario(): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+
+            if(!empty($dados['usuario'])){
+                (new AdminModelo())->cadastrarUsuario($dados);
+            }
+        }
+
+        $this->mensagem->sucesso('USUÁRIO CADASTRADO COM SUCESSO!')->flash();
+        Helpers::redirecionar('cadastrarUsuario');
+    }
+    
+
     public function editarItem(int $id): void
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
