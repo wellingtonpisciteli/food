@@ -211,6 +211,23 @@ class AdminModelo
         ]);
     }
 
+    public function editarUsuario(array $dados, int $id)
+    {
+        $dados['id'] = $id;
+
+        $query = "UPDATE usuarios SET 
+            level = :level,
+            nome = :nome, 
+            email = :email,         
+            senha = :senha,   
+            status = :status,
+            atualizado_em = :atualizado_em
+        WHERE id = :id";
+
+        $stmtLanche = Conexao::getInstancia()->prepare($query);
+        $stmtLanche->execute($dados);
+    }
+
     public function excluirAdicional(int $id)
     {   
         $query = "DELETE FROM ingredientes WHERE id = :id";
@@ -249,6 +266,16 @@ class AdminModelo
         $stmtBebida->execute([
             'id' => $id
         ]);       
+    }
+
+    public function excluirUsuarios(int $id)
+    {   
+        $query = "DELETE FROM usuarios WHERE id = :id";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->execute([
+            'id' => $id
+        ]);
+            
     }
 
 }

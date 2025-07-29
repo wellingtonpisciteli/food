@@ -82,7 +82,11 @@
                 </div>
               {% endif %}
 
-              <div>STATUS: <span style="color: chartreuse;">ABERTA</span></div>
+              {% if pedido.em_preparo == 1 %}
+                <div>STATUS: <span style="color: mediumspringgreen;">IMPRESSA</span></div>
+              {% else %}
+                <div>STATUS: <span style="color: chartreuse;">ABERTA</span></div>
+              {% endif %}
 
               {% set mostrado = false %}
               {% for valor in total %}

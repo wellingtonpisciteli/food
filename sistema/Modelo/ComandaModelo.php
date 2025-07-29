@@ -250,6 +250,21 @@ class ComandaModelo
         }
     }
 
+    public function atualizar_em_preparo(int $id_mesa)
+    {
+        $tabelas = ['lanches', 'entrega_retirada'];
+
+        foreach ($tabelas as $tabela) {
+            $query = "UPDATE {$tabela} SET em_preparo = :ativado WHERE id_mesa = :idMesa";
+
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->execute([
+                'ativado' => 1,
+                'idMesa' => $id_mesa
+            ]);
+        }
+    }
+
     public function atualizarLanche(array $dados, int $id, int $idCardapio, int $id_mesa)
     {
         $dados['id'] = $id;

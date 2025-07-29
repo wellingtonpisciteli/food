@@ -450,6 +450,9 @@ class ComandaViewControlador extends Controlador
     {
         $obj = (new HelpersModelo());
 
+        $buscaCliente = $obj->buscaCliente($id_mesa);
+        $cliente = $buscaCliente->cliente ?? null;
+
         $buscaMesa = $obj->buscaId_mesa("total", $id_mesa);
         $mesa = $buscaMesa->mesa ?? 0;
 
@@ -457,45 +460,14 @@ class ComandaViewControlador extends Controlador
         $adicionais = $obj->buscaIds_mesa("adicionais", $id_mesa);
         $bebidas = $obj->buscaIds_mesa("bebidas", $id_mesa);
 
-        $connector = new FilePrintConnector("php://output");
-        $printer = new Printer($connector);
-
-        $printer->text("LANCHONETE DO ZÉ\r\n");
-        $printer->text("Mesa: $mesa\r\n");
-        $printer->text("----------------------\r\n");
-
-        // 🥪 Lanches + Adicionais
-        foreach ($lanches as $lanche) {
-            $printer->text($lanche->nome_lanche . "\r\n");
-
-            // Encontra adicionais relacionados a esse lanche
-            foreach ($adicionais as $adicional) {
-                if ($adicional->id == $lanche->id_lanche) {
-                    $printer->text("  " . $adicional->nome_adicional . "\r\n");
-                }
-            }
-        }
-
-        // 🥤 Bebidas
-        if (!empty($bebidas)) {
-            $printer->text("Bebidas:\r\n");
-            foreach ($bebidas as $bebida) {
-                $printer->text($bebida->nome_bebida . " - " . $bebida->tamanho_bebida . "\r\n");
-            }
-        }
-
-        $printer->text("----------------------\r\n");
-        $printer->text("Obrigado pela preferência!\r\n");
-        $printer->cut();
-        $printer->close();
-
         // Envia os dados para o HTML também
         echo $this->template->renderizar('imprimir.html', [
             'titulo' => 'Imprimir',
             'mesa' => $mesa,
             'lanches' => $lanches,
             'adicionais' => $adicionais,
-            'bebidas' => $bebidas
+            'bebidas' => $bebidas,
+            'cliente' => $cliente
         ]);
     }
 }

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block conteudo %}
+
+  
+  <header class="cardapio-header"
+    style="margin-top: 15px; margin-bottom: 10px; justify-content: center; display: flex;">
+    <div class="linha-com-texto">
+      <span>EDITAR USUÁRIOS</span>
+    </div>
+  </header>
+
+  <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+    <button class="btnMostrarLanches btn fs-5" style="background-color: darkblue; border-radius: 2px; border: black; width: 170px; color: white; font-weight: bold;">
+      Mostrar Todos
+    </button>
+  </div>
+
+  {% set usuarios_exibidos = [] %}
+
+  
+  <div style="display: none; gap: 10px; flex-wrap: wrap; width: 100%; justify-content: center; padding: 10px;"
+    id="lancheButtonsContainer">
+    {% for usuario in usuarios %}
+      {% if usuario.id not in usuarios_exibidos %}
+        <button class="btnAbrirAberto btn fs-5" style="background-color: darkgray; border-radius: 2px; border: black; width: auto; color: white; font-weight: bold; margin-bottom: 10px;"
+          data-id-mesa="{{ usuario.id }}">
+          <span style="color: black; font-weight: bold;">
+            {{ usuario.nome }}
+          </span>
+        </button>
+        {% set usuarios_exibidos = usuarios_exibidos | merge([usuario.id]) %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="bg-dark tabelaAdmin"> 
+    {% set usuarios_exibidos = [] %}
+
+    {% for usuario in usuarios %}
+        {% if usuario.id not in usuarios_exibidos %}
+          <div style="width: 100%; margin: auto;" class="lancheAberto" data-id-mesa="{{ usuario.id }}">
+                
+            <form action="{{ url('editarUsuario/' ~ usuario.id) }}" method="post" class="row g-3 needs-validation" novalidate id="form">
+
+                <header class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 10px; padding: 0px;">
+                    <h4 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <span>{{ usuario.nome }}</span>
+                        </div>
+                    </h4>
+                </header>
+
+                <div style="margin-top: 10px; margin-bottom: -10px;">
+                  {{ flash() }}
+                </div>
+
+                <div class="col-12">
+                    <label for="nomeUsuario" class="form-label" style="color: white; font-weight: bold;">NOME DO USUÁRIO</label>
+
+                    <input type="text" class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="nome" name="nome" value="{{ usuario.nome }}" required>
+                </div>
+
+                
+                <div class="col-12">
+                    <label for="email" class="form-label"  style="color: white; font-weight: bold;">E-MAIL DO USUÁRIO</label>
+
+                    <input class="form-control" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" id="email" name="email" value="{{ usuario.email }}" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="senha" class="form-label" style="color: white; font-weight: bold;">SENHA DO USUÁRIO</label>
+
+                    <input type="text" 
+                    class="form-control" 
+                    style="background-color: gainsboro; border-radius: 0px; font-weight: bold;" 
+                    id="senha" 
+                    name="senha" 
+                    value="{{ usuario.senha }}"  
+                    required>
+                </div>
+
+                <div class="col-md-4">    
+                    <label for="status" class="form-label" style="color: white; font-weight: bold;">STATUS DA CONTA</label>
+
+                    <select class="form-select" id="status" name="status" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;">
+                        <option value="1" {% if usuario.status == 1 %}selected{% endif %}>Ativada</option>
+                        <option value="0" {% if usuario.status == 0 %}selected{% endif %}>Desativada</option>
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                     <label for="level" class="form-label" style="color: white; font-weight: bold;">TIPO DE USUÁRIO</label>
+
+                    <select class="form-select" id="level" name="level" style="background-color: gainsboro; border-radius: 0px; font-weight: bold;">
+                        <option value="1" {% if usuario.level == 1 %}selected{% endif %}>Atendente</option>
+                        <option value="2" {% if usuario.level == 2 %}selected{% endif %}>Caixa</option>
+                        <option value="3" {% if usuario.level == 3 %}selected{% endif %}>Administrador</option>
+                    </select>
+                </div>
+                
+                <section class="text-center" id="adicionarHeader" style="background-color: black; margin-top: 40px; padding: 0px;">
+                    <h3 class="text-white text-center">
+                        <div class="linha-com-texto">
+                            <input type="submit" 
+                            id="btnCadastrar"
+                            class="btn" 
+                            value="EDITAR" 
+                            style="background-color: darkgreen; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10px; margin-right: 2.5px;">
+
+                            <a href="#" 
+                            class="btn excluir"
+                            data-url="{{ url('excluirUsuario/' ~ usuario.id ) }}"
+                            style="background-color: darkred; border-radius: 2px; border: black; width: 150px; color: white; font-weight: bold; margin-top: 10.5px; margin-left: 2.5px;">
+                            EXCLUIR
+                            </a>
+                        </div>
+                    </h3>
+                </section>
+            </form>            
+          </div>
+          {% set usuarios_exibidos = usuarios_exibidos | merge([usuario.id]) %}
+        {% endif %} 
+    {% endfor %}
+  </div>
+
+<script src="{{ url('templates/comanda/assets/js/admin/editarUsuario.js') }}" defer></script>
+
+{% endblock %}

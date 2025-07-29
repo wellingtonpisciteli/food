@@ -240,47 +240,23 @@ class ComandaControlador extends Controlador
         }
     }
 
-    public function imprimir($id_mesa)
+    public function em_preparo(int $id_mesa)
     {
+        (new ComandaModelo())->atualizar_em_preparo($id_mesa);
+
         $obj = (new HelpersModelo());
 
-        $buscaMesa = $obj->buscaId_mesa("total", $id_mesa);
-        $mesa = $buscaMesa->mesa ?? 0;
+        $buscaTipo = $obj->buscaTipo($id_mesa);
+        $cliente = $buscaTipo->tipo ?? null;
 
-        $lanches = $obj->buscaIds_mesa("lanches", $id_mesa);
-        $adicionais = $obj->buscaIds_mesa("adicionais", $id_mesa);
-        $bebidas = $obj->buscaIds_mesa("bebidas", $id_mesa);
-
-        $connector = new FilePrintConnector("php://output");
-        $printer = new Printer($connector);
-
-        $printer->text("LANCHONETE DO ZÉ\r\n");
-        $printer->text("Mesa: $mesa\r\n");
-        $printer->text("----------------------\r\n");
-
-        // 🥪 Lanches + Adicionais
-        foreach ($lanches as $lanche) {
-            $printer->text($lanche->nome_lanche . "\r\n");
-
-            // Encontra adicionais relacionados a esse lanche
-            foreach ($adicionais as $adicional) {
-                if ($adicional->id == $lanche->id_lanche) {
-                    $printer->text("  " . $adicional->nome_adicional . "\r\n");
-                }
-            }
+        $this->mensagem->sucesso('PEDIDO IMPRESSO COM SUCESSO!')->flash();
+        
+        if ($cliente == "entrega"){
+            Helpers::redirecionar('entregasAbertas');
+        }elseif ($cliente == "retirada"){
+            Helpers::redirecionar('retiradasAbertas');
+        }else{
+            Helpers::redirecionar("pedidosAbertos");
         }
-
-        // 🥤 Bebidas
-        if (!empty($bebidas)) {
-            $printer->text("Bebidas:\r\n");
-            foreach ($bebidas as $bebida) {
-                $printer->text($bebida->nome_bebida . " - " . $bebida->tamanho_bebida . "\r\n");
-            }
-        }
-
-        $printer->text("----------------------\r\n");
-        $printer->text("Obrigado pela preferência!\r\n");
-        $printer->cut();
-        $printer->close();
     }
 }

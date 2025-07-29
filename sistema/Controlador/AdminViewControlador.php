@@ -101,4 +101,15 @@ class AdminViewControlador extends Controlador
             'tamanhoBebida' => $tamanhoBebida
         ]));
     }
+
+    public function editarUsuarios(){
+        $obj = (new HelpersModelo());
+
+        $usuarios = $obj->ler("usuarios", "id", "ASC");
+
+        echo ($this->template->renderizar('admin/editarUsuarios.html', [
+            'titulo' => 'Editar Usuarios',
+            'usuarios' => $usuarios
+        ]));
+    }
 }

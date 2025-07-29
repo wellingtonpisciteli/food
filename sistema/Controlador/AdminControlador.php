@@ -141,6 +141,30 @@ class AdminControlador extends Controlador
         }
     }
 
+    public function editarUsuario(int $id): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            $data_atual = Helpers::dataAtual('Y-m-d H:i:s');
+
+            if (!empty($dados['nome'])) {
+                $dadosUsuario = [
+                    'level' => $dados['level'],
+                    'nome' => $dados['nome'],
+                    'email' => $dados['email'],
+                    'senha' => $dados['senha'],
+                    'status' => $dados['status'],
+                    'atualizado_em' => $data_atual
+                ];
+    
+                (new AdminModelo())->editarUsuario($dadosUsuario, $id);            
+            }          
+        }  
+
+        $this->mensagem->informa('USUÁRIO EDITADO COM SUCESSO!')->flash();
+        Helpers::redirecionar('editarUsuarios');        
+    }
+
     public function excluirItem(int $id, int $controle)
     {
         if($controle == 1){
@@ -162,5 +186,14 @@ class AdminControlador extends Controlador
             Helpers::redirecionar('editarLanches');
         }
     }
+
+    public function excluirUsuario(int $id)
+    {
+        (new AdminModelo())->excluirUsuarios($id);
+        
+        $this->mensagem->alerta('USUÁRIO EXCLUÍDO COM SUCESSO!')->flash();
+        Helpers::redirecionar('editarUsuarios');
+    }
+
 
 }

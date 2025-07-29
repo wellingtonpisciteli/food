@@ -67,10 +67,38 @@ class HelpersModelo
 
     public function buscaId_mesa(string $tabela, int $id_mesa): object
     {
-        $query = "SELECT * FROM {$tabela} WHERE id_mesa={$id_mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
+        $query = "SELECT * FROM {$tabela} WHERE id_mesa=:id_mesa";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->bindParam(':id_mesa', $id_mesa, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $resultado ?: (object)[];
+    }
+
+    public function buscaCliente(int $id_mesa): object
+    {
+        $query = "SELECT cliente FROM entrega_retirada WHERE id_mesa = :id_mesa LIMIT 1";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->bindParam(':id_mesa', $id_mesa, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $resultado ?: (object)[];
+    }
+
+    public function buscaTipo(int $id_mesa): object
+    {
+        $query = "SELECT tipo FROM entrega_retirada WHERE id_mesa = :id_mesa LIMIT 1";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->bindParam(':id_mesa', $id_mesa, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+
+        return $resultado ?: (object)[];
     }
 
     public function buscaIds_mesa(string $tabela, int $id_mesa): array
