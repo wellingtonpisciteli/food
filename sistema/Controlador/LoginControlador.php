@@ -3,13 +3,15 @@
 namespace sistema\Controlador;
 
 use sistema\Nucleo\Controlador;
-use sistema\Modelo\LoginModelo;
-use sistema\Modelo\HelpersMode;
 use sistema\Modelo\HelpersModelo;
 use sistema\Nucleo\Helpers;
+use sistema\Nucleo\Sessao;
+use sistema\Controlador\UsuarioControlador;
 
 class LoginControlador extends Controlador
 {
+    protected $user;
+
     public function __construct()
     {
         parent::__construct('templates\comanda\views');
@@ -19,14 +21,18 @@ class LoginControlador extends Controlador
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
-            $email = $dados['email'];
             
             if (isset($dados)) {
                 if ($this->checarDados($dados, $usuario)) {
 
-                    $this->mensagem->sucesso("Seja bem vindo ao PedeFácil, {$usuario->nome}.")->flash();
-                    Helpers::redirecionar('comanda');     
-                    return;    
+                    $this->user = UsuarioControlador::usuario();
+
+                    if ($this->user){
+                        $this->mensagem->sucesso("Seja bem vindo ao PedeFácil, {$usuario->nome}.")->flash();
+
+                        Helpers::redirecionar('comanda');     
+                        return;    
+                    }
                 }
             }
         }
@@ -53,17 +59,33 @@ class LoginControlador extends Controlador
         $usuario = (new HelpersModelo())->buscaPorEmail($email);
 
         if ($usuario === null) {
-            $this->mensagem->erro("E-mail não encontrado!")->flash();
+            $this->mensagem->erro("Dados inválidos!")->flash();
             return false;
         }
         if($usuario->senha !== $senha){
-            $this->mensagem->erro("Senha inválida!")->flash();
+            $this->mensagem->erro("Dados inválidos!")->flash();
             return false;
         }
         if($usuario->status !== 1){
             $this->mensagem->erro("Ative sua conta para fazer login!")->flash();
             return false;
         }
+
+        (new Sessao())->criar('usuarioId', $usuario->id);
+        
         return true;
     }
+
+    public function logout(): void
+    {
+        $this->user = UsuarioControlador::usuario();
+        $sessao = new Sessao();
+
+        $sessao->limpar('usuarioId');
+
+        $this->mensagem->sucesso("Você deslogou do PedeFácil!")->flash();
+        Helpers::redirecionar('login');     
+
+    }
+    
 }

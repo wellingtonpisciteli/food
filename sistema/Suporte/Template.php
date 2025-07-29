@@ -46,6 +46,11 @@ class Template{
                 new \Twig\TwigFunction('flash', function(){
                     return Helpers::flash();
                 })
+            ),
+            $this->twig->addFunction(
+                new \Twig\TwigFunction('usuario', function(){
+                    return UsuarioControlador::usuario();
+                })
             )
         );
     }

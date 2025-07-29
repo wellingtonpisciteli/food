@@ -61,11 +61,18 @@
             <!-- Botão de Perfil -->
             <div class="d-flex align-items-center">
                 <button class="btn btn-outline-light fs-5" id="btnSidebar">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#ccc" viewBox="0 2 16 16">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#888" viewBox="0 2 16 16">
                         <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
                         <path d="M2 14s-1 0-1-1 1-4 7-4 7 3 7 4-1 1-1 1H2z"/>
                     </svg>
-                    <i class="bi bi-person-circle"></i> Wellington
+                    <i class="bi bi-person-circle"></i>
+                    {% if usuario().level == 1 %}
+                        Atendente {{ usuario().nome|split(' ')[0] }}
+                    {% elseif usuario().level == 2 %}
+                        Caixa {{ usuario().nome|split(' ')[0] }}
+                    {% else %}
+                        Adm {{ usuario().nome|split(' ')[0] }}
+                    {% endif %}
                 </button>
             </div>
         </div>
@@ -79,8 +86,7 @@
         <button id="closeSidebar" class="btn-close-custom" title="Fechar">&times;</button>
     </div>
     <hr>
-
-    <a href="#"><i class="bi bi-person-badge-fill"></i> Perfil</a>
+    
     <a href="{{url('cadastrarItem')}}"><i class="bi bi-plus-square-fill"></i> Cadastrar Itens</a>
 
     <!-- Menu com subitens -->
@@ -100,10 +106,43 @@
 
     <a href="{{url('cadastrarUsuario')}}"><i class="bi bi-person-plus-fill"></i> Cadastrar Usuários</a>
     <a href="{{url('editarUsuarios')}}"><i class="bi bi-pencil-fill"></i> Editar Usuários</a>
-    <a href="#"><i class="bi bi-box-arrow-right"></i> Sair</a>
+    <a href="{{url('logout')}}"><i class="bi bi-box-arrow-right"></i> Sair</a>
 </div>
 
+<input type="hidden" id="usuario-level" value="{{ usuario().level }}">
+
+
 <script>
+
+    // Pega o valor do level via input hidden
+    const usuarioLevel = parseInt(document.getElementById('usuario-level').value, 10);
+
+    function mostrarInfoSwal() {
+        Swal.fire({
+            title: 'Acesso negado',
+            text: 'Apenas administradores podem acessar esta área.',
+            icon: 'warning',
+            confirmButtonText: 'Entendi',
+            confirmButtonColor: 'darkred',
+            backdrop: true
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const links = document.querySelectorAll('#sidebarProfile a');
+
+        links.forEach(function (link) {
+            if (link.href.includes('logout')) return;
+
+            link.addEventListener('click', function (e) {
+                if (usuarioLevel !== 3) {
+                    e.preventDefault();
+                    mostrarInfoSwal();
+                }
+            });
+        });
+    });
+
     // Toggle do submenu
     document.querySelectorAll('.menu-toggle').forEach(function (toggle) {
         toggle.addEventListener('click', function (e) {

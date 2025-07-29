@@ -4,7 +4,8 @@ namespace sistema\Nucleo;
 
 use sistema\Suporte\Template;
 
-class Controlador{
+class Controlador
+{
     protected Template $template;
     protected Mensagem $mensagem;
 

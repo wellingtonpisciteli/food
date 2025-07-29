@@ -4,11 +4,8 @@ namespace sistema\Controlador;
 
 use sistema\Nucleo\Controlador;
 use sistema\Nucleo\Helpers;
-use sistema\Modelo\ComandaModelo;
 use sistema\Modelo\HelpersModelo;
-use sistema\Nucleo\Conexao;
-use Mike42\Escpos\Printer;
-use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use sistema\Nucleo\Sessao;
 
 /**
  * Controlador para a seção pública do site.
@@ -18,23 +15,22 @@ use Mike42\Escpos\PrintConnectors\FilePrintConnector;
  */
 class AdminViewControlador extends Controlador
 {
-    /**
-     * Construtor da classe.
-     * Define o diretório base para os arquivos de visualização do site.
-     *
-     * @param string $diretorio_visualizacoes O caminho para o diretório contendo os arquivos de visualização.
-     */
+    protected $usuario;
+
     public function __construct()
     {
         parent::__construct('templates\comanda\views');
 
-        // $usuario = false;
+        $this->usuario = UsuarioControlador::usuario();
 
-        // if (!$usuario){
-        //     $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
+        if (!$this->usuario){
+            $this->mensagem->erro("Faça login para ter acesso ao sistema!")->flash();
 
-        //     Helpers::redirecionar('login');
-        // }
+            $sessao = new Sessao();
+            $sessao->limpar('usuarioId');
+
+            Helpers::redirecionar('login');
+        }
     }
 
     public function cadastrarItem(){

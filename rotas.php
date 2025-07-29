@@ -7,6 +7,7 @@ try {
     SimpleRouter::setDefaultNamespace('sistema\Controlador');
 
     SimpleRouter::match(['get', 'post'], URL_SITE . 'login', 'LoginControlador@login');
+    SimpleRouter::match(['get', 'post'], URL_SITE . 'logout', 'LoginControlador@logout');
 
 
     SimpleRouter::get(URL_SITE . 'comanda', 'ComandaViewControlador@comanda');
