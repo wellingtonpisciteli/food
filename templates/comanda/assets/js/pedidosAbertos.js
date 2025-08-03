@@ -113,7 +113,7 @@ document.querySelectorAll('.editar-mesa').forEach(botao => {
                 <input type="text" id="novaMesa" class="swal2-input" placeholder="Nova mesa">
             `,
             showCancelButton: true,
-            confirmButtonColor: 'blue',
+            confirmButtonColor: 'darkblue',
             cancelButtonColor: 'darkred',
             confirmButtonText: 'Atualizar',
             cancelButtonText: 'Cancelar',

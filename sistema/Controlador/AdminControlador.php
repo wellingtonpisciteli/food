@@ -6,6 +6,7 @@ use sistema\Nucleo\Controlador;
 use sistema\Nucleo\Helpers;
 use sistema\Modelo\AdminModelo;
 use sistema\Controlador\UsuarioControlador;
+use sistema\Modelo\HelpersModelo;
 use sistema\Nucleo\Sessao;
 
 /**
@@ -39,21 +40,25 @@ class AdminControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if(!empty($dados['lanche'])){
+            if(!empty($dados['lanche']) && $this->usuario->level == 3){
                 (new AdminModelo())->cadastrarLanche($dados);
             }
 
-            if(!empty($dados['adicional'])){
+            if(!empty($dados['adicional']) && $this->usuario->level == 3){
                 (new AdminModelo())->cadastrarAdicional($dados);
             }
 
-            if(!empty($dados['bebida'])){
+            if(!empty($dados['bebida']) && $this->usuario->level == 3){
                 (new AdminModelo())->cadastrarBebida($dados);
             }
         
         }
 
-        $this->mensagem->sucesso('NOVO ITEM CADASTRADO COM SUCESSO!')->flash();
+        if ($this->usuario->level == 3){
+            $this->mensagem->sucesso('NOVO ITEM CADASTRADO COM SUCESSO!')->flash();
+        }else{
+            $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+        }
         Helpers::redirecionar('cadastrarItem');
     }
 
@@ -61,13 +66,23 @@ class AdminControlador extends Controlador
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
+            $email = $dados['email'];
+            $verificaEmail = (new HelpersModelo())->buscaPorEmail($email);
 
-            if(!empty($dados['usuario'])){
-                (new AdminModelo())->cadastrarUsuario($dados);
+            if(!empty($dados['usuario']) && $this->usuario->level == 3){
+                if (!$verificaEmail){
+                    (new AdminModelo())->cadastrarUsuario($dados);
+                }
             }
         }
 
-        $this->mensagem->sucesso('USUÁRIO CADASTRADO COM SUCESSO!')->flash();
+        if ($this->usuario->level == 3 && !$verificaEmail){
+            $this->mensagem->sucesso('NOVO USUÁRIO CADASTRADO COM SUCESSO!')->flash();
+        }else if($this->usuario->level == 3 && $verificaEmail){
+            $this->mensagem->erro('E-MAIL JÁ EXISTENTE!')->flash();
+        }else{
+            $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+        }
         Helpers::redirecionar('cadastrarUsuario');
     }
     
@@ -77,7 +92,7 @@ class AdminControlador extends Controlador
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
 
-            if (!empty($dados['lanche']) || !empty($dados['valor']) ) {
+            if ((!empty($dados['lanche']) || !empty($dados['valor'])) && $this->usuario->level == 3 ) {
                 $valorNumerico = floatval(
                     str_replace(',', '.', preg_replace('/[^\d,]/', '', $dados['valor']))
                 );
@@ -90,21 +105,21 @@ class AdminControlador extends Controlador
                 (new AdminModelo())->editarLanche($dadosLanche, $id);            
             }
 
-            if (!empty($dados['ingredientes'])) {
+            if (!empty($dados['ingredientes']) && $this->usuario->level == 3) {
 
                 $ingredientes = $dados['ingredientes'];
     
                 (new AdminModelo())->editarIngredientes($ingredientes, $id);
             }
 
-            if (!empty($dados['bebida'])) {
+            if (!empty($dados['bebida']) && $this->usuario->level == 3) {
 
                 $bebida = $dados['bebida'];
     
                 (new AdminModelo())->editarBebida($bebida, $id);
             }
 
-            if (!empty($dados['tamanhoBebida']) || !empty($dados['valorBebida'])) {
+            if ((!empty($dados['tamanhoBebida']) || !empty($dados['valorBebida'])) && $this->usuario->level == 3) {
 
                 $tamanho = $dados['tamanhoBebida'];
                 $valor = floatval(
@@ -115,7 +130,7 @@ class AdminControlador extends Controlador
                 (new AdminModelo())->editarTamanhoBebida($tamanho,  $valor, $controle);
             }
 
-            if (!empty($dados['adicional']) || !empty($dados['valorAdicional'])) {
+            if ((!empty($dados['adicional']) || !empty($dados['valorAdicional'])) && $this->usuario->level == 3) {
 
                 $adicional = $dados['adicional'];
                 $valorAdicional = floatval(
@@ -127,25 +142,47 @@ class AdminControlador extends Controlador
                                 
         }
         
-        if($dados['lanche']){
-            $this->mensagem->informa('LANCHE EDITADO COM SUCESSO!')->flash();
-            Helpers::redirecionar('editarLanches');
-        }else if($dados['bebida']){
-            $this->mensagem->informa('BEBIDA EDITADA COM SUCESSO!')->flash();
-            Helpers::redirecionar('editarBebidas');
+        if ($this->usuario->level == 3){
+            if($dados['lanche']){
+                $this->mensagem->informa('LANCHE EDITADO COM SUCESSO!')->flash();
+                Helpers::redirecionar('editarLanches');
+            }else if($dados['bebida']){
+                $this->mensagem->informa('BEBIDA EDITADA COM SUCESSO!')->flash();
+                Helpers::redirecionar('editarBebidas');
+            }else{
+                $this->mensagem->informa('ADICIONAL EDITADO COM SUCESSO!')->flash();
+                Helpers::redirecionar('editarAdicionais');
+            }
         }else{
-            $this->mensagem->informa('ADICIONAL EDITADO COM SUCESSO!')->flash();
-            Helpers::redirecionar('editarAdicionais');
+            if($dados['lanche']){
+                $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+                Helpers::redirecionar('editarLanches');
+            }else if($dados['bebida']){
+                $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+                Helpers::redirecionar('editarBebidas');
+            }else{
+                $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+                Helpers::redirecionar('editarAdicionais');
+            }
         }
+        
     }
 
     public function editarUsuario(int $id): void
     {
+        $emailDuplicado = false;
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $dados = filter_input_array(INPUT_POST, FILTER_DEFAULT);
             $data_atual = Helpers::dataAtual('Y-m-d H:i:s');
+            $email = $dados['email'];
 
-            if (!empty($dados['nome'])) {
+            $usuarioComMesmoEmail = (new HelpersModelo())->buscaPorEmail($email);
+
+            // Verifica se o e-mail é duplicado (pertence a outro usuário)
+            $emailDuplicado = $usuarioComMesmoEmail && $usuarioComMesmoEmail->id != $id;
+
+            if (!empty($dados['nome']) && $this->usuario->level == 3) {
                 $dadosUsuario = [
                     'level' => $dados['level'],
                     'nome' => $dados['nome'],
@@ -154,42 +191,74 @@ class AdminControlador extends Controlador
                     'status' => $dados['status'],
                     'atualizado_em' => $data_atual
                 ];
-    
-                (new AdminModelo())->editarUsuario($dadosUsuario, $id);            
-            }          
-        }  
 
-        $this->mensagem->informa('USUÁRIO EDITADO COM SUCESSO!')->flash();
-        Helpers::redirecionar('editarUsuarios');        
+                if (!$emailDuplicado) {
+                    (new AdminModelo())->editarUsuario($dadosUsuario, $id);
+                }
+            }
+        }
+
+        // Mensagens
+        if ($this->usuario->level == 3 && !$emailDuplicado) {
+            $this->mensagem->sucesso('USUÁRIO EDITADO COM SUCESSO!')->flash();
+        } else if ($this->usuario->level == 3 && $emailDuplicado) {
+            $this->mensagem->erro('E-MAIL JÁ EXISTENTE!')->flash();
+        } else {
+            $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+        }
+
+        Helpers::redirecionar('editarUsuarios');
     }
 
     public function excluirItem(int $id, int $controle)
     {
-        if($controle == 1){
-            (new AdminModelo())->excluirAdicional($id);
-        }else if($controle == 2){
-            (new AdminModelo())->excluirBebida($id);
-        }else{
-            (new AdminModelo())->excluirLanche($id);
+        if ($this->usuario->level == 3){
+            if($controle == 1){
+                (new AdminModelo())->excluirAdicional($id);
+            }else if($controle == 2){
+                (new AdminModelo())->excluirBebida($id);
+            }else{
+                (new AdminModelo())->excluirLanche($id);
+            }
         }
 
-        if($controle == 1){
-            $this->mensagem->alerta('ADICIONAL EXCLUÍDO COM SUCESSO!')->flash();
-            Helpers::redirecionar('editarAdicionais');
-        }else if($controle == 2){
-            $this->mensagem->alerta('BEBIDA EXCLUÍDA COM SUCESSO!')->flash();
-            Helpers::redirecionar('editarBebidas');
+        if ($this->usuario->level == 3){
+            if($controle == 1){
+                $this->mensagem->alerta('ADICIONAL EXCLUÍDO COM SUCESSO!')->flash();
+                Helpers::redirecionar('editarAdicionais');
+            }else if($controle == 2){
+                $this->mensagem->alerta('BEBIDA EXCLUÍDA COM SUCESSO!')->flash();
+                Helpers::redirecionar('editarBebidas');
+            }else{
+                $this->mensagem->alerta('LANCHE EXCLUÍDO COM SUCESSO!')->flash();
+                Helpers::redirecionar('editarLanches');
+            }
         }else{
-            $this->mensagem->alerta('LANCHE EXCLUÍDO COM SUCESSO!')->flash();
-            Helpers::redirecionar('editarLanches');
+            if($controle == 1){
+                $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+                Helpers::redirecionar('editarAdicionais');
+            }else if($controle == 2){
+                $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+                Helpers::redirecionar('editarBebidas');
+            }else{
+                $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+                Helpers::redirecionar('editarLanches');
+            }
         }
+        
     }
 
     public function excluirUsuario(int $id)
     {
-        (new AdminModelo())->excluirUsuarios($id);
+        if ($this->usuario->level == 3){
+            (new AdminModelo())->excluirUsuarios($id);
+        }
         
-        $this->mensagem->alerta('USUÁRIO EXCLUÍDO COM SUCESSO!')->flash();
+        if ($this->usuario->level == 3){
+            $this->mensagem->alerta('USUÁRIO EXCLUÍDO COM SUCESSO!')->flash();
+        }else{
+            $this->mensagem->erro('APENAS ADMINISTRADORES PODEM FAZER ALTERAÇÕES!')->flash();
+        }
         Helpers::redirecionar('editarUsuarios');
     }
 

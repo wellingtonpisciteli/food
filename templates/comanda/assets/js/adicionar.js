@@ -13,7 +13,7 @@ if (numMesaInput) {
                     text: 'Escolha outro número',
                     icon: 'info',
                     confirmButtonText: 'OK',
-                    confirmButtonColor: 'blue'
+                    confirmButtonColor: 'darkblue'
                 });
             }
         })
@@ -107,7 +107,7 @@ enviarLancheBtns.forEach(btn => {
                     text: 'Selecione um número',
                     icon: 'question',
                     confirmButtonText: 'OK',
-                    confirmButtonColor: 'blue'  
+                    confirmButtonColor: 'darkblue'  
                 });
                 cont = 0
                 return;
@@ -261,7 +261,7 @@ enviarBebidaBtns.forEach(btn => {
                     text: 'Selecione um número',
                     icon: 'question',
                     confirmButtonText: 'OK',
-                    confirmButtonColor: 'blue'  
+                    confirmButtonColor: 'darkblue'  
                 });
                 cont = 0
                 return;
@@ -402,7 +402,7 @@ enviarIngredienteBtns.forEach(btn => {
                     text: 'Selecione um número',
                     icon: 'question',
                     confirmButtonText: 'OK',
-                    confirmButtonColor: 'blue'  
+                    confirmButtonColor: 'darkblue'  
                 });
                 cont = 0
                 return;
@@ -544,7 +544,7 @@ removerIngredienteBtns.forEach(btn => {
                     text: 'Selecione um número',
                     icon: 'question',
                     confirmButtonText: 'OK',
-                    confirmButtonColor: 'blue'  
+                    confirmButtonColor: 'darkblue'  
                 });
                 cont = 0
                 return;
@@ -762,7 +762,7 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
     confirmButtonText: '✅ Enviar Pedido',
     cancelButtonText: '🛑 Manter Pedido',
     reverseButtons: true,
-    confirmButtonColor: 'blue',
+    confirmButtonColor: 'darkblue',
     cancelButtonColor: 'darkred',
 });
 }
@@ -806,7 +806,7 @@ btnDiv.addEventListener("click", (e) => {
                 text: 'Defina um nome e um número para retirada.',
                 icon: 'warning',
                 confirmButtonText: 'OK',
-                confirmButtonColor: 'blue',   
+                confirmButtonColor: 'darkblue',   
         });
         return
         }
@@ -829,7 +829,7 @@ btnDiv.addEventListener("click", (e) => {
                 text: 'Para entrega, todos os campos devem estar preenchidos corretamente.',
                 icon: 'warning',
                 confirmButtonText: 'OK',
-                confirmButtonColor: 'blue',
+                confirmButtonColor: 'darkblue',
             });
             return;
         }
@@ -861,7 +861,7 @@ btnDiv.addEventListener("click", (e) => {
             text: 'Selecione um item do cárdapio.',
             icon: 'info',
             confirmButtonText: 'OK',
-            confirmButtonColor: 'blue',   
+            confirmButtonColor: 'darkblue',   
         });
         return
     }
@@ -873,7 +873,7 @@ btnDiv.addEventListener("click", (e) => {
             text: 'Selecione "Em ecolha..."',
             icon: 'question',
             confirmButtonText: 'OK',
-            confirmButtonColor: 'blue',  
+            confirmButtonColor: 'darkblue',  
         });
         return
     }
@@ -920,7 +920,7 @@ btnDivCancelar.addEventListener('click', () => {
         cancelButtonText: 'Não, manter',
         reverseButtons: true,
         confirmButtonColor: 'darkred',  // cor do botão confirmar
-        cancelButtonColor: 'blue',
+        cancelButtonColor: 'darkblue',
     }).then((result) => {
         if (result.isConfirmed) {
             location.reload();

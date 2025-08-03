@@ -143,10 +143,10 @@ class HelpersModelo
 
     public function buscaPorEmail(string $email): object|null
     {
-        $query = "SELECT * FROM usuarios WHERE email= '$email'";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch(PDO::FETCH_OBJ); // Garante retorno como objeto
-        return $resultado ?: null;
+        $query = "SELECT * FROM usuarios WHERE email = :email";
+        $stmt = Conexao::getInstancia()->prepare($query);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
     }
-
 }

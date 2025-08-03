@@ -241,7 +241,7 @@ botoesAbrirMesa.forEach(botao => {
             text: "Esta ação não pode ser desfeita!",
             icon: 'question',
             showCancelButton: true,
-            confirmButtonColor: 'blue',
+            confirmButtonColor: 'darkblue',
             cancelButtonColor: 'darkred',
             confirmButtonText: 'Sim, abrir!',
             cancelButtonText: 'Cancelar'

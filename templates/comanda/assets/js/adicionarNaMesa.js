@@ -727,7 +727,7 @@ function mostrarConfirmacaoPedido(listaPedidos, listaBebidas, total, comandaMesa
         confirmButtonText: '✅ Enviar Pedido',
         cancelButtonText: '🛑 Manter Pedido',
         reverseButtons: true,
-        confirmButtonColor: 'blue',      // azul para confirmar
+        confirmButtonColor: 'darkblue',      // azul para confirmar
         cancelButtonColor: 'darkred',       
     });
 }

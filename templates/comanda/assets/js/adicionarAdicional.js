@@ -374,7 +374,7 @@ function mostrarConfirmacaoAdicionais(listaPedidos, total, comandaMesa) {
         confirmButtonText: '✅ Confirmar',
         cancelButtonText: '🛑 Cancelar',
         reverseButtons: true,
-        confirmButtonColor: 'blue',      // azul para confirmar
+        confirmButtonColor: 'darkblue',      // azul para confirmar
         cancelButtonColor: 'darkred'     // vermelho escuro para cancelar
     });
 }
@@ -387,7 +387,7 @@ btnDiv.addEventListener("click", (e) => {
             text: 'Selecione um item do cárdapio.',
             icon: 'info',
             confirmButtonText: 'OK',
-            confirmButtonColor: 'blue'
+            confirmButtonColor: 'darkblue'
         });
         return
     }
@@ -422,7 +422,7 @@ btnDivCancelar.addEventListener('click', () => {
         cancelButtonText: 'Não, manter',
         reverseButtons: true,
         confirmButtonColor: 'darkred',  // cor do botão confirmar
-        cancelButtonColor: 'blue'       // cor do botão cancelar
+        cancelButtonColor: 'darkblue'       // cor do botão cancelar
         
     }).then((result) => {
         if (result.isConfirmed) {
