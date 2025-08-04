@@ -4,7 +4,7 @@ namespace sistema\Modelo;
 
 use sistema\Nucleo\Conexao;
 use sistema\Modelo\HelpersModelo;
-
+use sistema\Nucleo\Helpers;
 
 class AdminModelo
 {
@@ -114,7 +114,7 @@ class AdminModelo
         $level = $dados["level"] ?? 1;
         $nome = $dados['usuario'] ?? null;
         $email = $dados['email'] ?? null;
-        $senha = $dados['senha'] ?? null;
+        $senha = Helpers::gerarSenha($dados['senha']) ?? null;
         $status = $dados['status'] ?? 1;
         $cadastrado_em = $dados['cadastrado_em'] ?? date('Y-m-d H:i:s');
 

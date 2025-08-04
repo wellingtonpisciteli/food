@@ -62,7 +62,7 @@ class LoginControlador extends Controlador
             $this->mensagem->erro("Dados inválidos!")->flash();
             return false;
         }
-        if($usuario->senha !== $senha){
+        if (!Helpers::checarSenha($senha, $usuario->senha)) {
             $this->mensagem->erro("Dados inválidos!")->flash();
             return false;
         }

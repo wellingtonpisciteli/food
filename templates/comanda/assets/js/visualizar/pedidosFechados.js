@@ -125,7 +125,7 @@ botoesAbrirMesa.forEach(botao => {
                 text: 'Esta mesa já está aberta!',
                 icon: 'info',
                 confirmButtonText: 'OK',
-                confirmButtonColor: 'blue'
+                confirmButtonColor: 'darkblue'
             });
             return; 
         }

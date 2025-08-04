@@ -175,7 +175,6 @@ function mostrarSubTotal(total) {
         title: '🧮 <span style="color: black;">SubTotal</span>',
         html: `
             <div style="text-align: left;">
-                <p style="color: black;"><strong>Mesa: ${numMesa}</strong></p>
                 <p style="margin-top: 10px; color: black;"><strong>SubTotal:</strong> <span style="color: #198754;"><strong>R$ ${totalTexto} </strong></span></p>
             </div>
         `,
@@ -185,7 +184,7 @@ function mostrarSubTotal(total) {
         confirmButtonText: '✅ Cobrar',
         reverseButtons: false,
         cancelButtonColor: 'darkred',
-        confirmButtonColor: 'blue'
+        confirmButtonColor: 'darkblue'
     });
 }
 
@@ -197,7 +196,6 @@ function mostrarTotal(total) {
         title: '🧾 <span style="color: black;">Total</span>',
         html: `
             <div style="text-align: left;">
-                <p style="color: black;"><strong>Mesa: ${numMesa}</strong></p>
                 <p style="margin-top: 10px; color: black;"><strong>Total:</strong> <span style="color: #198754;"><strong>R$ ${totalTexto} </strong></span></p>
             </div>
         `,
@@ -207,7 +205,7 @@ function mostrarTotal(total) {
         confirmButtonText: '✅ Cobrar',
         reverseButtons: false,
         cancelButtonColor: 'darkred',
-        confirmButtonColor: 'blue'
+        confirmButtonColor: 'darkblue'
     });
 }
 
@@ -242,7 +240,7 @@ btnDivCancelar.addEventListener('click', (e) => {
             text: 'Selecione um item',
             icon: 'info',
             confirmButtonText: 'OK',
-            confirmButtonColor: 'blue'  
+            confirmButtonColor: 'darkblue'  
         });
         return
     }

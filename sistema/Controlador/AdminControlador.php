@@ -187,7 +187,7 @@ class AdminControlador extends Controlador
                     'level' => $dados['level'],
                     'nome' => $dados['nome'],
                     'email' => $dados['email'],
-                    'senha' => $dados['senha'],
+                    'senha' => Helpers::gerarSenha($dados['senha']),
                     'status' => $dados['status'],
                     'atualizado_em' => $data_atual
                 ];

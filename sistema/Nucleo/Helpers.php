@@ -62,4 +62,14 @@ class Helpers{
             Helpers::redirecionar('pedidosAbertos');
         }
     }
+
+    public static function gerarSenha(string $senha): string
+    {
+        return password_hash($senha, PASSWORD_DEFAULT, ['const' => 10]);
+    }
+
+    public static function checarSenha(string $senha, string $hash): bool
+    {
+        return password_verify($senha, $hash);
+    }
 }

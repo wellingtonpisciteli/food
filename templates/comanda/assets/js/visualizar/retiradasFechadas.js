@@ -93,7 +93,7 @@ botoesExcluir.forEach(botao => {
             showCancelButton: true,
             confirmButtonColor: 'darkred',
             cancelButtonColor: 'darkblue',
-            confirmButtonText: 'Sim, excluir entrega!',
+            confirmButtonText: 'Sim, excluir!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
@@ -168,46 +168,29 @@ botoesCliente.forEach(function (botao) {
 
 botoesTotal.forEach(function (botao) {
     botao.addEventListener('click', function () {
-        const container = botao.parentElement.parentElement;
-        const totalStr = container.querySelector('.total-entrega')?.value || 'Não informado';
-        const formaStr = container.querySelector('.forma-entrega')?.value || 'Não informado';
+    const container = botao.parentElement.parentElement;
+    const total = container.querySelector('.total-entrega')?.value || 'Não informado';
+    const forma = container.querySelector('.forma-entrega')?.value || 'Não informado';
 
-        const total = parseFloat(totalStr.replace('.', '').replace(',', '.'));
-        const trocoMatch = formaStr.match(/[\d,.]+/);
-        const troco = trocoMatch ? parseFloat(trocoMatch[0].replace('.', '').replace(',', '.')) : 0;
-
-        const diferenca = troco - total;
-
-        // Verifica se a forma de pagamento menciona troco
-        const mostrarTroco = formaStr.toLowerCase().includes('troco');
-
-        // Define o HTML do troco somente se for necessário
-        const trocoHTML = mostrarTroco
-            ? `<strong>Troco:<br></strong> Troco do cliente $<span style="color: #333;">${diferenca.toFixed(2)}</span><br>`
-            : '';
-
-        Swal.fire({
-            title: '🧾 Total: $' + '<strong>' + totalStr + '</strong>',
-            html: `
-                <div style="background: #f1f1f1; padding: 20px; border-radius: 8px; text-align: left; font-size: 16px;">
-                    <p style="margin-bottom: 10px;">
-                        <strong>Forma de Pagamento:<br></strong> 
-                        <span style="color: #333;">${formaStr}</span>
-                        <br>
-                        ${trocoHTML}
-                    </p>
-                </div>
-            `,
-            icon: 'info',
-            confirmButtonText: 'Fechar',
-            confirmButtonColor: 'darkblue',
-            background: '#fff',
-            color: '#222',
-            width: 400,
-            customClass: {
-                popup: 'swal-endereco-popup'
-            }
-        });
+    Swal.fire({
+        title: '🧾 Total: $'+'<strong>'+total+'</strong>',
+        html: `
+        <div style="background: #f1f1f1; padding: 20px; border-radius: 8px; text-align: left; font-size: 16px;">
+            <p style="margin-bottom: 10px;">
+            <strong>Forma de Pagamento:</strong> <span style="color: #333;">${forma}</span>
+            </p>
+        </div>
+        `,
+        icon: 'info',
+        confirmButtonText: 'Fechar',
+        confirmButtonColor: 'darkblue',
+        background: '#fff',
+        color: '#222',
+        width: 400,
+        customClass: {
+        popup: 'swal-endereco-popup'
+        }
+    });
     });
 });
 
@@ -248,19 +231,19 @@ botoesAbrirMesa.forEach(botao => {
                 text: 'Este pedido já está aberto!',
                 icon: 'info',
                 confirmButtonText: 'OK',
-                confirmButtonColor: 'blue'
+                confirmButtonColor: 'darkblue'
             });
             return; 
         }
 
         Swal.fire({
-            title: '<span style="color: black;">Abrir Entrega?</span>',
+            title: '<span style="color: black;">Abrir Retirada?</span>',
             text: "Esta ação não pode ser desfeita!",
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: 'darkblue',
             cancelButtonColor: 'darkred',
-            confirmButtonText: 'Sim, abrir entrega!',
+            confirmButtonText: 'Sim, abrir!',
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
