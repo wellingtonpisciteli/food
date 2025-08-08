@@ -309,10 +309,10 @@ class ComandaViewControlador extends Controlador
     {
         $obj = (new HelpersModelo());
 
-        $idMesa = $obj->buscaId_mesa("total", $id_mesa);
-        $lanchesMesa = $obj->buscaIds_mesa("lanches", $id_mesa);
-        $bebidasMesa = $obj->buscaIds_mesa("bebidas", $id_mesa);
-        $totalMesa = $obj->buscaIds_mesa("total", $id_mesa);
+        $idMesa = $obj->buscaFetch("total", "id_mesa", $id_mesa);
+        $lanchesMesa = $obj->buscaFetchAll("lanches", "id_mesa", $id_mesa);
+        $bebidasMesa = $obj->buscaFetchAll("bebidas", "id_mesa", $id_mesa);
+        $totalMesa = $obj->buscaFetchAll("total", "id_mesa", $id_mesa);
         $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
         $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
         $pedido = $obj->ler("lanches", "id_lanche", "ASC");
@@ -345,7 +345,7 @@ class ComandaViewControlador extends Controlador
         $pedido = $obj->ler("lanches", "id_lanche", "ASC");
         $bebidas = $obj->ler("bebidas", "id", "ASC");
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = $obj->buscaIds_mesa("total", $id_mesa);
+        $mesa = $obj->buscaFetchAll("total", "id_mesa", $id_mesa);
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
         echo ($this->template->renderizar('adicionar/adicionarNaMesa.html', [
@@ -368,8 +368,8 @@ class ComandaViewControlador extends Controlador
         $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
         $pedido = $obj->ler("lanches", "id_lanche", "ASC");
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
-        $mesa = $obj->buscaIds_mesa("total", $id_mesa);
-        $idLanche = $obj->buscaPorId_lanche("lanches", $id_lanche);
+        $mesa = $obj->buscaFetchAll("total", "id_mesa", $id_mesa);
+        $idLanche = $obj->buscaFetch("lanches", "id_lanche", $id_lanche);
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
 
@@ -390,7 +390,7 @@ class ComandaViewControlador extends Controlador
     {
         $obj = (new HelpersModelo());
 
-        $pedidoMesa = $obj->buscaPorId("lanches", $id);
+        $pedidoMesa = $obj->buscaFetch("lanches", "id", $id);
         $cardapio = $obj->ler("cardapio_lanche", "lanche", "ASC");
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
         $lanches = $obj->ler("lanches", "nome_lanche", "ASC");
@@ -411,7 +411,7 @@ class ComandaViewControlador extends Controlador
     {
         $obj = (new HelpersModelo());
 
-        $adicional = $obj->buscaPorChave("adicionais", $chave );
+        $adicional = $obj->buscaFetch("adicionais", "chave", $chave );
         $ingredi = $obj->ler("ingredientes", "ingrediente", "ASC");
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
 
@@ -428,7 +428,7 @@ class ComandaViewControlador extends Controlador
     {
         $obj = (new HelpersModelo());
 
-        $bebida = $obj->buscaPorChave("bebidas", $chave );
+        $bebida = $obj->buscaFetch("bebidas", "chave", $chave );
         $cardapio_bebida = $obj->ler("marcas_bebida", "marca", "ASC");
         $tamanho_bebida = $obj->ler("tamanho_bebida", "tamanho", "DESC");
         $entrega_retirada = $obj->ler("entrega_retirada", "id_mesa", "DESC");
@@ -449,12 +449,12 @@ class ComandaViewControlador extends Controlador
         $buscaCliente = $obj->buscaCliente($id_mesa);
         $cliente = $buscaCliente->cliente ?? null;
 
-        $buscaMesa = $obj->buscaId_mesa("total", $id_mesa);
+        $buscaMesa = $obj->buscaFetch("total", "id_mesa", $id_mesa);
         $mesa = $buscaMesa->mesa ?? 0;
 
-        $lanches = $obj->buscaIds_mesa("lanches", $id_mesa);
-        $adicionais = $obj->buscaIds_mesa("adicionais", $id_mesa);
-        $bebidas = $obj->buscaIds_mesa("bebidas", $id_mesa);
+        $lanches = $obj->buscaFetchAll("lanches", "id_mesa", $id_mesa);
+        $adicionais = $obj->buscaFetchAll("adicionais", "id_mesa", $id_mesa);
+        $bebidas = $obj->buscaFetchAll("bebidas", "id_mesa", $id_mesa);
 
         // Envia os dados para o HTML também
         echo $this->template->renderizar('imprimir.html', [

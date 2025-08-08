@@ -4,6 +4,7 @@ namespace sistema\Modelo;
 
 use sistema\Nucleo\Conexao;
 use sistema\Nucleo\Helpers;
+use sistema\Nucleo\Mensagem;
 use PDO;
 
 
@@ -17,64 +18,47 @@ class HelpersModelo
         return $resultado;
     }
 
-    public function buscaPorId(string $tabela, int $id): bool | object
+    public function buscaFetch(string $tabela, string $param, $id): bool|object
     {
-        $query = "SELECT * FROM {$tabela} WHERE id={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
+        $tabelasPermitidas = ['adicionais', 'bebidas', 'cardapio_bebida', 'cardapio_lanche', 'entrega_retirada', 'ingredientes', 'lanches', 'lanche_ingredientes', 'marcas_bebida', 'tamanho_bebida', 'total', 'usuarios']; 
+
+        if (!in_array($tabela, $tabelasPermitidas)) {
+            (new Mensagem())->erro("Tabela não permitida.");
+        }
+
+        $query = "SELECT * FROM {$tabela} WHERE {$param} = :id";
+
+        try {
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->bindValue(':id', $id);
+            $stmt->execute();
+            $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+            return $resultado ?: (object)[];
+        } catch (\PDOException $e) {
+            (new Mensagem())->erro("Erro na consulta: " . $e->getMessage());
+            return false;
+        }
     }
 
-    public function buscaPorIdS(string $tabela, int $id): array
+    public function buscaFetchAll(string $tabela, string $param, $id): array
     {
-        $query = "SELECT * FROM {$tabela} WHERE id={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
+        $tabelasPermitidas = ['adicionais', 'bebidas', 'cardapio_bebida', 'cardapio_lanche', 'entrega_retirada', 'ingredientes', 'lanches', 'lanche_ingredientes', 'marcas_bebida', 'tamanho_bebida', 'total', 'usuarios']; 
 
-    public function buscaPorId_lanche(string $tabela, int $id): bool | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id_lanche={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
+        if (!in_array($tabela, $tabelasPermitidas)) {
+            (new Mensagem())->erro("Tabela não permitida.");
+        }
 
-    public function buscaPorChave(string $tabela, int $id): bool | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE chave={$id}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
+        $query = "SELECT * FROM {$tabela} WHERE {$param} = :id";
 
-    public function buscaPorMesa(string $tabela, int $mesa): array
-    {
-        $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function buscaTotal(string $tabela, int $mesa): object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE mesa={$mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetch();
-        return $resultado;
-    }
-
-    public function buscaId_mesa(string $tabela, int $id_mesa): object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id_mesa=:id_mesa";
-        $stmt = Conexao::getInstancia()->prepare($query);
-        $stmt->bindParam(':id_mesa', $id_mesa, PDO::PARAM_INT);
-        $stmt->execute();
-
-        $resultado = $stmt->fetch(PDO::FETCH_OBJ);
-
-        return $resultado ?: (object)[];
+        try {
+            $stmt = Conexao::getInstancia()->prepare($query);
+            $stmt->bindValue(':id', $id);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_OBJ);
+        } catch (\PDOException $e) {
+            (new Mensagem())->erro("Erro na consulta múltipla: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function buscaCliente(int $id_mesa): object
@@ -100,22 +84,7 @@ class HelpersModelo
 
         return $resultado ?: (object)[];
     }
-
-    public function buscaIds_mesa(string $tabela, int $id_mesa): array
-    {
-        $query = "SELECT * FROM {$tabela} WHERE id_mesa={$id_mesa}";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
-
-    public function lerRelacao(string $tabela, string $parametro, int $id): array | object
-    {
-        $query = "SELECT * FROM {$tabela} WHERE {$parametro}={$id} ORDER BY id ASC";
-        $stmt = Conexao::getInstancia()->query($query);
-        $resultado = $stmt->fetchAll();
-        return $resultado;
-    }
+    
 
     public function maisVendido(string $tabela, string $item, string $param, string $dataAtual)
     {

@@ -24,6 +24,6 @@ class UsuarioControlador extends Controlador
 
         $id = $sessao->usuarioId;
 
-        return (new HelpersModelo())->buscaPorId('usuarios', $id);
+        return (new HelpersModelo())->buscaFetch('usuarios', 'id', $id);
     }
 }
