@@ -89,7 +89,21 @@ btnMostrar.addEventListener("click", function () {
 botoesExcluir.forEach(botao => {
     botao.addEventListener("click", function (e) {
         e.preventDefault();
-        const url = this.getAttribute("data-url");
+
+        const container = this.closest(".lancheAberto");
+        const bebidaId = container.getAttribute("data-id-mesa");
+
+        const select = container.querySelector(`select.tamanho-select[data-bebida-id="${bebidaId}"]`);
+        const selectedOption = select.options[select.selectedIndex];
+
+        const controle = selectedOption?.getAttribute("data-controle");
+
+        if (!controle) {
+            Swal.fire("Erro", "Controle da bebida não encontrado.", "error");
+            return;
+        }
+
+        const url = `excluirItem/${controle}/2`;
 
         Swal.fire({
             title: '<span style="color: black;">Tem certeza?</span>',

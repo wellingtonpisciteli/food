@@ -90,11 +90,11 @@ class AdminModelo
 
         if (!empty($bebida)){  
 
-            $query = "INSERT INTO marcas_bebida (bebida_id, marca) VALUES (?, ?)";
+            $query = "INSERT INTO marcas_bebida (bebida_id, marca, controle) VALUES (?, ?, ?)";
             $stmt = Conexao::getInstancia()->prepare($query);
 
             if (!empty($bebida) && is_numeric($valorNumerico)) {
-                $stmt->execute([$id_referencia, $bebida]);
+                $stmt->execute([$id_referencia, $bebida, $novoControle]);
             }
 
             $queryTamanho = "INSERT INTO tamanho_bebida (marca_bebida_id, tamanho, valor, controle) VALUES (?, ?, ?, ?)";
